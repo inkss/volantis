@@ -3,6 +3,17 @@
 	<% if (page.year || page.month) { %>
 		<%- partial('_partial/archive') %>
 	<% } else { %>
+		<div class='post-wrapper'>
+			<article id="tag" class="post article white-box reveal <%- theme.custom_css.body.effect.join(' ') %>">
+			  <h2>所有标签</h2>
+			  <div class="all-tags">
+				<% let tc = theme.sidebar.widget_library.tagcloud; %>
+				<%- list_tags({}) %>
+			  </div>
+			  <br>
+			  <%- page.content %>
+			</article>
+		  </div>
 	  <article id="arc" class="post article white-box reveal <%- theme.custom_css.body.effect.join(' ') %>">
 			<% var year = -1, postid = -1; %>
 			<% site.posts.sort('date', -1).each(function(post) { %>
