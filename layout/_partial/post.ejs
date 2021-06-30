@@ -16,6 +16,9 @@
   if (theme.article.preview.readmore == 'always' || theme.article.preview.auto_excerpt || ((post.readmore != false) && (post.excerpt || post.description || post.link))) {
     showReadmore = true;
   }
+  if (post.hideTitle && post.hideTitle === true) {
+    showTitle = false;
+  }
   %>
   <% if (showPin == true) { %>
     <div class='pin'>

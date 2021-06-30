@@ -126,8 +126,8 @@ comments:
 
 
 sidebar:
-  for_page: [notice, updateList, navigation, webinfo]
-  for_post: [notice, toc ]
+  for_page: [notice, updateList, navigation, tagcloud, webinfo]
+  for_post: [notice, navigation, toc ]
   widget_library:
     toc:
       display: [desktop, mobile]
@@ -166,7 +166,8 @@ sidebar:
         icon: fad fa-user-robot ASBESTOS
         title: 公告信息
       content:
-        - '<p>整修中...</p>'
+        - '<p>持续整修中...</p>'
+        - '<p>大概是...  <svg class="iconfont emoji" aria-hidden="true"><use xlink:href="#icon-kulou"></use></svg></p>'
     updateList:
       class: text
       display: [desktop]
@@ -230,10 +231,11 @@ tag_plugins:
 
 
 site_footer:
-  layout: [lic, inf, icp, cpy, me, icon]
+  layout: [icp, cpy, me, icon]
   lic: '<div class="footerMax560"><p>博客内容遵循 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" data-pjax-state="">「署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0)」</a> 协议</p></div>'
   inf: '<div class="footerMax490">本站使用 <a href="https://github.com/volantis-x/hexo-theme-volantis" target="_blank" class="codename" rel="external nofollow noopener noreferrer" data-pjax-state="">Volantis</a> 作为主题 | 通过 <a href="https://hexo.io/zh-cn/" target="_blank" class="codename" rel="external nofollow noopener noreferrer" data-pjax-state="">Hexo</a> 渲染生成 | <span>由腾讯云 <a href="https://cloud.tencent.com/product/cdn" target="_blank" class="codename" rel="external nofollow noopener noreferrer" data-pjax-state="">CDN</a> 分发</span></div>'
-  icp: '<div class="footerMax490">辽 ICP 备 <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow" style="cursor:wait;">16006560</a> 号 | 辽公网安备 <a href="https://www.beian.gov.cn/" rel="nofollow" target="_blank" style="cursor:wait;">21021702000331</a> 号</div>'
+  icp: '<div class="footerMax490">皖 ICP 备 <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow" style="cursor:wait;">2021008088</a> 号</div>'
+  beian: <div class="footerMax490">辽公网安备 <a href="https://www.beian.gov.cn/" rel="nofollow" target="_blank" style="cursor:wait;">21021702000331</a> 号</div>'
   cpy: '<div class="footerMax490">Copyright 2018 - 2021 szyink. All Rights Reserved</div>'
   me: '<a href="/">枋柚梓的猫会发光</a> '
   icon: '<i class="fad fa-spider-black-widow POMEGRANATE"></i>'
@@ -319,7 +321,8 @@ color_scheme:
   common:
     selection: 'alpha(#27ae60, 0.2)'
   light:
-    meta: '#666666'
+    meta: '#666'
+    site_footer: '#444'
   dark:
     site_bg: '#21252b'
     site_footer: '#abb2bf'
@@ -352,8 +355,9 @@ custom_css:
   navbar:
     effect: [shadow]
   fontsize:
-    root: 14px
+    root: 16px
     footnote: .78rem
+  max_width: 1200px
   fontfamily:
     logofont:
       fontfamily: 'sxls, "PingFang SC", "Microsoft YaHei", Helvetica, Arial'

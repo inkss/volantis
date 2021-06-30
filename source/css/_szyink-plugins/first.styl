@@ -32,8 +32,10 @@ article > p
 // 调整移动端的显示
 #safearea
   @media screen and (max-width: $device-mobile)
-    margin: 16px 0 0 !important
+    margin: 0 !important
     box-shadow: none !important
+    .body-wrapper
+      padding: 0
     #l_main
       article#comments,
       article#friends,
@@ -44,13 +46,15 @@ article > p
         margin-top: -16px !important
       article#cat,
       article#tag
-        margin: -16px -16px 0 !important
+        margin: 0 !important
         border-radius: 0 !important
       .post-wrapper
-        margin: 0 16px !important
+        margin: 0 0 16px !important
+        .post
+          border-radius: 0
     #l_side
       .widget.mobile
-        border-radius: 0 !important
+        border-radius: 0
 
 
 .iconfont

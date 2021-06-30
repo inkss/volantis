@@ -42,7 +42,6 @@
   </section>
   <% if (page && page.posts) { %>
     <% if (page.total > 1) { %>
-      <br>
       <div class="prev-next">
         <% if (page.prev != 0) { %>
           <a class="prev" rel="prev" href="<%= url_for(page.prev_link) %>">
