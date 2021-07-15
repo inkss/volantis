@@ -468,6 +468,8 @@ const RightMenu = (() => {
 
   // 阅读模式
   fn.readingModel = () => {
+    $('.cus-article-bkg').fadeToggle();
+    $('#BKG').fadeToggle();
     $('#l_header').fadeToggle();
     $('footer').fadeToggle();
     $('#s-top').fadeToggle();

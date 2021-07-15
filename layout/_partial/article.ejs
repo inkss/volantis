@@ -133,3 +133,7 @@
 <% if (page.mathjax) { %>
   <%- partial('../_third-party/math/mathjax/script') %>
 <% } %>
+
+<% if(page.background) { %>
+  <div class="cus-article-bkg" style="background-image: url(<%- page.background %>)"></div>
+<% } %>
