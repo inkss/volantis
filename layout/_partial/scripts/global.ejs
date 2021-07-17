@@ -79,7 +79,7 @@
   volantis.js = (src, cb) => {
     return new Promise(resolve => {
       setTimeout(function () {
-        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var HEAD = document.getElementsByTagName("body")[0] || document.documentElement;
         var script = document.createElement("script");
         script.setAttribute("type", "text/javascript");
         if (cb) {

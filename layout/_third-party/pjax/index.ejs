@@ -31,7 +31,6 @@
 
     document.addEventListener('pjax:send', function (e) {
       //window.stop(); // 相当于点击了浏览器的停止按钮
-
       try {
         var currentUrl = window.location.pathname;
         var targetUrl = e.triggerElement.href;
@@ -71,6 +70,7 @@
       });
       // 使用 volantis.pjax.push 方法传入重载函数 参见layout/_partial/scripts/global.ejs
       volantis.pjax.method.complete.start();
+      $('.cus-article-bkg').fadeIn('slow');
     });
 
     document.addEventListener('pjax:error', function (e) {

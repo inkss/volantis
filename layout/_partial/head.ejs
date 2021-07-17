@@ -1,5 +1,6 @@
-<head hexo-theme='https://github.com/volantis-x/hexo-theme-volantis/tree/<%- theme.info.theme_version %>'>
+<head>
   <meta charset="utf-8">
+
   <!-- SEO相关 -->
   <% if (page.robots) { %>
     <meta name="robots" content="<%- page.robots %>">
@@ -18,20 +19,18 @@
       <meta name="robots" content="<%- theme.seo.robots.tag %>">
     <% } %>
   <% } %>
+
   <!-- 渲染优化 -->
   <meta http-equiv='x-dns-prefetch-control' content='on' />
-  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <meta name="renderer" content="webkit">
   <meta name="force-rendering" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="X-UA-Compatible" content="nosniff">
   <meta name="HandheldFriendly" content="True" >
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="preload" href="<%- theme.cdn.map.css.style %>" as="style">
-
 
   <!-- 页面元数据 -->
+
   <%
     var title = page.seo_title || page.title;
     var keywords = page.keywords || '';
@@ -74,6 +73,7 @@
       }
     }
   %>
+
   <title><% if (title) { %><%= title %> - <% } %><%= config.title %></title>
   <% if (keywords){ %>
     <meta name="keywords" content="<%- keywords %>">
@@ -95,6 +95,10 @@
     <% }) %>
   <% } %>
 
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" href="<%- theme.cdn.map.css.style %>" as="style">
+
   <!-- link -->
   <% if (config.favicon) { %>
     <link rel="shortcut icon" type='image/x-icon' href="<%- url_for(config.favicon) %>">
@@ -115,38 +119,36 @@
   </style>
 
   <link rel="stylesheet" href="<%- theme.cdn.map.css.style %>" media="print" onload="this.media='all';this.onload=null">
-  <noscript><link rel="stylesheet" href="<%- theme.cdn.map.css.style %>"></noscript>
-  <% if (theme.plugins.darkmodejs.enable) { %>
-    <script>
-      var userColorScheme=localStorage.getItem("user-color-scheme")
-      if(userColorScheme){
-        document.documentElement.setAttribute("data-user-color-scheme", userColorScheme);
-      }
-    </script>
-  <% } %>
+  <!-- <noscript><link rel="stylesheet" href="<%- theme.cdn.map.css.style %>"></noscript> -->
   <%- partial('../_third-party/end-of-support/script') %>
 
   <script>
-  document.addEventListener("error", function(e) {
-    const elem = e.target;
-    const parentElem = e.target.parentElement;
-    const parentElemClass = parentElem.classList.toString();
-    const pParentElemClass = parentElem.parentElement.classList.toString();
-    if (elem.tagName.toLowerCase() !== 'img') {
-        return;
-    }
-    elem.classList.add('fix-cursor-default', 'error');
-    if(parentElemClass === 'fancybox' && pParentElemClass === 'fancybox') {
-      parentElem.parentElement.classList.add('hideFancybox');
-      parentElem.parentElement.classList.remove('fancybox');
-      parentElem.classList.remove('fancybox');
-    } else if(parentElemClass === 'img-bg' && pParentElemClass === 'img-wrap') {
-      parentElem.parentElement.classList.add('hideFancybox');
-    } else if(parentElemClass === 'author') {
-      parentElem.parentElement.classList.add('fix-author-imgError');
-    } else if(parentElemClass.indexOf('tk-avatar') != -1 ) {
-      parentElem.parentElement.classList.add('fix-avatar-imgError');
-    }
-  }, true);
+    <% if (theme.plugins.darkmodejs.enable) { %>
+    let userColorScheme=localStorage.getItem("user-color-scheme")
+      if(userColorScheme){
+        document.documentElement.setAttribute("data-user-color-scheme", userColorScheme);
+      }
+    <% } %>
+    document.addEventListener("error", function(e) {
+      const elem = e.target;
+      const parentElem = e.target.parentElement;
+      const parentElemClass = parentElem.classList.toString();
+      const pParentElemClass = parentElem.parentElement.classList.toString();
+      if (elem.tagName.toLowerCase() !== 'img') {
+          return;
+      }
+      elem.classList.add('fix-cursor-default', 'error');
+      if(parentElemClass === 'fancybox' && pParentElemClass === 'fancybox') {
+        parentElem.parentElement.classList.add('hideFancybox');
+        parentElem.parentElement.classList.remove('fancybox');
+        parentElem.classList.remove('fancybox');
+      } else if(parentElemClass === 'img-bg' && pParentElemClass === 'img-wrap') {
+        parentElem.parentElement.classList.add('hideFancybox');
+      } else if(parentElemClass === 'author') {
+        parentElem.parentElement.classList.add('fix-author-imgError');
+      } else if(parentElemClass.indexOf('tk-avatar') != -1 ) {
+        parentElem.parentElement.classList.add('fix-avatar-imgError');
+      }
+    }, true);
   </script>
 </head>
