@@ -158,7 +158,13 @@ div.el-input-group__prepend
 #twikoo_container
   text-align: center
 
+// hover 时才显示评论框
+.tk-action
+  display: none !important
 
+.tk-main:hover
+  &>.tk-row>.tk-action
+    display: flex !important
 
 //===========================
 // link-effects
@@ -309,11 +315,3 @@ img.error
   margin: 0 2px
   span
     display: none !important
-
-// hover 时才显示评论框
-.tk-action
-  display: none !important
-
-.tk-main:hover
-  &>.tk-row>.tk-action
-    display: flex !important
