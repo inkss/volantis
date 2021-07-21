@@ -206,9 +206,9 @@ const RightMenu = (() => {
 
       $copyImg.off("click.rightMenu").one("click.rightMenu", () => {
         fn.writeClipImg(event, () => {
-          volantis.message('操作提示', '复制成功！', 'success');
+          volantis.message('操作提示', '复制成功！', 'fad fa-copy');
         }, (error) => {
-          volantis.message('操作提示', '复制失败：' + error, 'error');
+          volantis.message('操作提示', '复制失败：' + error, 'fad fa-exclamation-square');
         })
       });
     } else {
@@ -280,9 +280,9 @@ const RightMenu = (() => {
   fn.copyString = (str) => {
     fn.writeClipText(str)
       .then(() => {
-        volantis.message('操作提示', str.length > 120 ? str.substring(0, 120) + '...' : str, 'info');
+        volantis.message('操作提示', str.length > 120 ? str.substring(0, 120) + '...' : str, 'fad fa-copy');
       }).catch(e => {
-        volantis.message('操作提示', e, 'error');
+        volantis.message('操作提示', e, 'fad fa-exclamation-square');
       })
   }
 
@@ -503,7 +503,7 @@ const RightMenu = (() => {
     init: (notice = false) => {
       fn.init();
       fn.initEvent();
-      if (notice) volantis.message('操作提示', '自定义右键注册成功。', 'success');
+      if (notice) volantis.message('操作提示', '自定义右键注册成功。');
     },
     destroy: (notice = false) => {
       fn.hideMenu();
@@ -513,7 +513,7 @@ const RightMenu = (() => {
       window.document.oncontextmenu = () => {
         return true
       };
-      if (notice) volantis.message('操作提示', '自定义右键注销成功。', 'success');
+      if (notice) volantis.message('操作提示', '自定义右键注销成功。');
     },
     hideMenu: () => {
       fn.hideMenu();

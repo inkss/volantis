@@ -34,7 +34,7 @@
           volantis.message(
             '音乐通知',
             '正在播放：' + title + ' - ' + artist,
-            'info'
+            'fad fa-play'
           )
           if(rightMenuAplayer) volantis.APlayerController.status = 'play';
         });
@@ -43,11 +43,15 @@
           var index =thisAplayer.list.index;
           var title = thisAplayer.list.audios[index].title;
           var artist = thisAplayer.list.audios[index].artist;
-          volantis.message(
-            '音乐通知',
-            '暂停播放：' + title + ' - ' + artist,
-            'info'
-          )
+          setTimeout(() => {
+            // 歌曲播放结束也会触发 pause 事件
+            if(thisAplayer.paused)
+              volantis.message(
+                '音乐通知',
+                '暂停播放：' + title + ' - ' + artist,
+                'fad fa-pause'
+              )
+          }, 100)
           if(rightMenuAplayer) volantis.APlayerController.status = 'pause';
         });
         thisAplayer.on('error', function (e) {
@@ -57,7 +61,7 @@
           volantis.message(
             '音乐通知',
             "歌曲：" + title + "加载失败~",
-            'warning'
+            'fad fa-exclamation-square'
           )
           if(rightMenuAplayer) volantis.APlayerController.status = 'error';
         });

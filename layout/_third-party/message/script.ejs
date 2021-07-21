@@ -1,20 +1,31 @@
 <script>
-  volantis.message = (title, message, type, autoClose, time = 3000) => {
-    if (typeof $.message == "undefined") {
+  volantis.message = (title, message, icon = 'fad fa-info-square', time = 3000, position = 'topRight', done = null) => {
+    if (typeof iziToast == "undefined") {
       volantis.css('<%- theme.cdn.map.css.message %>')
       volantis.js('<%- theme.cdn.map.js.message %>', () => {
-        start(title, message, type, autoClose, time);
+        tozashMessage(title, message, icon, time, position, done);
       });
     } else {
-      start(title, message, type, autoClose, time);
+      tozashMessage(title, message, icon, time, position, done);
     }
-    function start(title, message, type, autoClose, time) {
-      $.message({
+
+    function tozashMessage(title, message, icon, time, position, done) {
+      iziToast.show({
+        layout: '2',
+        icon: 'Fontawesome',
+        transitionIn: 'bounceInLeft',
+        transitionOut: 'fadeOutRight',
+        closeOnEscape: 'true',
+        displayMode: 'replace',
+        backgroundColor: '#fff',
         title: title,
         message: message,
-        type: type,
-        autoClose: autoClose,
-        time: time,
+        icon: icon,
+        timeout: time,
+        position: position,
+        onClosed: () => {
+          if(done) done();
+        },
       });
     }
   };

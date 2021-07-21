@@ -4,11 +4,9 @@ navbar:
       title: INKSS
   search: 想找些什么~
   menu:
-    - name: 首页
-      icon: fad fa-helmet-battle GREENSEA
-      url: /
     - name: 导航
       icon: fad fa-cube NEPHRITIS
+      url: /
       rows:
         - name: 分类
           icon: fad fa-folder-open TURQUOISE
@@ -19,8 +17,17 @@ navbar:
         - name: 归档
           icon: fad fa-archive PETERRIVE
           url: /navigation/archives/
+    - name: 应用
+      icon: fad fa-browser  PETERRIVE
+      rows:
+        - name: KlliyrBox
+          icon: fad fa-rocket-launch SUNFLOWER
+          url: https://adc.ink/#user/login
+        - name: Code Server
+          icon: fad fa-computer-speaker EMERALD
+          url: https://code.szyink.com/login
     - name: 更多
-      icon: fad fa-megaphone POMEGRANATE
+      icon: fad fa-megaphone SUNFLOWER
       rows:
         - name: 关于
           icon: fad fa-drafting-compass SUNFLOWER
@@ -34,6 +41,9 @@ navbar:
         - name: 留言
           icon: fad fa-comment-alt-smile WETASPHALT
           url: /page/info/
+    - name: 博客
+      icon: fad fa-heart POMEGRANATE 
+      url: https://szyink.com
     - name: 音乐
       icon: fad fa-compact-disc WISTERIA
 
@@ -43,7 +53,7 @@ cover:
   height_scheme: full
   layout_scheme: search
   display:
-    home: true
+    home: false
     archive: false
     others: false
   background:
@@ -126,9 +136,15 @@ comments:
 
 
 sidebar:
-  for_page: [notice, updateList, navigation, tagcloud, webinfo]
+  for_page: [notice, updateList, last, navigation, tagcloud, webinfo]
   for_post: [notice, navigation, toc ]
   widget_library:
+    last:
+      class: last
+      display: [desktop, mobile]
+      header:
+        icon: fad fa-clock WISTERIA
+        title: 最近更新
     toc:
       display: [desktop, mobile]
       header:
@@ -142,13 +158,13 @@ sidebar:
       display: [desktop, mobile]
       header:
         title: 标签列表
-        icon: fad fa-tags ASBESTOS
+        icon: fad fa-tags WISTERIA 
         url: /tags/
       max_font: 22
     webinfo:
       display: [desktop]
       header:
-        icon: fad fa-award ASBESTOS
+        icon: fad fa-award NEPHRITIS
       type:
         runtime:
           data: '2018/03/15'
@@ -163,27 +179,26 @@ sidebar:
       class: text
       display: [desktop]
       header:
-        icon: fad fa-user-robot ASBESTOS
-        title: 公告信息
+        icon: fad fa-user-robot PETERRIVE 
+        title: 公共信息
       content:
-        - '<p>持续整修中...</p>'
-        - '<p>大概是...  <svg class="iconfont emoji" aria-hidden="true"><use xlink:href="#icon-kulou"></use></svg></p>'
+        - '<p>今天你喝够 8 杯水了没？  <svg class="iconfont emoji" aria-hidden="true"><use xlink:href="#icon-yiwen"></use></svg></p>'
     updateList:
       class: text
       display: [desktop]
       header:
-        icon: fad fa-praying-hands ASBESTOS
+        icon: fad fa-praying-hands SUNFLOWER 
         title: 更新日志
       content:
-        - 1.自定义右键添加了更多的功能项
-        - 2.上线文章页阅读模式(右键开启)
-        - 3.音乐播放时启用右键菜单项控制
+        - 1.上线文章页阅读模式(右键开启)
+        - 2.音乐播放时启用右键菜单项控制
+        - 3.添加了文章页自定义背景显示
     # 自定义 站内导航    
     navigation:
       class: grid
       display: [desktop, mobile]
       header:
-        icon: fad fa-map-signs ASBESTOS
+        icon: fad fa-map-signs POMEGRANATE 
         title: 站内导航
       fixed: true # 固定宽度
       rows:
