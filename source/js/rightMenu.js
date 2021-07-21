@@ -206,7 +206,7 @@ const RightMenu = (() => {
 
       $copyImg.off("click.rightMenu").one("click.rightMenu", () => {
         fn.writeClipImg(event, () => {
-          volantis.message('操作提示', '复制成功！', 'fad fa-copy');
+          volantis.message('操作提示', '复制成功！', 'fad fa-images');
         }, (error) => {
           volantis.message('操作提示', '复制失败：' + error, 'fad fa-exclamation-square');
         })

@@ -1,5 +1,5 @@
 <script>
-  volantis.message = (title, message, icon = 'fad fa-info-square', time = 3000, position = 'topRight', done = null) => {
+  volantis.message = (title, message, icon = 'fad fa-info-square', time = 5000, position = 'topRight', done = null) => {
     if (typeof iziToast == "undefined") {
       volantis.css('<%- theme.cdn.map.css.message %>')
       volantis.js('<%- theme.cdn.map.js.message %>', () => {
@@ -28,5 +28,9 @@
         },
       });
     }
+  };
+
+  document.body.oncopy = function(){
+    volantis.message('版权提示', '请遵守 CC BY-NC-SA 4.0 协议。', 'fab fa-creative-commons');
   };
 </script>
