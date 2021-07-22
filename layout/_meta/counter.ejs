@@ -44,13 +44,15 @@
     </a>
   </div>
 <% } else if (theme.comments.service=='twikoo') { %>
-  <div class="new-meta-item browse">
+  <div class="new-meta-item browse browse">
     <a class='notlink'>
       <i class="<%- theme.article.body.meta_library.counter.icon %> fa-fw" aria-hidden="true"></i>
       <p>
-        <span id="twikoo_visitors"></span>
-      </p>
+      <span id="twikoo_visitors">
+        <i class="fad fa-circle-notch fa-spin fa-fw" style="display: inline-block;" aria-hidden="true"></i>
       </span>
+      <%- theme.article.body.meta_library.counter.unit %>
+      </p>
     </a>
   </div>
 <% } %>

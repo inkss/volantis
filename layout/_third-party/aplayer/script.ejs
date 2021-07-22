@@ -34,7 +34,7 @@
           volantis.message(
             '音乐通知',
             '正在播放：' + title + ' - ' + artist,
-            'fad fa-play'
+            'fad fa-play light-blue'
           )
           if(rightMenuAplayer) volantis.APlayerController.status = 'play';
         });
@@ -49,7 +49,7 @@
               volantis.message(
                 '音乐通知',
                 '暂停播放：' + title + ' - ' + artist,
-                'fad fa-pause'
+                'fad fa-pause light-blue'
               )
           }, 100)
           if(rightMenuAplayer) volantis.APlayerController.status = 'pause';
@@ -61,7 +61,7 @@
           volantis.message(
             '音乐通知',
             "歌曲：" + title + "加载失败~",
-            'fad fa-exclamation-square'
+            'fad fa-exclamation-square red'
           )
           if(rightMenuAplayer) volantis.APlayerController.status = 'error';
         });

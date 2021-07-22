@@ -121,16 +121,9 @@ article:
 
 comments:
   title: <i class='fad fa-comments POMEGRANATE'></i> 评论
-  service: twikoo
-  valine:
-    placeholder: 人生在世，错别字在所难免，无需纠正。
-    appId: gqkw9h3C8yXm4WsJ3S5vBonP-gzGzoHsz
-    appKey: 2nwrlSMxijhI9x0v8JETCO9D
+  service: disqus
   disqus:
     shortname: inkss
-  twikoo:
-    js: https://cdn.jsdelivr.net/npm/twikoo@1.3.0 # 建议锁定版本
-    envId: twikoo-web-4g84uta0261cb889 # 腾讯云环境id
 
 
 

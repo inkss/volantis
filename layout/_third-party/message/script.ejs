@@ -1,5 +1,5 @@
 <script>
-  volantis.message = (title, message, icon = 'fad fa-info-square', time = 5000, position = 'topRight', done = null) => {
+  volantis.message = (title, message, icon = 'fad fa-info-square light-blue', time = 5000, position = 'topRight', done = null) => {
     if (typeof iziToast == "undefined") {
       volantis.css('<%- theme.cdn.map.css.message %>')
       volantis.js('<%- theme.cdn.map.js.message %>', () => {
@@ -18,6 +18,7 @@
         closeOnEscape: 'true',
         displayMode: 'replace',
         backgroundColor: '#fff',
+        zindex: 2147483647,
         title: title,
         message: message,
         icon: icon,
@@ -30,7 +31,48 @@
     }
   };
 
+  volantis.question = (title, message, success = null, cancel = null, done = null, icon = 'fad fa-question-circle light-blue', time = 20000) => {
+    if (typeof iziToast == "undefined") {
+      volantis.css('<%- theme.cdn.map.css.message %>')
+      volantis.js('<%- theme.cdn.map.js.message %>', () => {
+        tozashQuestion(title, message, icon , time, success, cancel, done);
+      });
+    } else {
+      tozashQuestion(title, message, icon , time, success, cancel, done);
+    }
+
+    function tozashQuestion(title, message, icon , time, success, cancel, done) {
+      iziToast.question({ 
+        icon: 'Fontawesome',
+        backgroundColor: '#fff',
+        close: false,
+        overlay: true,
+        displayMode: 'once',
+        id: 'question',
+        position: 'center',
+        zindex: 2147483647,
+        icon: icon,
+        timeout: time,
+        title: title,
+        message: message,
+        buttons: [
+          ['<button><b>是</b></button>', (instance, toast) => {
+            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+            if(success) success(instance, toast)
+          }],
+          ['<button><b>否</b></button>', (instance, toast) => {
+            instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+            if(cancel) cancel(instance, toast)
+          }]
+        ],
+        onClosed: (instance, toast, closedBy) => {
+          if(done) done(instance, toast, closedBy);
+        }
+      });
+    }
+  }
+
   document.body.oncopy = function(){
-    volantis.message('版权提示', '请遵守 CC BY-NC-SA 4.0 协议。', 'fab fa-creative-commons');
+    volantis.message('版权提示', '请遵守 CC BY-NC-SA 4.0 协议。', 'fab fa-creative-commons light-blue');
   };
 </script>
