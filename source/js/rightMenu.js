@@ -206,9 +206,9 @@ const RightMenu = (() => {
 
       $copyImg.off("click.rightMenu").one("click.rightMenu", () => {
         fn.writeClipImg(event, () => {
-          volantis.message('系统提示', '图片复制成功！', 'fad fa-images');
+          volantis.message('系统提示', '图片复制成功！', 'fal fa-images');
         }, (error) => {
-          volantis.message('系统提示', '复制失败：' + error, 'fad fa-exclamation-square red');
+          volantis.message('系统提示', '复制失败：' + error, 'fal fa-exclamation-square red');
         })
       });
     } else {
@@ -282,9 +282,9 @@ const RightMenu = (() => {
   fn.copyString = (str) => {
     fn.writeClipText(str)
       .then(() => {
-        volantis.message('复制成功', str.length > 120 ? str.substring(0, 120) + '...' : str, 'fad fa-copy');
+        volantis.message('复制成功', str.length > 120 ? str.substring(0, 120) + '...' : str, 'fal fa-copy');
       }).catch(e => {
-        volantis.message('系统提示', e, 'fad fa-exclamation-square red');
+        volantis.message('系统提示', e, 'fal fa-exclamation-square red');
       })
   }
 
@@ -433,7 +433,7 @@ const RightMenu = (() => {
         'margin-bottom': '20px'
       });
       $('.prev-next').hide();
-      $('#bottom').children().append('<div class="new-meta-item"><a class="tag" href="' + window.location.href + '" rel="nofollow" data-pjax-state=""><i class="fad fa-external-link fa-fw" aria-hidden="true"></i><p>本文地址：' + window.location.href + '</p></a></div>');
+      $('#bottom').children().append('<div class="new-meta-item"><a class="tag" href="' + window.location.href + '" rel="nofollow" data-pjax-state=""><i class="fal fa-external-link fa-fw" aria-hidden="true"></i><p>本文地址：' + window.location.href + '</p></a></div>');
       $('#comments').hide();
       $('#s-top').hide();
       $('footer').hide();
@@ -494,7 +494,7 @@ const RightMenu = (() => {
     volantis.isReadModel = volantis.isReadModel === undefined ? true : !volantis.isReadModel;
     console.log(volantis.isReadModel);
     if (volantis.isReadModel) {
-      volantis.message('系统提示', '阅读模式已开启，您可以点击屏幕空白处退出。', 'fad fa-book-reader light-blue', 5000);
+      volantis.message('系统提示', '阅读模式已开启，您可以点击屏幕空白处退出。', 'fal fa-book-reader light-blue', 5000);
       $('#l_body').off('click.rightMenu').on('click.rightMenu', (event) => {
         if ($(event.target).hasClass('common_read')) {
           fn.readingModel();

@@ -1,5 +1,5 @@
 <script>
-  volantis.message = (title, message, icon = 'fad fa-info-square light-blue', time = 5000, position = 'topRight', done = null) => {
+  volantis.message = (title, message, icon = 'fal fa-info-square light-blue', time = 5000, position = 'topRight', done = null) => {
     if (typeof iziToast == "undefined") {
       volantis.css('<%- theme.cdn.map.css.message %>')
       volantis.js('<%- theme.cdn.map.js.message %>', () => {
@@ -31,7 +31,7 @@
     }
   };
 
-  volantis.question = (title, message, success = null, cancel = null, done = null, icon = 'fad fa-question-circle light-blue', time = 20000) => {
+  volantis.question = (title, message, success = null, cancel = null, done = null, icon = 'fal fa-question-circle light-blue', time = 20000) => {
     if (typeof iziToast == "undefined") {
       volantis.css('<%- theme.cdn.map.css.message %>')
       volantis.js('<%- theme.cdn.map.js.message %>', () => {
