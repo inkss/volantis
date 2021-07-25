@@ -4,6 +4,6 @@
 
 > 自用仓库、依赖仓库~
 
-*A Wonderful Theme for Hexo*
+*A Wonderful Theme for Hexo~*
 
 主题覆盖内容：*._config.volantis.yml*
