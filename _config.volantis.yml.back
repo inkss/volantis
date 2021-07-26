@@ -4,48 +4,74 @@ navbar:
       title: INKSS
   search: 想找些什么~
   menu:
-    - name: 导航
-      icon: fad fa-cube NEPHRITIS
+    - name: 首页
+      icon: fal fa-home WETASPHALT
       url: /
+    - name: 导航
+      icon: fal fa-cube NEPHRITIS
       rows:
-        - name: 分类
-          icon: fad fa-folder-open TURQUOISE
+        - name: 分类列表
+          icon: fal fa-folder-open TURQUOISE
           url: /navigation/categories/
-        - name: 标签
-          icon: fad fa-tags EMERALD
-          url: /navigation/tags/
-        - name: 归档
-          icon: fad fa-archive PETERRIVE
+        - name: 文章归档
+          icon: fal fa-archive PETERRIVE
           url: /navigation/archives/
-    - name: 应用
-      icon: fad fa-browser  PETERRIVE
-      rows:
-        - name: KlliyrBox
-          icon: fad fa-rocket-launch SUNFLOWER
-          url: https://adc.ink/#user/login
-        - name: Code Server
-          icon: fad fa-computer-speaker EMERALD
-          url: https://code.szyink.com/login
+        - name: hr
+        - name: 个人笔记
+          icon: fal fa-books CARROT
+          url: /page/notes/
+          rows:
+            - name: Github Action
+              icon: fal fa-kerning GREENSEA
+              url: /page/notes/actions/
+            - name: Shell command
+              icon: fal fa-kerning GREENSEA
+              url: /page/notes/shell/
+            - name: Code Language
+              icon: fal fa-kerning GREENSEA
+              url: /page/notes/code/    
+        - name: 主题文档
+          icon: fal fa-books-medical NEPHRITIS
+          url: /page/notes/manual/ 
     - name: 更多
-      icon: fad fa-megaphone SUNFLOWER
+      icon: fal fa-anchor GREENSEA
       rows:
         - name: 关于
-          icon: fad fa-drafting-compass SUNFLOWER
+          icon: fal fa-drafting-compass SUNFLOWER
           url: /page/about/
-        - name: 笔记
-          icon: fad fa-books CARROT
-          url: /page/notes/  
-        - name: 友链
-          icon: fad fa-stamp ALIZARIN
+        - name: 小伙伴
+          icon: fal fa-stamp ALIZARIN
           url: /page/friends/   
-        - name: 留言
-          icon: fad fa-comment-alt-smile WETASPHALT
+        - name: 站内留言
+          icon: fal fa-comment-alt-smile WETASPHALT
           url: /page/info/
+        - name: 博客大事记
+          icon: fal fa-leaf-heart POMEGRANATE
+          url: /page/timeline/
+        - name: hr  
+        - name: 子应用
+          icon: fal fa-stream BELIZEHOLE
+          rows:
+            - name: 宝塔面板
+              icon: fal fa-spider-web SUNFLOWER
+              url: https://www.szyink.com/
+            - name: KlliyrBox
+              icon: fal fa-rocket-launch SUNFLOWER
+              url: https://adc.ink/#user/login
+            - name: Code Server
+              icon: fal fa-computer-speaker EMERALD
+              url: https://code.szyink.com/login   
+        - name: RSS 订阅
+          icon: fal fa-rss SUNFLOWER
+          url: /atom.xml
+        - name: Github
+          icon: fal fa-code-merge WISTERIA
+          url: https://github.com/inkss
     - name: 博客
-      icon: fad fa-heart POMEGRANATE 
+      icon: fal fa-heart POMEGRANATE 
       url: https://szyink.com
     - name: 音乐
-      icon: fad fa-compact-disc WISTERIA
+      icon: fal fa-compact-disc WISTERIA
 
 
 
@@ -86,7 +112,7 @@ article:
   preview:
     line_style: hidden
   body:
-    top_meta: [author, wordcount]
+    top_meta: [author, wordcount, counter]
     bottom_meta: [category, tags, updated, date]
     meta_library:
       author:
@@ -94,25 +120,25 @@ article:
         name: 枋柚梓
         url: /
       date:
-        icon: fad fa-calendar-alt TURQUOISE
+        icon: fal fa-calendar-alt TURQUOISE
       updated:
-        icon: fad fa-edit GREENSEA
+        icon: fal fa-edit GREENSEA
       category:
-        icon: fad fa-folder-open EMERALD
+        icon: fal fa-folder-open EMERALD
       counter:
-        icon: fad fa-eye NEPHRITIS
+        icon: fal fa-eye NEPHRITIS
       valinecount:
-        icon: fad fa-comment-dots NEPHRITIS
+        icon: fal fa-comment-dots NEPHRITIS
       walinecount:
-        icon: fad fa-comment-dots NEPHRITIS
+        icon: fal fa-comment-dots NEPHRITIS
       wordcount:
-        icon_wordcount: fad fa-keyboard PETERRIVE
-        icon_duration: fad fa-hourglass-half BELIZEHOLE
+        icon_wordcount: fal fa-keyboard PETERRIVE
+        icon_duration: fal fa-hourglass-half BELIZEHOLE
       tags:
-        icon: fad fa-hashtag WETASPHALT
+        icon: fal fa-hashtag WETASPHALT
     footer_widget:
       references:
-        icon: fad fa-quote-left CONCRETE
+        icon: fal fa-quote-left CONCRETE
       copyright:
         enable: false
 
@@ -120,44 +146,52 @@ article:
 
 
 comments:
-  title: <i class='fad fa-comments POMEGRANATE'></i> 评论
-  service: disqus
+  title: <i class='fal fa-comments POMEGRANATE'></i> 评论
+  service: twikoo
+  valine:
+    placeholder: 人生在世，错别字在所难免，无需纠正。
+    appId: gqkw9h3C8yXm4WsJ3S5vBonP-gzGzoHsz
+    appKey: 2nwrlSMxijhI9x0v8JETCO9D
   disqus:
     shortname: inkss
+  twikoo:
+    js: https://cdn.jsdelivr.net/npm/twikoo@1.4.1 # 建议锁定版本
+    envId: twikoo-web-4g84uta0261cb889 # 腾讯云环境id
 
 
 
 
 sidebar:
-  for_page: [notice, updateList, last, navigation, tagcloud, webinfo]
+  for_page: [notice, updateList, navigation, last, tagcloud, webinfo]
   for_post: [notice, navigation, toc ]
   widget_library:
     last:
       class: last
       display: [desktop, mobile]
       header:
-        icon: fad fa-clock WISTERIA
+        icon: fal fa-clock WISTERIA
         title: 最近更新
     toc:
       display: [desktop, mobile]
       header:
-        icon: fad fa-list ASBESTOS
+        icon: fal fa-list ASBESTOS
     category:
       display: [desktop]
       header:
-        icon: fad fa-folder-open ASBESTOS
+        icon: fal fa-folder-open ASBESTOS
         url: /categories/
     tagcloud:
       display: [desktop, mobile]
       header:
         title: 标签列表
-        icon: fad fa-tags WISTERIA 
+        icon: fal fa-tags WISTERIA 
         url: /tags/
-      max_font: 22
+      max_font: 24
+      min_font: 16
     webinfo:
       display: [desktop]
       header:
-        icon: fad fa-award NEPHRITIS
+        icon: fal fa-award NEPHRITIS
       type:
         runtime:
           data: '2018/03/15'
@@ -172,15 +206,15 @@ sidebar:
       class: text
       display: [desktop]
       header:
-        icon: fad fa-user-robot PETERRIVE 
+        icon: fal fa-ghost PETERRIVE 
         title: 公共信息
       content:
-        - '<p>今天你喝够 8 杯水了没？  <svg class="iconfont emoji" aria-hidden="true"><use xlink:href="#icon-yiwen"></use></svg></p>'
+        - '<p>今天你恰饭了吗？  <svg class="iconfont emoji" aria-hidden="true"><use xlink:href="#icon-kaixin"></use></svg></p>'
     updateList:
       class: text
       display: [desktop]
       header:
-        icon: fad fa-praying-hands SUNFLOWER 
+        icon: fal fa-praying-hands SUNFLOWER 
         title: 更新日志
       content:
         - 1.上线文章页阅读模式(右键开启)
@@ -191,41 +225,41 @@ sidebar:
       class: grid
       display: [desktop, mobile]
       header:
-        icon: fad fa-map-signs POMEGRANATE 
+        icon: fal fa-map-signs POMEGRANATE 
         title: 站内导航
       fixed: true # 固定宽度
       rows:
         - name: 文档笔记
-          icon: fad fa-books GREENSEA
+          icon: fal fa-books GREENSEA
           url:  /page/notes/
-        - name: 用户手册
-          icon: fad fa-books-medical NEPHRITIS
-          url: /page/notes/manual/
+        - name: 关于本站
+          icon: fal fa-drafting-compass NEPHRITIS
+          url: /page/about/  
         - name: 建站历史
-          icon: fad fa-leaf-heart POMEGRANATE
+          icon: fal fa-leaf-heart POMEGRANATE
           url: /page/timeline/
         - name: 站内留言
-          icon: fad fa-comment-alt-smile WISTERIA
+          icon: fal fa-comment-alt-smile WISTERIA
           url: /page/info/
         - name: 小伙伴们
-          icon: fad fa-stamp CONCRETE
+          icon: fal fa-stamp CONCRETE
           url: /page/friends/
-        - name: RSS 订阅
-          icon: fad fa-rss SUNFLOWER
-          url: /atom.xml    
+        - name: 十年之约
+          icon: fal fa-glass-cheers PETERRIVE
+          url: /page/foreverblog/
     wiki-hexo-theme:
       class: list
       display: [desktop, mobile]
       header:
-        icon: fad fa-flower-daffodil ASBESTOS
+        icon: fal fa-flower-daffodil ASBESTOS
         title: 笔记本
         url: /page/notes/index.html
       rows:
-        - name: '<i class="fad fa-kerning"></i> Github Actions'
+        - name: '<i class="fal fa-kerning"></i> Github Actions'
           url: /page/notes/actions/index.html
-        - name: '<i class="fad fa-kerning"></i> Shell Command'
+        - name: '<i class="fal fa-kerning"></i> Shell Command'
           url: /page/notes/shell/index.html      
-        - name: '<i class="fad fa-kerning"></i> Code Language'
+        - name: '<i class="fal fa-kerning"></i> Code Language'
           url: /page/notes/code/index.html
 
 
@@ -246,7 +280,7 @@ site_footer:
   beian: <div class="footerMax490">辽公网安备 <a href="https://www.beian.gov.cn/" rel="nofollow" target="_blank" style="cursor:wait;">21021702000331</a> 号</div>'
   cpy: '<div class="footerMax490">Copyright 2018 - 2021 szyink. All Rights Reserved</div>'
   me: '<a href="/">枋柚梓的猫会发光</a> '
-  icon: '<i class="fad fa-spider-black-widow POMEGRANATE"></i>'
+  icon: '<i class="fal fa-spider-black-widow POMEGRANATE"></i>'
 
 
 
@@ -262,7 +296,7 @@ plugins:
   highlightjs:
     enable: false
   clipboard:
-    enable: false
+    enable: true
   wordcount:
     enable: true
   aplayer:
@@ -287,38 +321,38 @@ plugins:
 
 rightmenu:
   enable: true
-  faicon: fad PETERRIVE
+  faicon: fal PETERRIVE
   layout: [copy, navigation, hr, info, foreverblog, friends, text, about, hr, print, reading, darkmode, music]
   darkmode:
     name: 暗黑模式
-    white: fad fa-eclipse-alt WISTERIA
-    dark: fad fa-cloud-sun WISTERIA
+    white: fal fa-eclipse-alt WISTERIA
+    dark: fal fa-cloud-sun WISTERIA
   print:
     name: 打印页面
-    icon: fad fa-print TURQUOISE
+    icon: fal fa-print TURQUOISE
     defaultStyles: true
   reading:
     name: 阅读模式
-    icon: fad fa-book-open EMERALD
+    icon: fal fa-book-open EMERALD
   foreverblog:
     name: 十年之约
-    icon: fad fa-glass-cheers PETERRIVE
+    icon: fal fa-glass-cheers PETERRIVE
     url: /page/foreverblog/
   friends:
     name: 我的朋友们
-    icon: fad fa-flower-daffodil AMETHYST
+    icon: fal fa-flower-daffodil AMETHYST
     url: /page/friends/
   info:
     name: 留言版
-    icon: fad fa-fish WETASPHALT
+    icon: fal fa-fish WETASPHALT
     url: /page/info/
   text:
     name: 文章归档
-    icon: fad fa-globe-asia CONCRETE
+    icon: fal fa-globe-asia CONCRETE
     url: /navigation/archives/
   about:
     name: 关于我
-    icon: fad fa-gingerbread-man WISTERIA
+    icon: fal fa-gingerbread-man WISTERIA
     url: /page/about/
 
 
@@ -361,18 +395,21 @@ custom_css:
     zoom-in: data:image/png;base64,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
     grab: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAPRSURBVFiF7ZZNa11VFIafd59z7kebD/NVQhtIKS21VYsS6MiUSNsEaxWLpIIgCIL+CcF26k9woELRlGQgtNbixAYshmKDipIOTEOpVWraJDdfvefee85eDm4iTUggN00m0jXaB9Y++9nv2vvdS2bG43Ee3I8XyJdTIiAefo+SwcqkLQw9DvDKMGHuPh0Vx4vO0+6N22HK7w1ZJgf7SbcDIFzx9YDWBN7H87rBDjmmUsdXc/AlML0dAG55IKHA0wC8LNgjmJHRKegupTRIaFsBAAKPA/KIeS9+MFgwT0M2WKXUFsZaPzaMRFAAUgnnK9uze1ilwH8AYOZITcig3kfs7b5A+9khMmJrYVYoUAYCMFXJUjNC4JDznMsEXJ81rvQOMHksZfbRIR6OdpE86RVdr7beUooSD03kzNjjxDvecxKxkAkYyY7z9fFxpvuMYnaOqcsfUNwMjMD03CBR8wKNUR0vOM8nZuQwPgJ2S2RNSMabwG4gh0gxJkyYPOMOLjaGjAz2U6xZgVe/JRPP8azL0aeUYwYdgnGJexXjejbAW0hoFW74hL04Dss4A+yTkSL2eyNcrHBb4q5ZbSqEySwtzngXOI0QnjHgknLcHT7DlFXPhPqHKNw1fqsL+FnGnFKcF7EZHzrHkWJKa/8g96A2xwxDka/AQSAj4/NEXKWOO21FZpZramD0U5aodN3kj10TfEYMPk+HE2+Z0eg8OyZmcDUDeIdIiICiAn7JlLj13WkW10pekrdCFw8kdPwiTeYpS6CQYF9T7VfUlUpgwiO8h3I53fgOXIrJVfMFwcL9TQC4CJOqUvvKmsa0/uQIwy8Bi6BYvxmAtGq9CJzIzLduHCIp4kzVfBM+P1+7DzgiEqs+tc5Ee31CZiMTe64RuAwNTjRjJImnUJyuvWdwLiYW3JHhcLyULdH5xjfs0Pm1lRDo1FWy7h86DboxGhF/ZQMKw+dqBwinmlh4ZpFRjD4ZJ1Jw5UWunDzA2IkB5tI8pfqQMn9DspOwN6DRO/YLXsPoNRGb+L6UUKjVhADC0VHiU4e5WU4YQLwN9HjjKAG3MCaimD+LYpI6UhwtEke856igRVDwxpU04VJblplaF4elnvDsEMFsTEsS8rwTvQbdQKOseqolbNkRDQLgEXDDhVy2hF8r7Uxe6yHZNABUa9vzBdkoR7M3Ok0cdNApo8NEmwlzxqx57uD4yVUYm89xf6Sf+EmeZK1uywXq+pRw107yqSdHRNZ7IgAiEhcTz+eYHxmjZB/jN7vwugBrJi01pJs5ZFsCsJ1Rk/U+BXgK8L8E+BehbK1QiZJKywAAAABJRU5ErkJggg==
   navbar:
-    effect: [shadow]
+    effect: [shadow, floatable]
+  scrollbar:
+    size: 4px
+    border: 2px  
   fontsize:
     root: 16px
     footnote: .78rem
-  max_width: 1200px
+  max_width: 1080px
   fontfamily:
     logofont:
-      fontfamily: 'sxls, "PingFang SC", "Microsoft YaHei", Helvetica, Arial'
+      fontfamily: 'Sxls, "PingFang SC", "Microsoft YaHei", Helvetica, Arial'
     bodyfont:
-      fontfamily: 'fwzc, -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei'
+      fontfamily: 'Roboto, "Noto Serif SC","PingFang SC","Microsoft Yahei UI","Microsoft Yahei",sans-serif,Menlo,Monaco,monospace,sans-serif'
     codefont:
-      fontfamily: 'SFMono-Regular, Consolas, fwzc, "Liberation Mono", Menlo, Courier'
+      fontfamily: 'JetBrainsMono, SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace'
 
 
 
