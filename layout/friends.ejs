@@ -79,7 +79,12 @@
     <% } %>
     <br><br>
     <%- page.more %>
-    <%- partial('_partial/meta',{post: page, position: 'bottom'}) %>
+    <div class='article-meta' id="bottom">
+      <div class='new-meta-box'>
+        <%- partial('/_meta/updated', {post: page}) %>
+        <%- partial('/_meta/counter', {post: page}) %>
+      </div>
+    </div>
   </article>
 
   <%- partial('_third-party/comments/index') %>
