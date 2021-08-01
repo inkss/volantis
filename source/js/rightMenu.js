@@ -9,13 +9,13 @@ $(function () {
 
 const RightMenu = (() => {
   const fn = {},
-        $printHtml = $('#printHtml'),
-        $menuMusic = $('#menuMusic'),
-        $menuDarkBtn = $('#menuDarkBtn'),
-        $readingModel = $('#readingModel'),
-        $menuLoad = $('.menuLoad-Content'),
-        _rightMenuWrapper = $('#rightmenu-wrapper')[0],
-        _rightMenuContent = $('#rightmenu-content')[0];
+    $printHtml = $('#printHtml'),
+    $menuMusic = $('#menuMusic'),
+    $menuDarkBtn = $('#menuDarkBtn'),
+    $readingModel = $('#readingModel'),
+    $menuLoad = $('.menuLoad-Content'),
+    _rightMenuWrapper = $('#rightmenu-wrapper')[0],
+    _rightMenuContent = $('#rightmenu-content')[0];
 
   const $copyText = $('.menu-Option[data-fn-type="copyText"]'),
     $copyPaste = $('.menu-Option[data-fn-type="copyPaste"]'),
@@ -34,10 +34,10 @@ const RightMenu = (() => {
     $menuMusic.hide();
     $('.menu-Option').hide();
     $('#read_bkg').remove();
-    
+
     const readBkg = document.createElement("div");
     readBkg.className = "common_read_bkg common_read_hide";
-    readBkg.id= "read_bkg";
+    readBkg.id = "read_bkg";
     window.document.body.appendChild(readBkg);
   }
 
@@ -324,7 +324,7 @@ const RightMenu = (() => {
 
   // 写入图片到剪切板 
   fn.writeClipImg = async function (event, success, error) {
-    const eventSrc = event.target.currentSrc.replace('https://static.inkss.cn/img/article/', 'https://cdn.jsdelivr.net/gh/inkss/inkss-cdn@master/img/article/'); 
+    const eventSrc = event.target.currentSrc.replace('https://static.inkss.cn/img/article/', 'https://cdn.jsdelivr.net/gh/inkss/inkss-cdn@master/img/article/');
     const parentElement = event.target.parentElement;
     try {
       const data = await fetch(eventSrc);
