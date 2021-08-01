@@ -72,7 +72,11 @@
     }
   }
 
-  document.body.oncopy = function(){
-    volantis.message('知识共享许可协议', '请遵守 CC BY-NC-SA 4.0 协议。', 'fab fa-creative-commons light-blue');
-  };
+  <% if (theme.plugins.message.copyright.enable) { %>
+    document.body.oncopy = function(){
+      volantis.message('<%- theme.plugins.message.copyright.title %>',
+      '<%- theme.plugins.message.copyright.message %>', 
+      '<%- theme.plugins.message.copyright.icon %>');
+    }; 
+  <% } %>
 </script>
