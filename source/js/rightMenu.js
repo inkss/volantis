@@ -18,17 +18,17 @@ const RightMenu = (() => {
         _rightMenuContent = $('#rightmenu-content')[0];
 
   const $copyText = $('.menu-Option[data-fn-type="copyText"]'),
-        $copyPaste = $('.menu-Option[data-fn-type="copyPaste"]'),
-        $copySelect = $('.menu-Option[data-fn-type="copySelect"]'),
-        $copyCut = $('.menu-Option[data-fn-type="copyCut"]'),
-        $copyHref = $('.menu-Option[data-fn-type="copyHref"]'),
-        $copySrc = $('.menu-Option[data-fn-type="copySrc"]'),
-        $copyImg = $('.menu-Option[data-fn-type="copyImg"]'),
-        $openTab = $('.menu-Option[data-fn-type="openTab"]');
+    $copyPaste = $('.menu-Option[data-fn-type="copyPaste"]'),
+    $copySelect = $('.menu-Option[data-fn-type="copySelect"]'),
+    $copyCut = $('.menu-Option[data-fn-type="copyCut"]'),
+    $copyHref = $('.menu-Option[data-fn-type="copyHref"]'),
+    $copySrc = $('.menu-Option[data-fn-type="copySrc"]'),
+    $copyImg = $('.menu-Option[data-fn-type="copyImg"]'),
+    $openTab = $('.menu-Option[data-fn-type="openTab"]');
 
   const darkmodeDark = '<%= theme.rightmenu.darkmode.dark %>' || 'fa fa-moon',
-        darkmodeWhite = '<%= theme.rightmenu.darkmode.white %>' || 'fa fa-sun',
-        urlRegx = /^((https|http)?:\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/;
+    darkmodeWhite = '<%= theme.rightmenu.darkmode.white %>' || 'fa fa-sun',
+    urlRegx = /^((https|http)?:\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/;
 
   fn.init = () => {
     $menuMusic.hide();
@@ -529,4 +529,3 @@ const RightMenu = (() => {
 })()
 
 Object.freeze(RightMenu);
-
