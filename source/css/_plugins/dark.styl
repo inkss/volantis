@@ -7,17 +7,15 @@ else
   #l_body
     background-color: #21252b !important
 
+fal,
+fad,
+fas,
+fa,
 svg.iconfont,    
+img,
 .lazyload,
-.pdf,
-img
+.pdf
   filter: brightness(convert(hexo-config('color_scheme.dark.brightness'))) !important
-
-.fal,
-.fad,
-.fas,
-.fa
-  filter: brightness(90%) !important
 
 //header
 #wrapper .title
@@ -43,19 +41,20 @@ details>summary
 details
   border: none !important
   background: var(--color-site-bg)
+
 //search
-#u-search .modal
-  background: var(--color-card) !important
-#u-search .modal-header
-  background: var(--color-card) !important
+#u-search .modal,
+#u-search .modal-header,
 #u-search .modal-body
   background: var(--color-card) !important
 #u-search .modal-body .modal-results .result:hover
   background: var(--color-block) !important
+
 //phone search
 .l_header .m_search
   @media screen and (max-width: $device-mobile)
     background: var(--color-site-bg) !important
+ 
 //side
 .widget.blogger .content .social-wrapper a.social:hover
   background: var(--color-card)
@@ -70,6 +69,7 @@ kbd
   background: var(--color-block) !important
 .cover-wrapper.dock .menu .list-h a:hover, .cover-wrapper.featured .menu .list-h a:hover, .cover-wrapper.focus .menu .list-h a:hover
   color: var(--color-text) !important
+
 //highlight
 .gutter
   background: #1d1f23 !important
@@ -78,6 +78,7 @@ kbd
   background-color: #21252b !important
 .highlight pre .line, .highlight pre .params
   color: rgba(158, 142, 142, 0.9)
+
 //table
 *:not(.highlight) >table tr
   background-color: var(--color-card)
@@ -91,6 +92,7 @@ kbd
   border-color: var(--color-site-bg) !important
 blockquote p
   color: var(--color-p)
+  
 // tags
 #archive-page .archive .all-tags ul li span
   color: var(--color-text)
@@ -108,26 +110,33 @@ if hexo-config('comments.service')=='gitalk'
   .gt-container .gt-comment-admin .gt-comment-content
     background-color: var(--color-card)
 
-if hexo-config('comments.service')=='minivaline'
-  .MiniValine .vpage .more
-    background: var(--color-site-bg)
-  .MiniValine .vlist .vcard .vcomment-body .text-wrapper .vcomment.expand:before
-    background: linear-gradient(180deg, rgba(246,246,246,0), rgba(0,0,0,0.9))
-  .MiniValine .vlist .vcard .vcomment-body .text-wrapper .vcomment.expand:after
-    background: rgba(0,0,0,0.9)
-  .MiniValine .vlist .vcard .vcomment-body .text-wrapper .vcomment pre
-    background: var(--color-site-bg)
-    border: 1px solid var(--color-site-bg)
-  .MiniValine .vinputs-area .vextra-area .vsmile-icons
-    background: transparent
-  .MiniValine .vlist .vcard .vcomment-body .vhead
+if hexo-config('comments.service')== 'minivaline' || 'ohhho'
+  // minivaline v6 or ohhho Dark Color
+  .ohhho pre
+    background: var(--color-meta)
+    border: 1px solid var(--color-block)
+  .ohhho .vlist .vcard .vcomment-body .vhead
     filter: brightness(85%)
-  .MiniValine .vbtn
-    background: var(--color-card)
-    &:hover
-      background: var(--color-block)
-  .MiniValine .vpage .more:hover
-    background: var(--color-card)
+  ////// minivaline v5 Dark Color //////////////
+  // .MiniValine .vpage .more
+  //   background: var(--color-site-bg)
+  // .MiniValine .vlist .vcard .vcomment-body .text-wrapper .vcomment.expand:before
+  //   background: linear-gradient(180deg, rgba(246,246,246,0), rgba(0,0,0,0.9))
+  // .MiniValine .vlist .vcard .vcomment-body .text-wrapper .vcomment.expand:after
+  //   background: rgba(0,0,0,0.9)
+  // .MiniValine .vlist .vcard .vcomment-body .text-wrapper .vcomment pre
+  //   background: var(--color-site-bg)
+  //   border: 1px solid var(--color-site-bg)
+  // .MiniValine .vinputs-area .vextra-area .vsmile-icons
+  //   background: transparent
+  // .MiniValine .vlist .vcard .vcomment-body .vhead
+  //   filter: brightness(85%)
+  // .MiniValine .vbtn
+  //   background: var(--color-card)
+  //   &:hover
+  //     background: var(--color-block)
+  // .MiniValine .vpage .more:hover
+  //   background: var(--color-card)
 
 if hexo-config('plugins.aplayer.enable')
   .aplayer
@@ -158,3 +167,20 @@ if hexo-config('comments.service')=='valine'
     background:  #393c40 !important
   .v[data-class=v] code, .v[data-class=v] pre
     background-color: #332828 !important
+
+.iziToast
+  background: #282c34 !important
+.iziToast-title,
+.iziToast-message,
+.iziToast-icon
+    color: #abb2bf !important
+.iziToast-progressbar > div
+  background: #888 !important
+
+
+// Custom Files
+for $injects_dark in hexo-config('injects.dark')
+  @import $injects_dark;
+// eg:
+// body
+//   --color-site-body: blue !important

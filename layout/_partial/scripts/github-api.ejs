@@ -19,9 +19,7 @@
       }
     <% } %>
   };
-  $(function () {
-    loadIssuesJS();
-  });
+  loadIssuesJS()
   volantis.pjax.push(()=>{
     loadIssuesJS();
   })

@@ -11,3 +11,7 @@
 @import '_szyink-plugins/first'
 if hexo-config('plugins.darkmodejs.enable')
   @import '_plugins/darkmode'
+
+// Custom Files
+for $injects_first in hexo-config('injects.first')
+  @import $injects_first;
