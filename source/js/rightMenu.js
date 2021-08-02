@@ -492,8 +492,8 @@ const RightMenu = (() => {
     $('#l_cover').toggleClass('read_cover');
     $('.widget.toc-wrapper').toggleClass('post_read');
     volantis.isReadModel = volantis.isReadModel === undefined ? true : !volantis.isReadModel;
-    console.log(volantis.isReadModel);
     if (volantis.isReadModel) {
+      if(!!window.ScrollReveal) ScrollReveal().sync();
       volantis.message('系统提示', '阅读模式已开启，您可以点击屏幕空白处退出。', 'fal fa-book-reader light-blue', 5000);
       $('#l_body').off('click.rightMenu').on('click.rightMenu', (event) => {
         if ($(event.target).hasClass('common_read')) {
