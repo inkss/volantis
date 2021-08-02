@@ -375,29 +375,34 @@ const VolantisApp = (() => {
   // 设定激活/销毁自定义右键
   window.checkRightMenu = true;
   fn.toggleRightMenu = () => {
-    if (window.checkRightMenu) {
-      $('#destroyRightContent').show();
-      $('#initRightContent').hide();
-    } else {
-      $('#destroyRightContent').hide();
-      $('#initRightContent').show();
+    let _destroyRightContent = document.getElementById('destroyRightContent');
+    let _initRightContent = document.getElementById('initRightContent');
+
+    if(_destroyRightContent || _initRightContent) {
+      if (window.checkRightMenu) {
+        _destroyRightContent.style.display="block";
+        _initRightContent.style.display="none";
+      } else {
+        _initRightContent.style.display="block";
+        _destroyRightContent.style.display="none";
+      }
+  
+      _destroyRightContent.removeEventListener('click', null);
+      _destroyRightContent.addEventListener('click', function() {
+        RightMenu.destroy(true);
+        window.checkRightMenu = false;
+        _initRightContent.style.display="block";
+        _destroyRightContent.style.display="none";
+      })
+  
+      _initRightContent.removeEventListener('click', null);
+      _initRightContent.addEventListener('click', function() {
+        RightMenu.init(true);
+        window.checkRightMenu = true;
+        _destroyRightContent.style.display="block";
+        _initRightContent.style.display="none";
+      })
     }
-
-    $('#destroyRightMenu').off('click').on('click', () => {
-      RightMenu.destroy(true);
-      window.checkRightMenu = false;
-      $('#destroyRightContent').fadeToggle(500, () => {
-        $('#initRightContent').fadeToggle();
-      });
-    })
-
-    $('#initRightMenu').off('click').on('click', () => {
-      RightMenu.init(true);
-      window.checkRightMenu = true;
-      $('#initRightContent').fadeToggle(500, () => {
-        $('#destroyRightContent').fadeToggle();
-      });
-    })
   }
 
   return {

@@ -106,3 +106,22 @@ details summary,
   @media screen and (max-width: $device-mobile)
     margin: unset !important
     font-size: 1rem !important
+
+
+// 自定义的淡入淡出
+.content-in
+  animation: content-fadeIn
+  animation-duration: 1s
+.content-out
+  animation: content-fadeOut
+  animation-duration: 1s
+@keyframes content-fadeIn {
+  0% {opacity: 0;}
+  50% {opacity: 0;}
+  100% {opacity: 1;}
+}
+@keyframes content-fadeOut {
+  0% {opacity: 1;}
+  50% {opacity: 0;}
+  100% {opacity: 0;}
+}
