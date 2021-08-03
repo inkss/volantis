@@ -118,11 +118,11 @@
 
 <%- partial('toc') %>
 
-<%- js(['js/iconfont-inkss.js']) %>
-
-<%- js(['js/iconfont-emoji.js']) %>
-
 <%- partial('../../_third-party/articleBkg/script') %>
+
+<%- js(theme.cdn.map.js.iconfontInkss) %>
+
+<%- js(theme.cdn.map.js.iconfontEmoji) %>
 
 <!-- more -->
 <% if (config.import && config.import.script) { %>
