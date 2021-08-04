@@ -236,7 +236,21 @@ article:
 comments:
   title: <i class='fas fa-comments'></i> 评论
   subtitle:
-  service: utterances # valine, twikoo, waline, minivaline, disqus, disqusjs, gitalk, vssue, livere, isso, hashover
+  service: beaudar # valine, twikoo, waline, minivaline, disqus, disqusjs, gitalk, vssue, livere, isso, hashover
+  # beaudar
+  # https://beaudar.lipk.org/
+  beaudar:
+    repo: xxx/xxx
+    issue-term: pathname
+    issue-number:
+    branch: main
+    position: top
+    order: desc
+    theme:
+      light: github-light
+      dark: github-dark
+    label: ✨💬✨
+    crossorigin: anonymous
   # utterances
   # https://utteranc.es/
   utterances:
@@ -247,7 +261,7 @@ comments:
       light: github-light
       dark: github-dark
     label: ✨💬✨
-    crossorigin: anonymous
+    crossorigin: anonymous  
   # Valine
   # https://valine.js.org/
   valine:
@@ -331,6 +345,7 @@ comments:
     path: # 全局评论地址
     # 其他配置项按照yml格式继续填写即可 除了 [el path] 选项
     envId: xxxxxxxxxxxxxxx # 腾讯云环境id
+    placeholder: #全局评论占位，也可以在管理面板中的配置管理处设置（此处优先级更高）
   # Waline
   # https://waline.js.org/
   waline:
@@ -762,6 +777,18 @@ plugins:
       # domain:
       # themecss:
     # HexoPlusPlus其他功能暂未集成
+
+  # 友链朋友圈 hexo-circle-of-friends
+  # https://github.com/Rock-Candy-Tea/hexo-circle-of-friends
+  # https://zfe.space/post/friend-link-circle.html
+  fcircle:
+    # Set `layout: fcircle` to enable in page
+    api: '' # api 地址
+    max_number: 20 # 页面展示文章数量
+    add_number: 10 # 每次加载增加的篇数
+    opentype: '_blank' # '_blank'打开新标签,'_self'本窗口打开
+    nofollow: true # 禁止搜索引擎抓取
+    # loadingCutom: # 自定义loading图 例如: <i class="fa fa-spinner fa-spin"></i> | <img src="你的图片地址" alt="加载中...">
 
   # 消息提示
   message:
