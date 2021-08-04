@@ -39,36 +39,51 @@
 
 <script>
   volantis.beaudar = {};
-  function pjax_beaudar() {
-    volantis.selectComment = volantis.selectComment === undefined ? 'beaudar' : volantis.selectComment;
-    let beaudar_container = document.getElementById("beaudar_container");
-    if(!beaudar_container) return;
 
-    setTimeout(() => {
-      let checkBeaudar = setInterval(() => {
-        let HEAD = document.getElementById("beaudar_container");
-        if (!HEAD) return;
-        clearInterval(checkBeaudar)
-        try {
-          document.getElementById("beaudar_container").innerHTML="";
-        } catch (error) {}
-        if(volantis.dark.mode === "dark"){
-          volantis.beaudar.Theme='github-dark';
-        }else{
-          volantis.beaudar.Theme='github-light';
-        }
-        const script = document.createElement('script');
-        script.setAttribute('src', 'https://beaudar.lipk.org/client.js');
-        script.setAttribute('repo', 'inkss/blog-comments');
-        script.setAttribute('issue-term', 'pathname');
-        script.setAttribute('input-position', 'top');
-        script.setAttribute('crossorigin', 'anonymous');
-        script.setAttribute('theme', volantis.beaudar.Theme);
-        HEAD.appendChild(script);
-      })
-    }, 200)
+  function check_beaudar() {
+    if (volantis.dark.mode === "dark") {
+      volantis.beaudar.Theme = '<%- theme.comments.beaudar.theme.dark %>';
+    } else {
+      volantis.beaudar.Theme = '<%- theme.comments.beaudar.theme.light %>';
+    }
+
+    return document.getElementById("beaudar_container");
+  }
+
+  function pjax_beaudar() {
+    const HEAD = check_beaudar();
+    if (!HEAD) return;
+
+    const script = document.createElement('script');
+    let issuenumber = "<%- theme.comments.beaudar['issue-number'] %>";
+    if (issuenumber) {
+      script.setAttribute('issue-number', issuenumber);
+    } else {
+      script.setAttribute('issue-term', "<%- theme.comments.utterances['issue-term'] %>");
+    }
+    script.setAttribute('src', 'https://beaudar.lipk.org/client.js');
+    script.setAttribute('repo', '<%- theme.comments.beaudar.repo %>');
+    script.setAttribute('input-position', '<%- theme.comments.beaudar.position %>');
+    script.setAttribute('crossorigin', '<%- theme.comments.beaudar.crossorigin %>');
+    script.setAttribute('branch', '<%- theme.comments.beaudar.branch %>');
+    script.setAttribute('comment-order', '<%- theme.comments.beaudar.order %>');
+    script.setAttribute('label', '<%- theme.comments.beaudar.label %>');
+    script.setAttribute('theme', volantis.beaudar.Theme);
+    HEAD.appendChild(script);
+  }
+
+  function dark_beaudar() {
+    const HEAD = check_beaudar();
+    if (!HEAD) return;
+
+    const message = {
+      type: 'set-theme',
+      theme: volantis.beaudar.Theme
+    };
+    const beaudarIframe = document.querySelector('iframe');
+    beaudarIframe.contentWindow.postMessage(message, 'https://beaudar.lipk.org');
   }
   pjax_beaudar();
   volantis.pjax.push(pjax_beaudar);
-  volantis.dark.push(pjax_beaudar);
+  volantis.dark.push(dark_beaudar);
 </script>
