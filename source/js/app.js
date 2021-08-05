@@ -38,10 +38,17 @@ if (window.location.hash) {
   let locationID = decodeURI(window.location.hash.split('#')[1]).replace(/\ /g, '-');
   let target = document.getElementById(locationID);
   if (target) {
-    window.scrollTo({
-      top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop + 5,
-      behavior: "smooth" //平滑滚动
-    });
+    if(window.location.hash.startsWith('#fn')) {
+      window.scrollTo({
+        top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop - volantis.dom.header.offsetHeight,
+        behavior: "smooth" //平滑滚动
+      });
+    } else {
+      window.scrollTo({
+        top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop + 5,
+        behavior: "smooth" //平滑滚动
+      });
+    }
   }
 }
 
@@ -405,6 +412,25 @@ const VolantisApp = (() => {
     }
   }
 
+  // 页脚跳转
+  fn.footnotes = () => {
+    let ref = document.querySelectorAll('.footnote-backref, .footnote-ref');
+    ref.forEach(function (e) {
+      volantis.dom.$(e).on('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let targetID =  decodeURI(e.target.hash.split('#')[1]).replace(/\ /g, '-');
+        let target = document.getElementById(targetID);
+        if(target) {
+          window.scrollTo({
+            top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop - volantis.dom.header.offsetHeight,
+            behavior: "smooth" //平滑滚动
+          });
+        }
+      });
+    })
+  }
+
   return {
     init: () => {
       fn.init();
@@ -419,6 +445,7 @@ const VolantisApp = (() => {
       fn.setScrollAnchor();
       fn.setTabs();
       fn.toggleRightMenu();
+      fn.footnotes();
     },
     pjaxReload: () => {
       fn.event();
@@ -429,6 +456,7 @@ const VolantisApp = (() => {
       fn.setScrollAnchor();
       fn.setTabs();
       fn.toggleRightMenu();
+      fn.footnotes();
 
       // 移除小尾巴的移除
       document.querySelector("#l_header .nav-main").querySelectorAll('.list-v:not(.menu-phone)').forEach(function (e) {
