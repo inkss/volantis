@@ -21,6 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }, 'fancybox');
 
+  locationHas();
+  changeTitle();
+});
+
+// 动态修改标题
+const changeTitle = () => {
   sessionStorage.setItem("domTitle", document.title);
   document.addEventListener('visibilitychange', function () {
     const title = sessionStorage.getItem("domTitle") || document.title;
@@ -31,23 +37,28 @@ document.addEventListener("DOMContentLoaded", function () {
       document.title = title;
     }
   });
-});
+}
 
-/*锚点定位*/
-if (window.location.hash) {
-  let locationID = decodeURI(window.location.hash.split('#')[1]).replace(/\ /g, '-');
-  let target = document.getElementById(locationID);
-  if (target) {
-    if(window.location.hash.startsWith('#fn')) {
-      window.scrollTo({
-        top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop - volantis.dom.header.offsetHeight,
-        behavior: "smooth" //平滑滚动
-      });
-    } else {
-      window.scrollTo({
-        top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop + 5,
-        behavior: "smooth" //平滑滚动
-      });
+// /*锚点定位*/
+const locationHas = () => {
+  /*锚点定位*/
+  if (window.location.hash) {
+    let locationID = decodeURI(window.location.hash.split('#')[1]).replace(/\ /g, '-');
+    let target = document.getElementById(locationID);
+    if (target) {
+      setTimeout(() => {
+        if(window.location.hash.startsWith('#fn')) {
+          window.scrollTo({
+            top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop - volantis.dom.header.offsetHeight,
+            behavior: "smooth" //平滑滚动
+          });
+        } else {
+          window.scrollTo({
+            top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop + 5,
+            behavior: "smooth" //平滑滚动
+          });
+        }
+      }, 1000)
     }
   }
 }
@@ -414,11 +425,12 @@ const VolantisApp = (() => {
 
   // 页脚跳转
   fn.footnotes = () => {
-    let ref = document.querySelectorAll('.footnote-backref, .footnote-ref');
-    ref.forEach(function (e) {
+    let ref = document.querySelectorAll('.footnote-backref > a, .footnote-ref > a');
+    ref.forEach(function (e, i) {
+      ref[i].click=() => {};  // 强制清空原 click 事件
       volantis.dom.$(e).on('click', (e) => {
-        e.preventDefault();
         e.stopPropagation();
+        e.preventDefault();
         let targetID =  decodeURI(e.target.hash.split('#')[1]).replace(/\ /g, '-');
         let target = document.getElementById(targetID);
         if(target) {
