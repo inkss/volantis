@@ -67,7 +67,7 @@
         <% } else if (item == 'darkmode') { %>
           <li class='option menuOption-Content'>
             <span class='vlts-menu opt fix-cursor-default toggle-mode-btn' id='menuDarkBtn'>
-              <i class='<%= theme.rightmenu.darkmode.dark %> fa-fw '></i> <%- trim(theme.rightmenu.darkmode.name) %>
+              <i class='<%= theme.rightmenu.darkmode.icon %> fa-fw '></i> <%- trim(theme.rightmenu.darkmode.name) %>
             </span>
           </li>
         <% } else if (item == 'print') { %>
@@ -148,6 +148,11 @@
           console.error(error);
         }
       };
+    <% } %>
+    <% if(theme.rightmenu.customPicUrl.enable) { %>
+      volantis.rightMenu.customPicUrl = true;
+      volantis.rightMenu.picOld = '<%- theme.rightmenu.customPicUrl.old %>';
+      volantis.rightMenu.picNew = '<%- theme.rightmenu.customPicUrl.new %>';
     <% } %>
     <% if (theme.plugins.message && !theme.plugins.message.enable) { %>
       volantis.message = () => {}

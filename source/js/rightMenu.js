@@ -1,22 +1,16 @@
-document.addEventListener("DOMContentLoaded", function () {
-  RightMenu.init();
-
-  volantis.pjax.send(() => {
-    RightMenu.hideMenu();
-  })
-})
-
 const RightMenu = (() => {
   const fn = {},
     _rightMenuWrapper = document.getElementById('rightmenu-wrapper'),
     _rightMenuContent = document.getElementById('rightmenu-content'),
+    _menuDarkBtn = document.getElementById('menuDarkBtn'),
     _printHtml = document.getElementById('printHtml'),
     _menuMusic = document.getElementById('menuMusic'),
     _readingModel = document.getElementById('readingModel'),
-    _menuLoad = document.getElementById('menuLoad'),
+
     _readBkg = document.getElementById('read_bkg');
 
   const
+    _menuLoad = document.querySelectorAll('.menuLoad-Content'),
     _menuOption = document.querySelector('.menu-Option'),
     _copyText = document.querySelector('.menu-Option[data-fn-type="copyText"]'),
     _copyPaste = document.querySelector('.menu-Option[data-fn-type="copyPaste"]'),
@@ -32,7 +26,6 @@ const RightMenu = (() => {
   fn.init = () => {
     fn.visible(_menuMusic, false);
     fn.visible(_menuOption, false);
-
     if (_readBkg) _readBkg.parentNode.removeChild(_readBkg);
 
     const readBkg = document.createElement("div");
@@ -58,11 +51,9 @@ const RightMenu = (() => {
 
     window.removeEventListener('blur', fn.hideMenu);
     document.body.removeEventListener('click', fn.hideMenu);
-    _rightMenuWrapper.removeEventListener('blur', fn.hideMenu);
 
     window.addEventListener('blur', fn.hideMenu);
     document.body.addEventListener('click', fn.hideMenu);
-    _rightMenuWrapper.addEventListener('blur', fn.hideMenu);
   }
 
   // 菜单位置设定 
@@ -75,6 +66,7 @@ const RightMenu = (() => {
     try {
       fn.setMenuItem(event);
       fn.visible(_rightMenuWrapper);
+      _rightMenuWrapper.focus();
       _rightMenuWrapper.style.zIndex = '-2147483648';
       let menuWidth = _rightMenuContent.offsetWidth;
       let menuHeight = _rightMenuContent.offsetHeight;
@@ -86,6 +78,7 @@ const RightMenu = (() => {
       _rightMenuWrapper.style.top = showTop + "px";
       _rightMenuWrapper.style.zIndex = '2147483648';
     } catch (error) {
+      _rightMenuWrapper.blur();
       console.error(error);
       return true;
     }
@@ -158,7 +151,7 @@ const RightMenu = (() => {
       optionFlag = true;
       fn.visible(_copyHref);
       fn.visible(_openTab);
-      if(_copyHref) _copyHref.onclick = () => {
+      if (_copyHref) _copyHref.onclick = () => {
         fn.copyString(eventHref);
       }
       _openTab.onclick = () => {
@@ -250,11 +243,9 @@ const RightMenu = (() => {
       fn.visible(_menuMusic, false);
     }
 
-    if (optionFlag) {
-      fn.visible(_menuLoad);
-    } else {
-      fn.visible(_menuLoad, false);
-    }
+    _menuLoad.forEach(ele => {
+      fn.visible(ele, !optionFlag);
+    })
 
     if (volantis.rightMenu.music == true) {
       if (volantis.APlayerController.APlayerLoaded) {
@@ -314,7 +305,9 @@ const RightMenu = (() => {
 
   // 写入图片到剪切板 
   fn.writeClipImg = async function (event, success, error) {
-    const eventSrc = event.target.currentSrc.replace('https://static.inkss.cn/img/article/', 'https://cdn.jsdelivr.net/gh/inkss/inkss-cdn@master/img/article/');
+    const eventSrc = volantis.rightMenu.customPicUrl === true ?
+      event.target.currentSrc.replace(volantis.rightMenu.picOld, volantis.rightMenu.picNew) :
+      event.target.currentSrc;
     const parentElement = event.target.parentElement;
     try {
       const data = await fetch(eventSrc);
@@ -398,54 +391,36 @@ const RightMenu = (() => {
   fn.printHtml = () => {
     if (volantis.isReadModel) fn.readingModel();
     if (volantis.rightMenu.defaultStyles === true) {
-      $('.cus-article-bkg').remove();
-      $('.iziToast-overlay').remove();
-      $('.iziToast-wrapper').remove();
-      $('body').css({
-        'backgroundColor': 'unset'
-      });
-      $('#l_header').hide();
-      $('#l_cover').hide();
-      $('#l_side').hide();
-      $('#l_main').css({
-        'width': '100%'
-      });
-      $('#post').css({
-        'box-shadow': 'none',
-        'background': 'none',
-        'padding': '0'
-      });
-      $('h1').css({
-        'text-align': 'center',
-        'font-weight': '600',
-        'font-size': '2rem',
-        'margin-bottom': '20px'
-      });
-      $('.prev-next').hide();
-      $('#bottom').children().append('<div class="new-meta-item"><a class="tag" href="' + window.location.href + '" rel="nofollow" data-pjax-state=""><i class="fal fa-external-link fa-fw" aria-hidden="true"></i><p>本文地址：' + window.location.href + '</p></a></div>');
-      $('#comments').hide();
-      $('#s-top').hide();
-      $('footer').hide();
-      $('#rightmenu-wrapper').hide();
-      $('details').attr('open', 'true');
-      $('.tab-pane').css({
-        'display': 'block'
-      });
-      $('.tab-content').css({
-        'border-top': 'none'
-      });
-      $('.highlight>table pre').css({
-        'white-space': 'pre-wrap',
-        'word-break': 'break-all'
-      });
-      $('.nav-tabs').hide();
-      $('.backstretch').hide();
-      $('.fancybox img').css({
-        'height': 'auto',
-        'weight': 'auto'
-      });
-      $('#BKG').hide();
-      $('img').removeAttr('srcset data-srcset').removeClass('img lazyload loaded');
+      fn.setAttribute('details', 'open', 'true');
+      fn.remove('.cus-article-bkg');
+      fn.remove('.iziToast-overlay');
+      fn.remove('.iziToast-wrapper');
+      fn.remove('.prev-next');
+      fn.remove('#l_header');
+      fn.remove('#l_cover');
+      fn.remove('#l_side');
+      fn.remove('#comments');
+      fn.remove('#s-top');
+      fn.remove('footer');
+      fn.remove('#rightmenu-wrapper');
+      fn.remove('.nav-tabs');
+      fn.remove('.backstretch');
+      fn.remove('#BKG');
+      fn.setStyle('body', 'backgroundColor', 'unset');
+      fn.setStyle('#l_main', 'width', '100%');
+      fn.setStyle('#post', 'boxShadow', 'none');
+      fn.setStyle('#post', 'background', 'none');
+      fn.setStyle('#post', 'padding', '0');
+      fn.setStyle('h1', 'textAlign', 'center');
+      fn.setStyle('h1', 'fontWeight', '600');
+      fn.setStyle('h1', 'fontSize', '2rem');
+      fn.setStyle('h1', 'marginBottom', '20px');
+      fn.setStyle('.tab-pane', 'display', 'block');
+      fn.setStyle('.tab-content', 'borderTop', 'none');
+      fn.setStyle('.highlight>table pre', 'whiteSpace', 'pre-wrap');
+      fn.setStyle('.highlight>table pre', 'wordBreak', 'break-all');
+      fn.setStyle('.fancybox img', 'height', 'auto');
+      fn.setStyle('.fancybox img', 'weight', 'auto');
     }
 
     if (volantis.rightMenu.printJs === true) {
@@ -495,8 +470,33 @@ const RightMenu = (() => {
     }
   }
 
+  // 控制元素显示隐藏
   fn.visible = (ele, type = true) => {
     if (ele) ele.style.display = type === true ? 'block' : 'none';
+  }
+
+  // 移除元素
+  fn.remove = (param) => {
+    const node = document.querySelectorAll(param);
+    node.forEach(ele => {
+      ele.remove();
+    })
+  }
+
+  //设置属性
+  fn.setAttribute = (param, attrName, attrValue) => {
+    const node = document.querySelectorAll(param);
+    node.forEach(ele => {
+      ele.setAttribute(attrName, attrValue)
+    })
+  }
+
+  // 设置样式
+  fn.setStyle = (param, styleName, styleValue) => {
+    const node = document.querySelectorAll(param);
+    node.forEach(ele => {
+      ele.style[styleName] = styleValue;
+    })
   }
 
   return {
@@ -519,3 +519,19 @@ const RightMenu = (() => {
 })()
 
 Object.freeze(RightMenu);
+
+if (document.readyState !== 'loading') {
+  RightMenu.init();
+
+  volantis.pjax.send(() => {
+    RightMenu.hideMenu();
+  })
+} else {
+  document.addEventListener("DOMContentLoaded", function () {
+    RightMenu.init();
+
+    volantis.pjax.send(() => {
+      RightMenu.hideMenu();
+    })
+  })
+}
