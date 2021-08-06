@@ -817,7 +817,7 @@ rightmenu:
   enable: true
   faicon: fa              # 公共图标类型 fa fal fas fad
   # hr: 分割线, music: 音乐控制器
-  layout: [home, hr, help, examples, contributors, hr, source_docs, source_theme, hr, print, darkmode, hr, music]
+  layout: [home, hr, help, examples, contributors, hr, source_docs, source_theme, hr, print, darkmode, music]
   ### 可选功能项 ###
   print:                  # 只有文章页才允许自定义打印
     name: 打印页面

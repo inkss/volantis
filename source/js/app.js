@@ -538,6 +538,9 @@ const volantisFancyBox = (() => { // 此处依赖JQ
     loadFancyBox: (done = null) => {
       fn.loadFancyBox(done);
     },
+    initFancyBox: () => {
+      fn.initFB()
+    },
     pjaxReload: () => {
       if (typeof $ == "undefined") return
       if (typeof $.fancybox == "undefined") {

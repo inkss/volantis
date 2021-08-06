@@ -6,7 +6,6 @@ const RightMenu = (() => {
     _printHtml = document.getElementById('printHtml'),
     _menuMusic = document.getElementById('menuMusic'),
     _readingModel = document.getElementById('readingModel'),
-
     _readBkg = document.getElementById('read_bkg');
 
   const
@@ -185,8 +184,8 @@ const RightMenu = (() => {
       fn.visible(_copyImg);
 
       _copyImg.onclick = () => {
-        fn.writeClipImg(event, () => {
-          volantis.message('系统提示', '图片复制成功！', 'fal fa-images');
+        fn.writeClipImg(event, flag => {
+          if (flag) volantis.message('系统提示', '图片复制成功！', 'fal fa-images');
         }, (error) => {
           volantis.message('系统提示', '复制失败：' + error, 'fal fa-exclamation-square red');
         })
@@ -318,7 +317,7 @@ const RightMenu = (() => {
             [blob.type]: blob
           })
         ]).then(() => {
-          success();
+          success(true);
         }, (e) => {
           console.error('图片复制失败：', e);
           error(e);
@@ -339,7 +338,7 @@ const RightMenu = (() => {
         }
         document.execCommand('copy');
         window.getSelection().removeAllRanges();
-        success();
+        success(false);
       } catch (e) {
         console.error(e);
         error('不支持复制当前图片！');
@@ -389,7 +388,6 @@ const RightMenu = (() => {
 
   // 执行打印页面 
   fn.printHtml = () => {
-    if (volantis.isReadModel) fn.readingModel();
     if (volantis.rightMenu.defaultStyles === true) {
       fn.setAttribute('details', 'open', 'true');
       fn.remove('.cus-article-bkg');
