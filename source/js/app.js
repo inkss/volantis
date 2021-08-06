@@ -425,7 +425,7 @@ const VolantisApp = (() => {
 
   // 页脚跳转
   fn.footnotes = () => {
-    let ref = document.querySelectorAll('.footnote-backref > a, .footnote-ref > a');
+    let ref = document.querySelectorAll('.footnote-backref, .footnote-ref > a');
     ref.forEach(function (e, i) {
       ref[i].click=() => {};  // 强制清空原 click 事件
       volantis.dom.$(e).on('click', (e) => {
