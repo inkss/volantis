@@ -132,17 +132,60 @@ div.el-input-group__prepend
 
 // 最大显示长度
 .tk-replies
-  max-height: 335px !important
+  max-height: 30rem !important
 .tk-replies-expand
   max-height: none !important
 
 // 评论框间距
 .tk-comment
-  margin-top: 1.45rem !important
+  margin-top: 1rem !important
 
 // 评论字体大小
 .tk-content p
   font-size: 0.975rem !important
+  line-height: 2rem !important
+
+// 代码块儿
+.tk-content
+  & code
+    font-family: $fontfamily-code !important
+    word-break: break-all;
+    color: var(--color-inlinecode);
+    background-color: #fff7ea;
+    padding: 5px 10px;
+    margin: 3px;
+    border-radius: 2px;
+  & pre
+    font-family: $fontfamily-code !important
+    background-color: #f6f6f6
+    padding: 15px
+    margin: 10px 0
+    font-size: 0.8rem
+    &:hover
+      background-color: #fff7ea
+      code
+        background-color: #fff7ea
+    &:firstChild
+      display: none
+    code
+      display: contents;
+      background-color: #f6f6f6
+    &::-webkit-scrollbar
+      height: 5px;
+      border-radius: 5px;
+      background-color: #44d7b6
+      background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,0.2) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0.2) 75%,transparent 75%,transparent);
+      &:hover
+        background-color: #3367d6
+
+
+.tk-nick
+  margin-right: 10px
+  font-family: $fontfamily-logo !important
+  font-size: 1rem !important
+
+.tk-tag.tk-tag-green
+  margin-left: -5px;
 
 // 不显示头像
 .tk-submit .tk-avatar
@@ -165,6 +208,8 @@ div.el-input-group__prepend
 .tk-main:hover
   &>.tk-row>.tk-action
     display: flex !important
+
+
 
 //===========================
 // link-effects

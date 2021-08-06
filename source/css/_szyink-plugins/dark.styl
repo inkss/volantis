@@ -58,7 +58,18 @@ textarea.el-textarea__inner
   background-color: #282c34 !important
 
 // 黑暗模式去除阴影
-#l_main .post
+#l_main .post,
 #l_side .widget
-#rightmenu-content
   box-shadow: none
+
+// 评论框 Twikoo
+.tk-content
+  & code
+      color: var(--color-inlinecode);
+      background-color: #21252b !important
+  & pre
+    background-color: #1d1f23 !important
+    code
+      background-color: #1d1f23 !important
+.tk-comments-container > .tk-expand
+  background: #1d1919 !important

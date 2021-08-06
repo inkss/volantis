@@ -27,15 +27,17 @@
           item.parentNode.replaceChild(node.content.lastChild, item);
         })
         
-        const checkFancyBox = setInterval(() => {
-          if(volantisFancyBox === undefined) return;
-          clearInterval(checkFancyBox);
-          if (typeof $ == "undefined" || typeof $.fancybox == "undefined") {
-            volantisFancyBox.loadFancyBox();
-          } else {
-            volantisFancyBox.initFancyBox();
-          }
-        })
+        if(nodeList.length !== 0) {
+          const checkFancyBox = setInterval(() => {
+            if(typeof volantisFancyBox === 'undefined') return;
+            clearInterval(checkFancyBox);
+            if (typeof $ === 'undefined' || typeof $.fancybox === 'undefined') {
+              volantisFancyBox.loadFancyBox();
+            } else {
+              volantisFancyBox.initFancyBox();
+            }
+          })
+        } 
       }
     })).then(function () {
       volantis.selectComment = volantis.selectComment === undefined ? 'beaudar' : volantis.selectComment;
