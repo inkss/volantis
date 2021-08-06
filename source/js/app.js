@@ -47,7 +47,7 @@ const locationHas = () => {
     let target = document.getElementById(locationID);
     if (target) {
       setTimeout(() => {
-        if(window.location.hash.startsWith('#fn')) {
+        if (window.location.hash.startsWith('#fn')) {
           window.scrollTo({
             top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop - volantis.dom.header.offsetHeight,
             behavior: "smooth" //平滑滚动
@@ -396,29 +396,29 @@ const VolantisApp = (() => {
     let _destroyRightContent = document.getElementById('destroyRightContent');
     let _initRightContent = document.getElementById('initRightContent');
 
-    if(_destroyRightContent || _initRightContent) {
+    if (_destroyRightContent || _initRightContent) {
       if (window.checkRightMenu) {
-        _destroyRightContent.style.display="block";
-        _initRightContent.style.display="none";
+        _destroyRightContent.style.display = "block";
+        _initRightContent.style.display = "none";
       } else {
-        _initRightContent.style.display="block";
-        _destroyRightContent.style.display="none";
+        _initRightContent.style.display = "block";
+        _destroyRightContent.style.display = "none";
       }
-  
+
       _destroyRightContent.removeEventListener('click', null);
-      _destroyRightContent.addEventListener('click', function() {
+      _destroyRightContent.addEventListener('click', function () {
         RightMenu.destroy(true);
         window.checkRightMenu = false;
-        _initRightContent.style.display="block";
-        _destroyRightContent.style.display="none";
+        _initRightContent.style.display = "block";
+        _destroyRightContent.style.display = "none";
       })
-  
+
       _initRightContent.removeEventListener('click', null);
-      _initRightContent.addEventListener('click', function() {
+      _initRightContent.addEventListener('click', function () {
         RightMenu.init(true);
         window.checkRightMenu = true;
-        _destroyRightContent.style.display="block";
-        _initRightContent.style.display="none";
+        _destroyRightContent.style.display = "block";
+        _initRightContent.style.display = "none";
       })
     }
   }
@@ -427,13 +427,13 @@ const VolantisApp = (() => {
   fn.footnotes = () => {
     let ref = document.querySelectorAll('.footnote-backref, .footnote-ref > a');
     ref.forEach(function (e, i) {
-      ref[i].click=() => {};  // 强制清空原 click 事件
+      ref[i].click = () => {}; // 强制清空原 click 事件
       volantis.dom.$(e).on('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
-        let targetID =  decodeURI(e.target.hash.split('#')[1]).replace(/\ /g, '-');
+        let targetID = decodeURI(e.target.hash.split('#')[1]).replace(/\ /g, '-');
         let target = document.getElementById(targetID);
-        if(target) {
+        if (target) {
           window.scrollTo({
             top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop - volantis.dom.header.offsetHeight,
             behavior: "smooth" //平滑滚动
@@ -492,7 +492,8 @@ const volantisFancyBox = (() => { // 此处依赖JQ
 
   fn.initFB = () => {
     const group = new Set();
-    group.add('default');
+    group.add('default'); // 默认类
+    group.add('Twikoo');  // TwiKoo 类
 
     document.querySelectorAll(".md .gallery").forEach(function (ele) {
       if (ele.querySelector("img")) {
@@ -522,16 +523,21 @@ const volantisFancyBox = (() => { // 此处依赖JQ
     }
   }
 
-  fn.loadFancyBox = () => {
-    if (!document.querySelector(".md .gallery img")) return;
+  fn.loadFancyBox = (done) => {
+    if (!document.querySelector(".md .gallery img, .fancybox")) return;
     volantis.import.jQuery().then(() => {
       volantis.css("https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css");
-      volantis.js('https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js').then(fn.initFB)
+      volantis.js('https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js').then(() => {
+        fn.initFB();
+        if (done) done();
+      })
     })
   }
 
   return {
-    loadFancyBox: fn.loadFancyBox,
+    loadFancyBox: (done = null) => {
+      fn.loadFancyBox(done);
+    },
     pjaxReload: () => {
       if (typeof $ == "undefined") return
       if (typeof $.fancybox == "undefined") {
