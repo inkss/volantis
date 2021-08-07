@@ -3,6 +3,7 @@
     if (page.comments && page.comments == false) {
       checkComment = false;
     }
+    var commentServerFlag = theme.comments.service == 'twikoo' ? 'block' : 'none';
 %>
 <% if (checkComment&&((theme.comments.service && theme.comments.service.length > 0)||(theme.injects.comment.length))) { %>
   
@@ -18,7 +19,7 @@
           </p>
         <% } %>
       </div>
-      <div class="comment-switch not-select">
+      <div class="comment-switch not-select" style="display: <%- commentServerFlag %>;">
         <span class="first-comment">Twikoo</span>
         <span class="switch-btn move fix-cursor-pointer" id="switchBtn"></span>
         <span class="second-comment">Beaudar</span>
