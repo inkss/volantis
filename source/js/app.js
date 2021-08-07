@@ -423,6 +423,31 @@ const VolantisApp = (() => {
     }
   }
 
+  // 评论切换
+  fn.switchComment = () => {
+    const _btn = document.getElementById('switchBtn');
+    if (_btn) {
+      _btn.onclick = function () {
+        const _twikoo = document.getElementById('twikoo');
+        const _beaudar = document.getElementById('beaudar_container');
+
+        if (volantis.selectComment === 'twikoo') {
+          volantis.selectComment = 'beaudar';
+          _twikoo.style.display = 'none';
+          _beaudar.style.display = 'block';
+        } else {
+          volantis.selectComment = 'twikoo';
+          _twikoo.style.display = 'block';
+          _beaudar.style.display = 'none';
+        }
+        _btn.classList.toggle("move");
+        _twikoo.classList.toggle('content-in');
+        _beaudar.classList.toggle('content-in');
+      }
+    }
+    if (!document.querySelector(".md .gallery img, .fancybox")) return;
+  }
+
   // 页脚跳转
   fn.footnotes = () => {
     let ref = document.querySelectorAll('.footnote-backref, .footnote-ref > a');
@@ -458,6 +483,7 @@ const VolantisApp = (() => {
       fn.setTabs();
       fn.toggleRightMenu();
       fn.footnotes();
+      fn.switchComment();
     },
     pjaxReload: () => {
       fn.event();
@@ -469,6 +495,7 @@ const VolantisApp = (() => {
       fn.setTabs();
       fn.toggleRightMenu();
       fn.footnotes();
+      fn.switchComment();
 
       // 移除小尾巴的移除
       document.querySelector("#l_header .nav-main").querySelectorAll('.list-v:not(.menu-phone)').forEach(function (e) {
@@ -493,8 +520,9 @@ const volantisFancyBox = (() => { // 此处依赖JQ
   fn.initFB = () => {
     const group = new Set();
     group.add('default'); // 默认类
-    group.add('Twikoo');  // TwiKoo 类
+    group.add('Twikoo'); // TwiKoo 类
 
+    if (!document.querySelector(".md .gallery img, .fancybox")) return;
     document.querySelectorAll(".md .gallery").forEach(function (ele) {
       if (ele.querySelector("img")) {
         group.add($(ele).attr('data-group') || 'default'); // 此处依赖JQ

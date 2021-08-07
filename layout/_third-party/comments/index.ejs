@@ -7,10 +7,24 @@
 <% if (checkComment&&((theme.comments.service && theme.comments.service.length > 0)||(theme.injects.comment.length))) { %>
   
   <article class="post white-box reveal <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
-    <p ct><%- theme.comments && theme.comments.title %></p>
-    <% if (theme.comments && theme.comments.subtitle) { %>
-      <p cst><%- theme.comments.subtitle %></p>
-    <% } %>
+    <div class="changeComment">
+      <div class="comment-headline">
+        <p ct>
+          <span><%- theme.comments && theme.comments.title %></span>
+        </p>
+        <% if (theme.comments && theme.comments.subtitle) { %>
+          <p cst>
+            <span><%- theme.comments.subtitle %></span>
+          </p>
+        <% } %>
+      </div>
+      <div class="comment-switch not-select">
+        <span class="first-comment">Twikoo</span>
+        <span class="switch-btn move fix-cursor-pointer" id="switchBtn"></span>
+        <span class="second-comment">Beaudar</span>
+      </div>
+    </div>
+    
 
     <% if (theme.comments.service && theme.comments.service.length > 0) { %>
       <%- partial(theme.comments.service + '/layout') %>

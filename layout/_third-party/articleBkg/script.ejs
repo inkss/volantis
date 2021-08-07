@@ -1,6 +1,6 @@
 <script>
   function pjax_removeArticleBkg() {
-    const bkg = document.getElementsByClassName('cus-article-bkg')[0];
+    const bkg = document.querySelector('cus-article-bkg');
     if(bkg) {
       bkg.classList.remove('content-in');
       bkg.classList.add('content-out');
