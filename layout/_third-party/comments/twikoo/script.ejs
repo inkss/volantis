@@ -16,7 +16,7 @@
       path: path,
       placeholder: placeholder,
       onCommentLoaded: function() {
-        const nodeList = document.querySelectorAll('.tk-content img:not([fancybox])');
+        const nodeList = document.querySelectorAll('.tk-content img:not([fancybox]):not([class*="emo"])');
         nodeList.forEach(item => {
           item.setAttribute('fancybox', 'true');
           const url = item.getAttribute('src');
