@@ -1,11 +1,18 @@
 <script>
-  function pjax_removeArticleBkg() {
-    const bkg = document.querySelector('cus-article-bkg');
+  function pjax_ArticleBkg() {
+    const bkg = document.querySelector('.cus-article-bkg');
+    const global_bkg = document.getElementById('BKG');
     if(bkg) {
-      bkg.classList.remove('content-in');
-      bkg.classList.add('content-out');
-    } 
+      global_bkg.style.display = 'none';
+    } else {
+      global_bkg.style.display = 'block';
+    }
   }
 
-  volantis.pjax.send(pjax_removeArticleBkg);
+  document.addEventListener("DOMContentLoaded", function () {
+    pjax_ArticleBkg();
+  });
+
+  volantis.pjax.send(pjax_ArticleBkg);
+  volantis.pjax.push(pjax_ArticleBkg);
 </script>
