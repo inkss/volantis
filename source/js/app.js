@@ -424,9 +424,11 @@ const VolantisApp = (() => {
   }
 
   // 评论切换
+  volantis.selectComment = 'beaudar';
   fn.switchComment = () => {
     const _btn = document.getElementById('switchBtn');
     if (_btn) {
+      if(volantis.selectComment !== 'beaudar') _btn.classList.remove('move');
       _btn.onclick = function () {
         const _twikoo = document.getElementById('twikoo');
         const _beaudar = document.getElementById('beaudar_container');
