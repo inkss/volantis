@@ -25,12 +25,6 @@ const RightMenu = (() => {
   fn.init = () => {
     fn.visible(_menuMusic, false);
     fn.visible(_menuOption, false);
-    if (_readBkg) _readBkg.parentNode.removeChild(_readBkg);
-
-    const readBkg = document.createElement("div");
-    readBkg.className = "common_read_bkg common_read_hide";
-    readBkg.id = "read_bkg";
-    window.document.body.appendChild(readBkg);
   }
 
   fn.initEvent = () => {
@@ -185,9 +179,9 @@ const RightMenu = (() => {
 
       _copyImg.onclick = () => {
         fn.writeClipImg(event, flag => {
-          if (flag) volantis.message('系统提示', '图片复制成功！', 'fal fa-images');
+          if (flag) volantis.message('系统提示', '图片复制成功！', volantis.rightMenu.faicon + ' fa-images');
         }, (error) => {
-          volantis.message('系统提示', '复制失败：' + error, 'fal fa-exclamation-square red');
+          volantis.message('系统提示', '复制失败：' + error, volantis.rightMenu.faicon + ' fa-exclamation-square red');
         })
       }
     } else {
@@ -262,9 +256,9 @@ const RightMenu = (() => {
   fn.copyString = (str) => {
     fn.writeClipText(str)
       .then(() => {
-        volantis.message('复制成功', str.length > 120 ? str.substring(0, 120) + '...' : str, 'fal fa-copy');
+        volantis.message('复制成功', str.length > 120 ? str.substring(0, 120) + '...' : str, volantis.rightMenu.faicon + ' fa-copy');
       }).catch(e => {
-        volantis.message('系统提示', e, 'fal fa-exclamation-square red');
+        volantis.message('系统提示', e, volantis.rightMenu.faicon + ' fa-exclamation-square red');
       })
   }
 
