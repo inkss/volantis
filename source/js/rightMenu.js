@@ -25,6 +25,12 @@ const RightMenu = (() => {
   fn.init = () => {
     fn.visible(_menuMusic, false);
     fn.visible(_menuOption, false);
+    if (_readBkg) _readBkg.parentNode.removeChild(_readBkg);
+
+    const readBkg = document.createElement("div");
+    readBkg.className = "common_read_bkg common_read_hide";
+    readBkg.id = "read_bkg";
+    window.document.body.appendChild(readBkg);
   }
 
   fn.initEvent = () => {
@@ -382,6 +388,7 @@ const RightMenu = (() => {
 
   // 执行打印页面 
   fn.printHtml = () => {
+    if (volantis.isReadModel) fn.readingModel();
     if (volantis.rightMenu.defaultStyles === true) {
       fn.setAttribute('details', 'open', 'true');
       fn.remove('.cus-article-bkg');
@@ -429,8 +436,7 @@ const RightMenu = (() => {
 
   // 阅读模式
   fn.readingModel = () => {
-    $('.cus-article-bkg').fadeToggle();
-    $('#BKG').fadeToggle();
+    if (typeof ScrollReveal === 'function') ScrollReveal().clean('#comments');
     $('#l_header').fadeToggle();
     $('footer').fadeToggle();
     $('#s-top').fadeToggle();
@@ -447,9 +453,13 @@ const RightMenu = (() => {
     $('#post').toggleClass('post_read');
     $('#l_cover').toggleClass('read_cover');
     $('.widget.toc-wrapper').toggleClass('post_read');
+    if ($('.cus-article-bkg')) {
+      $('.cus-article-bkg').toggle();
+    } else {
+      $('#BKG').toggle();
+    }
     volantis.isReadModel = volantis.isReadModel === undefined ? true : !volantis.isReadModel;
     if (volantis.isReadModel) {
-      if (!!window.ScrollReveal) ScrollReveal().sync();
       volantis.message('系统提示', '阅读模式已开启，您可以点击屏幕空白处退出。', 'fal fa-book-reader light-blue', 5000);
       $('#l_body').off('click.rightMenu').on('click.rightMenu', (event) => {
         if ($(event.target).hasClass('common_read')) {
