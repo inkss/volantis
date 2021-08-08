@@ -168,7 +168,9 @@ if hexo-config('comments.service')=='valine'
   .v[data-class=v] code, .v[data-class=v] pre
     background-color: #332828 !important
 
-
+if hexo-config('plugins.pjax.animation') == 'circle'
+  .loading-circle
+    background-color: #130e0eb3
 
 
 // Custom Files

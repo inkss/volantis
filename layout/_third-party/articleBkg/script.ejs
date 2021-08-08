@@ -1,11 +1,20 @@
 <script>
   function pjax_ArticleBkg() {
-    const bkg = document.querySelector('.cus-article-bkg');
-    const global_bkg = document.getElementById('BKG');
-    if(bkg) {
-      global_bkg.style.display = 'none';
+    const _bkg = document.querySelector('.cus-article-bkg');
+    const _globalBkg = document.getElementById('BKG');
+    
+    if(document.body.offsetWidth <= 500) {
+      _globalBkg.style.display = 'none';
+      if(_bkg) _bkg.style.display = 'none';
     } else {
-      global_bkg.style.display = 'block';
+      _globalBkg.style.display = _bkg ? 'none' : '';  // block
+    }
+  }
+
+  function pjax_setGlobalBkg() {
+    if(document.body.offsetWidth <= 500) {
+      const _globalBkg = document.getElementById('BKG');
+      _globalBkg.style.display = 'none';
     }
   }
 
@@ -13,6 +22,6 @@
     pjax_ArticleBkg();
   });
 
-  volantis.pjax.send(pjax_ArticleBkg);
+  volantis.pjax.send(pjax_setGlobalBkg);
   volantis.pjax.push(pjax_ArticleBkg);
 </script>
