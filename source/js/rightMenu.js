@@ -516,6 +516,9 @@ const RightMenu = (() => {
     },
     hideMenu: () => {
       fn.hideMenu();
+    },
+    readingModel: () => {
+      fn.readingModel();
     }
   }
 })()
