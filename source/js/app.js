@@ -533,9 +533,9 @@ const volantisFancyBox = (() => {
 
     Fancybox.destroy();
     for (const iterator of group) {
-      Fancybox.bind('[data-fancybox="' + iterator + '"]', {
+      if (!!iterator) Fancybox.bind('[data-fancybox="' + iterator + '"]', {
         Hash: false
-      });  
+      });
     }
   }
 

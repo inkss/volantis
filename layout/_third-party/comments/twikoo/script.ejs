@@ -29,7 +29,7 @@
         
         if(nodeList.length !== 0) {
           const checkFancyBox = setInterval(() => {
-            if(typeof volantisFancyBox === 'undefined') return;
+            if(typeof volantisFancyBox === "undefined") return;
             clearInterval(checkFancyBox);
             if (typeof Fancybox === "undefined") {
               volantisFancyBox.loadFancyBox();
@@ -37,7 +37,7 @@
               volantisFancyBox.initFancyBox();
             }
           })
-        } 
+        }
       }
     })).then(function () {
       volantis.selectComment = volantis.selectComment === undefined ? 'beaudar' : volantis.selectComment;
