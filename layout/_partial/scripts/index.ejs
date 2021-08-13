@@ -115,6 +115,10 @@
 
 <%- partial('toc') %>
 
+<% if (theme.structured_data && theme.structured_data.enable) { %>
+  <%- structured_data() %>
+<% } %>
+
 <%- partial('../../_third-party/articleBkg/script') %>
 
 <%- js(theme.cdn.map.js.iconfontInkss) %>
