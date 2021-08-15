@@ -47,6 +47,4 @@ function postFancybox(args, content) {
   return `<div galleryFlag class="gallery ${cls}" data-group='${group}'>${buidImgFancybox(content, group)}</div>`;
 }
 
-
-
 hexo.extend.tag.register('gallery', postFancybox, {ends: true});

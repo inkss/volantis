@@ -52,7 +52,6 @@
     document.addEventListener('pjax:complete', function () {
       // 使用 volantis.pjax.push 方法传入重载函数 参见layout/_partial/scripts/global.ejs
       volantis.pjax.method.complete.start();
-      $('.cus-article-bkg').fadeIn('slow');
     });
 
     document.addEventListener('pjax:error', function (e) {

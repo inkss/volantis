@@ -21,13 +21,13 @@ textarea
 
 .fancybox-container .fancybox-stage,
 .fancybox__carousel .is-draggable
-    cursor: $zoom-out,zoom-out
+  cursor: $zoom-out,zoom-out
 
 
 .fancybox a,
 .fancybox-can-zoomIn .fancybox-content,
 .fancybox__carousel .fancybox__slide.can-zoom_in .fancybox__content
-    cursor: $zoom-in,zoom-in
+  cursor: $zoom-in,zoom-in
 
 span.btn>a:not([href]):hover,
 .fancybox-button[disabled], .fancybox-button[disabled]:hover,
@@ -123,20 +123,29 @@ div.tabs ul.nav-tabs li.tab a,
 .tk-avatar img,
 .tk-meta a,
 .tk-action-icon,
-.carousel__slide,
-.fancybox__slide,
+.fancybox,
 .fix-cursor-pointer
   cursor: $pointer,pointer
 
+// 强制覆盖区域
 .cur-default
   cursor: $default,default !important
-.cur-pointer
+
+.cur-pointer,
+.carousel__button,
+.fancybox__slide
   cursor: $pointer,pointer !important
+
 .cur-not-allowed
   cursor: $not-allowed,not-allowed !important
-.cur-zoom-in
+
+.cur-zoom-in,
+.fancybox__carousel .fancybox__slide.can-zoom_in .fancybox__content
   cursor: $zoom-in,zoom-in !important
-.cur-zoom-out
+
+.cur-zoom-out,
+.fancybox__carousel .is-draggable
   cursor: $zoom-out,zoom-out !important
+
 .cur-text
   cursor: $text,text !important
