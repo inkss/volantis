@@ -23,9 +23,8 @@ function buidImgFancybox(content, group) {
   imgList.forEach(item => {
     const url = (item.match(/\ssrc=['"](.*?)['"]/) || [])[1];
     const alt = (item.match(/\salt=['"](.*?)['"]/) || [])[1];
-    const altCaption = imageTags || (item.match(/\salt=['"](.*?)['"]/) || [])[1];
     const newItem = item.replace('img', 'img fancybox');  // 避免出现重复替换，打个标
-    const result = `<div class='fancybox'><a class='fancybox' pjax-fancybox href='${url}' data-fancybox='${group}' data-caption='${alt}'>${newItem}</a>${buidAlt(altCaption)}</div>`;
+    const result = `<div class='fancybox'><a class='fancybox' pjax-fancybox href='${url}' data-fancybox='${group}' data-caption='${alt}'>${newItem}</a>${buidAlt(imageTags || alt)}</div>`;
     html = html.replace(item, result.trim());
   })
   return html;
