@@ -428,26 +428,30 @@ const VolantisApp = (() => {
   fn.switchComment = () => {
     const _btn = document.getElementById('switchBtn');
     if (_btn) {
-      if(volantis.selectComment !== 'beaudar') _btn.classList.remove('move');
+      if(volantis.selectComment !== 'beaudar') {
+        _btn.classList.remove('move');
+      } 
       _btn.onclick = function () {
         const _twikoo = document.getElementById('twikoo');
         const _beaudar = document.getElementById('beaudar_container');
-
         if (volantis.selectComment === 'twikoo') {
+          _twikoo.classList.toggle('content-in');
+          _beaudar.classList.toggle('content-in');
           volantis.selectComment = 'beaudar';
           _twikoo.style.display = 'none';
+          _twikoo.classList.remove('content-in');
           _beaudar.style.display = 'block';
+          _beaudar.classList.add('content-in');
         } else {
           volantis.selectComment = 'twikoo';
           _twikoo.style.display = 'block';
+          _twikoo.classList.add('content-in');
           _beaudar.style.display = 'none';
+          _beaudar.classList.remove('content-in');
         }
         _btn.classList.toggle("move");
-        _twikoo.classList.toggle('content-in');
-        _beaudar.classList.toggle('content-in');
       }
     }
-    if (!document.querySelector(".md .gallery img, .fancybox")) return;
   }
 
   // 页脚跳转
