@@ -15,16 +15,10 @@ document.addEventListener("DOMContentLoaded", function () {
     volantis.EventListener.remove() // 移除事件监听器 see: layout/_partial/scripts/global.ejs
   }, 'app.js');
   volantis.pjax.push(volantisFancyBox.pjaxReload);
-  volantis.pjax.send(() => { // 此处依赖JQ
-    if (typeof $ == "undefined") return
-    if (typeof $.fancybox != "undefined") {
-      $.fancybox.close(); // 关闭弹窗
-    }
-  }, 'fancybox');
 
   locationHash();
-  highlightKeyWords.startFromURL();
   changeTitle();
+  highlightKeyWords.startFromURL();
 });
 
 // 动态修改标题
@@ -669,6 +663,7 @@ const highlightKeyWords = (() => {
   let fn = {}
   fn.firstFlag = 1
   fn.startFromURL = () => {
+    window.ShowLoading();
     const params = decodeURI(new URL(location.href).searchParams.get('keyword'));
     const keywords = params ? params.split(' ') : [];
     const post = document.querySelector('#l_main');
@@ -681,8 +676,12 @@ const highlightKeyWords = (() => {
       setTimeout(() => {
         window.scrollTo({
           top: target.getBoundingClientRect().top + document.documentElement.scrollTop - volantis.dom.header.offsetHeight - 5,
+          behavior: "smooth" //平滑滚动
         });
+        window.HideLoading();
       }, 1000)
+    } else {
+      window.HideLoading();
     }
   }
   fn.start = (keywords, querySelector) => {
@@ -788,7 +787,7 @@ const highlightKeyWords = (() => {
       mark.id = "first-highlight-keyword-mark"
       fn.firstFlag = 0;
     }
-    mark.style.background = "transparent";
+    mark.style.background = "#ff0";
     mark.style["border-bottom"] = "1px dashed #ff2a2a";
     mark.style["color"] = "#ff2a2a";
     mark.style["font-weight"] = "bold";
