@@ -53,8 +53,6 @@ kbd,
 .MiniValine *,
 .aplayer .aplayer-info .aplayer-music,
 .gt-container a.is--active,
-.iziToast,
-.iziToast p,
 .iframe,
 .embed-show,
 p > img,
@@ -128,12 +126,15 @@ div.tabs ul.nav-tabs li.tab a,
   cursor: $pointer,pointer
 
 // 强制覆盖区域
-.cur-default
+.cur-default,
+.iziToast,
+.iziToast p
   cursor: $default,default !important
 
 .cur-pointer,
 .carousel__button,
-.fancybox__slide
+.fancybox__slide,
+.iziToast-buttons button
   cursor: $pointer,pointer !important
 
 .cur-not-allowed

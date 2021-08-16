@@ -216,7 +216,7 @@ const RightMenu = (() => {
       _printHtml.onclick = () => {
         if (window.location.pathname === pathName) {
           const message = '是否打印当前页面？<br><em style="font-size: 80%">建议打印时勾选背景图形</em><br>';
-          volantis.question('', message, null, () => {
+          volantis.question('', message, {}, () => {
             fn.printHtml();
           })
         } else {
