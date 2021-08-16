@@ -55,6 +55,7 @@
         })
         setTimeout(() => {
           macy.reInit();
+          if (typeof ScrollReveal === 'function') ScrollReveal().clean('#comments');
         }, 500)
       })
     });

@@ -501,7 +501,7 @@ const VolantisApp = (() => {
         const str = document.getSelection().toString();
         fn.writeClipText(str).then(() => {
           volantis.message('复制成功', str.length > 120 ? str.substring(0, 120) + '...' : str, {
-            icon: 'fa fa-copy PETERRIVE'
+            icon: 'fal fa-copy PETERRIVE'
           });
           _BtnCopy.classList.add('copied');
           _icon.classList.remove('fa-copy');
@@ -514,7 +514,7 @@ const VolantisApp = (() => {
           }, 2000)
         }).catch(e => {
           volantis.message('系统提示', e, {
-            icon: 'fa fa-exclamation-circle red'
+            icon: 'fal fa-exclamation-circle red'
           });
           _BtnCopy.classList.add('copied-failed');
           _icon.classList.remove('fa-copy');
