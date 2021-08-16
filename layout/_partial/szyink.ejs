@@ -40,7 +40,18 @@
             x: 10,
             y: 55
           },
-          columns: 5
+          columns: 6,
+          breakAt: {
+            1000: {
+              columns: 5
+            },
+            800: {
+              columns: 4
+            },
+            600: {
+              columns: 3
+            }
+          }
         })
         setTimeout(() => {
           macy.reInit();
