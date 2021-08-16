@@ -1,0 +1,69 @@
+<script>
+  function pjax_ArticleBkg() {
+    const _bkg = document.querySelector('.cus-article-bkg');
+    const _globalBkg = document.getElementById('BKG');
+    
+    if(document.body.offsetWidth <= 500) {
+      _globalBkg.style.display = 'none';
+      if(_bkg) _bkg.style.display = 'none';
+    } else {
+      _globalBkg.style.display = _bkg ? 'none' : '';  // block
+    }
+  }
+
+  function pjax_setGlobalBkg() {
+    if(document.body.offsetWidth <= 500) {
+      const _globalBkg = document.getElementById('BKG');
+      _globalBkg.style.display = 'none';
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    pjax_ArticleBkg();
+  });
+
+  volantis.pjax.send(pjax_setGlobalBkg);
+  volantis.pjax.push(pjax_ArticleBkg);
+</script>
+  
+<% if (theme.pages.friends.layout_scheme == 'traditional') { %>
+<script>
+  function pjax_macy() {
+    const nodeList = document.querySelectorAll('.friend-content');
+    if(nodeList.length === 0) return;
+    nodeList.forEach((element,i) => {
+      let container = '#friend-content-' + i;
+        load_macy(() => {
+        let macy = Macy({
+          container: container.toString(),
+          margin: {
+            x: 10,
+            y: 55
+          },
+          columns: 5
+        })
+        setTimeout(() => {
+          macy.reInit();
+        }, 500)
+      })
+    });
+  }
+
+  function load_macy(done = null) {
+    if(typeof Macy === "undefined") {
+      volantis.js("https://cdn.jsdelivr.net/npm/macy@2").then(() => {
+        if(done) done();
+      })
+    } else {
+      if(done) done();
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    pjax_macy();
+  })
+
+  
+  volantis.pjax.push(pjax_macy);
+</script>     
+<% } %>

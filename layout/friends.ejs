@@ -14,7 +14,7 @@
             <%- markdown(group.description) %>
           <%} %>
           <% if (theme.pages.friends.layout_scheme == 'traditional') { %>
-            <div class='friend-content'>
+            <div class='friend-content' id="friend-content-<%- i %>">
               <% (group.items||[]).forEach(function(item){ %>
                 <% if (item.url && item.title) { %>
                   <a class='friend-card'
@@ -42,6 +42,7 @@
                   </a>
                 <% } %>
               <% }) %>
+              <br><br>
             </div>
           <% } else { %>
             <div class='simpleuser-group'>

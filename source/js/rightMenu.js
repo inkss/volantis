@@ -215,7 +215,8 @@ const RightMenu = (() => {
 
       _printHtml.onclick = () => {
         if (window.location.pathname === pathName) {
-          volantis.question('', '是否打印当前页面？<br><em style="font-size: 80%">建议打印时勾选背景图形</em><br>', {}, () => {
+          const message = '是否打印当前页面？<br><em style="font-size: 80%">建议打印时勾选背景图形</em><br>';
+          volantis.question('', message, null, () => {
             fn.printHtml();
           })
         } else {
@@ -459,7 +460,12 @@ const RightMenu = (() => {
     }
     volantis.isReadModel = volantis.isReadModel === undefined ? true : !volantis.isReadModel;
     if (volantis.isReadModel) {
-      volantis.message('系统提示', '阅读模式已开启，您可以点击屏幕空白处退出。', 'fal fa-book-reader light-blue', 5000);
+      const option = {
+        backgroundColor: '#f8f1e2',
+        icon: 'fal fa-book-reader',
+        time: 5000
+      }
+      volantis.message('系统提示', '阅读模式已开启，您可以点击屏幕空白处退出。', option);
       $('#l_body').off('click.rightMenu').on('click.rightMenu', (event) => {
         if ($(event.target).hasClass('common_read')) {
           fn.readingModel();
