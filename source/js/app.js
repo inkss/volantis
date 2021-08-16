@@ -21,7 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }, 'fancybox');
 
-  locationHas();
+  locationHash();
+  highlightKeyWords.startFromURL();
   changeTitle();
 });
 
@@ -39,15 +40,14 @@ const changeTitle = () => {
   });
 }
 
-// /*锚点定位*/
-const locationHas = () => {
-  /*锚点定位*/
+/*锚点定位*/
+const locationHash = () => {
   if (window.location.hash) {
     let locationID = decodeURI(window.location.hash.split('#')[1]).replace(/\ /g, '-');
     let target = document.getElementById(locationID);
     if (target) {
       setTimeout(() => {
-        if (window.location.hash.startsWith('#fn')) {
+        if (window.location.hash.startsWith('#fn')) { // hexo-reference https://github.com/volantis-x/hexo-theme-volantis/issues/647
           window.scrollTo({
             top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop - volantis.dom.header.offsetHeight,
             behavior: "smooth" //平滑滚动
@@ -81,7 +81,8 @@ const Debounce = (fn, t) => {
 };
 
 const VolantisApp = (() => {
-  const fn = {};
+  const fn = {},
+    COPYHTML = '<button class="btn-copy" data-clipboard-snippet=""><i class="fas fa-copy"></i><span>COPY</span></button>';;
   let scrollCorrection = 80;
 
   fn.init = () => {
@@ -130,9 +131,10 @@ const VolantisApp = (() => {
       behavior: 'smooth'
     });
   }
+
   // 滚动条距离顶部的距离
-  function getScrollTop() {
-    var scrollPos;
+  fn.getScrollTop = () => {
+    let scrollPos;
     if (window.pageYOffset) {
       scrollPos = window.pageYOffset;
     } else if (document.compatMode && document.compatMode != 'BackCompat') {
@@ -142,6 +144,7 @@ const VolantisApp = (() => {
     }
     return scrollPos;
   }
+
   // 设置滚动锚点
   fn.setScrollAnchor = () => {
     // click topBtn 滚动至bodyAnchor 【移动端 PC】
@@ -158,7 +161,7 @@ const VolantisApp = (() => {
     let pos = document.body.scrollTop;
     volantis.dom.$(document).scroll(Debounce(() => {
       const showHeaderPoint = volantis.dom.bodyAnchor.offsetTop - scrollCorrection;
-      const scrollTop = getScrollTop(); // 滚动条距离顶部的距离
+      const scrollTop = fn.getScrollTop(); // 滚动条距离顶部的距离
       const del = scrollTop - pos;
       pos = scrollTop;
       // topBtn
@@ -193,7 +196,7 @@ const VolantisApp = (() => {
     // 决定一二级导航栏的切换 【向上滚动50px切换为一级导航栏；向下滚动50px切换为二级导航栏】  【移动端 PC】
     let pos = document.body.scrollTop;
     volantis.dom.$(document).scroll(Debounce(() => {
-      const scrollTop = getScrollTop();
+      const scrollTop = fn.getScrollTop();
       const del = scrollTop - pos;
       if (del >= 50 && scrollTop > 100) { // 向下滚动50px
         pos = scrollTop;
@@ -454,9 +457,9 @@ const VolantisApp = (() => {
     }
   }
 
-  // 页脚跳转
+  // hexo-reference 页脚跳转 https://github.com/volantis-x/hexo-theme-volantis/issues/647
   fn.footnotes = () => {
-    let ref = document.querySelectorAll('.footnote-backref, .footnote-ref > a');
+    let ref = document.querySelectorAll('#post .footnote-backref, #post .footnote-ref > a');
     ref.forEach(function (e, i) {
       ref[i].click = () => {}; // 强制清空原 click 事件
       volantis.dom.$(e).on('click', (e) => {
@@ -474,6 +477,93 @@ const VolantisApp = (() => {
     })
   }
 
+  // 代码块复制
+  fn.copyCode = () => {
+    if (!(document.querySelector(".highlight .code pre") ||
+        document.querySelector(".article pre code"))) {
+      return;
+    }
+
+    document.querySelectorAll(".highlight .code pre, .article pre code").forEach(node => {
+      const test = node.insertAdjacentHTML("beforebegin", COPYHTML);
+      const _BtnCopy = node.previousSibling;
+      _BtnCopy.onclick = e => {
+        e.stopPropagation();
+        const _icon = _BtnCopy.querySelector('i');
+        const _span = _BtnCopy.querySelector('span');
+
+        node.focus();
+        const range = new Range();
+        range.selectNodeContents(node);
+        document.getSelection().removeAllRanges();
+        document.getSelection().addRange(range);
+
+        const str = document.getSelection().toString();
+        fn.writeClipText(str).then(() => {
+          volantis.message('复制成功', str.length > 120 ? str.substring(0, 120) + '...' : str, {
+            icon: 'fa fa-copy PETERRIVE'
+          });
+          _BtnCopy.classList.add('copied');
+          _icon.classList.remove('fa-copy');
+          _icon.classList.add('fa-check-circle');
+          _span.innerText = "COPIED";
+          setTimeout(() => {
+            _icon.classList.remove('fa-check-circle');
+            _icon.classList.add('fa-copy');
+            _span.innerText = "COPY";
+          }, 2000)
+        }).catch(e => {
+          volantis.message('系统提示', e, {
+            icon: 'fa fa-exclamation-circle red'
+          });
+          _BtnCopy.classList.add('copied-failed');
+          _icon.classList.remove('fa-copy');
+          _icon.classList.add('fa-exclamation-circle');
+          _span.innerText = "COPY FAILED";
+          setTimeout(() => {
+            _icon.classList.remove('fa-exclamation-circle');
+            _icon.classList.add('fa-copy');
+            _span.innerText = "COPY";
+          })
+        })
+      }
+    });
+  }
+
+  // 工具类：复制字符串到剪切板
+  fn.writeClipText = (str) => {
+    try {
+      return navigator.clipboard
+        .writeText(str)
+        .then(() => {
+          return Promise.resolve()
+        })
+        .catch(err => {
+          return Promise.reject(err || '复制文本失败!')
+        })
+    } catch (e) {
+      const input = document.createElement('input');
+      input.setAttribute('readonly', 'readonly');
+      document.body.appendChild(input);
+      input.setAttribute('value', str);
+      input.select();
+      try {
+        let result = document.execCommand('copy')
+        document.body.removeChild(input);
+        if (!result || result === 'unsuccessful') {
+          return Promise.reject('复制文本失败!')
+        } else {
+          return Promise.resolve()
+        }
+      } catch (e) {
+        document.body.removeChild(input);
+        return Promise.reject(
+          '当前浏览器不支持复制功能，请检查更新或更换其他浏览器操作!'
+        )
+      }
+    }
+  }
+
   return {
     init: () => {
       fn.init();
@@ -489,6 +579,7 @@ const VolantisApp = (() => {
       fn.setTabs();
       fn.toggleRightMenu();
       fn.footnotes();
+      fn.copyCode();
       fn.switchComment();
     },
     pjaxReload: () => {
@@ -501,6 +592,7 @@ const VolantisApp = (() => {
       fn.setTabs();
       fn.toggleRightMenu();
       fn.footnotes();
+      fn.copyCode();
       fn.switchComment();
 
       // 移除小尾巴的移除
@@ -515,7 +607,8 @@ const VolantisApp = (() => {
           volantis.dom.switcher.removeClass('active');
         });
       }
-    }
+    },
+    writeClipText: fn.writeClipText
   }
 })()
 Object.freeze(VolantisApp);
@@ -569,3 +662,145 @@ const volantisFancyBox = (() => {
   }
 })()
 Object.freeze(volantisFancyBox);
+
+// highlightKeyWords 与 搜索功能搭配 https://github.com/next-theme/hexo-theme-next/blob/eb194a7258058302baf59f02d4b80b6655338b01/source/js/third-party/search/local-search.js
+const highlightKeyWords = (() => {
+  let fn = {}
+  fn.firstFlag = 1
+  fn.startFromURL = () => {
+    const params = decodeURI(new URL(location.href).searchParams.get('keyword'));
+    const keywords = params ? params.split(' ') : [];
+    const post = document.querySelector('#post');
+    fn.start(keywords, post)
+    fn.scrollToFirstHighlightKeywordMark()
+  }
+  fn.scrollToFirstHighlightKeywordMark = () => {
+    let target = document.getElementById("first-highlight-keyword-mark");
+    if (target) {
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + document.documentElement.scrollTop - volantis.dom.header.offsetHeight - 5,
+        behavior: "smooth" //平滑滚动
+      });
+    }
+  }
+  fn.start = (keywords, querySelector) => {
+    if (!keywords.length || !querySelector) return;
+    console.log(keywords);
+    const walk = document.createTreeWalker(querySelector, NodeFilter.SHOW_TEXT, null);
+    const allNodes = [];
+    while (walk.nextNode()) {
+      if (!walk.currentNode.parentNode.matches('button, select, textarea')) allNodes.push(walk.currentNode);
+    }
+    allNodes.forEach(node => {
+      const [indexOfNode] = fn.getIndexByWord(keywords, node.nodeValue);
+      if (!indexOfNode.length) return;
+      const slice = fn.mergeIntoSlice(0, node.nodeValue.length, indexOfNode);
+      fn.highlightText(node, slice, 'keyword');
+      fn.highlightStyle()
+    });
+  }
+  fn.getIndexByWord = (words, text, caseSensitive = false) => {
+    const index = [];
+    const included = new Set();
+    words.forEach(word => {
+      const div = document.createElement('div');
+      div.innerText = word;
+      word = div.innerHTML;
+  
+      const wordLen = word.length;
+      if (wordLen === 0) return;
+      let startPosition = 0;
+      let position = -1;
+      if (!caseSensitive) {
+        text = text.toLowerCase();
+        word = word.toLowerCase();
+      }
+      while ((position = text.indexOf(word, startPosition)) > -1) {
+        index.push({ position, word });
+        included.add(word);
+        startPosition = position + wordLen;
+      }
+    });
+    index.sort((left, right) => {
+      if (left.position !== right.position) {
+        return left.position - right.position;
+      }
+      return right.word.length - left.word.length;
+    });
+    return [index, included];
+  };
+  fn.mergeIntoSlice = (start, end, index) => {
+    let item = index[0];
+    let { position, word } = item;
+    const hits = [];
+    const count = new Set();
+    while (position + word.length <= end && index.length !== 0) {
+      count.add(word);
+      hits.push({
+        position,
+        length: word.length
+      });
+      const wordEnd = position + word.length;
+  
+      index.shift();
+      while (index.length !== 0) {
+        item = index[0];
+        position = item.position;
+        word = item.word;
+        if (wordEnd > position) {
+          index.shift();
+        } else {
+          break;
+        }
+      }
+    }
+    return {
+      hits,
+      start,
+      end,
+      count: count.size
+    };
+  };
+  fn.highlightText = (node, slice, className) => {
+    const val = node.nodeValue;
+    let index = slice.start;
+    const children = [];
+    for (const { position, length } of slice.hits) {
+      const text = document.createTextNode(val.substring(index, position));
+      index = position + length;
+      let mark = document.createElement('mark');
+      mark.className = className;
+      mark = fn.highlightStyle(mark)
+      mark.appendChild(document.createTextNode(val.substr(position, length)));
+      children.push(text, mark);
+    }
+    node.nodeValue = val.substring(index, slice.end);
+    children.forEach(element => {
+      node.parentNode.insertBefore(element, node);
+    });
+  }
+  fn.highlightStyle = (mark) => {
+    if(!mark) return;
+    if (fn.firstFlag) {
+      mark.id = "first-highlight-keyword-mark"
+      fn.firstFlag = 0;
+    }
+    mark.style.background = "transparent";
+    mark.style["border-bottom"] = "1px dashed #ff2a2a";
+    mark.style["color"] = "#ff2a2a";
+    mark.style["font-weight"] = "bold";
+    return mark
+  }
+  return {
+    start: (keywords, querySelector) => {
+      fn.start(keywords, querySelector)
+    },
+    startFromURL: () => {
+      fn.startFromURL()
+    },
+    scrollToFirstHighlightKeywordMark: () => {
+      fn.scrollToFirstHighlightKeywordMark()
+    },
+  }
+})()
+Object.freeze(highlightKeyWords);
