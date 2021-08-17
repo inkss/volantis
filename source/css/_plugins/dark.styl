@@ -1,11 +1,5 @@
-if hexo-config('plugins.backstretch.position') == 'fixed'
-  .backstretch
-    background-color: #21252b !important
-  .backstretch-item
-    display: none !important
-else
-  #l_body
-    background-color: #21252b !important
+#l_body
+  background-color: #21252b !important
 
 fal,
 fad,
@@ -171,6 +165,13 @@ if hexo-config('comments.service')=='valine'
 if hexo-config('plugins.pjax.animation') == 'circle'
   .loading-circle
     background-color: #130e0eb3
+
+if hexo-config('rightmenu.enable')
+  #read_bkg
+    background: #21252b !important
+  .post_read
+    background-color: #282c34 !important
+
 
 
 // Custom Files

@@ -653,10 +653,6 @@ plugins:
     volume: 0.7       # default volume, notice that player will remember user setting, default volume will not work after user set volume themselves
     list_max_height: 320px # list max height
     list_folded: true
-    message:          # 音乐通知，播放、暂停、失败 时的图标
-      enable: true
-      play: fas fa-play
-      pause: fas fa-pause
 
   # Pjax
   pjax:
@@ -769,11 +765,17 @@ plugins:
     messageColor: 'var(--color-text)'    # 消息颜色
     backgroundColor: 'var(--color-card)' # 默认背景色
     zindex: 2147483647                   # 层级
-    copyright:                           # 是否在复制时弹出版权提示(非右键下的操作提示)
+    copyright:                           # 是否在复制时弹出版权提示，影响范围：ctrl+c、代码块复制按钮、右键复制选项
       enable: true
       title: '知识共享许可协议'
       message: '请遵守 CC BY-NC-SA 4.0 协议。'
       icon: 'far fa-copyright light-blue'
+    aplayer:                              # 是否开启音乐通知；播放、暂停、失败 时的图标
+      enable: true
+      play: fas fa-play
+      pause: fas fa-pause
+    rightmenu:                            # 是否开启右键模块的消息通知
+      enable: true
 ############################### Plugins ############################### > end
 
 ############################### Rightmenu ############################### > start
@@ -782,7 +784,7 @@ rightmenu:
   enable: true
   faicon: fa              # 公共图标类型 fa fal fas fad
   # hr: 分割线, music: 音乐控制器
-  layout: [home, hr, help, examples, contributors, hr, source_docs, source_theme, hr, print, darkmode, music]
+  layout: [home, hr, help, examples, contributors, hr, source_docs, source_theme, hr, print, darkmode, reading, music]
   ### 可选功能项 ###
   print:                  # 只有文章页才允许自定义打印
     name: 打印页面
@@ -793,6 +795,9 @@ rightmenu:
   darkmode:        # 需开启 plugins.darkmodejs
     name: 暗黑模式
     icon: fa fa-moon
+  reading:
+    name: 阅读模式
+    icon: fa fa-book-open
   customPicUrl:    # 右键的图片复制：只有 Chrome 支持，且只支持 PNG 格式的图片。
     enable: false  # 如果使用了对象存储且开启了自适应 Webp，那么可以提供额外的链接用以替换图片的访问地址
     old: #https://static.inkss.cn/img/article/
