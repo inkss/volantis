@@ -470,6 +470,12 @@ const RightMenu = (() => {
     fn.toggleClass(document.querySelector('#l_cover'), 'read_cover')
     fn.toggleClass(document.querySelector('.widget.toc-wrapper'), 'post_read')
 
+    if(document.querySelector('.cus-article-bkg')) {
+      fn.fadeToggle(document.querySelector('.cus-article-bkg'))
+    } else {
+      fn.fadeToggle(document.querySelector('#BKG'))
+    }
+
     volantis.isReadModel = volantis.isReadModel === undefined ? true : !volantis.isReadModel;
     if (volantis.isReadModel) {
       const option = {

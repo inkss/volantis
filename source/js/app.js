@@ -680,7 +680,6 @@ const highlightKeyWords = (() => {
   fn.markNum = 0
   fn.markNextId = -1
   fn.startFromURL = () => {
-    window.ShowLoading();
     const params = decodeURI(new URL(location.href).searchParams.get('keyword'));
     const keywords = params ? params.split(' ') : [];
     const post = document.querySelector('#l_main');
@@ -718,7 +717,6 @@ const highlightKeyWords = (() => {
         behavior: "smooth"
       });
     }
-    window.HideLoading();
     // Current target
     return target
   }
