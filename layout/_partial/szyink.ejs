@@ -32,10 +32,10 @@
     const nodeList = document.querySelectorAll('.friend-content');
     if(nodeList.length === 0) return;
     nodeList.forEach((element,i) => {
-      let container = '#friend-content-' + i;
-        load_macy(() => {
+      let container = 'friend-content-' + i;
+      load_macy(() => {
         let macy = Macy({
-          container: container.toString(),
+          container: '#' + container.toString(),
           margin: {
             x: 10,
             y: 55
@@ -56,6 +56,7 @@
         setTimeout(() => {
           macy.reInit();
           if (typeof ScrollReveal === 'function') ScrollReveal().clean('#comments');
+          document.getElementById(container).style.opacity = 1;
         }, 500)
       })
     });

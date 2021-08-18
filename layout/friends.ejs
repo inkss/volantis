@@ -14,7 +14,7 @@
             <%- markdown(group.description) %>
           <%} %>
           <% if (theme.pages.friends.layout_scheme == 'traditional') { %>
-            <div class='friend-content' id="friend-content-<%- i %>">
+            <div class='friend-content' id="friend-content-<%- i %>" style="opacity: 0;">
               <% (group.items||[]).forEach(function(item){ %>
                 <% if (item.url && item.title) { %>
                   <a class='friend-card'
