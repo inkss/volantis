@@ -9,7 +9,7 @@
       <div id="safearea">
         <div class="body-wrapper" id="pjax-container">
           <%- body %>
-          <%- partial('_third-party/pjax/pdata') %>
+          <%- partial('_plugins/pjax/pdata') %>
         </div>
         <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
         <a id="s-top" class="fal fa-arrow-up fa-fw" href="javascript:void(0)"></a>
@@ -18,7 +18,9 @@
     <div>
       <div id="BKG" class="content-in"></div>
       <%- partial('_partial/scripts/index') %>
-      <% if (theme.plugins.pjax.enable){ %> <%- partial('_third-party/pjax/index') %> <% } %>
+      <% if (theme.plugins.pjax.enable){ %>
+        <%- partial('_plugins/pjax/index') %>
+      <% } %>
     </div>
   <!-- Custom Files bodyEnd begin-->
   <%- volantis_inject('bodyEnd') %>
