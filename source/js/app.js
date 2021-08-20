@@ -7,12 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
     locationHash();
     changeTitle();
   
-  
     volantis.pjax.push(() => {
       VolantisApp.pjaxReload();
       sessionStorage.setItem("domTitle", document.title);
       highlightKeyWords.startFromURL()
-      volantisFancyBox.pjaxReload
+      volantisFancyBox.pjaxReload()
     }, 'app.js');
     volantis.pjax.send(() => {
       volantis.dom.switcher.removeClass('active'); // 关闭移动端激活的搜索框
@@ -80,7 +79,7 @@ const Debounce = (fn, t) => {
 
 const VolantisApp = (() => {
   const fn = {},
-    COPYHTML = '<button class="btn-copy" data-clipboard-snippet=""><i class="fas fa-copy"></i><span>COPY</span></button>';;
+    COPYHTML = '<button class="btn-copy" data-clipboard-snippet=""><i class="fas fa-copy"></i><span>COPY</span></button>';
   let scrollCorrection = 80;
 
   fn.init = () => {
