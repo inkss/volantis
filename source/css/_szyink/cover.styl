@@ -112,12 +112,18 @@ ul.list-v.rightmenu
 
 
 // 文章 P 首行缩进 2
-#l_main > article.cus-indent > p
-  text-indent: 2em
-  &.center
-    text-indent: initial
-  i
-    text-indent: initial
+#l_main > article.cus-indent
+  p
+    text-indent 2em
+    &.p
+      text-indent initial 
+  details,
+  blockquote,
+  section,
+  .note,
+  .tag
+    p
+      text-indent initial 
 
 
 
