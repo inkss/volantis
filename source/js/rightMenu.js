@@ -493,6 +493,7 @@ const RightMenu = (() => {
     } else {
       document.querySelector('#l_body').removeEventListener('click', fn.readingModel);
       document.querySelector('#post').removeEventListener('click', fn.readingModel);
+      document.querySelector('.prev-next').style.display = 'flex'; // 单独修改
     }
   }
 
