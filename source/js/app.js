@@ -1,24 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
-  VolantisApp.init();
-  VolantisApp.subscribe();
-  volantisFancyBox.loadFancyBox();
-
-  volantis.pjax.push(() => {
-    VolantisApp.pjaxReload();
-    sessionStorage.setItem("domTitle", document.title);
-    highlightKeyWords.startFromURL()
-  }, 'app.js');
-  volantis.pjax.send(() => {
-    volantis.dom.switcher.removeClass('active'); // 关闭移动端激活的搜索框
-    volantis.dom.header.removeClass('z_search-open'); // 关闭移动端激活的搜索框
-    volantis.dom.wrapper.removeClass('sub'); // 跳转页面时关闭二级导航
-    volantis.EventListener.remove() // 移除事件监听器 see: layout/_partial/scripts/global.ejs
-  }, 'app.js');
-  volantis.pjax.push(volantisFancyBox.pjaxReload);
-
-  locationHash();
-  changeTitle();
-  highlightKeyWords.startFromURL();
+  volantis.requestAnimationFrame(() => {
+    VolantisApp.init();
+    VolantisApp.subscribe();
+    volantisFancyBox.loadFancyBox();
+    highlightKeyWords.startFromURL();
+    locationHash();
+    changeTitle();
+  
+  
+    volantis.pjax.push(() => {
+      VolantisApp.pjaxReload();
+      sessionStorage.setItem("domTitle", document.title);
+      highlightKeyWords.startFromURL()
+      volantisFancyBox.pjaxReload
+    }, 'app.js');
+    volantis.pjax.send(() => {
+      volantis.dom.switcher.removeClass('active'); // 关闭移动端激活的搜索框
+      volantis.dom.header.removeClass('z_search-open'); // 关闭移动端激活的搜索框
+      volantis.dom.wrapper.removeClass('sub'); // 跳转页面时关闭二级导航
+      volantis.EventListener.remove() // 移除事件监听器 see: layout/_partial/scripts/global.ejs
+    }, 'app.js');
+  });
 });
 
 // 动态修改标题
@@ -41,6 +43,7 @@ const locationHash = () => {
     let locationID = decodeURI(window.location.hash.split('#')[1]).replace(/\ /g, '-');
     let target = document.getElementById(locationID);
     if (target) {
+      volantis.cleanContentVisibility()
       setTimeout(() => {
         if (window.location.hash.startsWith('#fn')) { // hexo-reference https://github.com/volantis-x/hexo-theme-volantis/issues/647
           window.scrollTo({
@@ -121,6 +124,7 @@ const VolantisApp = (() => {
 
   // 校正页面定位（被导航栏挡住的区域）
   fn.scrolltoElement = (elem, correction = scrollCorrection) => {
+    volantis.cleanContentVisibility()
     window.scrollTo({
       top: elem.offsetTop - correction,
       behavior: 'smooth'
@@ -463,6 +467,7 @@ const VolantisApp = (() => {
         let targetID = decodeURI(e.target.hash.split('#')[1]).replace(/\ /g, '-');
         let target = document.getElementById(targetID);
         if (target) {
+          volantis.cleanContentVisibility()
           window.scrollTo({
             top: target.offsetTop + volantis.dom.bodyAnchor.offsetTop - volantis.dom.header.offsetHeight,
             behavior: "smooth" //平滑滚动
@@ -679,6 +684,7 @@ const highlightKeyWords = (() => {
     if (keywords.length==1&&keywords[0]=="null") {
       return;
     }
+    volantis.cleanContentVisibility()
     new Promise((resolve)=>{
       fn.start(keywords, post); // 渲染耗时较长
       resolve();

@@ -110,8 +110,14 @@
         this.list[i].run();
       }
     };
-    this.push = (fn, name) => {
-      var f = new Item(fn, name);
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = ()=>{
+          volantis.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
       this.list.push(f);
     };
     // 构造一个可以run的对象
@@ -121,7 +127,7 @@
       // run方法
       this.run = () => {
         try {
-          fn();
+          fn()
         } catch (error) {
           console.log(error);
         }
@@ -233,5 +239,29 @@
       }
     }
   }
-  /*****************************************************************/
+  /********************** requestAnimationFrame ********************************/
+  // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+  // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+  volantis.requestAnimationFrame = (fn)=>{
+    if (!window.requestAnimationFrame) {
+      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+    }
+    window.requestAnimationFrame(fn)
+  }
+  /********************** Content Visibility ********************************/
+  // 见 source/css/first.styl 如果遇到任何问题 删除 .post-story 即可
+  // 一个元素被声明 content-visibility 属性后 如果元素不在 viewport 中 浏览器不会计算其后代元素样式和属性 从而节省 Style & Layout 耗时 
+  // content-visibility 的副作用: 锚点失效 等等(实验初期 暂不明确), 使用此方法清除样式
+  volantis.cleanContentVisibility = ()=>{
+    volantis.requestAnimationFrame(()=>{
+      if (document.querySelector(".post-story")) {
+        document.querySelectorAll(".post-story").forEach(e=>{
+          e.classList.remove("post-story")
+        })
+      }
+    })
+  }
+  /******************************************************************************/
+  /******************************************************************************/
+
 </script>
