@@ -110,6 +110,7 @@
     </ul>
   </div>
   <script>
+    if(volantis['isMobile'] !== 1 || document.documentElement.clientWidth > 500) {
     volantis.rightMenu = {};
     volantis.rightMenu.faicon = '<%- theme.rightmenu.faicon %>' || 'fa';
     <% if (theme.plugins.aplayer.enable && (theme.rightmenu.layout||[]).includes('music')) { %>
@@ -160,5 +161,6 @@
       volantis.APlayerController = {};
     <% } %>
     volantis.js('<%- theme.cdn.map.js.rightMenu %>');
+    }
   </script>
 <% } %>
