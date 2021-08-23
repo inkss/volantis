@@ -56,12 +56,12 @@
   <link rel="stylesheet" href="<%- theme.cdn.map.css.style %>" media="print" onload="this.media='all';this.onload=null">
   <noscript><link rel="stylesheet" href="<%- theme.cdn.map.css.style %>"></noscript>
   <script>
-    <% if (theme.plugins.darkmodejs.enable) { %>
-      let userColorScheme=localStorage.getItem("user-color-scheme")
+    <%_ if (theme.plugins.darkmode.enable) { _%>
+      let userColorScheme=localStorage.getItem("color-scheme")
       if(userColorScheme){
         document.documentElement.setAttribute("color-scheme", userColorScheme);
       }
-    <% } %>
+    <%_ } _%>
     document.addEventListener("error", function(e) {
       const elem = e.target;
       const parentElem = e.target.parentElement;
