@@ -1,54 +1,12 @@
-#l_body
-  background-color: #21252b !important
-
+// 异步加载的暗黑模式
 fal,
 fad,
-fas,
 fa,
 svg.iconfont,    
 img,
-.lazyload,
-.pdf
+.lazyload
   filter: brightness(convert(hexo-config('color_scheme.dark.brightness'))) !important
 
-//header
-#wrapper .title
-  color: var(--color-meta)
-.l_header ul.nav-list-h>li>a, ul.list-v >li>a
-  color: var(--color-list)
-.blur
-  background: var(--color-site-bg) !important
-.nav-main
-  .u-search-input
-    background: var(--color-card) !important
-#l_main .article .prev-next>a
-  background: var(--color-block)
-  &:hover
-    background: var(--color-card)
-.article blockquote
-  background: var(--color-block)
-.article-title a
-  color: var(--color-h1)
-details>summary
-  color: var(--color-p) !important
-  background: var(--color-site-bg) !important
-details
-  border: none !important
-  background: var(--color-site-bg)
-
-//search
-#u-search .modal,
-#u-search .modal-header,
-#u-search .modal-body
-  background: var(--color-card) !important
-#u-search .modal-body .modal-results .result:hover
-  background: var(--color-block) !important
-
-//phone search
-.l_header .m_search
-  @media screen and (max-width: $device-mobile)
-    background: var(--color-site-bg) !important
- 
 //side
 .widget.blogger .content .social-wrapper a.social:hover
   background: var(--color-card)
@@ -66,10 +24,10 @@ kbd
 
 //highlight
 .gutter
-  background: #1d1f23 !important
-  background-color: #1d1f23 !important
+  background: var(--color-card) !important
+  background-color: var(--color-card) !important
 .highlight figcaption
-  background-color: #21252b !important
+  background-color: #21252b
 .highlight pre .line, .highlight pre .params
   color: rgba(158, 142, 142, 0.9)
 
@@ -154,17 +112,13 @@ if hexo-config('plugins.aplayer.enable')
 
 if hexo-config('comments.service')=='valine'
   #valine_container button
-    background-color: #363b40 !important
+    background-color: var(--color-block) !important
   #valine_container .vcards .vcontent.expand:before
     background: none !important
   #valine_container .vcards .vcontent.expand:after
     background:  #393c40 !important
   .v[data-class=v] code, .v[data-class=v] pre
     background-color: #332828 !important
-
-if hexo-config('plugins.pjax.animation') == 'circle'
-  .loading-circle
-    background-color: #130e0eb3
 
 // Custom Files
 for $injects_dark in hexo-config('injects.dark')

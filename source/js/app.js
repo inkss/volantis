@@ -70,9 +70,9 @@ const Debounce = (fn, t) => {
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
-        timer = null;
-        fn.apply(this, args);
-      },
+      timer = null;
+      fn.apply(this, args);
+    },
       delay);
   };
 };
@@ -237,9 +237,9 @@ const VolantisApp = (() => {
         });
         // 页面滚动  隐藏
         volantis.dom.$(document).scroll(Debounce(() => {
-            volantis.dom.tocTarget.removeClass('active');
-            volantis.dom.toc.removeClass('active');
-          },
+          volantis.dom.tocTarget.removeClass('active');
+          volantis.dom.toc.removeClass('active');
+        },
           100));
       } else volantis.dom.toc.remove(); // 隐藏toc目录按钮
     }
@@ -279,11 +279,9 @@ const VolantisApp = (() => {
     idname = idname.replace(/(\[|\]|~|#|@)/g, '\\$1');
     if (idname && volantis.dom.headerMenu) {
       volantis.dom.headerMenu.forEach(element => {
-        if (!/^\d/.test(idname)) { // id 不能数字开头
-          let id = element.querySelector("#" + idname)
-          if (id) {
-            volantis.dom.$(id).addClass('active')
-          }
+        let id = element.querySelector("[active-action=" + idname + "]")
+        if (id) {
+          volantis.dom.$(id).addClass('active')
         }
       });
     }
@@ -459,7 +457,7 @@ const VolantisApp = (() => {
   fn.footnotes = () => {
     let ref = document.querySelectorAll('#l_main .footnote-backref, #l_main .footnote-ref > a');
     ref.forEach(function (e, i) {
-      ref[i].click = () => {}; // 强制清空原 click 事件
+      ref[i].click = () => { }; // 强制清空原 click 事件
       volantis.dom.$(e).on('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -479,7 +477,7 @@ const VolantisApp = (() => {
   // 代码块复制
   fn.copyCode = () => {
     if (!(document.querySelector(".highlight .code pre") ||
-        document.querySelector(".article pre code"))) {
+      document.querySelector(".article pre code"))) {
       return;
     }
 
@@ -499,7 +497,7 @@ const VolantisApp = (() => {
 
         const str = document.getSelection().toString();
         fn.writeClipText(str).then(() => {
-          if(volantis.messageCopyright && volantis.messageCopyright.enable) {
+          if (volantis.messageCopyright && volantis.messageCopyright.enable) {
             volantis.message(volantis.messageCopyright.title, volantis.messageCopyright.message, {
               icon: volantis.messageCopyright.icon
             });
@@ -680,34 +678,27 @@ const highlightKeyWords = (() => {
     const params = decodeURI(new URL(location.href).searchParams.get('keyword'));
     const keywords = params ? params.split(' ') : [];
     const post = document.querySelector('#l_main');
-    if (keywords.length==1&&keywords[0]=="null") {
+    if (keywords.length == 1 && keywords[0] == "null") {
       return;
     }
     volantis.cleanContentVisibility()
-    new Promise((resolve)=>{
-      fn.start(keywords, post); // 渲染耗时较长
-      resolve();
-    }).then(()=>{
-      let target = fn.scrollToNextHighlightKeywordMark("0");
-      let epcho = 10;
-      let CheckMarkInterval = setInterval(()=>{
-        if (!target && epcho) {
-          target = fn.scrollToNextHighlightKeywordMark("0");
-          epcho --;
-        }else{
-          clearInterval(CheckMarkInterval);
-        }
-      },1000);
-    })
+    fn.start(keywords, post); // 渲染耗时较长
+    fn.scrollToFirstHighlightKeywordMark()
+  }
+  fn.scrollToFirstHighlightKeywordMark = () => {
+    let target = fn.scrollToNextHighlightKeywordMark("0");
+    if (!target) {
+      volantis.requestAnimationFrame(fn.scrollToFirstHighlightKeywordMark)
+    }
   }
   fn.scrollToNextHighlightKeywordMark = (id) => {
     // Next Id
     let input = id || (fn.markNextId + 1) % fn.markNum;
     fn.markNextId = parseInt(input)
-    let target = document.getElementById("keyword-mark-"+fn.markNextId);
+    let target = document.getElementById("keyword-mark-" + fn.markNextId);
     if (!target) {
       fn.markNextId = (fn.markNextId + 1) % fn.markNum;
-      target = document.getElementById("keyword-mark-"+fn.markNextId);
+      target = document.getElementById("keyword-mark-" + fn.markNextId);
     }
     if (target) {
       window.scrollTo({
@@ -722,10 +713,10 @@ const highlightKeyWords = (() => {
     // Prev Id
     let input = id || (fn.markNextId - 1 + fn.markNum) % fn.markNum;
     fn.markNextId = parseInt(input)
-    let target = document.getElementById("keyword-mark-"+fn.markNextId);
+    let target = document.getElementById("keyword-mark-" + fn.markNextId);
     if (!target) {
       fn.markNextId = (fn.markNextId - 1 + fn.markNum) % fn.markNum;
-      target = document.getElementById("keyword-mark-"+fn.markNextId);
+      target = document.getElementById("keyword-mark-" + fn.markNextId);
     }
     if (target) {
       window.scrollTo({
@@ -737,7 +728,7 @@ const highlightKeyWords = (() => {
   }
   fn.start = (keywords, querySelector) => {
     fn.markNum = 0
-    if (!keywords.length || !querySelector || (keywords.length==1&&keywords[0]=="null")) return;
+    if (!keywords.length || !querySelector || (keywords.length == 1 && keywords[0] == "null")) return;
     console.log(keywords);
     const walk = document.createTreeWalker(querySelector, NodeFilter.SHOW_TEXT, null);
     const allNodes = [];
@@ -759,7 +750,7 @@ const highlightKeyWords = (() => {
       const div = document.createElement('div');
       div.innerText = word;
       word = div.innerHTML;
-  
+
       const wordLen = word.length;
       if (wordLen === 0) return;
       let startPosition = 0;
@@ -794,7 +785,7 @@ const highlightKeyWords = (() => {
         length: word.length
       });
       const wordEnd = position + word.length;
-  
+
       index.shift();
       while (index.length !== 0) {
         item = index[0];
@@ -833,9 +824,9 @@ const highlightKeyWords = (() => {
     });
   }
   fn.highlightStyle = (mark) => {
-    if(!mark) return;
+    if (!mark) return;
     mark.id = "keyword-mark-" + fn.markNum;
-    fn.markNum ++;
+    fn.markNum++;
     mark.style.background = "#ff0";
     mark.style["border-bottom"] = "1px dashed #ff2a2a";
     mark.style["color"] = "#ff2a2a";
@@ -843,7 +834,7 @@ const highlightKeyWords = (() => {
     return mark
   }
   fn.cleanHighlightStyle = () => {
-    document.querySelectorAll(".keyword").forEach(mark=>{
+    document.querySelectorAll(".keyword").forEach(mark => {
       mark.style.background = "transparent";
       mark.style["border-bottom"] = null;
       mark.style["color"] = null;
