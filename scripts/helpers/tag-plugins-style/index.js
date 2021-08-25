@@ -80,9 +80,13 @@ hexo.extend.filter.register('before_post_render', function (data) {
   return data;
 });
 function getTagCSS(page) {
-  if (page.uuidTagCSS in hexo.theme.mycss.TagCSS) {
-    return hexo.theme.mycss.TagCSS[page.uuidTagCSS];
-  } else {
+  try {
+    if (page.uuidTagCSS in hexo.theme.mycss.TagCSS) {
+      return hexo.theme.mycss.TagCSS[page.uuidTagCSS];
+    } else {
+      return hexo.theme.mycss.TagCSS["all"];
+    }
+  } catch (error) {
     return hexo.theme.mycss.TagCSS["all"];
   }
 }
