@@ -29,7 +29,7 @@
     //    https://drafts.csswg.org/css-sizing-4/#intrinsic-size-override
     if (!old || rectNotEQ(old, rect)) {
       spaced.set(el, rect);
-      el.attributeStyleMap.set(
+      if(el) el.attributeStyleMap.set(
         "contain-intrinsic-size",
         `${rect.width}px ${rect.height}px`
       );
@@ -77,9 +77,13 @@
   };
 
   let contentVisibilityScrollFix = () => {
-    resizeResilientDeferredRendering(".post-story");
-    resizeResilientDeferredRendering("article");
-    resizeResilientDeferredRendering(".post-wrapper");
+    try {
+      resizeResilientDeferredRendering(".post-story");
+      resizeResilientDeferredRendering("article");
+      resizeResilientDeferredRendering(".post-wrapper");
+    } catch (error) {
+      console.error(`错误：${error}`)
+    }
   };
   contentVisibilityScrollFix();
   volantis.pjax.push(contentVisibilityScrollFix);
