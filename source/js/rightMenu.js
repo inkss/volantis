@@ -30,7 +30,7 @@ const RightMenu = (() => {
     const readBkg = document.createElement("div");
     readBkg.className = "common_read_bkg common_read_hide";
     readBkg.id = "read_bkg";
-    window.document.body.appendChild(readBkg);
+    document.getElementById('BKG').parentNode.appendChild(readBkg);
   }
 
   fn.initEvent = () => {

@@ -111,8 +111,6 @@
 
 <%- partial('toc') %>
 
-<!-- <%- partial('content-visibility-scroll-fix') %> -->
-
 <% if (theme.structured_data && theme.structured_data.enable) { %>
   <%- structured_data() %>
 <% } %>
@@ -120,8 +118,6 @@
 <%- partial('../szyink') %>
 
 <%- js(theme.cdn.map.js.iconfontInkss) %>
-
-<%- js(theme.cdn.map.js.iconfontEmoji) %>
 
 <!-- more -->
 <% if (config.import && config.import.script) { %>

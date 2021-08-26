@@ -16,11 +16,11 @@
       </div>
     </div>
     <div>
-      <div id="BKG" class="content-in"></div>
       <%- partial('_partial/scripts/index') %>
       <% if (theme.plugins.pjax.enable){ %>
         <%- partial('_plugins/pjax/index') %>
       <% } %>
+      <div id="BKG" class="content-in"></div>
     </div>
   <!-- Custom Files bodyEnd begin-->
   <%- volantis_inject('bodyEnd') %>
