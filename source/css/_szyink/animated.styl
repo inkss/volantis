@@ -1,59 +1,52 @@
 // 从 https://blog.imsyy.top/ 扒下来的动画
 
-.tab-pane {
-  animation: fade-in;
-  animation-duration: 0.3s;
-  -webkit-animation: fade-in 0.3s;
-}
+.tab-pane
+  animation: fade-in
+  animation-duration: 0.3s
+  -webkit-animation: fade-in 0.3s
 
-div.tabs ul.nav-tabs li.tab.active a {
-  transition: 0.5s;
-}
+div.tabs ul.nav-tabs li.tab.active a
+  transition: 0.5s
 
-#l_side {
-  animation: tabshow 0.5s;
-  -webkit-animation: tabshow 0.5s;
-  -moz-animation: tabshow 0.5s;
-  -o-animation: tabshow 0.5s;
-  -ms-animation: tabshow 0.5s;
-}
+div.tabs .tab-content .tab-pane.active
+  animation: tabshow 0.2s cubic-bezier(0.23, 0, 0, 1.32)
+  -moz-animation: tabshow 0.2s cubic-bezier(0.23, 0, 0, 1.32)
+  -o-animation: tabshow 0.2s cubic-bezier(0.23, 0, 0, 1.32)
+  -ms-animation: tabshow 0.2s cubic-bezier(0.23, 0, 0, 1.32)
+  -webkit-animation: tabshow 0.2s cubic-bezier(0.23, 0, 0, 1.32)
 
-.container ul.list-v {
-  animation: sub_menus;
-  animation-duration: 0.3s;
-  -webkit-animation: sub_menus 0.3s;
-}
+#l_side
+  animation: tabshow 0.5s
+  -webkit-animation: tabshow 0.5s
+  -moz-animation: tabshow 0.5s
+  -o-animation: tabshow 0.5s
+  -ms-animation: tabshow 0.5s
 
-ul.list-v.rightmenu {
-  animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32);
-  -moz-animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32);
-  -o-animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32);
-  -ms-animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32);
-  -webkit-animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32);
-}
+.container ul.list-v
+  animation: sub_menus
+  animation-duration: 0.3s
+  -webkit-animation: sub_menus 0.3s
 
-header#l_header {
-  -webkit-animation: header-effect 1s;
-  -moz-animation: header-effect 1s;
-  -o-animation: header-effect 1s;
-  -ms-animation: header-effect 1s;
-  animation: header-effect 1s;
-}
+ul.list-v.rightmenu
+  animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32)
+  -moz-animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32)
+  -o-animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32)
+  -ms-animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32)
+  -webkit-animation: header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32)
 
-details summary:hover {
-  transition: 0.3s;
-}
 
-details[open] >div.content {
-  -webkit-animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  -moz-animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  -o-animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  -ms-animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
+details summary:hover
+  transition: 0.3s
+
+details[open] > div.content
+  -webkit-animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+  -moz-animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+  -o-animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+  -ms-animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+  animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
 
 //===============================================================================//
-// sub_menus, tabshow, bottom-top, bottom-top, fade-in, tabshow
+// fade-in, sub_menus, tabshow, bottom-top, header-effect
 //===============================================================================//
 
 // fade-in
