@@ -18,7 +18,7 @@ default:
 ############################### Volantis ###############################
 info:
   theme_name: Volantis # This is theme's name.
-  theme_version: '5.0.0.alpha.1' # This is theme's version.
+  theme_version: '5.0.0.alpha.2' # This is theme's version.
   theme_docs: https://volantis.js.org/ # This is theme's URL.
   theme_repo: https://github.com/volantis-x/hexo-theme-volantis
 
@@ -236,7 +236,23 @@ article:
 comments:
   title: <i class='fas fa-comments'></i> 评论
   subtitle:
-  service: beaudar # valine, twikoo, waline, minivaline, disqus, disqusjs, gitalk, vssue, livere, isso, hashover
+  service: giscus # giscus, beaudar, utterances, valine, twikoo, waline, minivaline, disqus, disqusjs, gitalk, vssue, livere, isso, hashover
+  # giscus
+  # https://giscus.app
+  # https://github.com/laymonage/giscus
+  giscus:
+    theme:
+      light: https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/css/giscus/light.css
+      dark: https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/css/giscus/dark.css
+    # 以下配置按照 yml 格式增删填写即可
+    # repo: xxx/xxx
+    # repo-id: xxx
+    # category: xxx
+    # category-id: xxx
+    # mapping: "pathname"
+    # reactions-enabled: "1"
+    # emit-metadata: "0"
+
   # beaudar
   # https://beaudar.lipk.org/
   beaudar:
@@ -250,7 +266,6 @@ comments:
       light: github-light
       dark: github-dark
     label: ✨💬✨
-    crossorigin: anonymous
   # utterances
   # https://utteranc.es/
   utterances:
@@ -261,7 +276,6 @@ comments:
       light: github-light
       dark: github-dark
     label: ✨💬✨
-    crossorigin: anonymous
   # Valine
   # https://valine.js.org/
   valine:
@@ -568,12 +582,29 @@ plugins:
     blurIn: true # 模糊加载效果 （loadingImg为空时有效）
 
   ######## Plugins to optimize the experience:
+  # 代码高亮
+  code_highlight: highlightjs # highlightjs or prismjs
   # highlight.js
   highlightjs:
-    enable: #true # Please set hexo.config.highlight.enable = false !!!
-    js: https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js
+    copy_code: true
+    # 如果开启 js, hexo.config.highlight.enable 需要设置为 false
+    js: #https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/highlight.min.js # Please set hexo.config.highlight.enable = false !!!
     css: https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.1.0/build/styles/default.min.css
     # more: https://www.jsdelivr.com/package/npm/highlight.js?path=styles
+
+  # prismjs
+  # https://prismjs.com/
+  # https://hexo.io/zh-cn/docs/syntax-highlight#PrismJS
+  prismjs:
+    copy_code: true
+    # Please set hexo.config.highlight.enable = false !!! set hexo.config.prismjs.enable = true !!!
+    js:
+      - https://cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js
+      - https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js
+      - https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js
+    css:
+      - https://cdn.jsdelivr.net/npm/prismjs/themes/prism-dark.css
+      - https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css
 
   # https://scrollrevealjs.org/api/reveal.html
   scrollreveal:
@@ -665,7 +696,8 @@ plugins:
     cacheBust: false     # When set to true, Pjax appends a timestamp  to skip the browser cache.
     animation: false # false, nprogress, circle
     banUrl:              # 被屏蔽的 url 地址将不启用 pjax 跳转，可以在控制台下使用 window.location.pathname 获取
-      # - '/artitalk/'     # artitalk 不支持 pjax
+      # - '/artitalk/'   # artitalk 不支持 pjax
+      # - '/bbtalk/'     # bbtalk 不支持 pjax
 
   # 暗黑模式 darkmode
   # 开关按钮：在 navbar.menu 中添加：
@@ -712,17 +744,11 @@ plugins:
   # BBtalk https://bb.js.org
   bbtalk:
     # Set `plugins: ["bbtalk"]` to enable in front-matter
-    # 支持 Pjax
+    # 不支持 Pjax
     js: https://cdn.jsdelivr.net/npm/bbtalk@0.1.5/dist/bbtalk.min.js # BBtalk.js
     appId: 0KzOX4vC7Jsk6vzUGNeEiUaI-gzGzoHsz # your appID
     appKey: HwCiWuxfpvKiLm4teCUgTIba # your appKEY
     serverURLs: https://bbapi.heson10.com # Request Api 域名
-
-  # Tidio聊天功能
-  # https://www.tidio.com/
-  tidio:
-    enable: #true
-    id: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   # HexoPlusPlus
   # https://github.com/HexoPlusPlus/HexoPlusPlus
@@ -784,14 +810,29 @@ plugins:
       enable: true
   
   # 标签插件样式按需加载
+  # 注意这个配置是带缓存的, 如果修改标签插件样式每次调试需要刷新两次页面, 建议开发者关闭该配置
   tag_plugin_load_on_demand:
-    enable: true
+    enable: #true
     # 每个页面强制加载以下标签插件样式
     plugins:
       - note
       - btns
       - p
       - gallery
+
+  # 聊天功能
+  chat_service: # tidio or gitter
+
+  # Tidio
+  # https://www.tidio.com/
+  tidio:
+    id: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  # Gitter
+  # https://gitter.im
+  gitter:
+    room: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 ############################### Plugins ############################### > end
 
 ############################### Rightmenu ############################### > start
@@ -1029,8 +1070,8 @@ custom_css:
 analytics:
   busuanzi: #https://cdn.jsdelivr.net/gh/volantis-x/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js
   leancloud: # 请使用自己的 id & key 以防止数据丢失
-    app_id: u9j57bwJod4EDmXWdxrwuqQT-MdYXbMMI
-    app_key: jfHtEKVE24j0IVCGHbvuFClp
+    app_id: # u9j57bwJod4EDmXWdxrwuqQT-MdYXbMMI
+    app_key: # jfHtEKVE24j0IVCGHbvuFClp
     custom_api_server: # 国际版一般不需要写，除非自定义了 API Server
 ############################### Analytics ############################### > end
 

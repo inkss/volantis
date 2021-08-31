@@ -10,9 +10,6 @@
   <% if (theme.plugins.nodewaves.enable) { %>
   volantis.css("<%- theme.plugins.nodewaves.css %>");
   <% } %>
-  <% if ((theme.plugins.highlightjs.enable == true)&&(theme.plugins.highlightjs.css)) { %>
-  volantis.css("<%- theme.plugins.highlightjs.css %>");
-  <% } %>
 </script>
 
 <!-- required -->
@@ -78,8 +75,8 @@
   <%- js(theme.plugins.comment_typing.js) %>
 <% } %>
 
-<% if (theme.plugins.highlightjs.enable) { %>
-  <%- partial('../../_plugins/highlightjs/script') %>
+<% if (theme.plugins.code_highlight) { %>
+  <%- partial('../../_plugins/highlight/script') %>
 <% } %>
 
 <% if (theme.analytics && theme.analytics.leancloud && theme.analytics.leancloud.app_id) { %>
@@ -90,8 +87,8 @@
   <%- partial('../../_plugins/analytics/script') %>
 <% } %>
 
-<% if (theme.plugins.tidio.enable) { %>
-  <%- partial('../../_plugins/tidio/script') %>
+<% if (theme.plugins.chat_service) { %>
+  <%- partial('../../_plugins/chat/index') %>
 <% } %>
 
 <% if (theme.plugins.parallax.enable) { %>
@@ -101,11 +98,7 @@
 <!-- pjax 标签必须存在于所有页面 否则 pjax error -->
 <pjax>
 <% if (page.plugins) { %>
-<%- partial('../../_plugins/page_plugins/index') %>
-<% } %>
-
-<% if (page.snackbar && site.data.notification && (page.snackbar in site.data.notification)) { %> 
-  <%- partial('../../_plugins/snackbar/script') %>
+<%- partial('../../_plugins/_page_plugins/index') %>
 <% } %>
 </pjax>
 

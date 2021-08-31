@@ -5,7 +5,7 @@
     }
     var commentServerFlag = theme.comments.service == 'twikoo' ? 'block' : 'none';
 %>
-<% if (checkComment && (theme.comments.service && theme.comments.service.length > 0)) { %>
+<% if (checkComment&&(theme.comments.service && theme.comments.service.length > 0)) { %>
   
   <article class="post white-box reveal <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
     <div class="changeComment">
@@ -27,15 +27,6 @@
     </div>
     
 
-    <% if (theme.comments.service && theme.comments.service.length > 0) { %>
-      <%- partial(theme.comments.service + '/layout') %>
-    <% } %>
-
-    <% if (theme.injects.comment.length) { %>
-      <!-- Custom Files comment begin-->
-      <%- volantis_inject('comment') %>
-      <!-- Custom Files comment end-->
-    <% } %>
   </article>
   
 <% } else { %>
