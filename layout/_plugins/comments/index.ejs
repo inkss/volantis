@@ -4,6 +4,8 @@
       checkComment = false;
     }
     var commentServerFlag = theme.comments.service == 'twikoo' ? 'block' : 'none';
+
+    var temp = page || post;
 %>
 <% if (checkComment&&(theme.comments.service && theme.comments.service.length > 0)) { %>
   
@@ -11,7 +13,7 @@
     <div class="changeComment">
       <div class="comment-headline">
         <span hidden>
-          <meta itemprop="discussionUrl" content="<%- url_for(post.link || post.path) %>#comments">
+          <meta itemprop="discussionUrl" content="<%- url_for(temp.link || temp.path) %>#comments">
         </span>
         <p ct><%- theme.comments && theme.comments.title %></p>
         <% if (theme.comments && theme.comments.subtitle) { %>
