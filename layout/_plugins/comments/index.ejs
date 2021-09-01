@@ -10,13 +10,12 @@
   <article class="post white-box reveal <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
     <div class="changeComment">
       <div class="comment-headline">
-        <p ct>
-          <span><%- theme.comments && theme.comments.title %></span>
-        </p>
+        <span hidden>
+          <meta itemprop="discussionUrl" content="<%- url_for(post.link || post.path) %>#comments">
+        </span>
+        <p ct><%- theme.comments && theme.comments.title %></p>
         <% if (theme.comments && theme.comments.subtitle) { %>
-          <p cst>
-            <span><%- theme.comments.subtitle %></span>
-          </p>
+          <p cst><%- theme.comments.subtitle %></p>
         <% } %>
       </div>
       <div class="comment-switch not-select" style="display: <%- commentServerFlag %>;">
