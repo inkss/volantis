@@ -110,7 +110,9 @@
 
 <%- partial('../szyink') %>
 
-<%- js(theme.cdn.map.js.iconfontInkss) %>
+<% if (theme.InconfontFlag) { %>
+  <%- js(theme.cdn.map.js.iconfontInkss) %>
+<% } %>
 
 <!-- more -->
 <% if (config.import && config.import.script) { %>
