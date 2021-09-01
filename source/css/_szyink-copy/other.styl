@@ -1,4 +1,91 @@
 //===========================
+// link-effects
+// 阅读更多的样式
+//===========================
+.link-fx-1 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: auto; // !important - set fixed height
+  right: 10px;
+  padding: 0 6px;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale
+
+  .icon {
+    width: 1.5rem;
+    position: absolute;
+    right: 0;
+    bottom: 1.5px;
+    -webkit-transform: translateX(100%) rotate(90deg);
+    transform: translateX(100%) rotate(90deg);
+
+    circle {
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      transition: stroke-dashoffset .2s;
+    }
+
+    line {
+      transition: -webkit-transform .4s;
+      transition: transform .4s;
+      transition: transform .4s,-webkit-transform .4s;
+      -webkit-transform-origin: 13px 15px;
+      transform-origin: 13px 15px
+    }
+
+    line:last-child {
+      -webkit-transform-origin: 19px 15px;
+      transform-origin: 19px 15px
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    -webkit-transform-origin: right center;
+    transform-origin: right center;
+    transition: -webkit-transform .2s .1s;
+    transition: transform .2s .1s;
+    transition: transform .2s .1s,-webkit-transform .2s .1s
+  }
+
+  &:hover {
+    .icon {
+      circle {
+        stroke-dashoffset: 200;
+        transition: stroke-dashoffset .2s .1s;
+      }
+
+      line {
+        -webkit-transform: rotate(-180deg);
+        transform: rotate(-180deg)
+      }
+
+      line:last-child {
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg)
+      }
+    }
+
+    &::before {
+      -webkit-transform: translateX(17px) scaleX(0);
+      transform: translateX(17px) scaleX(0);
+      transition: -webkit-transform .2s;
+      transition: transform .2s;
+      transition: transform .2s,-webkit-transform .2s
+    }
+  }
+}
+
+
+//===========================
 // 图片加载失败的样式
 // https://www.zhangxinxu.com/wordpress/2020/10/css-style-image-load-fail/
 //===========================
