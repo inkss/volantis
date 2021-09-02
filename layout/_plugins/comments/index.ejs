@@ -4,21 +4,19 @@
       checkComment = false;
     }
     var commentServerFlag = theme.comments.service == 'twikoo' ? 'block' : 'none';
-
-    var temp = page || post;
 %>
 <% if (checkComment&&(theme.comments.service && theme.comments.service.length > 0)) { %>
   
   <article class="post white-box reveal <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
     <div class="changeComment">
       <div class="comment-headline">
-        <span hidden>
-          <meta itemprop="discussionUrl" content="<%- url_for(temp.link || temp.path) %>#comments">
-        </span>
-        <p ct><%- theme.comments && theme.comments.title %></p>
-        <% if (theme.comments && theme.comments.subtitle) { %>
-          <p cst><%- theme.comments.subtitle %></p>
-        <% } %>
+    <span hidden>
+      <meta itemprop="discussionUrl" content="<%- url_for(path) %>#comments">
+    </span>
+    <p ct><%- theme.comments && theme.comments.title %></p>
+    <% if (theme.comments && theme.comments.subtitle) { %>
+      <p cst><%- theme.comments.subtitle %></p>
+    <% } %>
       </div>
       <div class="comment-switch not-select" style="display: <%- commentServerFlag %>;">
         <span class="first-comment">Twikoo</span>
