@@ -4,7 +4,11 @@
     <div class='nav-sub'>
       <p class="title fix-header-title"></p>
       <ul class='switcher nav-list-h m-phone' id="pjax-header-nav-list">
-        <li><a id="s-comment" class="fal fa-comments fa-fw" target="_self"  href="/" onclick="return false;" title="comment"></a></li>
+        <li>
+          <a id="s-comment" target="_self"  href="/" onclick="return false;" title="comment">
+            <i class="fal fa-comments fa-fw"></i>
+          </a>
+        </li>
         <% if (page.sidebar == undefined || page.sidebar != false) { %>
           <li><a id="s-toc" class="s-toc fal fa-list fa-fw" target="_self"  href="/" onclick="return false;" title="toc"></a></li>
         <% } %>
@@ -21,7 +25,7 @@
             <i class='<%- logo.icon %>'></i>
           <% } %>
           <% if (logo.title) { %>
-            <%- logo.title %>
+            <span><%- logo.title %></span>
           <% } %>
         </a>
       <% } %>
@@ -36,14 +40,16 @@
             <% } else if (value.toggle == 'darkmode') { %>
               <li>
                 <a class="menuitem flat-box header toggle-mode-btn">
-                  <i class='<%= value.icon %> fa-fw'></i><%- value.name %>
+                  <i class='<%= value.icon %> fa-fw'></i>
+                  <span><%- value.name %></span>
                 </a>
               <li>
             <% } else if (value.icon && value.icon.indexOf('fa-compact-disc') > -1 && value.url  == undefined && value.rows  == undefined) { %>
               <% if (type == 'pc') { %>
                 <li>
                   <a class="menuitem flat-box">
-                    <i id="aplayerHeaderIcon" class='<%= value.icon %> fa-fw'></i><%- value.name %>
+                    <i id="aplayerHeaderIcon" class='<%= value.icon %> fa-fw'></i>
+                    <span><%- value.name %></span>
                   </a>
                   <ul class="list-v">
                     <li>
@@ -56,7 +62,8 @@
               <% } %>
             <% } else if (value.name != undefined && value.url  == undefined && value.rows == undefined) { %>
               <li class='header'>
-                <% if (value.icon) { %><i class='<%= value.icon %> fa-fw'></i><% } %><%- value.name %>
+                <% if (value.icon) { %><i class='<%= value.icon %> fa-fw'></i><% } %>
+                <span><%- value.name %></span>
               </li>
             <% } else { %>
               <li>
@@ -70,7 +77,7 @@
                   <% if (value.url) { %>
                     active-action="action-<%= url_for(value.url).replace(/\/|%|\./g, "")?url_for(value.url).replace(/\/|%|\./g, ""):"home" %>"
                   <% } %>>
-                  <% if (value.icon) { %><i class='<%= value.icon %> fa-fw'></i><% } %><%- value.name %>
+                  <% if (value.icon) { %><i class='<%= value.icon %> fa-fw'></i><% } %> <span><%- value.name %></span>
                 </a>
                 <% if (value.rows) { %>
                   <ul class="list-v">

@@ -1023,6 +1023,7 @@ custom_css:
       h4: left
       p: justify
   gap:
+    base: 16px
     h2: 48px # Spacing above H2 (only px unit)
     h3: 24px # Spacing above H3 (only px unit)
     h4: 16px # Spacing above H4 (only px unit)
