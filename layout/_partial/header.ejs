@@ -62,7 +62,7 @@
               <% } %>
             <% } else if (value.name != undefined && value.url  == undefined && value.rows == undefined) { %>
               <li class='header'>
-                <% if (value.icon) { %><i class='<%= value.icon %> fa-fw'></i><% } %>
+                <% if (value.icon) { %><span class="icon"><i class='<%= value.icon %> fa-fw'></i><span><% } %>
                 <span><%- value.name %></span>
               </li>
             <% } else { %>
@@ -77,7 +77,7 @@
                   <% if (value.url) { %>
                     active-action="action-<%= url_for(value.url).replace(/\/|%|\./g, "")?url_for(value.url).replace(/\/|%|\./g, ""):"home" %>"
                   <% } %>>
-                  <% if (value.icon) { %><i class='<%= value.icon %> fa-fw'></i><% } %> <span><%- value.name %></span>
+                  <% if (value.icon) { %><span class="icon"><i class='<%= value.icon %> fa-fw'></i></span><% } %> <span><%- value.name %></span>
                 </a>
                 <% if (value.rows) { %>
                   <ul class="list-v">
