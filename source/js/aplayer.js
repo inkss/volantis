@@ -1,7 +1,7 @@
 /**
  * 右键音乐
  * */
-const MainAPlayer = (() => {
+ const MainAPlayer = (() => {
   const APlayer = {}; // 右键音乐所控制的播放器
   const fn = {};
 

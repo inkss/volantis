@@ -44,15 +44,10 @@ const locationHash = () => {
     if (target) {
       setTimeout(() => {
         if (window.location.hash.startsWith('#fn')) { // hexo-reference https://github.com/volantis-x/hexo-theme-volantis/issues/647
-          window.scrollTo({
-            top: target.getBoundingClientRect().top + document.documentElement.scrollTop - volantis.dom.header.offsetHeight - 5,
-            // behavior: "smooth" //平滑滚动
-          });
+          volantis.scroll.to(target,{addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant'})
         } else {
-          window.scrollTo({
-            top: target.getBoundingClientRect().top + document.documentElement.scrollTop + 5, // 锚点中上半部有大片空白 高度大概是 volantis.dom.header.offsetHeight
-            // behavior: "smooth" //平滑滚动
-          });
+          // 锚点中上半部有大片空白 高度大概是 volantis.dom.header.offsetHeight
+          volantis.scroll.to(target,{addTop: 5, behavior: 'instant'})
         }
       }, 1000)
     }
@@ -82,6 +77,7 @@ const VolantisApp = (() => {
         fn.setHeaderSearch();
       }
     }
+    volantis.scroll.push(fn.scrollEventCallBack,"scrollEventCallBack")
   }
 
   fn.event = () => {
@@ -106,44 +102,9 @@ const VolantisApp = (() => {
 
   // 校正页面定位（被导航栏挡住的区域）
   fn.scrolltoElement = (elem, correction = scrollCorrection) => {
-    window.scrollTo({
-      top: elem.offsetTop - correction,
-      behavior: 'smooth'
-    });
-  }
-
-  // 滚动条距离顶部的距离
-  fn.getScrollTop = () => {
-    let scrollPos;
-    if (window.pageYOffset) {
-      scrollPos = window.pageYOffset;
-    } else if (document.compatMode && document.compatMode != 'BackCompat') {
-      scrollPos = document.documentElement.scrollTop;
-    } else if (document.body) {
-      scrollPos = document.body.scrollTop;
-    }
-    return scrollPos;
-  }
-
-  // 使用 requestAnimationFrame 处理滚动事件
-  fn.initScrollEvents = () => {
-    volantis.scroll = {}
-    volantis.scroll.lastScrollTop = fn.getScrollTop()
-    function loop() {
-      const scrollTop = fn.getScrollTop();
-      if (volantis.scroll.lastScrollTop !== scrollTop) {
-        volantis.scroll.del = scrollTop - volantis.scroll.lastScrollTop;
-        volantis.scroll.lastScrollTop = scrollTop;
-        // if (volantis.scroll.del > 0) {
-        //   console.log("向下滚动");
-        // } else {
-        //   console.log("向上滚动");
-        // }
-        fn.scrollEventCallBack()
-      }
-      volantis.requestAnimationFrame(loop)
-    }
-    volantis.requestAnimationFrame(loop)
+    volantis.scroll.to(elem,{
+      top: elem.offsetTop - correction
+    })
   }
 
   // 滚动事件回调们
@@ -152,7 +113,7 @@ const VolantisApp = (() => {
 
     // 显示/隐藏 Header导航 topBtn 【移动端 PC】
     const showHeaderPoint = volantis.dom.bodyAnchor.offsetTop - scrollCorrection;
-    const scrollTop = fn.getScrollTop(); // 滚动条距离顶部的距离
+    const scrollTop = volantis.scroll.getScrollTop(); // 滚动条距离顶部的距离
 
     // topBtn
     if (volantis.dom.topBtn) {
@@ -472,10 +433,7 @@ const VolantisApp = (() => {
         let targetID = decodeURI(e.target.hash.split('#')[1]).replace(/\ /g, '-');
         let target = document.getElementById(targetID);
         if (target) {
-          window.scrollTo({
-            top: target.getBoundingClientRect().top + document.documentElement.scrollTop - volantis.dom.header.offsetHeight - 5,
-            // behavior: "smooth" //平滑滚动
-          });
+          volantis.scroll.to(target,{addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant'})
         }
       });
     })
@@ -569,7 +527,6 @@ const VolantisApp = (() => {
     init: () => {
       fn.init();
       fn.event();
-      fn.initScrollEvents();
     },
     subscribe: () => {
       fn.setIsMobile();
@@ -704,10 +661,7 @@ const highlightKeyWords = (() => {
       target = document.getElementById("keyword-mark-" + fn.markNextId);
     }
     if (target) {
-      window.scrollTo({
-        top: target.getBoundingClientRect().top + document.documentElement.scrollTop - volantis.dom.header.offsetHeight - 5,
-        behavior: "smooth"
-      });
+      volantis.scroll.to(target,{addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
     }
     // Current target
     return target
@@ -722,9 +676,7 @@ const highlightKeyWords = (() => {
       target = document.getElementById("keyword-mark-" + fn.markNextId);
     }
     if (target) {
-      window.scrollTo({
-        top: target.getBoundingClientRect().top + document.documentElement.scrollTop - volantis.dom.header.offsetHeight - 5,
-      });
+      volantis.scroll.to(target, {addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
     }
     // Current target
     return target
