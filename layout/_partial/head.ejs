@@ -1,7 +1,6 @@
 <head>
   <%- meta_generator() %>
   <meta charset="utf-8">
-  <meta name="robots" content="noarchive">
 
   <!-- SEO相关 -->
   <%- generate_seo(theme, page) %>
@@ -25,6 +24,7 @@
   <!-- 页面元数据 -->
   <%- generate_title(config, theme, page) %>
   <%- generate_keywords(config, theme, page) %>
+  <!-- graph -->
   <%- open_graph(theme.open_graph) %>
   <!-- feed -->
   <%_ if (config.feed && config.feed.path){ _%>

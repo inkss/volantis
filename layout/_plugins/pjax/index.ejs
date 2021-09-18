@@ -23,7 +23,9 @@
           "#pjax-container",
           "#pjax-header-nav-list",
           "pjax", // <pjax></pjax> 标签
-          "script[data-pjax], .pjax-reload script" // script标签添加data-pjax 或 script标签外层添加.pjax-reload 的script代码段重载
+          "script[data-pjax], .pjax-reload script", // script标签添加data-pjax 或 script标签外层添加.pjax-reload 的script代码段重载
+          "meta[name='description']",
+          "meta[name='keywords']"
         ],
         cacheBust: <%= theme.plugins.pjax.cacheBust %>,   // url 地址追加时间戳，用以避免浏览器缓存
         timeout: <%= theme.plugins.pjax.timeout %>

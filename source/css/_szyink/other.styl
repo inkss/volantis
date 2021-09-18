@@ -40,11 +40,22 @@ img.error
     text-overflow: ellipsis
     text-indent: initial;
 
+// 封面页加载失败样式调整
+.headimg-div img.error
+  display: inline-block !important
+  &:before
+    background-color: var(--color-card) !important
+
+// Tag link 标签的图标加载失败
+.tag.link img.error
+  min-height: unset
+  min-width: 50px
+
 // 为评论框的图片加载失败文本
 #comments
   img.error
     &:after
-      content: 'img error'
+      content: '加载失败'
 
 // 重写图片大小：评论框头像
 .fix-avatar-imgError > div > img.error
@@ -61,7 +72,7 @@ img.error
 
 // 隐藏 Fancybox 弹窗
 .hideFancybox
-  margin: 0 2px
+  margin: 0 auto
   span
     display: none !important
 

@@ -1050,13 +1050,13 @@ custom_css:
     logofont:
       fontfamily: '"Varela Round", "PingFang SC", "Microsoft YaHei", Helvetica, Arial'
       name: 'Varela Round'
-      url: https://cdn.jsdelivr.net/gh/volantis-x/cdn-fonts/VarelaRound/VarelaRound-Regular.ttf
+      url: ''
       weight: normal
       style: normal
     bodyfont:
       fontfamily: 'UbuntuMono, "Varela Round", "PingFang SC", "Microsoft YaHei", Helvetica, Arial'
       name: 'UbuntuMono'
-      url: https://cdn.jsdelivr.net/gh/volantis-x/cdn-fonts/UbuntuMono/UbuntuMono-Regular.ttf
+      url: ''
       weight: normal
       style: normal
     codefont:
@@ -1084,11 +1084,11 @@ seo:
   # When there is no description in the article's front-matter, use excerpt as the description.
   use_excerpt_as_description: true
   robots:
-    home_first_page: index,follow
-    home_other_pages: noindex,follow
-    archive: noindex,follow
-    category: noindex,follow
-    tag: noindex,follow
+    home_first_page: index,follow,noarchive
+    home_other_pages: noindex,follow,noarchive
+    archive: noindex,follow,noarchive
+    category: noindex,follow,noarchive
+    tag: noindex,follow,noarchive
     # robots can be written in front-matter
 ############################### SEO ############################### > end
 
