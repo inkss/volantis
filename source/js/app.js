@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     volantisFancyBox.loadFancyBox();
     highlightKeyWords.startFromURL();
     locationHash();
-    changeTitle();
+    //changeTitle();
   
     volantis.pjax.push(() => {
       VolantisApp.pjaxReload();
