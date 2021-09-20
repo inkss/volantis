@@ -41,7 +41,7 @@
           })
         }
       }
-    })).then(function () {
+    }),pdata.commentConfig)).then(function () {
       volantis.selectComment = volantis.selectComment === undefined ? 'beaudar' : volantis.selectComment;
       if(volantis.selectComment === 'beaudar') {
         document.getElementById('twikoo').style.display = 'none';
@@ -50,7 +50,7 @@
         document.getElementById('twikoo').style.display = 'block';
         document.getElementById('beaudar_container').style.display = 'none';
       }
-    }),pdata.commentConfig))
+    })
   }
   load_twikoo();
   volantis.pjax.push(()=>{
