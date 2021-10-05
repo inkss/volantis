@@ -39,7 +39,7 @@
               <hr>
             <% } else if (value.toggle == 'darkmode') { %>
               <li>
-                <a class="menuitem flat-box header toggle-mode-btn">
+                <a class="menuitem flat-box header toggle-mode-btn  onclick="switchNightMode()">
                   <i class='<%= value.icon %> fa-fw'></i>
                   <span><%- value.name %></span>
                 </a>
