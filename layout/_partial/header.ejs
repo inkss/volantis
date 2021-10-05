@@ -39,9 +39,8 @@
               <hr>
             <% } else if (value.toggle == 'darkmode') { %>
               <li>
-                <a class="menuitem flat-box header toggle-mode-btn  onclick="switchNightMode()">
-                  <i class='<%= value.icon %> fa-fw'></i>
-                  <span><%- value.name %></span>
+                <a class="menuitem flat-box header toggle-mode-btn" href="javascript:void(0);" onclick="switchNightMode()">
+                  <i class='<%= value.icon %> fa-fw'></i><%- value.name %>
                 </a>
               <li>
             <% } else if (value.icon && value.icon.indexOf('fa-compact-disc') > -1 && value.url  == undefined && value.rows  == undefined) { %>
