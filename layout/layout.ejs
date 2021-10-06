@@ -2,6 +2,7 @@
 <html lang="<%- config.language %>">
   <%- partial('_partial/scripts/_ctrl') _%>
   <%- partial('_partial/head') _%>
+  <%- partial('_partial/darkmode', null, {cache: !config.relative_link}) %>
   <body itemscope itemtype="http://schema.org/WebPage">
     <%- partial('_partial/header', null, {cache: false, path: path}) %>
     <div id="l_body">
@@ -26,5 +27,4 @@
   <%- volantis_inject('bodyEnd') %>
   <!-- Custom Files bodyEnd end-->
   </body>
-  <%- partial('_partial/darkmode', null, {cache: !config.relative_link}) %>
 </html>
