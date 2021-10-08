@@ -245,10 +245,10 @@ const RightMenu = (() => {
       fn.visible(_readingModel, false);
     }
 
-    if (volantis.APlayerController) {
+    if (volantis.APlayerController && typeof MainAPlayer !== 'undefined' && MainAPlayer.APlayer.player !== undefined) {
       if(volantis.rightMenu.musicAlwaysShow) {
         fn.visible(_menuMusic);
-      } else if(typeof MainAPlayer !== 'undefined' && MainAPlayer.APlayer.status === 'play') {
+      } else if(MainAPlayer.APlayer.status === 'play') {
         optionFlag = true;
         fn.visible(_menuMusic);
       } else {
