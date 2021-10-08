@@ -16,6 +16,8 @@
         event.preventDefault();
         // 这里的 addTop 是通过错位使得 toc 自动展开.
         volantis.scroll.to(target, { addTop: 35, observer: false});
+        // Anchor id
+        history.pushState(null, document.title, "#" + target.id);
       });
       return target;
     });
