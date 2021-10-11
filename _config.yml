@@ -80,7 +80,7 @@ cover:
   background: https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
   # background: https://bing.ioliu.cn/v1/rand?w=1920&h=1200
   logo: # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-Cover@3x.png
-  title: '枋柚子'
+  title: '枋柚梓'
   subtitle: '吾法念无念念，行无行行，言无言言，修无修修。'
   search: A Wonderful Theme for Hexo # search bar placeholder
   features:
@@ -395,12 +395,12 @@ sidebar:
     blogger:
       class: blogger
       display: [desktop, mobile] # [desktop, mobile]
-      avatar: https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png
-      shape: rectangle # circle, rectangle
-      url: /about/
+      avatar: https://cdn.jsdelivr.net/gh/inkss/common@1/static/avatar.jpg
+      shape: circle # circle, rectangle
+      url: /page/about/
       title:
-      subtitle:
-      jinrishici: true # Poetry Today. You can set a string, and it will be displayed when loading fails.
+      subtitle: 言语道断，非物所拘。
+      jinrishici: false # Poetry Today. You can set a string, and it will be displayed when loading fails.
       social:
         - icon: fas fa-rss
           url: /atom.xml
