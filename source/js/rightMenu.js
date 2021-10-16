@@ -76,6 +76,7 @@ const RightMenu = (() => {
       _rightMenuWrapper.style.left = showLeft + "px";
       _rightMenuWrapper.style.top = showTop + "px";
       _rightMenuWrapper.style.zIndex = '2147483648';
+      fn.showMessage();
     } catch (error) {
       _rightMenuWrapper.blur();
       console.error(error);
@@ -83,6 +84,18 @@ const RightMenu = (() => {
     }
 
     return false;
+  }
+
+  // 消息提示
+  fn.showMessage = () => {
+    const NoticRightMenu = localStorage.getItem('NoticRightMenu') === 'true';
+    if (volantis.messageRightMenu.enable && !NoticRightMenu) 
+      volantis.message('右键菜单', '唤醒原系统菜单请使用：<kbd>Ctrl</kbd> + <kbd>右键</kbd>', {
+        icon: volantis.rightMenu.faicon + ' fa-exclamation-square red',
+        time: 5000
+      }, () => {
+        localStorage.setItem('NoticRightMenu', 'true')
+      });
   }
 
   // 菜单项设置 

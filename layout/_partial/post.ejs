@@ -23,6 +23,8 @@
   if (post.hideTitle && post.hideTitle === true) {
     showTitle = false;
   }
+
+  let articlTitle = (post.title || post.seo_title) ? (post.title || post.seo_title) : date(post.date, theme.article.body.meta_library.date.format);
   %>
   <% if (showPin == true) { %>
     <div class='pin'>
@@ -31,7 +33,7 @@
   <% } %>
   <% if (post.headimg) { %>
     <div class='headimg-div'>
-      <a class='headimg-a' href="<%- url_for(post.link || post.path) %>">
+      <a class='headimg-a' title='查看文章：《<%- articlTitle %>》' href="<%- url_for(post.link || post.path) %>">
         <img itemprop="image" class='headimg' alt="<%- post.title %>" src='<%- post.headimg %>'/>
       </a>
     </div>
@@ -48,13 +50,13 @@
     }
     %>
     <h2 class="article-title" <%- pinTitle ? 'pin' : '' %> itemprop="name headline">
-      <a href="<%- url_for(post.link || post.path) %>"  itemprop="url">
-        <%- (post.title || post.seo_title) ? (post.title || post.seo_title) : date(post.date, theme.article.body.meta_library.date.format) %>
+      <a href="<%- url_for(post.link || post.path) %>" title='查看文章：《<%- articlTitle %>》'  itemprop="url">
+        <%- articlTitle %>
       </a>
     </h2>
   <% } else { %>
     <span hidden itemprop="name headline">
-      <%- (post.title || post.seo_title) ? (post.title || post.seo_title) : date(post.date, theme.article.body.meta_library.date.format) %>
+      <%- articlTitle %>
     </span>
   <% } %>
   <div class='md' itemprop="articleBody">
