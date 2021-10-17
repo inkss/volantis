@@ -76,6 +76,7 @@ const RightMenu = (() => {
       _rightMenuWrapper.style.left = showLeft + "px";
       _rightMenuWrapper.style.top = showTop + "px";
       _rightMenuWrapper.style.zIndex = '2147483648';
+      fn.showMessage();
     } catch (error) {
       _rightMenuWrapper.blur();
       console.error(error);
@@ -83,6 +84,18 @@ const RightMenu = (() => {
     }
 
     return false;
+  }
+
+  // 消息提示
+  fn.showMessage = () => {
+    const NoticRightMenu = localStorage.getItem('NoticRightMenu') === 'true';
+    if (volantis.messageRightMenu.enable && !NoticRightMenu) 
+      volantis.message('右键菜单', '唤醒原系统菜单请使用：<kbd>Ctrl</kbd> + <kbd>右键</kbd>', {
+        icon: volantis.rightMenu.faicon + ' fa-exclamation-square red',
+        time: 5000
+      }, () => {
+        localStorage.setItem('NoticRightMenu', 'true')
+      });
   }
 
   // 菜单项设置 
@@ -245,9 +258,15 @@ const RightMenu = (() => {
       fn.visible(_readingModel, false);
     }
 
-    if (volantis.APlayerController && typeof MainAPlayer !== 'undefined' && MainAPlayer.APlayer.status === 'play') {
-      optionFlag = true;
-      fn.visible(_menuMusic);
+    if (volantis.APlayerController && typeof MainAPlayer !== 'undefined' && MainAPlayer.APlayer.player !== undefined) {
+      if(volantis.rightMenu.musicAlwaysShow) {
+        fn.visible(_menuMusic);
+      } else if(MainAPlayer.APlayer.status === 'play') {
+        optionFlag = true;
+        fn.visible(_menuMusic);
+      } else {
+        fn.visible(_menuMusic, false);
+      }
     } else {
       fn.visible(_menuMusic, false);
     }
@@ -411,15 +430,18 @@ const RightMenu = (() => {
       fn.remove('.iziToast-overlay');
       fn.remove('.iziToast-wrapper');
       fn.remove('.prev-next');
+      fn.remove('footer');
       fn.remove('#l_header');
       fn.remove('#l_cover');
       fn.remove('#l_side');
       fn.remove('#comments');
       fn.remove('#s-top');
-      fn.remove('footer');
+      fn.remove('#BKG');
       fn.remove('#rightmenu-wrapper');
       fn.remove('.nav-tabs');
-      fn.remove('#BKG');
+      fn.remove('.parallax-mirror'); 
+      fn.remove('.new-meta-item.share'); 
+      fn.remove('div.footer'); 
       fn.setStyle('body', 'backgroundColor', 'unset');
       fn.setStyle('#l_main', 'width', '100%');
       fn.setStyle('#post', 'boxShadow', 'none');
