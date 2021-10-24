@@ -422,6 +422,8 @@ const VolantisApp = (() => {
         _btn.classList.toggle("move");
       }
     }
+    console.clear();
+    console.log("%c ", "background:url(https://api.btstu.cn/sjbz/?lx=dongman) no-repeat center;background-size:cover;padding-left:100%;padding-bottom:55%;overflow:hidden;border-radius:10px;margin:5px 0");
   }
 
   // hexo-reference 页脚跳转 https://github.com/volantis-x/hexo-theme-volantis/issues/647
