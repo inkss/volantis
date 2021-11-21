@@ -31,5 +31,6 @@
   "frame": ["frame.styl"],
   "contributors": ["friends.styl"],
   "friends": ["friends.styl"],
-  "tiy": ["tiy.styl"]
+  "tiy": ["tiy.styl"],
+  "swiper": ["swiper.styl"]
 }
