@@ -154,7 +154,14 @@ div.el-input-group__prepend
   &>.tk-row>.tk-action
     display: flex !important
 
-// 移动端不显示背景图
-#twikoo input, #twikoo textarea
-  @media screen and (max-width: 500px)
-    background-image: none !important;
+
+#twikoo
+  input,
+  textarea
+    @media screen and (max-width: 500px)
+      background-image: none !important
+  .tk-footer,
+  .tk-action-icon __markdown
+    display: none
+  .tk-comments
+    margin-bottom: 10px
