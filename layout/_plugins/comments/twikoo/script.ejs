@@ -10,34 +10,21 @@
     let placeholder = pdata.commentPlaceholder || "<%= theme.comments.twikoo.placeholder %>" || "";
     if (path.length == 0) {
       let defaultPath = '<%= theme.comments.twikoo.path %>';
-      path = defaultPath || "decodeURI(window.location.pathname)"; //神奇的pathname
+      path = defaultPath || decodeURI(window.location.pathname); //神奇的pathname
     }
     twikoo.init(Object.assign(Object.assign(<%- JSON.stringify(theme.comments.twikoo) %>, {
       el: '#twikoo_container',
       path: path,
       placeholder: placeholder,
       onCommentLoaded: function() {
-        const nodeList = document.querySelectorAll('.tk-content img:not([fancybox]):not([class*="emo"])');
-        nodeList.forEach(item => {
-          item.setAttribute('fancybox', 'true');
-          const url = item.getAttribute('data-lazy-src') || item.getAttribute('src');
-          const alt = item.getAttribute('alt') || '';
-          const template = `<a class='fancybox' href='${url}' data-fancybox='Twikoo' data-caption='${alt}'>${item.outerHTML}</a>`;
-          const node = document.createElement('template');
-          node.innerHTML = template;
-          item.parentNode.replaceChild(node.content.lastChild, item);
-        })
-        
-        if(nodeList.length !== 0) {
+        if(typeof volantisFancyBox === "undefined") {
           const checkFancyBox = setInterval(() => {
             if(typeof volantisFancyBox === "undefined") return;
             clearInterval(checkFancyBox);
-            if (typeof Fancybox === "undefined") {
-              volantisFancyBox.loadFancyBox();
-            } else {
-              volantisFancyBox.initFancyBox();
-            }
+            volantisFancyBox.reloadFancyBox('.tk-content img:not([class*="emo"])', 'Comments');
           })
+        } else {
+          volantisFancyBox.reloadFancyBox('.tk-content img:not([class*="emo"])', 'Comments');
         }
       }
     }),pdata.commentConfig))

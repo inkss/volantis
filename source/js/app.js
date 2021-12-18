@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     VolantisApp.init();
     VolantisApp.subscribe();
     volantisFancyBox.loadFancyBox();
+    volantisFancyBox.bind('#post-body img:not([fancybox])');
     highlightKeyWords.startFromURL();
     locationHash();
     //changeTitle();
@@ -11,7 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
       VolantisApp.pjaxReload();
       sessionStorage.setItem("domTitle", document.title);
       highlightKeyWords.startFromURL()
-      volantisFancyBox.pjaxReload()
+      volantisFancyBox.loadFancyBox()
+      volantisFancyBox.bind('#post-body img:not([fancybox])')
     }, 'app.js');
     volantis.pjax.send(() => {
       volantis.dom.switcher.removeClass('active'); // 关闭移动端激活的搜索框
@@ -44,10 +46,10 @@ const locationHash = () => {
     if (target) {
       setTimeout(() => {
         if (window.location.hash.startsWith('#fn')) { // hexo-reference https://github.com/volantis-x/hexo-theme-volantis/issues/647
-          volantis.scroll.to(target,{addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant'})
+          volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
         } else {
           // 锚点中上半部有大片空白 高度大概是 volantis.dom.header.offsetHeight
-          volantis.scroll.to(target,{addTop: 5, behavior: 'instant'})
+          volantis.scroll.to(target, { addTop: 5, behavior: 'instant' })
         }
       }, 1000)
     }
@@ -77,7 +79,7 @@ const VolantisApp = (() => {
         fn.setHeaderSearch();
       }
     }
-    volantis.scroll.push(fn.scrollEventCallBack,"scrollEventCallBack")
+    volantis.scroll.push(fn.scrollEventCallBack, "scrollEventCallBack")
   }
 
   fn.event = () => {
@@ -102,7 +104,7 @@ const VolantisApp = (() => {
 
   // 校正页面定位（被导航栏挡住的区域）
   fn.scrolltoElement = (elem, correction = scrollCorrection) => {
-    volantis.scroll.to(elem,{
+    volantis.scroll.to(elem, {
       top: elem.offsetTop - correction
     })
   }
@@ -196,7 +198,7 @@ const VolantisApp = (() => {
         fn.scrolltoElement(volantis.dom.commentTarget);
         e.stopImmediatePropagation();
       });
-    } else volantis.dom.comment.style.display='none'; // 关闭了评论，则隐藏评论按钮
+    } else volantis.dom.comment.style.display = 'none'; // 关闭了评论，则隐藏评论按钮
 
     // 移动端toc目录按钮 【移动端】
     if (volantis.isMobile) {
@@ -217,7 +219,7 @@ const VolantisApp = (() => {
           }
           volantis.dom.toc.removeClass('active');
         });
-      } else volantis.dom.toc.style.display='none'; // 隐藏toc目录按钮
+      } else volantis.dom.toc.style.display = 'none'; // 隐藏toc目录按钮
     }
   }
 
@@ -437,7 +439,7 @@ const VolantisApp = (() => {
         let targetID = decodeURI(e.target.hash.split('#')[1]).replace(/\ /g, '-');
         let target = document.getElementById(targetID);
         if (target) {
-          volantis.scroll.to(target,{addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant'})
+          volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
         }
       });
     })
@@ -575,46 +577,94 @@ const volantisFancyBox = (() => {
 
   fn.initFB = () => {
     const group = new Set();
-    group.add('default'); // 默认类
-    group.add('Twikoo'); // TwiKoo 类
-
-    if (!document.querySelector(".md .gallery img, .fancybox")) return;
     document.querySelectorAll(".md .gallery").forEach(function (ele) {
       if (ele.querySelector("img")) {
         group.add(ele.getAttribute('data-group') || 'default');
       }
     })
 
-    Fancybox.destroy();
     for (const iterator of group) {
       if (!!iterator) Fancybox.bind('[data-fancybox="' + iterator + '"]', {
-        Hash: false
+        Hash: false,
+        Thumbs: {
+          autoStart: false,
+        }
       });
     }
   }
 
   fn.loadFancyBox = (done) => {
-    if (!document.querySelector(".md .gallery img, .fancybox")) return;
     volantis.css(" https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css");
     volantis.js('https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js').then(() => {
-      fn.initFB();
-      if (done) done();
+      if(done) done();
     })
   }
 
-  return {
-    loadFancyBox: (done = null) => {
+  /**
+   * 加载并处理图片
+   * 
+   * @param {*} checkMain 是否只处理文章区域的文章
+   * @param {*} done      FancyBox 加载完成后的动作
+   * @returns 
+   */
+  fn.checkFancyBox = (checkMain = true, done = fn.initFB) => {
+    if (!document.querySelector(".md .gallery img, .fancybox") && checkMain) return;
+    if (typeof Fancybox === "undefined") {
       fn.loadFancyBox(done);
+    } else {
+      done();
+    }
+  }
+
+  /**
+   * 指定元素的监听处理（带分组控制）
+   * 
+   * @param {*} selectors 选择器
+   * @param {*} flag      分组
+   */
+  fn.reloadFancyBox = (selectors, flag) => {
+    const nodeList = document.querySelectorAll(selectors);
+    nodeList.forEach($item => {
+      if ($item.hasAttribute('fancybox')) return;
+      $item.setAttribute('fancybox', '');
+      const $link = document.createElement('a');
+      $link.setAttribute('href', $item.src);
+      $link.setAttribute('data-caption', $item.alt);
+      $link.setAttribute('data-fancybox', flag);
+      $link.classList.add('fancybox');
+      $link.append($item.cloneNode());
+      $item.replaceWith($link);
+    })
+    fn.checkFancyBox(false);
+  }
+
+  /**
+   * 原生绑定
+   * 
+   * @param {*} selectors 选择器
+   */
+  fn.bind = (selectors) => {
+    fn.checkFancyBox(false, () => {
+      Fancybox.bind(selectors, {
+        groupAll : true,
+        Hash: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: function (fancybox, carousel, slide) {
+          return slide.$trigger.alt || null
+        }
+      });
+    });
+  }
+
+  return {
+    loadFancyBox: fn.checkFancyBox,
+    reloadFancyBox: (selectors, flag = 'RELOAD') => {
+      fn.reloadFancyBox(selectors, flag);
     },
-    initFancyBox: () => {
-      fn.initFB()
-    },
-    pjaxReload: () => {
-      if (typeof Fancybox === "undefined") {
-        fn.loadFancyBox();
-      } else {
-        fn.initFB();
-      }
+    bind: (selectors) => {
+      fn.bind(selectors)
     }
   }
 })()
@@ -665,7 +715,7 @@ const highlightKeyWords = (() => {
       target = document.getElementById("keyword-mark-" + fn.markNextId);
     }
     if (target) {
-      volantis.scroll.to(target,{addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
+      volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
     }
     // Current target
     return target
@@ -680,7 +730,7 @@ const highlightKeyWords = (() => {
       target = document.getElementById("keyword-mark-" + fn.markNextId);
     }
     if (target) {
-      volantis.scroll.to(target, {addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
+      volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
     }
     // Current target
     return target
