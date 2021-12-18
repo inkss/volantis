@@ -80,8 +80,8 @@ cover:
   background: https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
   # background: https://bing.ioliu.cn/v1/rand?w=1920&h=1200
   logo: # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-Cover@3x.png
-  title: '枋柚梓'
-  subtitle: '吾法念无念念，行无行行，言无言言，修无修修。'
+  title: ''
+  subtitle: ''
   search: A Wonderful Theme for Hexo # search bar placeholder
   features:
     - name: 文档
