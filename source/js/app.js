@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     VolantisApp.init();
     VolantisApp.subscribe();
     VolantisFancyBox.init();
-    volantisFancyBox.bind('#post-body img:not([fancybox])');
+    VolantisFancyBox.bind('#post-body img:not([fancybox])');
     highlightKeyWords.startFromURL();
     locationHash();
     //changeTitle();
