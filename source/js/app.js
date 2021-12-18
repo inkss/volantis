@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     VolantisApp.init();
     VolantisApp.subscribe();
     volantisFancyBox.loadFancyBox();
+    volantisFancyBox.bind('#post-body img:not([fancybox])');
     highlightKeyWords.startFromURL();
     locationHash();
     //changeTitle();
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
       sessionStorage.setItem("domTitle", document.title);
       highlightKeyWords.startFromURL()
       volantisFancyBox.loadFancyBox()
+      volantisFancyBox.bind('#post-body img:not([fancybox])')
     }, 'app.js');
     volantis.pjax.send(() => {
       volantis.dom.switcher.removeClass('active'); // 关闭移动端激活的搜索框
