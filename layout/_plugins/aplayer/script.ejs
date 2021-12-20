@@ -2,7 +2,7 @@
   volantis.APlayerController = {}; // 音乐播放控制 - All
   volantis.APlayerController.id = '<%= theme.plugins.aplayer.id %>';  // 设定全局音乐播放ID
   volantis.APlayerController.volume = '<%= theme.plugins.aplayer.volume %>';
-  volantis.css("https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css");
+  volantis.css("https://static.szyink.com/common/js/aplayer.min.css");
   (async () => {
     // APlayer 需要在  MetingJS 之前加载
     await volantis.js("<%- theme.plugins.aplayer.js.aplayer %>")

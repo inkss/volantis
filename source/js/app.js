@@ -424,8 +424,8 @@ const VolantisApp = (() => {
         _btn.classList.toggle("move");
       }
     }
-    console.clear();
-    console.log("%c ", "background:url(https://api.btstu.cn/sjbz/?lx=dongman) no-repeat center;background-size:cover;padding-left:100%;padding-bottom:55%;overflow:hidden;border-radius:10px;margin:5px 0");
+    // console.clear();
+    // console.log("%c ", "background:url(https://api.btstu.cn/sjbz/?lx=dongman) no-repeat center;background-size:cover;padding-left:100%;padding-bottom:55%;overflow:hidden;border-radius:10px;margin:5px 0");
   }
 
   // hexo-reference 页脚跳转 https://github.com/volantis-x/hexo-theme-volantis/issues/647
@@ -545,7 +545,7 @@ const VolantisApp = (() => {
       fn.toggleRightMenu();
       fn.footnotes();
       fn.copyCode();
-      fn.switchComment();
+      // fn.switchComment();
     },
     pjaxReload: () => {
       fn.event();
@@ -558,7 +558,7 @@ const VolantisApp = (() => {
       fn.toggleRightMenu();
       fn.footnotes();
       fn.copyCode();
-      fn.switchComment();
+      // fn.switchComment();
 
       // 移除小尾巴的移除
       document.querySelector("#l_header .nav-main").querySelectorAll('.list-v:not(.menu-phone)').forEach(function (e) {
@@ -576,8 +576,8 @@ const VolantisFancyBox = (() => {
   const fn = {};
 
   fn.loadFancyBox = (done) => {
-    volantis.css(" https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css");
-    volantis.js('https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js').then(() => {
+    volantis.css("https://unpkg.com/@fancyapps/ui/dist/fancybox.css");
+    volantis.js('https://unpkg.com/@fancyapps/ui/dist/fancybox.umd.js').then(() => {
       if (done) done();
     })
   }
