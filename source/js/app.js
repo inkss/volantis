@@ -86,6 +86,15 @@ const VolantisApp = (() => {
     volantis.dom.$(document.getElementById("scroll-down")).on('click', function () {
       fn.scrolltoElement(volantis.dom.bodyAnchor);
     });
+
+    // 站点信息 最后活动日期
+    if (volantis.THEMECONFIG.sidebar.for_page.includes('webinfo')
+      || volantis.THEMECONFIG.sidebar.for_post.includes('webinfo')) {
+      const lastupd = volantis.THEMECONFIG.sidebar.widget_library.webinfo.type.lastupd;
+      if (lastupd.enable && lastupd.friendlyShow) {
+        document.getElementById('last-update-show').innerHTML = fn.timeAgo(volantis.LASTUPDATE);
+      }
+    }
   }
 
   fn.restData = () => {
@@ -165,6 +174,7 @@ const VolantisApp = (() => {
       }
     }
   }
+
   // 设置滚动锚点
   fn.setScrollAnchor = () => {
     // click topBtn 滚动至bodyAnchor 【移动端 PC】
@@ -529,6 +539,44 @@ const VolantisApp = (() => {
     }
   }
 
+  // 工具类：返回时间间隔
+  fn.timeAgo = (dateTimeStamp) => {
+    const minute = 1e3 * 60, hour = minute * 60, day = hour * 24, week = day * 7, month = day * 30;
+    const now = new Date().getTime();
+    const diffValue = now - dateTimeStamp;
+    const minC = diffValue / minute,
+      hourC = diffValue / hour,
+      dayC = diffValue / day,
+      weekC = diffValue / week,
+      monthC = diffValue / month;
+    if (diffValue < 0) {
+      result = ""
+    } else if (monthC >= 1 && monthC < 7) {
+      result = " " + parseInt(monthC) + " 月前"
+    } else if (weekC >= 1 && weekC < 4) {
+      result = " " + parseInt(weekC) + " 周前"
+    } else if (dayC >= 1 && dayC < 7) {
+      result = " " + parseInt(dayC) + " 天前"
+    } else if (hourC >= 1 && hourC < 24) {
+      result = " " + parseInt(hourC) + " 小时前"
+    } else if (minC >= 1 && minC < 60) {
+      result = " " + parseInt(minC) + " 分钟前"
+    } else if (diffValue >= 0 && diffValue <= minute) {
+      result = "刚刚"
+    } else {
+      const datetime = new Date();
+      datetime.setTime(dateTimeStamp);
+      const Nyear = datetime.getFullYear();
+      const Nmonth = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+      const Ndate = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+      const Nhour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
+      const Nminute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+      const Nsecond = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+      result = Nyear + "-" + Nmonth + "-" + Ndate
+    }
+    return result;
+  }
+
   return {
     init: () => {
       fn.init();
@@ -568,6 +616,9 @@ const VolantisApp = (() => {
     },
     writeClipText: fn.writeClipText,
     copyCode: fn.copyCode,
+    timeAgo: (dateTimeStamp) => {
+      return fn.timeAgo(dateTimeStamp)
+    }
   }
 })()
 Object.freeze(VolantisApp);
@@ -629,6 +680,7 @@ const VolantisFancyBox = (() => {
       Fancybox.bind(selectors, {
         groupAll: true,
         Hash: false,
+        hideScrollbar: false,
         Thumbs: {
           autoStart: false,
         },
@@ -656,8 +708,10 @@ const VolantisFancyBox = (() => {
     if (!!groupName) group.add(groupName);
 
     for (const iterator of group) {
-      if (!!iterator) Fancybox.bind('[data-fancybox="' + iterator + '"]', {
+      Fancybox.unbind('[data-fancybox="' + iterator + '"]');
+      Fancybox.bind('[data-fancybox="' + iterator + '"]', {
         Hash: false,
+        hideScrollbar: false,
         Thumbs: {
           autoStart: false,
         }
@@ -671,17 +725,21 @@ const VolantisFancyBox = (() => {
       fn.bind(selectors)
     },
     groupBind: (selectors, groupName = 'default') => {
-      fn.elementHandling(selectors, groupName);
-      fn.init(false, fn.groupBind(groupName));
+      try {
+        fn.elementHandling(selectors, groupName);
+        fn.init(false, () => {
+          fn.groupBind(groupName)
+        });
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 })()
 Object.freeze(VolantisFancyBox);
 
 // highlightKeyWords 与 搜索功能搭配 https://github.com/next-theme/hexo-theme-next/blob/eb194a7258058302baf59f02d4b80b6655338b01/source/js/third-party/search/local-search.js
-
 // Question: 锚点稳定性未知
-
 // ToDo: 查找模式 
 // 0. (/////////要知道浏览器自带全页面查找功能 CTRL + F)
 // 1. 右键开启查找模式 / 导航栏菜单开启?? / CTRL + F ???
@@ -692,7 +750,6 @@ Object.freeze(VolantisFancyBox);
 // 6. 在选定区域中查找 querySelector ??
 // 7. 关闭查找模式
 // 8. 搜索跳转 (URL 入口) 自动开启查找模式 调用 scrollToNextHighlightKeywordMark()
-
 const highlightKeyWords = (() => {
   let fn = {}
   fn.markNum = 0
