@@ -9,7 +9,7 @@
   var banUrl = theme.plugins.pjax.banUrl || [];
 %>
 
-<%- js('https://static.szyink.com/common/js/pjax.min.js') %>
+<%- js(theme.plugins.pjax.js) %>
 <% if (theme.plugins.pjax.animation){ %>
 <%- partial('animate') %>
 <% } %>
