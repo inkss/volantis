@@ -61,7 +61,6 @@
 
     document.addEventListener('pjax:error', function (e) {
       // 使用 volantis.pjax.error 方法传入pjax:error回调函数 参见layout/_partial/scripts/global.ejs
-      volantis.message('系统提示', 'Pjax 加载失败，即将强制刷新。', 'fal fa-exclamation-square red', '3000');
       volantis.pjax.method.error.start();
       window.location.href = e.triggerElement.href;
     });
