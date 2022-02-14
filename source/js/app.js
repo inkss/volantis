@@ -89,13 +89,19 @@ const VolantisApp = (() => {
     });
 
     // 站点信息 最后活动日期
-    if (document.getElementById('last-update-show')
-      && volantis.THEMECONFIG.sidebar.for_page.includes('webinfo')
-      || volantis.THEMECONFIG.sidebar.for_post.includes('webinfo')) {
+    if (volantis.THEMECONFIG.sidebar.for_page.includes('webinfo') || volantis.THEMECONFIG.sidebar.for_post.includes('webinfo')) {
       const lastupd = volantis.THEMECONFIG.sidebar.widget_library.webinfo.type.lastupd;
-      if (lastupd.enable && lastupd.friendlyShow) {
+      if (!!document.getElementById('last-update-show') && lastupd.enable && lastupd.friendlyShow) {
         document.getElementById('last-update-show').innerHTML = fn.utilTimeAgo(volantis.LASTUPDATE);
       }
+    }
+
+    // 站点信息 运行时间
+    if(!!document.getElementById('webinfo-runtime-count')) {
+      let BirthDay = new Date(volantis.THEMECONFIG.sidebar.widget_library.webinfo.type.runtime.data);
+      let timeold = (new Date().getTime() - BirthDay.getTime());
+      let daysold = Math.floor(timeold / (24 * 60 * 60 * 1000));
+      document.getElementById('webinfo-runtime-count').innerHTML = `${daysold} ${volantis.THEMECONFIG.sidebar.widget_library.webinfo.type.runtime.unit}`;
     }
 
     // 消息提示 复制时弹出
@@ -777,8 +783,8 @@ const VolantisFancyBox = (() => {
   const fn = {};
 
   fn.loadFancyBox = (done) => {
-    volantis.css("https://unpkg.com/@fancyapps/ui@4.0.25/dist/fancybox.css");
-    volantis.js('https://unpkg.com/@fancyapps/ui@4.0.25/dist/fancybox.umd.js').then(() => {
+    volantis.css(volantis.THEMECONFIG.plugins.fancybox.css);
+    volantis.js(volantis.THEMECONFIG.plugins.fancybox.js).then(() => {
       if (done) done();
     })
   }

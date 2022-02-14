@@ -20,6 +20,9 @@
         elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([pjax-fancybox]):not([onclick="return false;"]):not([target="_blank"]):not([target="view_window"]):not([href$=".xml"])',
         selectors: [
           "head title",
+          "head meta[name='description']",
+          "head meta[name='keywords']",
+          "head meta[property^='og']",
           <% if (!theme.plugins.pjax.cover){ %>"#l_cover",<% } %>
           "#l_main",
           "#pjax-header-nav-list",
@@ -31,7 +34,8 @@
           "meta[property^='og']"
         ],
         cacheBust: <%= theme.plugins.pjax.cacheBust %>,   // url 地址追加时间戳，用以避免浏览器缓存
-        timeout: <%= theme.plugins.pjax.timeout %>
+        timeout: <%= theme.plugins.pjax.timeout %>,
+        <% if (theme.debug){ %> debug: true,<% } %>
       });
     });
 
@@ -60,8 +64,13 @@
     });
 
     document.addEventListener('pjax:error', function (e) {
-      // 使用 volantis.pjax.error 方法传入pjax:error回调函数 参见layout/_partial/scripts/global.ejs
-      volantis.pjax.method.error.start();
-      window.location.href = e.triggerElement.href;
+      if(volantis.debug) {
+        console.error(e);
+        console.log('pjax error: \n' + JSON.stringify(e));
+      }else{
+        // 使用 volantis.pjax.error 方法传入pjax:error回调函数 参见layout/_partial/scripts/global.ejs
+        volantis.pjax.method.error.start();
+        window.location.href = e.triggerElement.href;
+      }
     });
 </script>
