@@ -23,9 +23,9 @@ function checkLibPrefix(source,hexo) {
     } else if(source[key] && typeof source[key] =="string") {
       if(source[key].match(/^\/media\//g)||source[key].match(/^\/libs\//g)){
         if(hexo.theme.config.cdn.enable&&hexo.theme.config.cdn.prefix){
-          source[key] = hexo.theme.config.cdn.prefix + source[key]
+          source[key] = hexo.theme.config.cdn.prefix + source[key] + '?time=' + Date.now()
         }else if(hexo.config.root){
-          source[key] = hexo.config.root + source[key].slice(1)
+          source[key] = hexo.config.root + source[key].slice(1) + '?time=' + Date.now()
         }
       }
     }
