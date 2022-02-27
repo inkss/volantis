@@ -18,7 +18,7 @@ default:
 ############################### Volantis ###############################
 info:
   theme_name: Volantis # This is theme's name.
-  theme_version: '5.0.0-alpha.8' # This is theme's version.
+  theme_version: '5.0.0-alpha.9' # This is theme's version.
   theme_docs: https://volantis.js.org/ # This is theme's URL.
   theme_repo: https://github.com/volantis-x/hexo-theme-volantis
 # Debug 调试模式
@@ -32,7 +32,7 @@ cdn:
   # CDN 前缀，为空使用默认值，链接最后不加 "/",
   # 例如： https://cdn.jsdelivr.net/gh/volantis-x/volantis-x.github.io@gh-page 填写最后编译生成的源码CDN地址前缀，此路径下应该含有/js与/css目录,
   # 该配置默认值是："https://cdn.jsdelivr.net/npm/hexo-theme-volantis@"+ theme.info.theme_version +"/source"
-  prefix: https://npm.elemecdn.com/hexo-theme-volantis@5.0.0-rc.2/source
+  prefix: https://npm.elemecdn.com/hexo-theme-volantis@5.0.0-rc.3/source
   # 以下配置可以覆盖 cdn.prefix,配置项的值可以为空，但是要使用CDN必须依据路径填写配置项的键
   set:
     js:
@@ -415,7 +415,7 @@ comments:
   # Waline
   # https://waline.js.org/
   waline:
-    js: https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js
+    js: https://npm.elemecdn.com/@waline/client@1.5.4/dist/Waline.min.js
     path: # 全局评论地址 目前设置全局评论地址后visitor失效,这是waline的问题
     placeholder: 快来评论吧~  # 评论占位提示
     # imageHosting: https://7bu.top/api/upload?token=7ffe9d626fe4315c953758efbdb6ee2e # 图床api（默认注释使用base64）
@@ -936,7 +936,6 @@ rightmenu:
   print:                  # 只有文章页才允许自定义打印
     name: 打印页面
     icon: fa fa-print
-    defaultStyles: true   # 是否使用预制的打印样式
   darkmode:        # 需开启 plugins.darkmodejs
     name: 暗黑模式
     icon: fa fa-moon
