@@ -36,7 +36,7 @@ const RightMenu = (() => {
     const readBkg = document.createElement("div");
     readBkg.className = "common_read_bkg common_read_hide";
     readBkg.id = "read_bkg";
-    document.getElementById('BKG').parentNode.appendChild(readBkg);
+    window.document.body.appendChild(readBkg);
   }
 
   fn.initEvent = () => {
@@ -448,7 +448,6 @@ const RightMenu = (() => {
     DOMController.remove('#l_side');
     DOMController.remove('#comments');
     DOMController.remove('#s-top');
-    DOMController.remove('#BKG');
     DOMController.remove('#rightmenu-wrapper');
     DOMController.remove('.nav-tabs');
     DOMController.remove('.parallax-mirror');
@@ -498,12 +497,6 @@ const RightMenu = (() => {
     DOMController.toggleClass(document.querySelector('#post'), 'post_read')
     DOMController.toggleClass(document.querySelector('#l_cover'), 'read_cover')
     DOMController.toggleClass(document.querySelector('.widget.toc-wrapper'), 'post_read')
-
-    // if(document.querySelector('.cus-article-bkg')) {
-    //   fn.fadeToggle(document.querySelector('.cus-article-bkg'))
-    // } else {
-    //   fn.fadeToggle(document.querySelector('#BKG'))
-    // }
 
     volantis.isReadModel = volantis.isReadModel === undefined ? true : !volantis.isReadModel;
     if (volantis.isReadModel) {
