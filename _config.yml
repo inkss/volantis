@@ -18,11 +18,38 @@ default:
 ############################### Volantis ###############################
 info:
   theme_name: Volantis # This is theme's name.
-  theme_version: '5.0.0-alpha.9' # This is theme's version.
+  theme_version: '5.0.0-alpha.10' # This is theme's version.
   theme_docs: https://volantis.js.org/ # This is theme's URL.
   theme_repo: https://github.com/volantis-x/hexo-theme-volantis
 # Debug 调试模式
 debug: false
+############################### CSP ###############################
+# 内容安全策略( CSP )
+# https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CSP
+# https://content-security-policy.com/
+csp:
+  content: "
+    default-src 'self' https:;
+    block-all-mixed-content;
+    base-uri 'self' https:;
+    form-action 'self' https:;
+    worker-src 'self' https:;
+    connect-src 'self' https: *;
+    img-src 'self' data: https: *;
+    media-src 'self' https: *;
+    font-src 'self' data: https: *;
+    frame-src 'self' https: *;
+    manifest-src 'self' https: *;
+    child-src https:;
+    script-src 'self' https: 'unsafe-inline' *;
+    style-src 'self' https: 'unsafe-inline' *;
+  "
+  # 可以使用自动程序替换默认的 'unsafe-inline' 和 * 生成更严格的内容安全策略.
+  # hexo_fliter_sha256 用于 hexo g 时替换 'unsafe-inline' 生成 script-src 'sha256-' , 只适用于外层不含有压缩工具得场景.
+  # 如果外层含有压缩工具会改变 hash 导致无效,hexo_fliter_sha256 需设为false, 使用 gulp 方案.
+  hexo_fliter_sha256: false
+  # 另可以参考官网的 gulp 方案.
+  # gulpfile.js https://github.com/volantis-x/community/blob/main/gulpfile.js
 ############################### CDN ###############################
 # 本地静态文件使用jsdelivr的min版本加速 https://www.jsdelivr.com/features
 # 默认使用 https://cdn.jsdelivr.net/npm/hexo-theme-volantis@<%- theme.info.theme_version %>/source/js/*.min.js 的CDN压缩版本(min.js)，注意版本号对应关系！！可以通过修改以下配置项覆盖
@@ -32,13 +59,15 @@ cdn:
   # CDN 前缀，为空使用默认值，链接最后不加 "/",
   # 例如： https://cdn.jsdelivr.net/gh/volantis-x/volantis-x.github.io@gh-page 填写最后编译生成的源码CDN地址前缀，此路径下应该含有/js与/css目录,
   # 该配置默认值是："https://cdn.jsdelivr.net/npm/hexo-theme-volantis@"+ theme.info.theme_version +"/source"
-  prefix: https://npm.elemecdn.com/hexo-theme-volantis@5.0.0-rc.3/source
+  prefix: https://npm.elemecdn.com/hexo-theme-volantis@5.0.0-rc.4/source
   # 以下配置可以覆盖 cdn.prefix,配置项的值可以为空，但是要使用CDN必须依据路径填写配置项的键
   set:
     js:
       app: /js/app.js
     css:
       style: /css/style.css # (异步加载样式)
+# 请求静态资源添加时间戳 ?time=1648684470140
+cdn_version: true
 ########################################################################
 # 全局页面字符串替换  A => B (可用于临时修改错字等)
 replace:
@@ -273,9 +302,6 @@ comments:
   # https://giscus.app
   # https://github.com/laymonage/giscus
   giscus:
-    theme:
-      light: "light" # https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/css/giscus/light.css
-      dark: "dark" # https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/css/giscus/dark.css
     # 以下配置按照 yml 格式增删填写即可
     # repo: xxx/xxx
     # repo-id: xxx
@@ -285,6 +311,10 @@ comments:
     # reactions-enabled: "1"
     # emit-metadata: "0"
     # lang: "zh-CN"
+    # 以上配置按照 yml 格式增删填写即可
+    theme:
+      light: "light" # https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/css/giscus/light.css
+      dark: "dark" # https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/css/giscus/dark.css
 
   # beaudar
   # https://beaudar.lipk.org/
@@ -415,7 +445,7 @@ comments:
   # Waline
   # https://waline.js.org/
   waline:
-    js: https://npm.elemecdn.com/@waline/client@1.5.4/dist/Waline.min.js
+    js: https://npm.elemecdn.com/@waline/client@1.6.0/dist/Waline.min.js
     path: # 全局评论地址 目前设置全局评论地址后visitor失效,这是waline的问题
     placeholder: 快来评论吧~  # 评论占位提示
     # imageHosting: https://7bu.top/api/upload?token=7ffe9d626fe4315c953758efbdb6ee2e # 图床api（默认注释使用base64）
@@ -607,8 +637,8 @@ plugins:
   # jquery
   globalJquery: false # 全局引入 jquery
   jquery: /libs/jquery/dist/jquery.min.js # https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js
-  # fontawesome Pro 版本：https://cdn.jsdelivr.net/gh/inkss/fontawesome@5.15.3/css/all.min.css
-  fontawesome: /libs/@fortawesome/fontawesome-free/css/all.min.css # https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14/css/all.min.css
+  # fontawesome Pro 版本：https://cdn.jsdelivr.net/gh/inkss/fontawesome@6.0.0/css/all.min.css
+  fontawesome: /libs/@fortawesome/fontawesome-free/css/all.min.css # https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1/css/all.min.css
   # katex@0.15.2
   katex:
     js: /libs/katex/katex.min.js # https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js
@@ -851,17 +881,14 @@ plugins:
 
   # 友链朋友圈 hexo-circle-of-friends
   # https://github.com/Rock-Candy-Tea/hexo-circle-of-friends
-  # https://zfe.space/post/friend-link-circle.html
+  # https://fcircle-doc.js.cool/
   fcircle:
     # Set `plugins: ["fcircle"]` to enable in front-matter
     # 支持 Pjax
     api: '' # api 地址
-    max_number: 20 # 页面展示文章数量
-    add_number: 10 # 每次加载增加的篇数
-    opentype: '_blank' # '_blank'打开新标签,'_self'本窗口打开
-    nofollow: true # 禁止搜索引擎抓取
-    imgError: https://cdn.jsdelivr.net/gh/Zfour/Butterfly-friend-poor-html/friendcircle/404.png
-    # loadingCutom: # 自定义loading图 例如: <i class="fa fa-spinner fa-spin"></i> | <img src="你的图片地址" alt="加载中...">
+    message: '与主机通讯中……'  # 占位文字
+    css: 'https://cdn.jsdelivr.net/gh/lmm214/immmmm/themes/hello-friend/static/fcircle-beta.css'
+    js: 'https://cdn.jsdelivr.net/gh/lmm214/immmmm/themes/hello-friend/static/fcircle-beta.js'
 
   # 消息提示
   message:
