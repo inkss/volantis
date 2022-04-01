@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     highlightKeyWords.startFromURL();
     locationHash();
     //changeTitle();
-  
+
     volantis.pjax.push(() => {
       VolantisApp.pjaxReload();
       VolantisFancyBox.init();
@@ -105,15 +105,9 @@ const VolantisApp = (() => {
     }
 
     // 消息提示 复制时弹出
-    if (volantis.GLOBAL_CONFIG.plugins.message.enable
-      && volantis.GLOBAL_CONFIG.plugins.message.copyright.enable) {
-      document.body.oncopy = function () {
-        VolantisApp.message(volantis.GLOBAL_CONFIG.plugins.message.copyright.title,
-          volantis.GLOBAL_CONFIG.plugins.message.copyright.message, {
-          icon: volantis.GLOBAL_CONFIG.plugins.message.copyright.icon
-        });
-      };
-    }
+    document.body.oncopy = function () {
+      fn.messageCopyright()
+    };
   }
 
   fn.restData = () => {
@@ -433,9 +427,9 @@ const VolantisApp = (() => {
   fn.switchComment = () => {
     const _btn = document.getElementById('switchBtn');
     if (_btn) {
-      if(volantis.selectComment !== 'beaudar') {
+      if (volantis.selectComment !== 'beaudar') {
         _btn.classList.remove('move');
-      } 
+      }
       _btn.onclick = function () {
         const _twikoo = document.getElementById('twikoo');
         const _beaudar = document.getElementById('beaudar_container');
@@ -721,13 +715,19 @@ const VolantisApp = (() => {
   }
 
   // 消息提示：复制
+  volantis.messageCopyrightShow = 0;
   fn.messageCopyright = () => {
     // 消息提示 复制时弹出
     if (volantis.GLOBAL_CONFIG.plugins.message.enable
-      && volantis.GLOBAL_CONFIG.plugins.message.copyright.enable) {
+      && volantis.GLOBAL_CONFIG.plugins.message.copyright.enable
+      && volantis.messageCopyrightShow < 3) {
+      volantis.messageCopyrightShow++;
       VolantisApp.message(volantis.GLOBAL_CONFIG.plugins.message.copyright.title,
         volantis.GLOBAL_CONFIG.plugins.message.copyright.message, {
-        icon: volantis.GLOBAL_CONFIG.plugins.message.copyright.icon
+        icon: volantis.GLOBAL_CONFIG.plugins.message.copyright.icon,
+        transitionIn: 'flipInX',
+        transitionOut: 'flipOutX',
+        displayMode: 1
       });
     }
   }
@@ -765,7 +765,9 @@ const VolantisApp = (() => {
       document.querySelector("#l_header .nav-main").querySelectorAll('.list-v:not(.menu-phone)').forEach(function (e) {
         e.removeAttribute("style")
       })
-      document.querySelector("#l_header .menu-phone.list-v").removeAttribute("style")
+      document.querySelector("#l_header .menu-phone.list-v").removeAttribute("style");
+
+      volantis.messageCopyrightShow = 0;
     },
     utilCopyCode: fn.utilCopyCode,
     utilWriteClipText: fn.utilWriteClipText,
