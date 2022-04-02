@@ -18,7 +18,7 @@ default:
 ############################### Volantis ###############################
 info:
   theme_name: Volantis # This is theme's name.
-  theme_version: '5.0.0-alpha.10' # This is theme's version.
+  theme_version: '5.0.0-alpha.11' # This is theme's version.
   theme_docs: https://volantis.js.org/ # This is theme's URL.
   theme_repo: https://github.com/volantis-x/hexo-theme-volantis
 # Debug 调试模式
@@ -59,7 +59,7 @@ cdn:
   # CDN 前缀，为空使用默认值，链接最后不加 "/",
   # 例如： https://cdn.jsdelivr.net/gh/volantis-x/volantis-x.github.io@gh-page 填写最后编译生成的源码CDN地址前缀，此路径下应该含有/js与/css目录,
   # 该配置默认值是："https://cdn.jsdelivr.net/npm/hexo-theme-volantis@"+ theme.info.theme_version +"/source"
-  prefix: https://npm.elemecdn.com/hexo-theme-volantis@5.0.0-rc.4/source
+  prefix: https://npm.elemecdn.com/hexo-theme-volantis@5.0.0-rc.5/source
   # 以下配置可以覆盖 cdn.prefix,配置项的值可以为空，但是要使用CDN必须依据路径填写配置项的键
   set:
     js:
@@ -244,10 +244,7 @@ article:
       counter:
         icon: fa-solid fa-eye
         unit: '次浏览'
-      # 文章评论数量：支持 valine和waline
-      valinecount:
-        icon: fa-solid fa-comment-dots
-        desc: '' # 条评论
+      # waline 文章评论数量
       walinecount:
         icon: fa-solid fa-comment-dots
         desc: '' # 条评论
@@ -340,36 +337,6 @@ comments:
       light: github-light
       dark: github-dark
     label: ✨💬✨
-
-  # Valine
-  # https://valine.js.org/
-  valine:
-    js: https://cdn.jsdelivr.net/npm/valine@1.4/dist/Valine.min.js
-    emojiCDN: https://cdn.jsdelivr.net/gh/volantis-x/cdn-emoji/valine/
-    path: # 全局评论地址 目前设置全局评论地址后visitor失效,这是valine的问题
-    placeholder: 快来评论吧~  # 评论占位提示
-    # 其他配置项按照yml格式继续填写即可 除了 [el path placeholder emojiCDN emojiMaps] 选项
-    appId: # your appId
-    appKey: # your appKey
-    meta: [nick,mail,link] # valine comment header info
-    requiredFields: [nick,mail]
-    enableQQ: true # Unstable avatar link
-    recordIP: false # Record commenter IP
-    avatar: robohash # gravatar style https://valine.js.org/avatar
-    pageSize: 10 # comment list page size
-    lang: zh-cn
-    highlight: true
-    mathJax: false
-
-  # MiniValine
-  # https://github.com/MiniValine/MiniValine
-  minivaline:
-    js: https://cdn.jsdelivr.net/npm/minivaline@latest
-    path: # 全局评论地址
-    placeholder: 快来评论吧~  # 全局评论占位提示
-    # 更多选项 https://minivaline.js.org/docs/cn/#/Options 按照yml格式继续填写即可 （除了 [el path placeholder] 选项）
-    # 下面是一个例子：
-    serverURL: https://hello.com
 
   # Disqus
   # https://disqus.com
@@ -626,7 +593,7 @@ site_footer:
     <span id="lc-sv">本站总访问量为 <span id='number'><i class="fa-solid fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span> 次</span>
     <span id="lc-uv">访客数为 <span id='number'><i class="fa-solid fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span> 人</span>
   # site copyright
-  copyright: '[Copyright © 2017-2020 XXX](/)'
+  copyright: '[Copyright © since 2017 XXX](/)'
   # You can add your own property here. (Support markdown, for example: br: '<br>')
   br: '<br>'
 ############################### Site Footer ############################### > end
@@ -861,24 +828,6 @@ plugins:
     appKey: HwCiWuxfpvKiLm4teCUgTIba # your appKEY
     serverURLs: https://bbapi.heson10.com # Request Api 域名
 
-  # HexoPlusPlus
-  # https://github.com/HexoPlusPlus/HexoPlusPlus
-  # https://hexoplusplus.js.org/
-  # 无服务器Hexo后端,支持文章编辑,自带图床功能.目标:解决静态博客所有痛点[文章编辑、图片上传、博主活跃信息统计、博主说说、Twikoo加强版、阅读量统计等
-  hpp:
-    # 说说功能
-    # Set `plugins: ["hpptalk"]` to enable in front-matter
-    # 支持 Pjax
-    hpp_talk:
-      css: https://cdn.jsdelivr.net/gh/HexoPlusPlus/HexoPlusPlus@latest/talk.css # 建议锁定版本
-      js: https://cdn.jsdelivr.net/gh/HexoPlusPlus/HexoPlusPlus@latest/talk_user.js # 建议锁定版本
-      limit: 10
-      start: 0
-      # 配置项按照yml格式继续填写即可
-      # domain:
-      # themecss:
-    # HexoPlusPlus其他功能暂未集成
-
   # 友链朋友圈 hexo-circle-of-friends
   # https://github.com/Rock-Candy-Tea/hexo-circle-of-friends
   # https://fcircle-doc.js.cool/
@@ -918,17 +867,6 @@ plugins:
     rightmenu:                            
       enable: true                        # 是否开启右键模块的消息通知
       notice: true                        # 唤醒原右键菜单的通知 
-  
-  # 标签插件样式按需加载
-  # 注意这个配置是带缓存的, 如果修改标签插件样式每次调试需要刷新两次页面, 建议开发者关闭该配置
-  tag_plugin_load_on_demand:
-    enable: #true
-    # 每个页面强制加载以下标签插件样式
-    plugins:
-      - note
-      - btns
-      - p
-      - gallery
 
   # 聊天功能
   chat_service: # tidio or gitter
