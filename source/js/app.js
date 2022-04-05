@@ -715,13 +715,13 @@ const VolantisApp = (() => {
   }
 
   // 消息提示：复制
-  volantis.messageCopyrightShow = 0;
+  let messageCopyrightShow = 0;
   fn.messageCopyright = () => {
     // 消息提示 复制时弹出
     if (volantis.GLOBAL_CONFIG.plugins.message.enable
       && volantis.GLOBAL_CONFIG.plugins.message.copyright.enable
-      && volantis.messageCopyrightShow < 3) {
-      volantis.messageCopyrightShow++;
+      && messageCopyrightShow < 3) {
+      messageCopyrightShow++;
       VolantisApp.message(volantis.GLOBAL_CONFIG.plugins.message.copyright.title,
         volantis.GLOBAL_CONFIG.plugins.message.copyright.message, {
         icon: volantis.GLOBAL_CONFIG.plugins.message.copyright.icon,
@@ -766,8 +766,7 @@ const VolantisApp = (() => {
         e.removeAttribute("style")
       })
       document.querySelector("#l_header .menu-phone.list-v").removeAttribute("style");
-
-      volantis.messageCopyrightShow = 0;
+      messageCopyrightShow = 0;
     },
     utilCopyCode: fn.utilCopyCode,
     utilWriteClipText: fn.utilWriteClipText,
