@@ -243,7 +243,7 @@
         } else {
           script.onload = resolve
         }
-        script.setAttribute("src", src);
+        script.setAttribute("src", src + "<%- theme.cdnCtrl.cdn_version %>");
         HEAD.appendChild(script);
       });
     });
@@ -253,7 +253,7 @@
       setTimeout(function () {
         var link = document.createElement('link');
         link.rel = "stylesheet";
-        link.href = src;
+        link.href = src + "<%- theme.cdnCtrl.cdn_version %>";
         link.onload = resolve;
         document.getElementsByTagName("head")[0].appendChild(link);
       });
@@ -264,7 +264,7 @@
   volantis.import = {
     jQuery: () => {
       if (typeof jQuery == "undefined") {
-        return volantis.js("<%- theme.plugins.jquery %>")
+        return volantis.js("<%- theme.plugins.jquery %>") 
       } else {
         return new Promise(resolve => {
           resolve()

@@ -30,7 +30,7 @@
 <% } %>
 
 <!-- internal -->
-<%- js(theme.cdn.map.js.app) %>
+<script src="<%- theme.cdn.map.js.app %>"></script>
 
 <% if (theme.rightmenu.enable) { %>
   <%- partial('../../_plugins/rightmenu/layout') %>
@@ -122,7 +122,7 @@
 <%- partial('../szyink') %>
 
 <% if (theme.InconfontFlag) { %>
-  <%- js(theme.cdn.map.js.iconfontInkss) %>
+  <script src="<%- theme.cdn.map.js.iconfontInkss %>"></script>
 <% } %>
 
 <!-- more -->

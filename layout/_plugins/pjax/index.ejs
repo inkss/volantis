@@ -9,7 +9,7 @@
   var banUrl = theme.plugins.pjax.banUrl || [];
 %>
 
-<%- js(theme.plugins.pjax.js) %>
+<script src="<%- theme.cdn.map.js.pjax %>"></script>
 <% if (theme.plugins.pjax.animation){ %>
 <%- partial('animate') %>
 <% } %>
