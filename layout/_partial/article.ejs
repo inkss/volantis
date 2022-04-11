@@ -120,7 +120,7 @@
       <% } %>
       <% if (post.next) { %>
         <a class='next' href='<%- url_for(post.next.path) %>'>
-          <p class='title'><%- ppost.next.title || post.next.seo_title || '' %><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='title'><%- post.next.title || post.next.seo_title || '' %><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></p>
           <p class='content'><%- truncate(strip_html(page.next.content), {length: 100}) %></p>
         </a>
       <% } %>
