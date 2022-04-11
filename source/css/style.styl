@@ -1,3 +1,7 @@
+#safearea{
+  display: block
+}
+
 @import '_defines/*'
 
 // Project
@@ -7,9 +11,6 @@
 for $injects_style in hexo-config('injects.style')
   @import $injects_style;
 
-#safearea{
-  display: block
-}
 
 // 自定义样式
 @import '_szyink/*'
