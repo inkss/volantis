@@ -56,11 +56,9 @@ const RightMenus = {
    */
   writeClipImg: async (link, success, error) => {
     try {
-      const data = await fetch(link, {
+      const data = await fetch(`${link}?time=${Date.now()}`, {
         mode: 'cors',
         headers: {
-          "Pragma": "no-cache",
-          "Cache-Control": "no-cache",
           "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Safari/605.1.15"
         }
       });
