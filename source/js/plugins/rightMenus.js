@@ -56,7 +56,14 @@ const RightMenus = {
    */
   writeClipImg: async (link, success, error) => {
     try {
-      const data = await fetch(link);
+      const data = await fetch(link, {
+        mode: 'cors',
+        headers: {
+          "Pragma": "no-cache",
+          "Cache-Control": "no-cache",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Safari/605.1.15"
+        }
+      });
       const blob = await data.blob();
       await navigator.clipboard
         .write([
@@ -201,7 +208,7 @@ RightMenus.fun = (() => {
    */
   fn.menuControl = (event) => {
     fn.globalDataSet(event);
-    if(!!_menuMusic) _menuMusic.style.display = globalData.isShowMusic ? 'block' : 'none';
+    if (!!_menuMusic) _menuMusic.style.display = globalData.isShowMusic ? 'block' : 'none';
     _rightMenuList.forEach(item => {
       item.style.display = 'none';
       const nodeName = item.firstElementChild.nodeName;
