@@ -18,6 +18,8 @@ img,
   background: var(--color-card)
 .content
   color: var(--color-p)
+.content a
+  color: var(--color-p) !important
 .note
   background: var(--color-block) !important
 div.tabs ul.nav-tabs li.tab.active a
@@ -56,6 +58,10 @@ blockquote p
 #archive-page .archive .all-tags ul li span
   color: var(--color-text)
   background: #6f6f72
+
+// btn-copy
+.btn-copy:hover
+  background: var(--color-site-body)
 
 if hexo-config('comments.service')=='gitalk'
   .gt-container .gt-header-textarea
