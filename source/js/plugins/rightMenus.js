@@ -56,6 +56,9 @@ const RightMenus = {
    */
   writeClipImg: async (link, success, error) => {
     try {
+      // 如果使用了cdn的自适应Webp，png格式的图片会返回image/webp导致复制失败
+      // 伪装一个旧版本的Safari浏览器，同时添加time用以避免获取缓存文件
+      // 请求头里设置no-cache造成了莫名其妙的cors问题
       const data = await fetch(`${link}?time=${Date.now()}`, {
         mode: 'cors',
         headers: {
@@ -71,10 +74,7 @@ const RightMenus = {
         ]).then(() => {
           success(true);
         }, (e) => {
-          if (blob.type !== 'image/png')
-            error(`当前文件类型不正确，不支持复制。`)
-          else
-            error(e);
+          error(blob.type !== 'image/png' ? '当前文件类型不正确，不支持复制。' : e);
         });
     } catch (e) {
       error(e)
