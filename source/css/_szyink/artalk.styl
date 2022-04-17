@@ -1,0 +1,39 @@
+#artalk_container
+  i.fa-cog
+    margin 0 auto
+    display block
+  .atk-main-editor
+    border none
+    background var(--color-site-body) !important
+    .atk-textarea-wrap textarea
+      background var(--color-site-body) !important
+      &:focus
+        border-top 1px solid var(--at-color-border)
+    .atk-bottom
+      .atk-plug-btn i
+        display none
+  .atk-list
+    .atk-list-header
+      border-bottom none
+    .atk-list-body
+      .atk-comment-wrap
+        border-bottom none
+      .atk-ua-wrap
+        display none
+      .atk-comment-wrap
+        border-left none
+      .atk-avatar img
+        border-radius 50%
+      .atk-main:hover
+        .atk-footer
+          display block
+      .atk-footer
+        display none
+        position: absolute
+        top: 5px
+        right: 10px
+      .atk-comment-children
+        .atk-footer
+          right: 0
+    .atk-list-footer
+      display none
