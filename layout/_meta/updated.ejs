@@ -1,6 +1,6 @@
-<div class="new-meta-item date" itemprop="dateModified" datetime="<%- moment(post.updated).format() %>">
+<div class="new-meta-item date" itemprop="dateModified">
   <a class='notlink'>
     <i class="<%- theme.article.body.meta_library.updated.icon %> fa-fw" aria-hidden="true"></i>
-    <p><%- theme.article.body.meta_library.updated.title + date(post.updated, theme.article.body.meta_library.updated.format) %></p>
+    <p><%- theme.article.body.meta_library.updated.title %><time class="dataToShow" datetime="<%- moment(post.date).format() %>" title="<%- date(post.updated, theme.article.body.meta_library.updated.format) %>"><%- date(post.updated, theme.article.body.meta_library.updated.format) %></time></p>
   </a>
 </div>

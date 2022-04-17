@@ -389,39 +389,6 @@ const VolantisApp = (() => {
     })
   }
 
-  // 设定激活/销毁自定义右键
-  window.checkRightMenu = true;
-  fn.toggleRightMenu = () => {
-    let _destroyRightContent = document.getElementById('destroyRightContent');
-    let _initRightContent = document.getElementById('initRightContent');
-
-    if (_destroyRightContent || _initRightContent) {
-      if (window.checkRightMenu) {
-        _destroyRightContent.style.display = "block";
-        _initRightContent.style.display = "none";
-      } else {
-        _initRightContent.style.display = "block";
-        _destroyRightContent.style.display = "none";
-      }
-
-      _destroyRightContent.removeEventListener('click', null);
-      _destroyRightContent.addEventListener('click', function () {
-        RightMenu.destroy(true);
-        window.checkRightMenu = false;
-        _initRightContent.style.display = "block";
-        _destroyRightContent.style.display = "none";
-      })
-
-      _initRightContent.removeEventListener('click', null);
-      _initRightContent.addEventListener('click', function () {
-        RightMenu.init(true);
-        window.checkRightMenu = true;
-        _destroyRightContent.style.display = "block";
-        _initRightContent.style.display = "none";
-      })
-    }
-  }
-
   // 评论切换
   volantis.selectComment = 'beaudar';
   fn.switchComment = () => {
@@ -732,6 +699,16 @@ const VolantisApp = (() => {
     }
   }
 
+  // 转换时间
+  fn.dataToShow = () => {
+    document.querySelectorAll('time.dataToShow').forEach(item => {
+      try {
+        let time = fn.utilTimeAgo(new Date(item.getAttribute('datetime'))).trim();
+        item.textContent = time ? time : item.textContent;
+      } catch (error) {}
+    })
+  }
+
   return {
     init: () => {
       fn.init();
@@ -745,8 +722,8 @@ const VolantisApp = (() => {
       fn.setHeaderSearch();
       fn.setScrollAnchor();
       fn.setTabs();
-      fn.toggleRightMenu();
       fn.footnotes();
+      fn.dataToShow();
       // fn.switchComment();
     },
     pjaxReload: () => {
@@ -757,8 +734,8 @@ const VolantisApp = (() => {
       fn.setPageHeaderMenuEvent();
       fn.setScrollAnchor();
       fn.setTabs();
-      fn.toggleRightMenu();
       fn.footnotes();
+      fn.dataToShow();
       // fn.switchComment();
 
       // 移除小尾巴的移除
