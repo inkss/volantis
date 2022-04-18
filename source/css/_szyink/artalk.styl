@@ -32,15 +32,33 @@
             &.error:after
               display none
         .atk-main
-          &:hover
-            .atk-footer
-              display block
-            .atk-comment-children
+          @media screen and (min-width: 840px)
+            &:hover
               .atk-footer
+                display block
+              .atk-comment-children
+                .atk-footer
+                  display none
+            .atk-header
+              .atk-ua-wrap
+                padding 4px 0
+            .atk-footer
                 display none
-          .atk-header
-            .atk-ua-wrap
-              padding 4px 0
+                position absolute
+                margin 0
+                top 18px
+                right 10px
+            .atk-comment-children
+              .atk-comment-wrap
+                &:hover
+                  .atk-footer
+                      display block
+                      top 8px
+                      right 0
+                .atk-comment
+                  padding-right 0
+                  padding-bottom 0    
+                  padding-left 0   
           .atk-body
             .atk-content
               margin-top 0
@@ -55,22 +73,5 @@
                 word-break break-all
                 font-family $fontfamily-code
                 font-size $fontsize-code
-          .atk-footer
-            display none
-            position absolute
-            margin 0
-            top 18px
-            right 10px
-          .atk-comment-children
-            .atk-comment-wrap
-              &:hover
-                .atk-footer
-                  display block
-                  top 8px
-                  right 0
-              .atk-comment
-                padding-right 0
-                padding-bottom 0    
-                padding-left 0    
     .atk-list-footer
       display none
