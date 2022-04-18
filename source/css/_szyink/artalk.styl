@@ -17,23 +17,58 @@
       border-bottom none
     .atk-list-body
       .atk-comment-wrap
+        border-left none 
         border-bottom none
-      .atk-ua-wrap
-        display none
-      .atk-comment-wrap
-        border-left none
-      .atk-avatar img
-        border-radius 50%
-      .atk-main:hover
-        .atk-footer
-          display block
-      .atk-footer
-        display none
-        position: absolute
-        top: 5px
-        right: 10px
-      .atk-comment-children
-        .atk-footer
-          right: 0
+        .atk-avatar
+          width 48px
+          height 48px
+          img
+            border-radius 8px
+            &.error:before
+              width 48px !important
+              height 48px !important
+              border-radius 8px
+            &.error:after
+              display none
+        .atk-main
+          &:hover
+            .atk-footer
+              display block
+            .atk-comment-children
+              .atk-footer
+                display none
+          .atk-header
+            .atk-ua-wrap
+              padding 4px 0
+          .atk-body
+            .atk-content
+              margin-top 0
+              img[src*="inkss/common/emoji"]
+                width 3em
+                height auto
+                vertical-align middle
+              code
+                color var(--color-inlinecode)
+                background var(--color-codeblock)
+                border-radius 2px
+                word-break break-all
+                font-family $fontfamily-code
+                font-size $fontsize-code
+          .atk-footer
+            display none
+            position absolute
+            margin 0
+            top 0
+            right 10px
+          .atk-comment-children
+            .atk-comment-wrap
+              &:hover
+                .atk-footer
+                  display block
+                  right: 0
+              .atk-comment
+                padding-right 0
+                padding-bottom 0    
+                padding-left 0    
     .atk-list-footer
       display none
