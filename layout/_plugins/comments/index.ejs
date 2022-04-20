@@ -8,7 +8,7 @@
 <% if (checkComment&&(theme.comments.service && theme.comments.service.length > 0)) { %>
   
   <% if(theme.comments.service == 'twikoo-beaudar') { %>
-  <article class="post white-box reveal <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
+  <article class="post white-box <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
     <div class="changeComment">
       <div class="comment-headline">
     <span hidden>
@@ -28,7 +28,7 @@
     <div id="layoutHelper-comments"></div>
   </article>
   <% } else { %>
-    <article class="post white-box reveal <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
+    <article class="post white-box <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
       <span hidden>
         <meta itemprop="discussionUrl" content="<%- url_for(path) %>#comments">
       </span>
