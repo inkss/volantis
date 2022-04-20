@@ -1,7 +1,7 @@
 ############################### Volantis ###############################
 info:
   theme_name: Volantis # This is theme's name.
-  theme_version: '5.0.0-alpha.101' # This is theme's version.
+  theme_version: '5.0.0-alpha.102' # This is theme's version.
   theme_docs: https://volantis.js.org/ # This is theme's URL.
   theme_repo: https://github.com/volantis-x/hexo-theme-volantis
 # Debug 调试模式
@@ -279,8 +279,8 @@ comments:
   # https://artalk.js.org/
   # https://github.com/ArtalkJS/Artalk
   artalk:
-    js: https://unpkg.com/artalk@2.1.9/dist/Artalk.js
-    css: https://unpkg.com/artalk@2.1.9/dist/Artalk.css
+    js: https://unpkg.com/artalk@2.2.1/dist/Artalk.js
+    css: https://unpkg.com/artalk@2.2.1/dist/Artalk.css
     server: http://127.0.0.1:8080/api    # 修改为自建的后端服务地址
     path:  # 全局评论地址
     # 更多选项 https://artalk.js.org/guide/frontend/config.html 按照yml格式继续填写即可 
@@ -677,7 +677,7 @@ plugins:
 
   # https://scrollrevealjs.org/api/reveal.html
   scrollreveal:
-    enable: #true
+    enable: true
     js: volantis-static/libs/scrollreveal/dist/scrollreveal.min.js # https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js
     distance: 32px
     duration: 800 # ms
