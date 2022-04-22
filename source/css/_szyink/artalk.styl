@@ -23,7 +23,7 @@
           width 48px
           height 48px
           img
-            border-radius 8px
+            border-radius 50%
             &.error:before
               width 48px !important
               height 48px !important
@@ -65,12 +65,63 @@
                 width 3em
                 height auto
                 vertical-align middle
-              code
-                color var(--color-inlinecode)
-                background var(--color-codeblock)
-                border-radius 2px
-                word-break break-all
-                font-family $fontfamily-code
-                font-size $fontsize-code
+              p
+                code
+                  color var(--color-inlinecode)
+                  font-family $fontfamily-code
+              pre
+                margin 5px 0
+                code
+                  border-radius 2px
+                  word-break break-all
+                  font-family $fontfamily-code
+                  font-size 0.875rem
+                  width auto
+                  &:before
+                    top -5px
+                  &.language-plaintext:before
+                    content: 'TXT'
+                  &.language-conf:before
+                    content: 'CONF'
+                  &.language-json:before
+                    content: 'JSON'
+                  &.language-js:before
+                    content: 'JS'
+                  &.language-css:before
+                    content: 'CSS'
+                  &.language-html:before
+                    content: 'HTML'
+                  &.language-c:before
+                    content: 'C'
+                  &.language-cpp:before
+                    content: 'C++'
+                  &.language-java:before
+                    content: 'Java'
+                  &.language-md:before
+                    content: 'MarkDown'
+                  &.language-shell:before
+                    content: 'Shell'
+                  &.language-php:before
+                    content: 'PHP'
+                  &.language-less:before
+                    content: 'Less'
+                  &.language-ejs:before
+                    content: 'EJS'
+                  &.language-xml:before
+                    content: 'XML'
+                  &.language-sql:before
+                    content: 'SQL'
+                  &.language-python:before
+                    content: 'Python'
+                  &.language-lua:before
+                    content: 'Lua'
+                  &.language-yml:before
+                    content: 'YML'
+                  &.language-yaml:before
+                    content: 'YAML'
+                  &.language-stylus:before
+                    content: 'Stylus'
+                  &.language-scss:before
+                    content: 'SCSS'
     .atk-list-footer
       display none
