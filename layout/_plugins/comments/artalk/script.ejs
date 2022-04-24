@@ -13,6 +13,9 @@
     if (path.length == 0) {
       path = '<%= theme.comments.artalk.path %>' || decodeURI(window.location.pathname);
     }
+    if(!'<%= config.permalink %>'.includes('/index.html')) {
+      path = path.replaceAll('/index.html', '/')
+    }
 
     volantis.artalk = new Artalk(Object.assign(<%- JSON.stringify(theme.comments.artalk) %>, {
       el: '#artalk_container',
