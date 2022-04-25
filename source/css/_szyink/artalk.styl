@@ -51,19 +51,23 @@
               .atk-comment-wrap
                 &:hover
                   .atk-footer
-                      display block
-                      top 8px
-                      right 0
+                    display block
+                    top 8px
+                    right 0
                 .atk-comment
                   padding-right 0
                   padding-bottom 0    
                   padding-left 0   
+                .atk-avatar img
+                  &.error:before
+                    width 36px !important
+                    height 36px !important
           .atk-body
             .atk-content
               margin-top 0
-              img[src*="emoji"]
-                width 3em
-                height auto
+              img[atk-emoticon]
+                width 3em 
+                height auto 
                 vertical-align middle
               p
                 code

@@ -32,10 +32,10 @@
         const checkFancyBox = setInterval(() => {
           if(typeof VolantisFancyBox === "undefined") return;
           clearInterval(checkFancyBox);
-          VolantisFancyBox.groupBind('.atk-content img:not([atk-emoticon]):not([src*="emoji"])', 'Comments');
+          VolantisFancyBox.groupBind('.atk-content img:not([atk-emoticon]):not(.error)', 'Comments');
         })
       } else {
-        VolantisFancyBox.groupBind('.atk-content img:not([atk-emoticon]):not([src*="emoji"])', 'Comments');
+        VolantisFancyBox.groupBind('.atk-content img:not([atk-emoticon]):not(.error)', 'Comments');
       }
     })
   }
