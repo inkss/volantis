@@ -413,6 +413,7 @@ comments:
     path: # 全局评论地址 目前设置全局评论地址后visitor失效,这是waline的问题
     placeholder: 快来评论吧~  # 评论占位提示
     # imageHosting: https://7bu.top/api/upload?token=7ffe9d626fe4315c953758efbdb6ee2e # 图床api（默认注释使用base64）
+    # Authorization: 1|xxxxxxxxxxxxxxxxxxxx
     # 其他配置项按照yml格式继续填写即可 除了 [el path placeholder uploadImage] 选项
     meta: [nick,mail,link] # waline comment header info
     requiredFields: [nick,mail]
@@ -535,7 +536,6 @@ sidebar:
           text: '本站总字数：'   # 需要启用 wordcount
           unit: '字'
         visitcounter:
-          service: leancloud  # busuanzi, leancloud
           siteuv:
             enable: true
             text: '本站访客数：'
