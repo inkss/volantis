@@ -1,131 +1,14 @@
 #artalk_container
   font-family $fontfamily
-  i.fa-cog
-    margin 0 auto
-    display block
   .atk-main-editor
-    border none
-    background var(--color-site-body) !important
-    .atk-textarea-wrap textarea
-      background var(--color-site-body) !important
+    background-color var(--color-site-body)
+    .atk-textarea-wrap
+      background-color var(--color-site-body)
       border-top 1px solid var(--at-color-border)
-    .atk-bottom
-      .atk-plug-btn i
-        display none
-  .atk-list
-    .atk-list-header
-      border-bottom none
-    .atk-list-body
-      .atk-comment-wrap
-        border-left none 
-        border-bottom none
-        .atk-avatar
-          width 48px
-          height 48px
-          img
-            border-radius 50%
-            &.error:before
-              width 48px !important
-              height 48px !important
-              border-radius 8px
-            &.error:after
-              display none
-        .atk-main
-          @media screen and (min-width: 840px)
-            &:hover
-              .atk-footer
-                display block
-              .atk-comment-children
-                .atk-footer
-                  display none
-            .atk-header
-              .atk-ua-wrap
-                padding 4px 0
-            .atk-footer
-                display none
-                position absolute
-                margin 0
-                top 18px
-                right 10px
-            .atk-comment-children
-              .atk-comment-wrap
-                &:hover
-                  .atk-footer
-                    display block
-                    top 8px
-                    right 0
-                .atk-comment
-                  padding-right 0
-                  padding-bottom 0    
-                  padding-left 0   
-                .atk-avatar img
-                  &.error:before
-                    width 36px !important
-                    height 36px !important
-          .atk-body
-            .atk-content
-              margin-top 0
-              img[atk-emoticon]
-                width 3em 
-                height auto 
-                vertical-align middle
-              p
-                code
-                  color var(--color-inlinecode)
-                  font-family $fontfamily-code
-              pre
-                margin 5px 0
-                code
-                  border-radius 2px
-                  word-break break-all
-                  font-family $fontfamily-code
-                  font-size 0.875rem
-                  width auto
-                  &:before
-                    top -5px
-                  &.language-plaintext:before
-                    content: 'TXT'
-                  &.language-conf:before
-                    content: 'CONF'
-                  &.language-json:before
-                    content: 'JSON'
-                  &.language-js:before
-                    content: 'JS'
-                  &.language-css:before
-                    content: 'CSS'
-                  &.language-html:before
-                    content: 'HTML'
-                  &.language-c:before
-                    content: 'C'
-                  &.language-cpp:before
-                    content: 'C++'
-                  &.language-java:before
-                    content: 'Java'
-                  &.language-md:before
-                    content: 'MarkDown'
-                  &.language-shell:before
-                    content: 'Shell'
-                  &.language-php:before
-                    content: 'PHP'
-                  &.language-less:before
-                    content: 'Less'
-                  &.language-ejs:before
-                    content: 'EJS'
-                  &.language-xml:before
-                    content: 'XML'
-                  &.language-sql:before
-                    content: 'SQL'
-                  &.language-python:before
-                    content: 'Python'
-                  &.language-lua:before
-                    content: 'Lua'
-                  &.language-yml:before
-                    content: 'YML'
-                  &.language-yaml:before
-                    content: 'YAML'
-                  &.language-stylus:before
-                    content: 'Stylus'
-                  &.language-scss:before
-                    content: 'SCSS'
-    .atk-list-footer
-      display none
+  code
+    *
+      font-family $fontfamily-code
+    color var(--color-inlinecode)
+    font-family $fontfamily-code
+    &:before
+      margin-top -5px
