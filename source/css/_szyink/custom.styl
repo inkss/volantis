@@ -20,18 +20,6 @@
 //======================================//
 
 
-//======================================//
-// 字体粗细
-.fontWeigth
-  .w400
-    font-weight: 400
-  .w500
-    font-weight: 500
-  .w600
-    font-weight: 600
-//======================================//
-
-
 
 //======================================//
 // 禁止选中
@@ -53,6 +41,8 @@ details summary,
     cursor: $default,default
   &.default-cursor
     cursor: $default,default !important
+  & a span
+    cursor: $pointer,pointer !important
 .allow-select
   -webkit-touch-callout all
   -webkit-user-select all
@@ -61,6 +51,7 @@ details summary,
   -ms-user-select all
   user-select all
 //======================================//
+
 
 
 //======================================//
@@ -85,6 +76,7 @@ details summary,
 //======================================//
 
 
+
 //======================================//
 
 // 文章页自定义背景
@@ -102,8 +94,9 @@ details summary,
 //======================================//
 
 
+
 //======================================//
-// 修饰导航栏标题
+// 文章页导航栏修饰：剧中、加粗等
 .fix-header-title
   margin: 0 auto
   font-size: 1.5rem

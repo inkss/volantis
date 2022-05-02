@@ -2,26 +2,6 @@
 //  样式覆盖
 //===========================
 
-// 修改下划线样式
-.article a:not([class]):not([data-fancybox]),
-.content > a
-    position: relative
-    text-decoration: none
-    &:before
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -1px
-      height: 1px
-      width: 100%
-      background: #ff5722
-      transform: scale(0)
-      transition: all 0.5s
-    &:hover:before
-      transform: scale(1)
-
-
-
 // 样式修订 HandSome H1 H2 标题
 article#post
   & h2
@@ -34,7 +14,6 @@ article#post
   & h3
     font-weight 900
 
-
 // 设置code样式
 code
   &:not([class])
@@ -42,14 +21,6 @@ code
     padding: 4px
     font-weight: 600
     background: var(--color-codeblock)
-
-
-
-// 代码块标题颜色
-.highlight figcaption
-  background: #ffeed2
-
-
 
 // <kbd></kbd>
 kbd
@@ -61,62 +32,35 @@ kbd
   font: 11px SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace
 
 
-
-
-// 右键样式修改
-ul.list-v.rightmenu
-  box-shadow: 0 -2px 4px 0 rgba(0,0,0,.08), 0 4px 8px 0 rgba(0,0,0,.08), 0 8px 16px 0 rgba(0,0,0,.08)
-  border-radius: 8px
-  li
-    a
-      cursor: $pointer,pointer !important
-
-
-
-// 列表页的内容居中
-.post.post-v3.white-box
-  text-align: left
-  & a
-    font-weight: 400 !important
-// 内容居左且首行缩进
+// 列表页正文内容左对齐
 .post.post-v3.white-box  p
   text-align: left
-  text-indent: 0em
 
-
-
-// 透明模式哟
-#l_header
-  background-color: hsla(0,0%,100%,.9)
-#l_side .widget
-  background-color: rgba(255,255,255,0.9)
-  box-shadow: 0 4px 10px -4px #ebedf0
-
-// 个人卡片
+// 侧边栏：个人卡片
 .blogger .text
   margin-bottom: 10px
-  font-family: $fontfamily-logo
 
 
-// 文章页页脚导航
-#l_main .article .prev-next>a p.content
-  max-height: 85px
-  overflow: hidden
-
-
-
-// 文章页不显示头图
+// 文章页头图：隐藏显示
 #l_main .article .headimg-div
   display: none
 
+// 文章页一级标题：加粗、居中、大小设定
+h1.title
+  text-align: center
+  font-size: 2em !important
+  font-weight: 600
+h1.title.common_read_h1
+  text-align: center !important
+  font-size: 2.5rem !important
 
 
-// 文章 P 首行缩进 2
+// 文章页段落内容： 首行缩进
 #l_main > article.cus-indent
   p
     text-indent 2em
     &.p
-      text-indent initial 
+      text-indent 0 
   details,
   blockquote,
   section,
@@ -124,67 +68,29 @@ ul.list-v.rightmenu
   .new-meta-box,
   .note,
   .tag,
-  .tab-pane .checkbox 
+  .tab-pane .checkbox,
+  li
     p
-      text-indent initial 
-#l_main li p
-  text-indent initial !important
+      text-indent 0
+
+// 文章页页脚导航：限制其高度
+#l_main .article .prev-next>a p.content
+  max-height: 5rem
+  overflow: hidden
 
 
-// 标题样式
-h1.title
-  margin: 10px
-  text-align: center
-  font-size: 2rem !important
-  font-weight: 600
-  font-family: $fontfamily-logo
-h1.title.common_read_h1
-  text-align: center !important
-  font-size: 2.5rem !important
-
-
-
-// noteblock 标题字号增大
+// 标签：blocknote 标题字号增大
 .note strong
   font-size: 1.5rem
 
-
-
-// 标题大小
+// 标签：标题大小
 details summary
-  font-size 1rem !important
+  font-size 1em
 
-
-
-// 缩短 Tab 内时间线标题高度
+// 标签：缩短 Tab 内时间线标题高度
 .tab-pane > .timeline > .h2
   padding-top: 0
 
-
-
-// link 标签 链接居中
+// 标签：link 链接居中
 .md .tag.link
-  margin: 1em auto
   text-align: center
-
-
-
-// 页脚修改
-.footnotes-sep
-  display: none
-.footnotes
-  background: var(--color-block);
-  border-radius: 4px;
-  padding: 16px;
-  margin-top: 4rem;
-
-
-// 恢复 tab 标签内的 note 
-.tab-content .note p,
-.article blockquote p,
-div.note p
-  margin 0
-
-// 尝试修复 webp 带来的异常
-picture
-  display contents
