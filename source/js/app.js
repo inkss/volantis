@@ -65,7 +65,7 @@ const VolantisApp = (() => {
 
   fn.init = () => {
     if (volantis.dom.header) {
-      scrollCorrection = volantis.dom.header.clientHeight + 16;
+      scrollCorrection = volantis.dom.header.clientHeight;
     }
 
     window.onresize = () => {
@@ -111,7 +111,7 @@ const VolantisApp = (() => {
   }
 
   fn.restData = () => {
-    scrollCorrection = volantis.dom.header ? volantis.dom.header.clientHeight + 16 : 80;
+    scrollCorrection = volantis.dom.header ? volantis.dom.header.clientHeight : 80;
   }
 
   fn.setIsMobile = () => {

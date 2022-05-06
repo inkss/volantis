@@ -108,7 +108,7 @@ navbar:
 ############################### Cover ############################### > start
 cover:
   height_scheme: full # full, half
-  layout_scheme: dock # blank (留白), search (搜索), dock (坞), featured (精选), focus (焦点)
+  layout_scheme: text # blank (留白), search (搜索), dock (坞), featured (精选), focus (焦点)
   display:
     home: true
     archive: true
@@ -511,6 +511,7 @@ sidebar:
     # ---------------------------------------
     # webinfo widget
     webinfo:
+      stickys: true
       class: webinfo
       display: [desktop]
       header:
@@ -547,6 +548,7 @@ sidebar:
     # ---------------------------------------
     # lastupdate widget
     lastupdate:
+      stickys: true
       class: lastupdate
       display: [desktop, mobile]
       header:
