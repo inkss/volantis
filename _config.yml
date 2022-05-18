@@ -1123,7 +1123,7 @@ color_scheme:
     text: '#eeeeeede'
 
     # 区块和代码块背景色       # Dark Grey 4
-    block: '#434343'
+    block: '#171718'
     # 代码块高亮时的背景色     # Dark Grey 2
     codeblock: '#1f1f1f'
     # 行内代码颜色
