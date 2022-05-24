@@ -127,9 +127,10 @@ const VolantisApp = (() => {
         let html = '';
         json.forEach((item, index) => {
           const title = item?.title.replaceAll(' - 枋柚梓的猫会发光', '');
-          html = `${html}<li><span>${index+1}</span><a title='${title}' href='${item?.key}' data-pjax-state>${title}</a></li>`;
+          html = `${html}<li><span>${index+1}</span><a title='${title}' href='${item?.key}'>${title}</a></li>`;
         })
-        content.innerHTML = `<ul>${html}</ul>`
+        content.innerHTML = `<ul>${html}</ul>`;
+        if(typeof pjax !== 'undefined') pjax.refresh(content)
       } catch (error) {
         console.error(error)
         content.innerHTML = `加载失败 /(ㄒoㄒ)/~~`
