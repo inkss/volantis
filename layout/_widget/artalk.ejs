@@ -1,0 +1,42 @@
+<section class="widget <%- page.widget_style %> <%- page.widget_platform %> <%- page.widget_pjax %>">
+  <%- partial('header', {item: item}) %>
+  <div class="tabs" id="tab-widget-artalk">
+    <ul class="nav-tabs">
+      <li class="tab active">
+        <a class="#widget-artalk-hotarticle" title="热门文章">
+          <i class="fa-light fa-thumbs-up WISTERIA fa-fw" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="tab">
+        <a class="#widget-artalk-hotpages" title="热评文章">
+          <i class="fa-light fa-heart WISTERIA fa-fw" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="tab">
+        <a class="#widget-artalk-3" title="最新评论">
+          <i class="fa-light fa-comment WISTERIA fa-fw" aria-hidden="true"></i>
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane tab-artalk-line active" id="widget-artalk-hotarticle">
+        <p>———<span>热门文章</span>———</p>
+        <div class="tab-pane-content">
+          <i class="fa-light fa-loader fa-spin fa-fw" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="tab-pane tab-artalk-line" id="widget-artalk-hotpages">
+        <p>———<span>热评文章</span>———</p>
+        <div class="tab-pane-content">
+          <i class="fa-light fa-loader fa-spin fa-fw" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="tab-pane" id="widget-artalk-3">
+        <p>———<span>最新评论</span>———</p>
+        <div class="tab-pane-content">
+          <i class="fa-light fa-loader fa-spin fa-fw" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

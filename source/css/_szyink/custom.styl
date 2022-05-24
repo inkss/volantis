@@ -133,56 +133,56 @@ details summary,
 
 
 //======================================//
-// 切换评论
-.changeComment
-  .comment-headline
-    display: inline-block;
-  .comment-switch
-    display: inline-block;
-    float: right;
-    margin: .1rem auto 0;
-    padding: .2rem .8rem;
-    width: max-content;
-    border-radius: 8px;
-    background: #f6f8fa;
-    .first-comment
-      color: #49b1f5;
-    .second-comment
-      color: #ff7242;
-    .switch-btn
-      position: relative;
-      display: inline-block;
-      margin: -4px .4rem 0;
-      width: 42px;
-      height: 22px;
-      border-radius: 34px;
-      background-color: #49b1f5;
-      vertical-align: middle;
-      -webkit-transition: .4s;
-      -moz-transition: .4s;
-      -o-transition: .4s;
-      -ms-transition: .4s;
-      transition: .4s;  
-      &:before
-        position: absolute;
-        bottom: 4px;
-        left: 4px;
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        background-color: #fff;
-        content: '';
-        -webkit-transition: .4s;
-        -moz-transition: .4s;
-        -o-transition: .4s;
-        -ms-transition: .4s;
-        transition: .4s
-      &.move
-        background-color: #ff7242;
-        &:before
-          -webkit-transform: translateX(20px);
-          -moz-transform: translateX(20px);
-          -o-transform: translateX(20px);
-          -ms-transform: translateX(20px);
-          transform: translateX(20px);
-//======================================//
+// 插件
+.widget 
+  div.tabs
+    margin 0
+    border none
+    .nav-tabs
+      border-top 1px solid rgba(68,68,68,0.2)
+      border-left 1px solid rgba(68,68,68,0.2)
+      border-right 1px solid rgba(68,68,68,0.2)
+      border-top-left-radius 8px
+      border-top-right-radius 8px
+      li.tab
+        flex 1
+        &:last-child
+          padding-right 0
+    .tab-content
+      font-size 14px
+      p
+        text-align center
+        span
+          font-weight bold
+          padding 0 8px
+      .tab-pane-content
+        text-align center
+        margin-top 0.5rem
+    ul, p
+      margin 0
+
+.tab-artalk-line
+  ul
+    li
+      margin-top: 5px;
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      span
+        background-color: #bebebe;
+        color: #fff;
+        width: 20px;
+        min-width: 20px;
+        line-height: 20px;
+        display: inline-table;
+        text-align: center;
+        border-radius: 2px;
+        margin-right: 5px;
+      &:nth-child(-n+3)
+        span
+          background-color #f00
+      a
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    

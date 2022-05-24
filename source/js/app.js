@@ -46,10 +46,10 @@ const locationHash = () => {
     if (target) {
       setTimeout(() => {
         if (window.location.hash.startsWith('#fn')) { // hexo-reference https://github.com/volantis-x/hexo-theme-volantis/issues/647
-          volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant', observer:true })
+          volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant', observer: true })
         } else {
           // 锚点中上半部有大片空白 高度大概是 volantis.dom.header.offsetHeight
-          volantis.scroll.to(target, { addTop: 5, behavior: 'instant', observer:true })
+          volantis.scroll.to(target, { addTop: 5, behavior: 'instant', observer: true })
         }
       }, 1000)
     }
@@ -108,6 +108,33 @@ const VolantisApp = (() => {
     document.body.oncopy = function () {
       fn.messageCopyright()
     };
+
+    // artalk 侧边栏
+    fn.genArtalkContent('#widget-artalk-hotarticle', 'pv_most_pages'); // 热门文章
+    fn.genArtalkContent('#widget-artalk-hotpages', 'comment_most_pages'); // 热评文章
+  }
+
+  fn.genArtalkContent = async (selector, type) => {
+    const element = document.querySelector(selector);
+    if(!!element) {
+      const content = element.querySelector('.tab-pane-content');
+      try {
+        const json = await VolantisRequest.POST('https://artalk.szyink.com/api/stat', {
+          site_name: '枋柚梓的猫会发光',
+          type: type,
+          limit: 10
+        })
+        let html = '';
+        json.forEach((item, index) => {
+          const title = item?.title.replaceAll(' - 枋柚梓的猫会发光', '');
+          html = `${html}<li><span>${index+1}</span><a title='${title}' href='${item?.key}' data-pjax-state>${title}</a></li>`;
+        })
+        content.innerHTML = `<ul>${html}</ul>`
+      } catch (error) {
+        console.error(error)
+        content.innerHTML = `加载失败 /(ㄒoㄒ)/~~`
+      }
+    }
   }
 
   fn.restData = () => {
@@ -371,7 +398,7 @@ const VolantisApp = (() => {
 
   // 设置 tabs 标签  【移动端 PC】
   fn.setTabs = () => {
-    let tabs = document.querySelectorAll('#l_main .tabs .nav-tabs')
+    let tabs = document.querySelectorAll('#l_main .tabs .nav-tabs, .widget .tabs .nav-tabs')
     if (!tabs) return
     tabs.forEach(function (e) {
       e.querySelectorAll('a').forEach(function (e) {
@@ -701,7 +728,7 @@ const VolantisApp = (() => {
       try {
         let time = fn.utilTimeAgo(new Date(item.getAttribute('datetime'))).trim();
         item.textContent = time ? time : item.textContent;
-      } catch (error) {}
+      } catch (error) { }
     })
   }
 
@@ -1190,3 +1217,43 @@ const DOMController = {
   }
 }
 Object.freeze(DOMController);
+
+const VolantisRequest = {
+  timeoutFetch: (url, ms, requestInit) => {
+    const controller = new AbortController()
+    requestInit.signal?.addEventListener('abort', () => controller.abort())
+    let promise = fetch(url, { ...requestInit, signal: controller.signal })
+    if (ms > 0) {
+      const timer = setTimeout(() => controller.abort(), ms)
+      promise.finally(() => { clearTimeout(timer) })
+    }
+    promise = promise.catch((err) => {
+      throw ((err || {}).name === 'AbortError') ? new Error(`Fetch timeout: ${url}`) : err
+    })
+    return promise
+  },
+
+  Fetch: async (url, requestInit, timeout = 15000) => {
+    const resp = await VolantisRequest.timeoutFetch(url, timeout, requestInit);
+    if (!resp.ok) throw new Error(`Fetch error: ${url} | ${resp.status}`);
+    let json = await resp.json()
+    if (!json.success) throw json
+    return json
+  },
+
+  POST: async (url, data) => {
+    const requestInit = {
+      method: 'POST',
+    }
+    if (data) {
+      const formData = new FormData();
+      Object.keys(data).forEach(key => formData.append(key, String(data[key])))
+      requestInit.body = formData;
+    }
+    const json = await VolantisRequest.Fetch(url, requestInit)
+    return json.data;
+  }
+}
+Object.freeze(VolantisRequest);
+
+
