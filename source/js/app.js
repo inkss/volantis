@@ -110,21 +110,29 @@ const VolantisApp = (() => {
     };
 
     // artalk 侧边栏
-    fn.genArtalkContent('#widget-artalk-hotarticle', 'pv_most_pages'); // 热门文章
-    fn.genArtalkContent('#widget-artalk-hotpages', 'comment_most_pages'); // 热评文章
-    fn.genArtalkContent('#widget-artalk-hotcomment', 'latest_comments'); // 最新评论
+    fn.genArtalkContent('#widget-artalk-hotarticle', 'pv_most_pages', 600000); // 热门文章
+    fn.genArtalkContent('#widget-artalk-hotpages', 'comment_most_pages', 600000); // 热评文章
+    fn.genArtalkContent('#widget-artalk-hotcomment', 'latest_comments', 120000); // 最新评论
   }
 
-  fn.genArtalkContent = async (selector, type) => {
+  fn.genArtalkContent = async (selector, type, time) => {
+    const genArtalkTime = localStorage.getItem(`GenArtalkTime-${type}`) || 0;
     const element = document.querySelector(selector);
     if (!!element) {
       const content = element.querySelector('.tab-pane-content');
       try {
-        const json = await VolantisRequest.POST('https://artalk.szyink.com/api/stat', {
-          site_name: '枋柚梓的猫会发光',
-          type: type,
-          limit: 10
-        })
+        let json;
+        if (genArtalkTime > Date.now()) {
+          json = JSON.parse(localStorage.getItem(type))
+        } else {
+          json = await VolantisRequest.POST('https://artalk.szyink.com/api/stat', {
+            site_name: '枋柚梓的猫会发光',
+            type: type,
+            limit: 10
+          })
+          localStorage.setItem(type, JSON.stringify(json))
+          localStorage.setItem(`GenArtalkTime-${type}`, Date.now() + time)
+        }
         let html = '';
         json.forEach((item, index) => {
           switch (type) {
@@ -140,8 +148,10 @@ const VolantisApp = (() => {
               } else {
                 avatar = `<div class="avatar"><a target="_blank" rel="noreferrer noopener nofollow" href="${item?.link}"><img src="https://cravatar.cn/avatar/${item?.email_encrypted}?d=mp&amp;s=80"></a></div>`
               }
-              window.xxxx =  item?.content;
-              const content = item?.content.replace(/<img\b.*?(?:\>|\/>)/g, '[图片]');
+              let content = item?.content.replace(/<img\b.*?(?:\>|\/>)/g, '[图片]');
+              if (content.length > 120) {
+                content = `${content.substring(0, 120)}...`
+              }
               html = `${html}<li>${avatar}<div class="main"><a href="${item?.page_key}#atk-comment-${item?.id}"><p>${item?.nick}</p><p>${content}</p></a></div></li>`;
               break;
           }
