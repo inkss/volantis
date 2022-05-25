@@ -112,11 +112,12 @@ const VolantisApp = (() => {
     // artalk 侧边栏
     fn.genArtalkContent('#widget-artalk-hotarticle', 'pv_most_pages'); // 热门文章
     fn.genArtalkContent('#widget-artalk-hotpages', 'comment_most_pages'); // 热评文章
+    fn.genArtalkContent('#widget-artalk-hotcomment', 'latest_comments'); // 最新评论
   }
 
   fn.genArtalkContent = async (selector, type) => {
     const element = document.querySelector(selector);
-    if(!!element) {
+    if (!!element) {
       const content = element.querySelector('.tab-pane-content');
       try {
         const json = await VolantisRequest.POST('https://artalk.szyink.com/api/stat', {
@@ -126,11 +127,27 @@ const VolantisApp = (() => {
         })
         let html = '';
         json.forEach((item, index) => {
-          const title = item?.title.replaceAll(' - 枋柚梓的猫会发光', '');
-          html = `${html}<li><span>${index+1}</span><a title='${title}' href='${item?.key}'>${title}</a></li>`;
+          switch (type) {
+            case 'pv_most_pages':
+            case 'comment_most_pages':
+              const title = item?.title.replaceAll(' - 枋柚梓的猫会发光', '');
+              html = `${html}<li><span>${index + 1}</span><a title='${title}' href='${item?.key}'>${title}</a></li>`;
+              break;
+            case 'latest_comments':
+              let avatar = '';
+              if (item?.link === "") {
+                avatar = `<div class="avatar"><img src="https://cravatar.cn/avatar/${item?.email_encrypted}?d=mp&amp;s=80"></div>`
+              } else {
+                avatar = `<div class="avatar"><a target="_blank" rel="noreferrer noopener nofollow" href="${item?.link}"><img src="https://cravatar.cn/avatar/${item?.email_encrypted}?d=mp&amp;s=80"></a></div>`
+              }
+              window.xxxx =  item?.content;
+              const content = item?.content.replace(/<img\b.*?(?:\>|\/>)/g, '[图片]');
+              html = `${html}<li>${avatar}<div class="main"><a href="${item?.page_key}#atk-comment-${item?.id}"><p>${item?.nick}</p><p>${content}</p></a></div></li>`;
+              break;
+          }
         })
         content.innerHTML = `<ul>${html}</ul>`;
-        if(typeof pjax !== 'undefined') pjax.refresh(content)
+        if (typeof pjax !== 'undefined') pjax.refresh(content)
       } catch (error) {
         console.error(error)
         content.innerHTML = `加载失败 /(ㄒoㄒ)/~~`
