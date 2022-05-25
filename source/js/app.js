@@ -110,12 +110,12 @@ const VolantisApp = (() => {
     };
 
     // artalk 侧边栏
-    fn.genArtalkContent('#widget-artalk-hotarticle', 'pv_most_pages', 600000); // 热门文章
-    fn.genArtalkContent('#widget-artalk-hotpages', 'comment_most_pages', 600000); // 热评文章
-    fn.genArtalkContent('#widget-artalk-hotcomment', 'latest_comments', 120000); // 最新评论
+    fn.genArtalkContent('#widget-artalk-hotarticle', 'pv_most_pages', 10, 600000); // 热门文章
+    fn.genArtalkContent('#widget-artalk-hotpages', 'comment_most_pages', 10, 600000); // 热评文章
+    fn.genArtalkContent('#widget-artalk-hotcomment', 'latest_comments', 5, 120000); // 最新评论
   }
 
-  fn.genArtalkContent = async (selector, type, time) => {
+  fn.genArtalkContent = async (selector, type, limit, time) => {
     const genArtalkTime = localStorage.getItem(`GenArtalkTime-${type}`) || 0;
     const element = document.querySelector(selector);
     if (!!element) {
@@ -128,7 +128,7 @@ const VolantisApp = (() => {
           json = await VolantisRequest.POST('https://artalk.szyink.com/api/stat', {
             site_name: '枋柚梓的猫会发光',
             type: type,
-            limit: 10
+            limit: limit
           })
           localStorage.setItem(type, JSON.stringify(json))
           localStorage.setItem(`GenArtalkTime-${type}`, Date.now() + time)
