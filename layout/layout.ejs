@@ -13,7 +13,9 @@
     <!-- Custom Files bodyBegin begin-->
     <%- volantis_inject('bodyBegin') %>
     <!-- Custom Files bodyBegin end-->
+    <% if (theme.navbar.enable) { %>
     <%- partial('_partial/header', null, {cache: false, path: path}) %>
+    <% } %>
     <div id="l_body">
       <%- partial('_partial/cover') %>
       <div id="safearea">

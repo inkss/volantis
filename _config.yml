@@ -77,6 +77,7 @@ scroll_smooth: true
 ############################### Navigation Bar ############################### > start
 # 注意事项：建议规范全站路径 URL 最后带一个 "/" 例如 "about/"
 navbar:
+  enable: false
   visiable: auto # always, auto
   logo: # choose [img] or [icon + title]
     img: volantis-static/media/org.volantis/blog/Logo-NavBar@3x.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png
@@ -107,6 +108,7 @@ navbar:
 
 ############################### Cover ############################### > start
 cover:
+  enable: false
   height_scheme: full # full, half
   layout_scheme: text # blank (留白), search (搜索), dock (坞), featured (精选), focus (焦点)
   display:

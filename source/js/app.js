@@ -16,10 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
       highlightKeyWords.startFromURL();
     }, 'app.js');
     volantis.pjax.send(() => {
-      volantis.dom.switcher.removeClass('active'); // 关闭移动端激活的搜索框
-      volantis.dom.header.removeClass('z_search-open'); // 关闭移动端激活的搜索框
-      volantis.dom.wrapper.removeClass('sub'); // 跳转页面时关闭二级导航
-      volantis.EventListener.remove() // 移除事件监听器 see: layout/_partial/scripts/global.ejs
+      volantis.dom.switcher?.removeClass('active'); // 关闭移动端激活的搜索框
+      volantis.dom.header?.removeClass('z_search-open'); // 关闭移动端激活的搜索框
+      volantis.dom.wrapper?.removeClass('sub'); // 跳转页面时关闭二级导航
+      volantis.EventListener?.remove() // 移除事件监听器 see: layout/_partial/scripts/global.ejs
     }, 'app.js');
   });
 });
@@ -84,7 +84,7 @@ const VolantisApp = (() => {
   }
 
   fn.event = () => {
-    volantis.dom.$(document.getElementById("scroll-down")).on('click', function () {
+    volantis.dom.$(document.getElementById("scroll-down"))?.on('click', function () {
       fn.scrolltoElement(volantis.dom.bodyAnchor);
     });
 
@@ -263,20 +263,22 @@ const VolantisApp = (() => {
     if (!pdata.ispage) return;
 
     // 填充二级导航文章标题 【移动端 PC】
-    volantis.dom.wrapper.find('.nav-sub .title').html(document.title.split(" - ")[0]);
+    volantis.dom.wrapper?.find('.nav-sub .title')?.html(document.title.split(" - ")[0]);
 
     // ====== bind events to every btn =========
     // 评论按钮 【移动端 PC】
     volantis.dom.comment = volantis.dom.$(document.getElementById("s-comment")); // 评论按钮  桌面端 移动端
     volantis.dom.commentTarget = volantis.dom.$(document.querySelector('#l_main article#comments')); // 评论区域
-    if (volantis.dom.commentTarget) {
+    if (volantis.dom.commentTarget && volantis.dom.comment) {
       volantis.dom.comment.click(e => { // 评论按钮点击后 跳转到评论区域
         e.preventDefault();
         e.stopPropagation();
         fn.scrolltoElement(volantis.dom.commentTarget);
         e.stopImmediatePropagation();
       });
-    } else volantis.dom.comment.style.display = 'none'; // 关闭了评论，则隐藏评论按钮
+    } else {
+      if(volantis.dom.comment) volantis.dom.comment.style.display = 'none'; // 关闭了评论，则隐藏评论按钮
+    } 
 
     // 移动端toc目录按钮 【移动端】
     if (volantis.isMobile) {
@@ -790,10 +792,10 @@ const VolantisApp = (() => {
       // fn.switchComment();
 
       // 移除小尾巴的移除
-      document.querySelector("#l_header .nav-main").querySelectorAll('.list-v:not(.menu-phone)').forEach(function (e) {
+      document.querySelector("#l_header .nav-main")?.querySelectorAll('.list-v:not(.menu-phone)')?.forEach(function (e) {
         e.removeAttribute("style")
       })
-      document.querySelector("#l_header .menu-phone.list-v").removeAttribute("style");
+      document.querySelector("#l_header .menu-phone.list-v")?.removeAttribute("style");
       messageCopyrightShow = 0;
     },
     utilCopyCode: fn.utilCopyCode,
