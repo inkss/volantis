@@ -133,7 +133,7 @@ details summary,
 
 
 //======================================//
-// 插件
+// 插件 侧边栏修订
 .widget 
   div.tabs
     margin 0
@@ -209,3 +209,52 @@ details summary,
       word-break: break-all;
       &:first-child
         font-weight: bold;
+
+
+//======================================//
+// 插件 侧边栏 Next 导航
+.nextsite
+  font-size: 0.875rem;
+  .site-brand-wrapper
+    background-color: rgba(0,0,0,0.8);
+    box-shadow: 0 2px 15px 0 rgb(0 0 0 / 60%);
+    transition: all 0.2s linear;
+    &:hover
+      background: rgba(0,0,0,0.9);
+      border-radius: 0 0 70px 70px;
+      box-shadow: 0 8px 20px -3px rgb(0 0 0 / 60%);
+    .site-meta 
+      text-align: center;
+      font-size: 1em;
+      line-height: 2;
+      min-height: 100%;
+      transition: padding .2s ease-in-out;
+      padding: 20px 0;
+      .brand
+        display: inline-block;
+      .site-title
+        line-height: 1.5;
+        color: #f9a972;
+        font-size: 1.8em;
+        text-shadow: 0 1px 4px #fff;
+      .site-subtitle
+        font-size: .85rem;
+        color: var(--color-meta);
+  .site-nav
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    .next-main      
+      .next-main-item
+        &:hover
+          a
+            border-radius: 50px 0 0 50px;
+            border-color: transparent;
+            box-shadow: 0 4px 20px -4px #00000040;
+            color: #f9a972;
+        a
+          display: block;
+          color: var(--color-list);
+          padding: 5px 10px;
+        .menu-item-icon
+          margin-right: 8px;

@@ -102,29 +102,6 @@ column-span()
 column-fill()
   vendor(prop:'column-fill', only: moz,  vendor-property: true, args:arguments)
 
-
-// D
-display(value)
-  // Initializing a flexbox container
-  display -webkit-box    /* OLD - iOS 6-, Safari 3.1-6 */
-  display -moz-box     /* OLD - Firefox 19- (buggy but mostly works) */
-  if value == inline-flex
-    display -ms-inline-flexbox    /* TWEENER - IE 10 */
-    display -webkit-inline-flex   /* NEW - Chrome */
-    display value           /* NEW, Spec - Opera 12.1, Firefox 20+ */
-  else if value == flex
-    display -ms-flexbox     /* TWEENER - IE 10 */
-    display -webkit-flex    /* NEW - Chrome */
-    display flex        /* NEW, Spec - Opera 12.1, Firefox 20+ */
-
-  if arguments != 'flex'
-    display: arguments;
-  else
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-
 // E
 
 // F

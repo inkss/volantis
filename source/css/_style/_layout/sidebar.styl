@@ -337,16 +337,20 @@
 
 
 .webinfo
-  padding 0.2rem 1rem
+  padding 0 1rem
   .webinfo-item
     display block
-    padding 4px 0 0
+    padding 2px 0
     div
       &:first-child
         display inline-block
       &:last-child
         display inline-block
         float right
+    a
+      color: var(--color-text) 
+      &:hover
+        color: #ff5722;
 
 .widget-last
   display: block !important

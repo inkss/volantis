@@ -484,6 +484,7 @@ sidebar:
     toc:
       class: toc
       display: [desktop, mobile] # [desktop, mobile]
+      sticky: true
       header:
         icon: fa-solid fa-list
         title: 本文目录
@@ -531,7 +532,7 @@ sidebar:
     # ---------------------------------------
     # webinfo widget
     webinfo:
-      stickys: true
+      sticky: true
       class: webinfo
       display: [desktop]
       header:
@@ -568,7 +569,7 @@ sidebar:
     # ---------------------------------------
     # lastupdate widget
     lastupdate:
-      stickys: true
+      sticky: true
       class: lastupdate
       display: [desktop, mobile]
       header:
@@ -578,7 +579,12 @@ sidebar:
     # Artalk widget
     artalk:
       class: artalk
-      stickys: true
+      sticky: true
+      display: [desktop, mobile]
+    # ---------------------------------------
+    # nextsite widget
+    nextsite:
+      class: nextsite
       display: [desktop, mobile]
 ############################### Sidebar ############################### > end
 

@@ -1,5 +1,5 @@
 <%- partial('_pre') %>
-<section class="widget <%- page.widget_style %> <%- page.widget_platform %> <%- page.widget_pjax %>">
+<section class="widget <%- page.widget_platform %> <%- page.widget_pjax %>">
   <%- partial('header', {item: item}) %>
   <div class='content'>
     <div class="webinfo">
@@ -53,6 +53,20 @@
           <div id="last-update-show"><%- date(Date.now()) %> <%= item.type.lastupd.unit %></div>
         </div>
       <% } %>
+    </div>
+  </div>
+  <header>
+    <span class="icon"><i class="fa-light fa-calendar-lines NEPHRITIS fa-fw" aria-hidden="true"></i></span>
+    <span class="name">备案信息</span>
+  </header>
+  <div class="content">
+    <div class="webinfo">
+      <div class="webinfo-item">
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="external nofollow noopener noreferrer"><span>皖 ICP 备 2021008088 号</span></a>
+      </div>
+      <div class="webinfo-item">
+        <a href="https://www.beian.gov.cn/" target="_blank" rel="external nofollow noopener noreferrer" ><span>辽公网安备 21021702000331 号</span></a>
+      </div>
     </div>
   </div>
 </section>
