@@ -144,7 +144,10 @@
     &:not([class])
       word-break: break-all
       color: var(--color-inlinecode)
-      border-radius: $border-codeblock * 0.5
+      background: var(--color-codeblock);
+      font-size: $fontsize-code
+      padding: 2px 4px;
+      overflow-wrap: break-word;
 
 
   @media screen and (max-width: $device-mobile)
