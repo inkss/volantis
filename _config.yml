@@ -580,7 +580,7 @@ sidebar:
     artalk:
       class: artalk
       sticky: true
-      display: [desktop, mobile]
+      display: [desktop]
     # ---------------------------------------
     # nextsite widget
     nextsite:

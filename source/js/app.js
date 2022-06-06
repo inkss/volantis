@@ -284,7 +284,7 @@ const VolantisApp = (() => {
     if (volantis.isMobile) {
       volantis.dom.toc = volantis.dom.$(document.getElementById("s-toc")); // 目录按钮  仅移动端
       volantis.dom.tocTarget = volantis.dom.$(document.querySelector('#l_side .toc-wrapper')); // 侧边栏的目录列表
-      if (volantis.dom.tocTarget) {
+      if (volantis.dom.tocTarget && volantis.dom.toc) {
         // 点击移动端目录按钮 激活目录按钮 显示侧边栏的目录列表
         volantis.dom.toc.click((e) => {
           e.stopPropagation();
@@ -297,9 +297,11 @@ const VolantisApp = (() => {
           if (volantis.dom.tocTarget) {
             volantis.dom.tocTarget.removeClass('active');
           }
-          volantis.dom.toc.removeClass('active');
+          volantis.dom.toc?.removeClass('active');
         });
-      } else volantis.dom.toc.style.display = 'none'; // 隐藏toc目录按钮
+      } else {
+        if(volantis.dom.toc) volantis.dom.toc.style.display = 'none'; // 隐藏toc目录按钮
+      } 
     }
   }
 
