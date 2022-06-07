@@ -187,6 +187,8 @@ details summary,
         white-space: nowrap;
         text-overflow: ellipsis;
 .tab-artalk-comment
+  max-height: 340px;
+  overflow: auto;
   li
     margin-top: 5px !important;
     display: inline-flex;
@@ -325,11 +327,10 @@ details summary,
     .site-author-name
       font-weight: 600;
       font-size: 1rem;
-      color: var(--color-h1);
+      color: var(--color-text);
       margin: 0;
     .site-author-description
-      color: #666;
-      text-shadow: 1px 1px 1px #fff;
+      color: var(--color-list);
       margin-top: 2px;
       text-align: center;
       font-size: 13px;

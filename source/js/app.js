@@ -46,7 +46,8 @@ const locationHash = () => {
     if (target) {
       setTimeout(() => {
         if (window.location.hash.startsWith('#fn')) { // hexo-reference https://github.com/volantis-x/hexo-theme-volantis/issues/647
-          volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant', observer: true })
+          let tempHeight = volantis.dom.header ? volantis.dom.header.offsetHeight : 0;
+          volantis.scroll.to(target, { addTop: - tempHeight - 5, behavior: 'instant', observer: true  })
         } else {
           // 锚点中上半部有大片空白 高度大概是 volantis.dom.header.offsetHeight
           volantis.scroll.to(target, { addTop: 5, behavior: 'instant', observer: true })
@@ -112,7 +113,7 @@ const VolantisApp = (() => {
     // artalk 侧边栏
     fn.genArtalkContent('#widget-artalk-hotarticle', 'pv_most_pages', 10, 30); // 热门文章
     fn.genArtalkContent('#widget-artalk-randpages', 'rand_pages', 10, 1); // 随机文章
-    fn.genArtalkContent('#widget-artalk-hotcomment', 'latest_comments', 5, 10); // 最新评论
+    fn.genArtalkContent('#widget-artalk-hotcomment', 'latest_comments', 10, 10); // 最新评论
 
     // NextSite 侧边栏绑定事件
     document.querySelector('.nextsite div.site-nav-toggle')?.addEventListener('click', () => {
@@ -535,7 +536,8 @@ const VolantisApp = (() => {
         let targetID = decodeURI(e.target.hash.split('#')[1]).replace(/\ /g, '-');
         let target = document.getElementById(targetID);
         if (target) {
-          volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
+          let tempHeight = volantis.dom.header ? volantis.dom.header.offsetHeight : 0;
+          volantis.scroll.to(target, { addTop: - tempHeight - 5, behavior: 'instant' })
         }
       });
     })
@@ -1014,7 +1016,8 @@ const highlightKeyWords = (() => {
       target = document.getElementById("keyword-mark-" + fn.markNextId);
     }
     if (target) {
-      volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
+      let tempHeight = volantis.dom.header ? volantis.dom.header.offsetHeight : 0;
+      volantis.scroll.to(target, { addTop: - tempHeight - 5, behavior: 'instant' })
     }
     // Current target
     return target
@@ -1029,7 +1032,8 @@ const highlightKeyWords = (() => {
       target = document.getElementById("keyword-mark-" + fn.markNextId);
     }
     if (target) {
-      volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant' })
+      let tempHeight = volantis.dom.header ? volantis.dom.header.offsetHeight : 0;
+      volantis.scroll.to(target, { addTop: - tempHeight - 5, behavior: 'instant' })
     }
     // Current target
     return target

@@ -247,8 +247,8 @@ article:
               text: 禁止转载引用
               desc: 除非获得原作者的单独授权，任何第三方不得转载！
             type3: 
-              text: 转载自它站
-              desc: 本文转载自他站，转载请保留原站地址。
+              text: 原作许可协议
+              desc: 本文转载自他站，转载或引用本文时，请遵守原作许可协议！
             type4: 
               text: 来自互联网
               desc: 本文来自互联网，未知来源，侵权请联系删除。
@@ -524,6 +524,9 @@ sidebar:
         - url: /page/atom/
           icon: fa-solid fa-rss
           title: RSS
+        - url: /page/timeline/
+          icon: fa-solid fa-history
+          title: History
     # ---------------------------------------
     # blogger info widget
     blogger:
