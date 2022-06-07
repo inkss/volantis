@@ -103,6 +103,35 @@ navbar:
       icon: fa-solid fa-info-circle
       url: about/
   search: Search...   # Search bar placeholder
+
+nextNavbar:
+  subtitle: 繁星永存，记忆亘古不变。
+  menu:
+    - name: '- 首页 °| Home'
+      icon: 'fa-light fa-home'
+      url: /
+    - name: '- 笔记 °| Notes'
+      icon: 'fa-light fa-notebook'
+      url: /page/notes/
+    - name: '- 分类 °| Categories'
+      icon: 'fa-light fa-th'
+      url: /categories/
+    - name: '- 归档 °| Archives'
+      icon: 'fa-light fa-archive'
+      url: /archives/
+    - name: '- 留言 °| Message'
+      icon: 'fa-light fa-object-group'
+      url: /page/info/
+    - name: '- 友链 °| Friends'
+      icon: 'fa-light fa-link'
+      url: /page/friends/
+    - name: '- 生活 °| Blogger'
+      icon: 'fa-light fa-ghost'
+      url: https://szyink.com/
+    - name: '- 虫洞 °| Wormhole'
+      icon: 'fa-light fa-bullseye-pointer'
+      url: https://www.foreverblog.cn/go.html
+      target: '_blank'                              
 ############################### Navigation Bar ############################### > end
 
 
@@ -482,6 +511,19 @@ sidebar:
   for_post: [toc]
   # 侧边栏组件库
   widget_library:
+    nextblogger:
+      class: nextblogger
+      display: [desktop] # [desktop, mobile]
+      avatar: /img/avatar.jpg
+      url: /page/about/
+      subtitle: 言语道断，非物所拘。
+      lists:
+        - url: https://github.com/inkss
+          icon: fa-brands fa-github
+          title: Github
+        - url: /page/atom/
+          icon: fa-solid fa-rss
+          title: RSS
     # ---------------------------------------
     # blogger info widget
     blogger:

@@ -1,0 +1,29 @@
+<%- partial('_pre') %>
+<section class="widget <%- item.class %> <%- page.widget_platform %> <%- page.widget_pjax %>">
+  <div class='content'>
+    <% if (item.avatar) { %>
+      <% if (item.url) { %>
+        <a class='avatar flat-box <%- item.shape %>' href='<%- url_for(item.url) %>'>
+          <img no-lazy class="site-author-image" itemprop="image" src='<%- item.avatar %>' alt="<%- config.author %>"/>
+        </a>
+      <% } else { %>
+        <div class='avatar'>
+          <img no-lazy class="site-author-image" itemprop="image" src='<%- item.avatar %>' alt="<%- config.author %>"/>
+        </div>
+      <% } %>
+    <% } %>
+    <div class="site-author-box">
+      <p class="site-author-name" itemprop="name"><%- config.author %></p>
+      <p class="site-author-description" itemprop="description"><%- item.subtitle %></p>
+    </div>
+    <div class="links-of-author">
+      <% item.lists.forEach(item => { %>
+        <span class="links-of-author-item">
+          <a href="<%- item.url %>" title="<%- item.title %>" alt="<%- config.title %>">
+            <i class="<%- item.icon %> fa-fw"></i>
+          </a>
+        </span>
+      <% }) %>
+    </div>
+  </div>
+</section>

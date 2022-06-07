@@ -219,10 +219,12 @@ details summary,
     background-color: rgba(0,0,0,0.8);
     box-shadow: 0 2px 15px 0 rgb(0 0 0 / 60%);
     transition: all 0.2s linear;
-    &:hover
-      background: rgba(0,0,0,0.9);
-      border-radius: 0 0 70px 70px;
-      box-shadow: 0 8px 20px -3px rgb(0 0 0 / 60%);
+    position: relative;
+    @media screen and (min-width: $device-mobile)
+      &:hover
+        background: rgba(0,0,0,0.9);
+        border-radius: 0 0 70px 70px;
+        box-shadow: 0 8px 20px -3px rgb(0 0 0 / 60%);
     .site-meta 
       text-align: center;
       font-size: 1em;
@@ -242,11 +244,53 @@ details summary,
       .site-subtitle
         font-size: .85rem;
         color: var(--color-meta);
+    .site-nav-toggle
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: none;
+      position: absolute;
+      @media screen and (max-width: $device-mobile)
+        display: block
+      button
+        margin-top: 2px;
+        padding: 9px 10px;
+        background: transparent;
+        border: none;
+        .btn-bar
+          display: block;
+          width: 22px;
+          height: 2px;
+          background: #555;
+          border-radius: 1px;
+          background-color: #fff;
+        .btn-bar+.btn-bar
+          margin-top: 4px;
   .site-nav
+    @media screen and (max-width: $device-mobile)
+      display: none
+      animation: header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+    @media screen and (min-width: $device-mobile)
+      display: block !important
     margin-top: 15px;
     margin-bottom: 10px;
     padding-left: 5px;
-    .next-main      
+    .next-main
+      .menu-item-active
+          a
+            border-radius: 50px 0 0 50px;
+            border-color: transparent;
+            box-shadow: 0 4px 20px -4px #00000040;
+            &:after
+              content: " ";
+              position: absolute;
+              top: 50%;
+              margin-top: -3px;
+              right: 15px;
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              background-color: #f9a972;
       .next-main-item
         &:hover
           a
@@ -258,8 +302,50 @@ details summary,
           display: block;
           color: var(--color-list);
           padding: 5px 10px;
+          position: relative;
         .menu-item-icon
           margin-right: 8px;
+
+//======================================//
+// 插件 侧边栏 Next 身份介绍
+.nextblogger
+  padding: 20px 10px 10px;
+  .site-author-image
+    display: block;
+    margin: 0 auto;
+    padding: 2px;
+    max-width: 120px;
+    height: auto;
+    border: 1px solid #eee;
+    opacity: 1;
+    border-radius: 100%;
+  .site-author-box
+    margin-top: 15px;
+    text-align: center;
+    .site-author-name
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--color-h1);
+      margin: 0;
+    .site-author-description
+      color: #666;
+      text-shadow: 1px 1px 1px #fff;
+      margin-top: 2px;
+      text-align: center;
+      font-size: 13px;
+  .links-of-author
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    a
+      color: var(--color-list);
+      &:hover
+        color: #f9a972;
+  .links-of-author-item
+    margin: 0 4px;
+    font-size: 1.05rem;
+    color: var(--text-color);
+
 
 //======================================//
 // 插件 文章页脚 版权提示
@@ -286,6 +372,7 @@ details summary,
   overflow: hidden;
   padding: 1.25em 40px;
   position: relative;
+  border-radius: 4px;
   .license-title,
   .license-meta-title
     margin: 0 0 .25rem;

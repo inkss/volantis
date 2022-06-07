@@ -4,53 +4,42 @@
   <div class="site-brand-wrapper">
     <div class="site-meta ">
       <a href="/page/about/" class="brand" rel="start">
-        <span class="site-title">枋柚梓的猫会发光</span>
+        <span class="site-title"><%- config.title %></span>
       </a>
-      <p class="site-subtitle" itemprop="description">繁星永存，记忆亘古不变。</p>
+      <p class="site-subtitle" itemprop="description"><%- theme.nextNavbar.subtitle %></p>
+    </div>
+    <div class="site-nav-toggle">
+      <button aria-label="切换导航栏">
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+      </button>
     </div>
   </div>
   <nav class="site-nav">
     <ul class="next-main">
-      <li class="next-main-item">
-        <a href="/" rel="section">
-          <i class="menu-item-icon fa-light fa-home fa-fw"></i>- 首页 °| Home
+      <% theme.nextNavbar.menu.forEach(value => { %>
+        <li class="next-main-item">
+          <a 
+          <%- value.url ? `href="` + url_for(value.url) + `" title="` + (value.description || value.name) + `"`
+                        : ` href="/" onclick="return false;" title="` + (value.description || value.name) + `"` %>
+          <% if (value.url) { %>
+            active-action="action-<%= url_for(value.url).replace(/\/|%|\./g, "")?url_for(value.url).replace(/\/|%|\./g, ""):"home" %>"
+          <% } %>
+          <% if (value.rel) { %>
+            rel="<%- value.rel %>"
+          <% } %>
+          <% if (value.target) { %>
+            target="<%- value.target %>"
+          <% } %>
+          >
+          <% if (value.icon) { %>
+            <i class="menu-item-icon <%- value.icon %> fa-fw"></i>
+          <% } %>
+          <%- value.name %>
         </a>
-      </li>
-      <li class="next-main-item">
-        <a href="/page/notes/" rel="section">
-          <i class="menu-item-icon fa-light fa-notebook fa-fw"></i>- 笔记 °| Notes
-        </a>
-      </li>
-      <li class="next-main-item">
-        <a href="/categories/" rel="section">
-          <i class="menu-item-icon fa-light fa-th fa-fw"></i>- 分类 °| Categories
-        </a>
-      </li>
-      <li class="next-main-item">
-        <a href="/archives/" rel="section">
-          <i class="menu-item-icon fa-light fa-archive fa-fw"></i>- 归档 °| Archives
-        </a>
-      </li>
-      <li class="next-main-item">
-        <a href="/page/info/" rel="section">
-          <i class="menu-item-icon fa-light fa-object-group fa-fw"></i>- 留言 °| Message
-        </a>
-      </li>
-      <li class="next-main-item">
-        <a href="/page/friends/" rel="section">
-          <i class="menu-item-icon fa-light fa-link fa-fw"></i>- 友链 °| Friends
-        </a>
-      </li>
-      <li class="next-main-item">
-        <a href="https://szyink.com/" target="_blank" rel="external nofollow noopener noreferrer">
-          <i class="menu-item-icon fa-light fa-ghost fa-fw"></i>- 生活 °| Blogger
-        </a>
-      </li>
-      <li class="next-main-item">
-        <a href="https://www.foreverblog.cn/go.html" target="_blank" rel="external nofollow noopener noreferrer">
-          <i class="menu-item-icon fa-light fa-bullseye-pointer fa-fw"></i>- 虫洞 °| Wormhole
-        </a>
-      </li>
+        </li>
+      <% }) %>
     </ul>
   </nav>
 </section>

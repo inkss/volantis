@@ -110,11 +110,26 @@ const VolantisApp = (() => {
     };
 
     // artalk 侧边栏
-    fn.genArtalkContent('#widget-artalk-hotarticle', 'pv_most_pages', 10, 600000); // 热门文章
-    fn.genArtalkContent('#widget-artalk-hotpages', 'comment_most_pages', 10, 600000); // 热评文章
-    fn.genArtalkContent('#widget-artalk-hotcomment', 'latest_comments', 5, 120000); // 最新评论
+    fn.genArtalkContent('#widget-artalk-hotarticle', 'pv_most_pages', 10, 30); // 热门文章
+    fn.genArtalkContent('#widget-artalk-randpages', 'rand_pages', 10, 1); // 随机文章
+    fn.genArtalkContent('#widget-artalk-hotcomment', 'latest_comments', 5, 10); // 最新评论
+
+    // NextSite 侧边栏绑定事件
+    document.querySelector('.nextsite div.site-nav-toggle')?.addEventListener('click', () => {
+      let menu = document.querySelector('.nextsite nav.site-nav');
+      if(menu) {
+        menu.style.display = menu.style.display === 'none' ||  menu.style.display === ''  ? 'block' : 'none';
+      }
+    })
   }
 
+  /**
+   * 填充侧边栏
+   * @param {*} selector Dom 选择器
+   * @param {*} type     Api
+   * @param {*} limit   请求数限制
+   * @param {*} time    时间（单位分 min）
+   */
   fn.genArtalkContent = async (selector, type, limit, time) => {
     const genArtalkTime = localStorage.getItem(`GenArtalkTime-${type}`) || 0;
     const element = document.querySelector(selector);
@@ -131,13 +146,13 @@ const VolantisApp = (() => {
             limit: limit
           })
           localStorage.setItem(type, JSON.stringify(json))
-          localStorage.setItem(`GenArtalkTime-${type}`, Date.now() + time)
+          localStorage.setItem(`GenArtalkTime-${type}`, Date.now() + time * 60000)
         }
         let html = '';
         json.forEach((item, index) => {
           switch (type) {
             case 'pv_most_pages':
-            case 'comment_most_pages':
+            case 'rand_pages':
               const title = item?.title.replaceAll(' - 枋柚梓的猫会发光', '');
               html = `${html}<li><span>${index + 1}</span><a title='${title}' href='${item?.key}'>${title}</a></li>`;
               break;
@@ -148,11 +163,8 @@ const VolantisApp = (() => {
               } else {
                 avatar = `<div class="avatar"><a target="_blank" rel="noreferrer noopener nofollow" href="${item?.link}"><img src="https://cravatar.cn/avatar/${item?.email_encrypted}?d=mp&amp;s=80"></a></div>`
               }
-              let content = item?.content.replace(/<img\b.*?(?:\>|\/>)/g, '[图片]');
-              if (content.length > 120) {
-                content = `${content.substring(0, 120)}...`
-              }
-              html = `${html}<li>${avatar}<div class="main"><a href="${item?.page_key}#atk-comment-${item?.id}"><p>${item?.nick}</p><p>${content}</p></a></div></li>`;
+              let content = item?.content_marked.replace(/<img\b.*?(?:\>|\/>)/g, '[图片]');
+              html = `${html}<li>${avatar}<div class="main"><a href="${item?.page_key}#atk-comment-${item?.id}"><p>${item?.nick}</p>${content}</a></div></li>`;
               break;
           }
         })
@@ -277,8 +289,8 @@ const VolantisApp = (() => {
         e.stopImmediatePropagation();
       });
     } else {
-      if(volantis.dom.comment) volantis.dom.comment.style.display = 'none'; // 关闭了评论，则隐藏评论按钮
-    } 
+      if (volantis.dom.comment) volantis.dom.comment.style.display = 'none'; // 关闭了评论，则隐藏评论按钮
+    }
 
     // 移动端toc目录按钮 【移动端】
     if (volantis.isMobile) {
@@ -300,8 +312,8 @@ const VolantisApp = (() => {
           volantis.dom.toc?.removeClass('active');
         });
       } else {
-        if(volantis.dom.toc) volantis.dom.toc.style.display = 'none'; // 隐藏toc目录按钮
-      } 
+        if (volantis.dom.toc) volantis.dom.toc.style.display = 'none'; // 隐藏toc目录按钮
+      }
     }
   }
 
@@ -345,6 +357,37 @@ const VolantisApp = (() => {
           volantis.dom.$(id).addClass('active')
         }
       });
+    }
+  }
+
+  // 导航栏激活设定
+  fn.nextSiteMenu = () => {
+    const element = document.querySelector('.widget.nextsite');
+    if (element) {
+      let activeItem = element.querySelector('li.menu-item-active');
+      if (activeItem) {
+        activeItem.removeClass('.menu-item-active');
+      }
+      let idname = location.pathname.replace(/\/|%|\./g, '');
+      if (idname.length == 0) {
+        idname = 'home';
+      }
+      var page = idname.match(/page\d{0,}$/g);
+      if (page) {
+        page = page[0];
+        idname = idname.split(page)[0];
+      }
+      var index = idname.match(/index.html/);
+      if (index) {
+        index = index[0];
+        idname = idname.split(index)[0];
+      }
+      // 转义字符如 [, ], ~, #, @
+      idname = idname.replace(/(\[|\]|~|#|@)/g, '\\$1');
+      let nowItem = element.querySelector("[active-action=action-" + idname + "]");
+      if (nowItem?.parentElement) {
+        volantis.dom.$(nowItem.parentElement).addClass('menu-item-active')
+      }
     }
   }
 
@@ -779,6 +822,7 @@ const VolantisApp = (() => {
       fn.setTabs();
       fn.footnotes();
       fn.dataToShow();
+      fn.nextSiteMenu();
       // fn.switchComment();
     },
     pjaxReload: () => {
@@ -791,6 +835,7 @@ const VolantisApp = (() => {
       fn.setTabs();
       fn.footnotes();
       fn.dataToShow();
+      fn.nextSiteMenu();
       // fn.switchComment();
 
       // 移除小尾巴的移除
