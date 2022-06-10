@@ -47,7 +47,7 @@ const locationHash = () => {
       setTimeout(() => {
         if (window.location.hash.startsWith('#fn')) { // hexo-reference https://github.com/volantis-x/hexo-theme-volantis/issues/647
           let tempHeight = volantis.dom.header ? volantis.dom.header.offsetHeight : 0;
-          volantis.scroll.to(target, { addTop: - tempHeight - 5, behavior: 'instant', observer: true  })
+          volantis.scroll.to(target, { addTop: - tempHeight - 5, behavior: 'instant', observer: true })
         } else {
           // 锚点中上半部有大片空白 高度大概是 volantis.dom.header.offsetHeight
           volantis.scroll.to(target, { addTop: 5, behavior: 'instant', observer: true })
@@ -118,8 +118,8 @@ const VolantisApp = (() => {
     // NextSite 侧边栏绑定事件
     document.querySelector('.nextsite div.site-nav-toggle')?.addEventListener('click', () => {
       let menu = document.querySelector('.nextsite nav.site-nav');
-      if(menu) {
-        menu.style.display = menu.style.display === 'none' ||  menu.style.display === ''  ? 'block' : 'none';
+      if (menu) {
+        menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
       }
     })
   }
@@ -620,41 +620,41 @@ const VolantisApp = (() => {
   }
 
   // 工具类：返回时间间隔
-  fn.utilTimeAgo = (dateTimeStamp) => {
-    const minute = 1e3 * 60, hour = minute * 60, day = hour * 24, week = day * 7, month = day * 30;
-    const now = new Date().getTime();
-    const diffValue = now - dateTimeStamp;
-    const minC = diffValue / minute,
-      hourC = diffValue / hour,
-      dayC = diffValue / day,
-      weekC = diffValue / week,
-      monthC = diffValue / month;
-    if (diffValue < 0) {
-      result = ""
-    } else if (monthC >= 1 && monthC < 7) {
-      result = " " + parseInt(monthC) + " 月前"
-    } else if (weekC >= 1 && weekC < 4) {
-      result = " " + parseInt(weekC) + " 周前"
-    } else if (dayC >= 1 && dayC < 7) {
-      result = " " + parseInt(dayC) + " 天前"
-    } else if (hourC >= 1 && hourC < 24) {
-      result = " " + parseInt(hourC) + " 小时前"
-    } else if (minC >= 1 && minC < 60) {
-      result = " " + parseInt(minC) + " 分钟前"
-    } else if (diffValue >= 0 && diffValue <= minute) {
-      result = "刚刚"
-    } else {
-      const datetime = new Date();
-      datetime.setTime(dateTimeStamp);
-      const Nyear = datetime.getFullYear();
-      const Nmonth = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-      const Ndate = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-      const Nhour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-      const Nminute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-      const Nsecond = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-      result = Nyear + "-" + Nmonth + "-" + Ndate
+  fn.utilTimeAgo = (date, limit = 30) => {
+    try {
+      const oldTime = date.getTime()
+      const currTime = new Date().getTime()
+      const diffValue = currTime - oldTime
+      const days = Math.floor(diffValue / (24 * 3600 * 1000))
+      if (days === 0) {
+        const leave1 = diffValue % (24 * 3600 * 1000)
+        const hours = Math.floor(leave1 / (3600 * 1000))
+        if (hours === 0) {
+          const leave2 = leave1 % (3600 * 1000)
+          const minutes = Math.floor(leave2 / (60 * 1000))
+          if (minutes === 0) {
+            const leave3 = leave2 % (60 * 1000)
+            const seconds = Math.round(leave3 / 1000)
+            return `${seconds} 秒前`
+          }
+          return `${minutes} 分钟前`
+        }
+        return `${hours} 小时前`
+      }
+      if (days < 0) return '刚刚'
+
+      if (days < limit) {
+        return `${days} 天前`
+      }
+
+      const Nyear = date.getFullYear();
+      const Nmonth = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+      const Ndate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      return `${Nyear}年${Nmonth}月${Ndate}日`
+    } catch (error) {
+      console.error(error)
+      return ' - '
     }
-    return result;
   }
 
   // 消息提示：标准
@@ -801,9 +801,9 @@ const VolantisApp = (() => {
 
   // 转换时间
   fn.dataToShow = () => {
-    document.querySelectorAll('time.dataToShow').forEach(item => {
+    document.querySelectorAll('.dataToShow').forEach(item => {
       try {
-        let time = fn.utilTimeAgo(new Date(item.getAttribute('datetime'))).trim();
+        let time = fn.utilTimeAgo(new Date(item.getAttribute('datetime')), 60).trim();
         item.textContent = time ? time : item.textContent;
       } catch (error) { }
     })

@@ -78,12 +78,12 @@
               </div>
               <div class="license-meta-item">
                 <div class="license-meta-title">发布于</div>
-                <div class="license-meta-text"><%- articleCreate %></div>
+                <div class="license-meta-text dataToShow" datetime="<%- moment(post.date).format() %>" title="<%- date(post.date, theme.article.body.meta_library.updated.format) %>"><%- articleCreate %></div>
               </div>
               <% if (articleCreate !== articleUpdate) { %>
               <div class="license-meta-item">
                 <div class="license-meta-title">更新于</div>
-                <div class="license-meta-text"><%- articleUpdate %></div>
+                <div class="license-meta-text dataToShow" datetime="<%- moment(post.updated).format() %>" title="<%- date(post.updated, theme.article.body.meta_library.updated.format) %>"><%- articleUpdate %></div>
               </div>
               <% } %>
               <% if (post.copyright?.ref?.title) { %>
