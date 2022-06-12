@@ -236,29 +236,6 @@ article:
       # ----------------
       # 版权声明组件 (for layout: post)
       copyright:
-        custom: true  # 自制修改
-        customData:
-          default: type1
-          rules:
-            type1: 
-              text: <a href="/page/cc/">CC BY-NC-SA 4.0</a>
-              desc: 署名-非商业性使用-相同方式共享 4.0 国际。
-            type2: 
-              text: 禁止转载引用
-              desc: 除非获得原作者的单独授权，任何第三方不得转载！
-            type3: 
-              text: 原作许可协议
-              desc: 本文转载自他站，转载或引用本文时，请遵守原作许可协议！
-            type4: 
-              text: 来自互联网
-              desc: 本文来自互联网，未知来源，侵权请联系删除。
-            type5:
-              text: 允许规范转载
-              desc: 转载请保留本文转载地址，著作权归作者所有！
-            type6:
-              text: 允许付费转载
-              desc: 您可以联系作者通过付费方式获得授权。
-            # 还能自行添加更多
         enable: true
         permalink: '本文永久链接是：'
         content:
