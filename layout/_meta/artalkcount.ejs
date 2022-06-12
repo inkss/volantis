@@ -1,9 +1,8 @@
 <% if (theme.comments.service == 'artalk' && page.comments !== false) { %> 
   <div class="new-meta-item comments-count"> 
     <% 
-      let path = post.path || page.path;
-
       let commentPath;
+      let path = post.path || page.path;
       if (theme.comments.service && theme.comments.service.length > 0) {
         let service = theme.comments.service;
         if (page.comments == undefined || page.comments != false) {
@@ -12,7 +11,7 @@
           }
         }
       }
-    
+      if(!!theme.comments.artalk.path) path = theme.comments.artalk.path
       if(commentPath) path = commentPath;
       path = path.replaceAll('/index.html', '/').replaceAll('.html', '')
     %> 

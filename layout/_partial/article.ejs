@@ -73,29 +73,29 @@
             </div>
             <div class="license-meta">
               <div class="license-meta-item">
-                <div class="license-meta-title">本文作者</div>
+                <div class="license-meta-title"><%- __('post.copyright.author') %></div>
                 <div class="license-meta-text"><%- post.copyright?.author || author.name %></div>
               </div>
               <div class="license-meta-item">
-                <div class="license-meta-title">发布于</div>
-                <div class="license-meta-text dataToShow" datetime="<%- moment(post.date).format() %>" title="<%- date(post.date, theme.article.body.meta_library.updated.format) %>"><%- articleCreate %></div>
+                <div class="license-meta-title"><%- __('post.copyright.date') %></div>
+                <div class="license-meta-text"><%- articleCreate %></div>
               </div>
               <% if (articleCreate !== articleUpdate) { %>
               <div class="license-meta-item">
-                <div class="license-meta-title">更新于</div>
-                <div class="license-meta-text dataToShow" datetime="<%- moment(post.updated).format() %>" title="<%- date(post.updated, theme.article.body.meta_library.updated.format) %>"><%- articleUpdate %></div>
+                <div class="license-meta-title"><%- __('post.copyright.updated') %></div>
+                <div class="license-meta-text"><%- articleUpdate %></div>
               </div>
               <% } %>
               <% if (post.copyright?.ref?.title) { %>
               <div class="license-meta-item">
-                <div class="license-meta-title">原文出处</div>
+                <div class="license-meta-title"><%- __('post.copyright.references') %></div>
                 <div class="license-meta-text">
                   <a href="<%- post.copyright.ref?.url %>" target="_blank"><%- post.copyright.ref?.title %></a>
                 </div>
               </div>
               <% } %>
               <div class="license-meta-item">
-                <div class="license-meta-title">许可协议</div>
+                <div class="license-meta-title"><%- __('post.copyright.license') %></div>
                 <div class="license-meta-text"><%- copyrightRuleText %></div>
               </div>
             </div>
