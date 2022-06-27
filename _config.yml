@@ -118,8 +118,8 @@ cover:
   background: https://fastly.jsdelivr.net/gh/MHG-LAB/cron@gh-pages/bing/bing.jpg
   # background: https://bing.ioliu.cn/v1/rand?w=1920&h=1200
   logo: # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-Cover@3x.png
-  title: '枋柚梓'
-  subtitle: '吾法念无念念，行无行行，言无言言，修无修修。'
+  title: 'Volantis'
+  subtitle: ''
   search: A Wonderful Theme for Hexo # search bar placeholder
   features:
     - name: 文档
@@ -493,22 +493,6 @@ sidebar:
   for_post: [toc]
   # 侧边栏组件库
   widget_library:
-    nextblogger:
-      class: nextblogger
-      display: [desktop] # [desktop, mobile]
-      avatar: /img/avatar.jpg
-      url: /page/about/
-      subtitle: 言语道断，非物所拘。
-      lists:
-        - url: https://github.com/inkss
-          icon: fa-brands fa-github
-          title: Github
-        - url: /page/atom/
-          icon: fa-solid fa-rss
-          title: RSS
-        - url: /page/timeline/
-          icon: fa-solid fa-history
-          title: History
     # ---------------------------------------
     # blogger info widget
     blogger:
@@ -518,7 +502,7 @@ sidebar:
       shape: rectangle # circle, rectangle
       url: /about/
       title:
-      subtitle: 言语道断，非物所拘。
+      subtitle: 
       jinrishici: false # Poetry Today. You can set a string, and it will be displayed when loading fails.
       social:
         - icon: fa-solid fa-rss
@@ -660,7 +644,7 @@ tag_plugins:
 ############################### Site Footer ############################### > start
 site_footer:
   # layout of footer: [aplayer, social, license, info, copyright]
-  layout: [aplayer, social, license, analytics, info, copyright]
+  layout: [aplayer, social, license, info]
   social:
     - icon: #fa-solid fa-rss
       url:
