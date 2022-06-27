@@ -29,20 +29,15 @@ if (page && page.layout == 'post' && page.title) {
 %>
 <pjax>
 <script>
-  window.pdata={}
-  pdata.ispage=<%=ispage%>;
-  pdata.commentPath="<%=commentPath%>";
-  pdata.commentPlaceholder="<%=commentPlaceholder%>";
-  pdata.commentConfig=<%- JSON.stringify(commentConfig) %>;
-  //  see: /layout/_partial/scripts/_ctrl/coverCtrl.ejs
+  window.pdata={ispage: <%=ispage%>,commentPath: "<%=commentPath%>",commentPlaceholder: "<%=commentPlaceholder%>",commentConfig: <%- JSON.stringify(commentConfig) %>}
   <% if (theme.plugins.pjax.enable) {%>
-    // header
-    var l_header=document.getElementById("l_header");
-    <% if (theme.pjax_cover.frontMatterCover == "none") {%>
-    l_header?.classList.add("show");
+    if(document.getElementById("l_header")) {
+      <% if (theme.pjax_cover.frontMatterCover == "none") {%>
+      document.getElementById("l_header").classList.add("show");
     <% } else {%>
-    l_header?.classList.remove("show");
+      document.getElementById("l_header").classList.remove("show");
     <% }%>
+    }
     <% if (theme.plugins.pjax.cover) {%>
       // cover
       var cover_wrapper=document.querySelector('#l_cover .cover-wrapper');

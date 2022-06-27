@@ -7,11 +7,9 @@
   volantis.dom.coverAnchor = volantis.dom.$(document.querySelector('#l_cover .cover-wrapper')); // 1个
   volantis.dom.switcher = volantis.dom.$(document.querySelector('#l_header .switcher .s-search')); // 搜索按钮   移动端 1个
   volantis.dom.header = volantis.dom.$(document.getElementById('l_header')); // 移动端导航栏
-  volantis.dom.search = volantis.dom.$(document.querySelector('#l_header .m_search')); // 搜索框 桌面端 移动端 1个
+  volantis.dom.search = volantis.dom.$(document.querySelector('#l_header .m_search')); //搜索框 桌面端 移动端 1个
   volantis.dom.mPhoneList = volantis.dom.$(document.querySelectorAll('#l_header .m-phone .list-v')); //  手机端 子菜单 多个
-</script>
 
-<script>
   top.location!=self.location&&(top.location=self.location);
   <% if (theme.plugins.fontawesome) { %>
   volantis.css("<%- theme.plugins.fontawesome %>");
