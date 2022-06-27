@@ -39,4 +39,3 @@ see: https://volantis.js.org/v5/theme-settings/#选择评论系统`
   hexo.log.info(`Check environment configuration success!`);
   return true;
 };
-
