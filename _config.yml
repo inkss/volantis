@@ -115,7 +115,7 @@ cover:
     home: true
     archive: true
     others: false # can be written in front-matter 'cover: true'
-  background: https://uploadbeta.com/api/pictures/random/?key=BingEverydayWallpaperPicture
+  background: https://fastly.jsdelivr.net/gh/MHG-LAB/cron@gh-pages/bing/bing.jpg
   # background: https://bing.ioliu.cn/v1/rand?w=1920&h=1200
   logo: # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-Cover@3x.png
   title: '枋柚梓'
@@ -594,21 +594,21 @@ sidebar:
           text: '文章数目：'
           unit: '篇'
         runtime:
-          enable: true
+          enable: false
           data: '2020/01/01'    # 填写建站日期
           text: '已运行时间：'
           unit: '天'
         wordcount:
-          enable: true
+          enable: false
           text: '本站总字数：'   # 需要启用 wordcount
           unit: '字'
         visitcounter:
           siteuv:
-            enable: true
+            enable: false
             text: '本站访客数：'
             unit: '人'
           sitepv:
-            enable: true
+            enable: false
             text: '本站总访问量：'
             unit: '次'
         lastupd:
@@ -744,9 +744,9 @@ plugins:
     copy_code: true
     # 如果开启以下配置, hexo.config.highlight.enable 需要设置为 false ; hexo.config.highlight.enable 设置为 true, 则以下配置无效
     # # 不再支持 v11.1.0 以下版本
-    # js: https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.2.0/build/highlight.min.js # Please set hexo.config.highlight.enable = false !!!
-    # css: https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.2.0/build/styles/default.min.css
-    # # # more: https://www.jsdelivr.com/package/npm/highlight.js?path=styles
+    # js: https://unpkg.com/@highlightjs/cdn-assets@11.5.1/highlight.min.js # Please set hexo.config.highlight.enable = false !!!
+    # css: https://unpkg.com/@highlightjs/cdn-assets@11.5.1/styles/default.min.css
+    # # # more: https://www.jsdelivr.com/package/npm/@highlightjs/cdn-assets?path=styles
 
   # prismjs
   # https://prismjs.com/
@@ -981,7 +981,7 @@ plugins:
 
 ### 自定义右键 新
 rightmenus:
-  enable: true
+  enable: false
   # 右键菜单项及加载顺序
   # 内容示例：plugins.[组名], menus.[组名], hr(分割线，推荐去线留白), music(音乐控制器)
   order:
@@ -1017,9 +1017,9 @@ rightmenus:
     # 图标前缀 fa-solid, fa-regular, fa-light, fa-thin, fa-duotone, fa-brands
     iconPrefix: fa-solid
     # 例外，在 articlePage 组显示时（文章页）时依旧显示含 link 属性的菜单项
-    articleShowLink: false
+    articleShowLink: true
     # 当设定全局音乐播放器时，是否一直显示音乐控制菜单。false：仅当音乐播放时启用
-    musicAlwaysShow: false
+    musicAlwaysShow: true
   # 右键内置组，预置实现
   plugins:
     # 导航组件
