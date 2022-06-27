@@ -63,9 +63,8 @@ volantis_static_cdn: https://unpkg.com/volantis-static@0.0.1654736714924/
 ########################################################################
 # 全局页面字符串替换  A => B (可用于临时修改错字等)
 replace:
-  - https://cdn.jsdelivr.net/npm/ => https://unpkg.com/
-  - https://cdn.jsdelivr.net/gh/ => https://fastly.jsdelivr.net/gh/
-#  - https://unpkg.com/ => https://npm.elemecdn.com/
+  #- https://cdn.jsdelivr.net/npm/ => https://unpkg.com/
+  #- https://cdn.jsdelivr.net/gh/ => https://fastly.jsdelivr.net/gh/
 
 # dns-prefetch preconnect x-dns-prefetch-control
 dns_prefetch:
@@ -77,7 +76,7 @@ scroll_smooth: true
 ############################### Navigation Bar ############################### > start
 # 注意事项：建议规范全站路径 URL 最后带一个 "/" 例如 "about/"
 navbar:
-  enable: false
+  enable: true
   visiable: auto # always, auto
   logo: # choose [img] or [icon + title]
     img: volantis-static/media/org.volantis/blog/Logo-NavBar@3x.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png
@@ -103,43 +102,15 @@ navbar:
       icon: fa-solid fa-info-circle
       url: about/
   search: Search...   # Search bar placeholder
-
-nextNavbar:
-  subtitle: 繁星永存，记忆亘古不变。
-  menu:
-    - name: '- 首页 °| Home'
-      icon: 'fa-light fa-home'
-      url: /
-    - name: '- 笔记 °| Notes'
-      icon: 'fa-light fa-notebook'
-      url: /page/notes/
-    - name: '- 分类 °| Categories'
-      icon: 'fa-light fa-th'
-      url: /categories/
-    - name: '- 归档 °| Archives'
-      icon: 'fa-light fa-archive'
-      url: /archives/
-    - name: '- 留言 °| Message'
-      icon: 'fa-light fa-object-group'
-      url: /page/info/
-    - name: '- 友链 °| Friends'
-      icon: 'fa-light fa-link'
-      url: /page/friends/
-    - name: '- 生活 °| Blogger'
-      icon: 'fa-light fa-ghost'
-      url: https://szyink.com/
-    - name: '- 虫洞 °| Wormhole'
-      icon: 'fa-light fa-bullseye-pointer'
-      url: https://www.foreverblog.cn/go.html
-      target: '_blank'                              
+                            
 ############################### Navigation Bar ############################### > end
 
 
 ############################### Cover ############################### > start
 cover:
-  enable: false
+  enable: true
   height_scheme: full # full, half
-  layout_scheme: text # blank (留白), search (搜索), dock (坞), featured (精选), focus (焦点)
+  layout_scheme: search # blank (留白), search (搜索), dock (坞), featured (精选), focus (焦点)
   display:
     home: true
     archive: true
@@ -236,13 +207,13 @@ article:
       # ----------------
       # 版权声明组件 (for layout: post)
       copyright:
-        enable: true
+        enable: false
         permalink: '本文永久链接是：'
         content:
           - '博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议'
           - permalink
          # 自定义版权组件：精细到文章的版权声明
-        custom: true # 开启后替代上方内容的版权显示
+        custom: false # 开启后替代上方内容的版权显示
         customData:
           default: type1  # 默认授权声明
           #############################
@@ -515,7 +486,7 @@ comments:
 
 ############################### Sidebar ############################### > start
 sidebar:
-  position: left # left right
+  position: right # left right
   # 主页、分类、归档等独立页面
   for_page: [blogger, category, tagcloud, donate]
   # layout: docs/post 这类文章页面
