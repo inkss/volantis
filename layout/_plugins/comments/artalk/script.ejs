@@ -46,7 +46,7 @@
       <% } %>
     }));
 
-    Artalk.Use(ctx => {
+    Artalk.use(ctx => {
       ctx.on('list-loaded', () => {
         if (typeof VolantisFancyBox === "undefined"){
           const checkFancyBox = setInterval(() => {

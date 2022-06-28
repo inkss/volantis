@@ -1,3 +1,81 @@
+<% if(theme.ShowICPInfo == true && post.http451 == true) {%>
+<article itemscope itemtype="http://schema.org/Article" class="<%- page.indent == true ? 'cus-indent' : '' %> article post white-box reveal md <%- theme.custom_css.body.effect.join(' ') %> article-type-<%= post.layout %>" id="<%= post.layout %>" itemscope itemprop="blogPost">
+  <link itemprop="mainEntityOfPage" href="<%- post.permalink %>">
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="<%- config.title %>">
+  </span>
+  <span hidden itemprop="post" itemscope itemtype="http://schema.org/Post">
+    <meta itemprop="name" content="<%- config.title %>">
+    <meta itemprop="description" content="<%- config.description %>">
+  </span>
+  <div id="layoutHelper-page-plugins"></div>
+  <div id="post-body" itemprop="articleBody">
+    <div class="note quote cus451">
+      <p><strong>Unavailable For Legal Reasons</strong></p>
+      <p><strong>此页面在您的地区不可用</strong></p>
+      <p>您尝试访问的页面在您的地区不可用。</p>
+      <p><em>相关资料参见：</em></p>
+      <ul>
+        <li><a href="http://www.cac.gov.cn/2016-11/07/c_1119867116.htm"><em>《中华人民共和国网络安全法》</em></a></li>
+        <li><a href="http://www.cac.gov.cn/2000-09/30/c_126193701.htm"><em>《互联网信息服务管理办法》</em></a></li>
+      </ul>
+    </div>
+    <hr>
+  </div>
+  <% if ((post.group != undefined) && (post.order != undefined)) { %>
+    <%
+    let prev = new Object();
+    let next = new Object();
+    site.pages.each(function(p){
+      if ((p.title || p.seo_title) && p.path && (p.group == post.group)) {
+        if (p.order < post.order && (p.order > prev.order || prev.order == undefined)) {
+          prev = {title: p.title || p.seo_title, exp: truncate(strip_html(p.content), {length: 100}), path: p.path, order: p.order};
+        }
+        if (p.order > post.order && (p.order < next.order || next.order == undefined)) {
+          next = {title: p.title || p.seo_title, exp: truncate(strip_html(p.content), {length: 100}), path: p.path, order: p.order};
+        }
+      }
+    })
+    %>
+    <% if (['docs'].includes(post.layout) && (prev || next)) { %>
+      <div class="prev-next">
+        <% if (prev.path) { %>
+          <a class='prev' href='<%- url_for(prev.path) %>'>
+            <p class='title'><i class="fal fa-chevron-left" aria-hidden="true"></i><%- prev.title || '' %></p>
+            <p class='content'><%- prev.exp %></p>
+          </a>
+        <% } %>
+        <% if (next.path) { %>
+          <a class='next' href='<%- url_for(next.path) %>'>
+            <p class='title'><%- next.title || '' %><i class="fal fa-chevron-right" aria-hidden="true"></i></p>
+            <p class='content'><%- next.exp %></p>
+          </a>
+        <% } %>
+      </div>
+    <% } %>
+  <% } %>
+
+  <% if (post.prev || post.next) { %>
+    <div class="prev-next">
+      <% if (post.prev) { %>
+        <a class='prev' href='<%- url_for(post.prev.path) %>'>
+          <p class='title'><i class="fa-solid fa-chevron-left" aria-hidden="true"></i><%- post.prev.title || post.prev.seo_title || date(post.date, theme.article.body.meta_library.date.format) %></p>
+          <p class='content'><%- truncate(strip_html(page.prev.content), {length: 100}) %></p>
+        </a>
+      <% } %>
+      <% if (post.next) { %>
+        <a class='next' href='<%- url_for(post.next.path) %>'>
+          <p class='title'><%- post.next.title || post.next.seo_title || date(post.date, theme.article.body.meta_library.date.format) %><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='content'><%- truncate(strip_html(page.next.content), {length: 100}) %></p>
+        </a>
+      <% } %>
+    </div>
+  <% } %>
+  <!-- Custom Files postEnd begin-->
+  <%- volantis_inject('postEnd') %>
+  <!-- Custom Files postEnd end-->
+</article>
+<% } else { %>
 <article itemscope itemtype="http://schema.org/Article" class="<%- page.indent == true ? 'cus-indent' : '' %> article post white-box reveal md <%- theme.custom_css.body.effect.join(' ') %> article-type-<%= post.layout %>" id="<%= post.layout %>" itemscope itemprop="blogPost">
   <link itemprop="mainEntityOfPage" href="<%- post.permalink %>">
   <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -183,6 +261,7 @@
   <%- volantis_inject('postEnd') %>
   <!-- Custom Files postEnd end-->
 </article>
+<% } %>
 
 <% if (page.comments == undefined || page.comments != false) { %>
   <%- partial('../_plugins/comments/index') %>

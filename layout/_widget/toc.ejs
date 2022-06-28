@@ -1,6 +1,6 @@
 <%- partial('_pre') %>
 <% var realcontent = (page.encrypt == true) ? page.origin : page.content; %>
-<% if (realcontent && page.toc != false && toc(realcontent).length > 0) { %>
+<% if (realcontent && page.toc != false && toc(realcontent).length > 0 && !(theme.ShowICPInfo == true && page.http451 == true)) { %>
   <section class="widget toc-wrapper <%- page.widget_platform %> <%- page.widget_pjax %>" id="toc-div" <% if (page.encrypt == true) { %>style="display:none" <% } %>>
     <%- partial('header', {item: item}) %>
     <div class='content'>
