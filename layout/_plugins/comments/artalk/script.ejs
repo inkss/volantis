@@ -27,7 +27,7 @@
       darkMode: volantis.dark.mode === "dark",
       pvEl: '#artalk_visitors',
 
-      <% if(!!theme.comments.artalk.imgUploader?.api){ %>
+      <% if(!!theme.comments.artalk.imageUploader?.api){ %>
       imgUploader: function(file) {
         let headers = new Headers();
         headers.set('Accept', 'application/json');
@@ -45,7 +45,7 @@
       },
       <% } %>
     }));
-
+    debugger;
     Artalk.use(ctx => {
       ctx.on('list-loaded', () => {
         if (typeof VolantisFancyBox === "undefined"){
