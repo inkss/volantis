@@ -36,7 +36,17 @@
       <% if (theme.comments && theme.comments.subtitle) { %>
         <p cst><%- theme.comments.subtitle %></p>
       <% } %>
-      
+      <% if(theme.ShowICPInfo){ %>
+      <div class="comment-policy">
+        <div class="content">
+          <p class="comment-policy-title">枋柚梓的猫会发光 评论政策</p>
+          <p class="comment-policy-link">请在评论前阅读我们的<a
+              href="https://inkss.cn/page/policy/#%E4%BA%8C%E3%80%81%E8%AF%84%E8%AE%BA%E8%A7%84%E5%88%99" target="_blank"
+              rel="noopener noreferrer" class=" policy-link">评论政策</a>。</p>
+          </p>
+        </div>
+      </div>
+      <% } %>
       <div id="layoutHelper-comments"></div>
     </article>
   <% } %>
