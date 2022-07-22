@@ -77,7 +77,7 @@ const RightMenus = {
         })
       }, 'image/png')
     }, false)
-    image.src = `${link}?(lll￢ω￢)`;
+    image.src = `${link}?(lll￢ω￢)~~`;
   },
 
   /**
