@@ -32,6 +32,9 @@
           <% if (value.target) { %>
             target="<%- value.target %>"
           <% } %>
+          <% if (value.click) { %>
+            onClick="<%- value.click %>"
+          <% } %>
           >
           <% if (value.icon) { %>
             <i class="menu-item-icon <%- value.icon %> fa-fw"></i>

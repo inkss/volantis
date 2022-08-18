@@ -23,7 +23,7 @@
   }
 
   // 打开并搜索 字符串 s
-  function OpenSearch(s) {
+  function OpenSearch(s="") {
     if (typeof SearchService === 'undefined')
       loadSearchScript().then(() => {
         SearchService.setQueryText(s);
