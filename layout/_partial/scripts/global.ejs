@@ -225,7 +225,7 @@
   volantis.js = (src, cb) => {
     return new Promise(resolve => {
       setTimeout(function () {
-        var HEAD = document.getElementsByTagName("body")[0] || document.documentElement;
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
         var script = document.createElement("script");
         script.setAttribute("type", "text/javascript");
         if (cb) {
@@ -250,7 +250,7 @@
         } else {
           script.onload = resolve
         }
-        script.setAttribute("src", src + "<%- theme.cdnCtrl.cdn_version %>");
+        script.setAttribute("src", src);
         HEAD.appendChild(script);
       });
     });
@@ -260,7 +260,7 @@
       setTimeout(function () {
         var link = document.createElement('link');
         link.rel = "stylesheet";
-        link.href = src + "<%- theme.cdnCtrl.cdn_version %>";
+        link.href = src;
         link.onload = resolve;
         document.getElementsByTagName("head")[0].appendChild(link);
       });
