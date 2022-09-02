@@ -57,7 +57,7 @@ let SearchService = (() => {
     document.querySelectorAll(".u-search-form").forEach((e) => {
       e.addEventListener("submit", fn.onSubmit, false);
     });
-    document.querySelector("#meilisearch-search-input").addEventListener("input", event => {
+    document.querySelector("#algolia-search-input").addEventListener("input", event => {
       let input = event.target.querySelector(".ais-SearchBox-input");
       if (input) {
         fn.queryText = input.value;
