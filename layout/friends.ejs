@@ -68,8 +68,9 @@
       </div>
     </div>
   </article>
-
+  <% if (page.comments == undefined || page.comments != false) { %>
   <%- partial('_plugins/comments/index',{post: page}) %>
+  <% } %>
 
 </div>
 <%- partial('_partial/side') %>
