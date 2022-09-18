@@ -52,12 +52,18 @@
     if (showPin && !post.headimg) {
       pinTitle = true;
     }
+    let hiddenTitle = false;
+    if (post?.hiddenTitle === true) {
+      hiddenTitle = true;
+    }
     %>
+    <% if(!hiddenTitle) { %>
     <h2 class="article-title" <%- pinTitle ? 'pin' : '' %> itemprop="name headline">
       <a href="<%- url_for(post.link || post.path) %>" title='查看文章：《<%= articlTitle %>》'  itemprop="url">
         <%- articlTitle %>
       </a>
     </h2>
+    <% } %>
   <% } else { %>
     <span hidden itemprop="name headline">
       <%- articlTitle %>
