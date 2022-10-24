@@ -7,6 +7,7 @@ if hexo-config('custom_css.body.highlight.language') == true
       color: var(--color-meta)
       font-size: 13px
       padding: 4px 8px
+      z-index 1
     &.md:before,&.markdown:before
       content: "md"
     &.yaml:before
@@ -30,7 +31,7 @@ if hexo-config('custom_css.body.highlight.language') == true
     &.shell:before
       content: "Shell"
     &.sh:before
-      content: "Sh"
+      content: "Shell"
     &.ini:before
       content: "Ini"
 

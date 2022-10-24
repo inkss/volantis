@@ -1099,7 +1099,7 @@ color_scheme:
     # 主题色块内部的文字颜色
     inner: '#fff'
     # 选中区域文字的背景颜色
-    selection: 'alpha(#2196f3, 0.2)'
+    selection: 'alpha(#3390ff, 0.2)'
   # ------------
   # 亮色主题（默认）
   light:
@@ -1116,9 +1116,9 @@ color_scheme:
     text: '#444'
 
     # 区块和代码块背景色
-    block: '#f4f5f7'
+    block: '#f4f4f4'
     # 代码块高亮时的背景色
-    codeblock: '#e6e8ee'
+    codeblock: '#f4f4f4'
     # 行内代码颜色
     inlinecode: '#444'
 
