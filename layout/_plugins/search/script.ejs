@@ -11,9 +11,8 @@
     <% } %>
     return volantis.js("<%- theme.cdn['volantis_search_' + theme.search.service] %>");
   }
-
+  loadSearchScript();
   function loadSearchService() {
-    loadSearchScript();
     document.querySelectorAll(".input.u-search-input").forEach((e) => {
       e.removeEventListener("focus", loadSearchService, false);
     });

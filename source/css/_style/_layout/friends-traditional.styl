@@ -35,10 +35,10 @@ if hexo-config('pages.friends.layout_scheme') == 'traditional'
           @media screen and (max-width: $device-mobile)
             width: "calc(100%/2 - %s)" % $gap
 
-          &:hover
-            .friend-left
+          &
+            .friend-left:hover
               .avatar
-                transform: scale(1.2) rotate(12deg)
+                transform: scale(2)
                 box-shadow: $boxshadow-card-float
 
 

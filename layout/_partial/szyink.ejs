@@ -36,7 +36,7 @@
 
   function load_macy(done = null) {
     if(typeof Macy === "undefined") {
-      volantis.js("https://cdn.jsdelivr.net/npm/macy@2").then(() => {
+      volantis.js("/js/macy.js").then(() => {
         if(done) done();
       })
     } else {
