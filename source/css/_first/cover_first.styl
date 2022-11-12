@@ -208,15 +208,15 @@
         border-bottom: 2px solid var(--color-site-inner)
   if hexo-config('cover.layout_scheme') == 'dock' || hexo-config('cover.layout_scheme') == 'featured' || hexo-config('cover.layout_scheme') == 'focus'
     &.dock .menu, &.featured .menu, &.focus .menu
-      border-radius: $border-button + 2px
+      border-radius: 12px
       .list-h a
         flex-direction: column
         align-items: center
-        padding: $gap * 0.75
+        padding: $gap * 0.5 $gap * 0.75 
         line-height: 24px
         @media screen and (max-width: $device-mobile)
           padding: $gap * 0.75 $gap * 0.5
-        border-radius: $border-button
+        border-radius: 12px
         border-bottom: none
         text-align: center
         align-content: flex-end
@@ -254,7 +254,7 @@ if hexo-config('cover.layout_scheme') == 'dock'
         scrollbar(0, 0)
     @supports (backdrop-filter: blur(20px))
       background: alpha($color-card, .5)
-      backdrop-filter: saturate(200%) blur(20px)
+      backdrop-filter: saturate(200%) blur(6px)
 
 if hexo-config('cover.layout_scheme') == 'featured'
   .cover-wrapper.featured .menu

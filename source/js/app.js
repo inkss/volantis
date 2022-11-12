@@ -158,6 +158,7 @@ const VolantisApp = (() => {
               html = `${html}<li><span>${index + 1}</span><a title='${title}' href='${item?.key}'>${title}</a></li>`;
               break;
             case 'latest_comments':
+              if (item?.is_collapsed === true) break;
               let avatar = '';
               if (item?.link === "") {
                 avatar = `<div class="avatar"><img src="https://cravatar.cn/avatar/${item?.email_encrypted}?d=mp&amp;s=80"></div>`
