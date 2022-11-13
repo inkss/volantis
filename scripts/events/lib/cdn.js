@@ -151,7 +151,17 @@ function match_cdn_source(key) {
             prefix,
             timestamp,
           }
-          return format?.replace(/\$\{(.+?)\}/g, (match, $1) => value[$1]) || null
+          let res = format;
+          let p = 0;
+          while (/\$\{(.+?)\}/g.test(res)) {
+            res = res?.replace(/\$\{(.+?)\}/g, (match, $1) => value[$1] ? value[$1] : eval($1)) || null
+            // 防止死循环。。。
+            p++;
+            if (p > 20) {
+              break;
+            }
+          }
+          return res
         }
       }
     }
@@ -179,7 +189,7 @@ function collect_cdn_source() {
   Object.keys(cdn_info).forEach(e => {
     hexo.theme.config.cdn[e] = match_cdn_source(e)
   })
-  if (hexo.theme.config.debug)
+  if (hexo.theme.config.debug == "cdn")
     console.log(hexo.theme.config.cdn);
 }
 

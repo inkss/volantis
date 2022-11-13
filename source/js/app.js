@@ -46,8 +46,7 @@ const locationHash = () => {
     if (target) {
       setTimeout(() => {
         if (window.location.hash.startsWith('#fn')) { // hexo-reference https://github.com/volantis-x/hexo-theme-volantis/issues/647
-          let tempHeight = volantis.dom.header ? volantis.dom.header.offsetHeight : 0;
-          volantis.scroll.to(target, { addTop: - tempHeight - 5, behavior: 'instant', observer: true })
+          volantis.scroll.to(target, { addTop: - volantis.dom.header.offsetHeight - 5, behavior: 'instant', observer: true })
         } else {
           // 锚点中上半部有大片空白 高度大概是 volantis.dom.header.offsetHeight
           volantis.scroll.to(target, { addTop: 5, behavior: 'instant', observer: true })
@@ -88,6 +87,15 @@ const VolantisApp = (() => {
     volantis.dom.$(document.getElementById("scroll-down"))?.on('click', function () {
       fn.scrolltoElement(volantis.dom.bodyAnchor);
     });
+
+    // 如果 sidebar 为空，隐藏 sidebar。
+    const sidebar = document.querySelector("#l_side")
+    if (sidebar) {
+      const sectionList = sidebar.querySelectorAll("section")
+      if (!sectionList.length) {
+        document.querySelector("#l_main").classList.add("no_sidebar")
+      }
+    }
 
     // 站点信息 最后活动日期
     if (volantis.GLOBAL_CONFIG.sidebar.for_page.includes('webinfo') || volantis.GLOBAL_CONFIG.sidebar.for_post.includes('webinfo')) {
@@ -196,7 +204,7 @@ const VolantisApp = (() => {
   // 校正页面定位（被导航栏挡住的区域）
   fn.scrolltoElement = (elem, correction = scrollCorrection) => {
     volantis.scroll.to(elem, {
-      top: elem.offsetTop - correction
+      top: elem.getBoundingClientRect().top + document.documentElement.scrollTop - correction
     })
   }
 
@@ -287,6 +295,7 @@ const VolantisApp = (() => {
       volantis.dom.comment.click(e => { // 评论按钮点击后 跳转到评论区域
         e.preventDefault();
         e.stopPropagation();
+        volantis.cleanContentVisibility();
         fn.scrolltoElement(volantis.dom.commentTarget);
         e.stopImmediatePropagation();
       });
@@ -313,9 +322,7 @@ const VolantisApp = (() => {
           }
           volantis.dom.toc?.removeClass('active');
         });
-      } else {
-        if (volantis.dom.toc) volantis.dom.toc.style.display = 'none'; // 隐藏toc目录按钮
-      }
+      } else if (volantis.dom.toc) volantis.dom.toc.style.display = 'none'; // 隐藏toc目录按钮
     }
   }
 

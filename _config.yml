@@ -10,7 +10,7 @@ info:
   theme_docs: https://volantis.js.org/ # This is theme's URL.
   theme_repo: https://github.com/volantis-x/hexo-theme-volantis
 # Debug 调试模式
-debug: false
+debug: env # false: 关闭调试模式， env：环境配置检查， pjax：调试pjax，rightMenus: 调试右键, cdn: 调试 CDN System
 ############################### 默认占位图 ###############################
 default:
   avatar: volantis-static/media/placeholder/avatar/round/3442075.svg # https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/avatar/round/3442075.svg
@@ -71,7 +71,7 @@ cdn_system:
     # Tip: 在本配置文件中 匹配以 "volantis-cdnjs" 开头的链接路径替换为该格式的前缀开头 prefix
     cdnjs:
       # CDN 链接前缀
-      prefix: https://cdnjs.cloudflare.com/ajax/libs
+      prefix: https://cdn.bootcdn.net/ajax/libs
       # cdnjs CDN 格式
       format: ${prefix}/${name}/${version}/${min_file}
   # ========================================================================
@@ -248,6 +248,21 @@ article:
         #     - title: 某篇文章
         #       url: https://
         # 即可显示此组件。
+      # ----------------
+      # 文章推荐 (for layout: post/docs)
+      # 推荐算法需要依赖中文分词工具，nodejieba只支持中英文 npm i nodejieba -S
+      recommended_article:
+        enable: false
+        layout: ["post", "docs"]
+        title: 推荐阅读
+        icon: fa-solid fa-bookmark
+        max_count: 6
+        placeholder_img: https://gcore.jsdelivr.net/gh/MHG-LAB/cron@gh-pages/bing/bing.jpg
+        # 不展示文章推荐
+        # front-matter 使用 skip_recommended_article: true 关闭
+        # 不在以下文件夹文章中展示文章推荐 根目录是source/
+        skip_dirs:
+          - wiki/
       # ----------------
       # 相关文章，需要安装插件 (for layout: post)
       # npm i hexo-related-popular-posts
@@ -830,13 +845,31 @@ plugins:
       - volantis-static/media/wallpaper/minimalist/2020/056.webp
 
   # APlayer is only available in mainland China.
+  # https://aplayer.js.org/#/zh-Hans/
   # APlayer config: https://github.com/metowolf/MetingJS
   aplayer:
     enable: #true
+    source: meting # meting：从 MetingJS API 获取音乐数据（API经常不稳定） / local：本地音乐数据
+    # ============= meting begin =============
     # Required
     server: netease   # netease, tencent, kugou, xiami, baidu
     type: playlist    # song, playlist, album, search, artist
     id: 3175833810    # song id / playlist id / album id / search keyword
+    # ============= meting end =============
+    # ============= local begin ==============
+    # local 暂时没有适配右键 和 post.music 迷你模式
+    audio:
+      - name: 'Fly'
+        artist: 'Marshmello'
+        url: '/music/fly.mp3'
+        lrc: '/music/fly.lrc'
+        cover: '/music/fly.jpg'
+      - name: 'Avem'
+        artist: 'Alan Walker'
+        url: '/music/Avem.mp3'
+        lrc: '/music/Avem.lrc'
+        cover: '/music/Avem.jpg'
+    # ============= local end ================
     # Optional
     fixed: false      # enable fixed mode
     theme: '#1BCDFC'  # main color
@@ -854,10 +887,17 @@ plugins:
     cover: true          # 封面是否pjax处理 false：每次切换页面封面都重载，适合封面较少的情况 true：封面经过Pjax处理，适合封面较多的情况
     timeout: 5000        # The timeout in milliseconds for the XHR requests. Set to 0 to disable the timeout.
     cacheBust: false     # When set to true, Pjax appends a timestamp  to skip the browser cache.
-    animation: false     # false, nprogress, circle
     exclude:             # 被屏蔽的 url 地址将不启用 pjax 跳转，可以在控制台下使用 window.location.pathname 获取
       # - '/artitalk/'   # artitalk 不支持 pjax
       # - '/bbtalk/'     # bbtalk 不支持 pjax
+
+  # pace
+  # An automatic web page progress bar.
+  # https://github.com/CodeByZach/pace
+  pace:
+    enable: true
+    color: blue # black, blue, green, orange, pink, purple, red, silver, white, yellow
+    theme: minimal # big-counter, bounce, barber-shop, center-atom, center-circle, center-radar, center-simple, corner-indicator, fill-left, flat-top, flash, loading-bar, mac-osx, material, minimal
 
   # 暗黑模式 darkmode
   # 开关按钮：在 navbar.menu 中添加：
@@ -915,8 +955,12 @@ plugins:
   fcircle:
     # Set `plugins: ["fcircle"]` to enable in front-matter
     # 支持 Pjax
-    api: https://fcircle-api.example.com/ # api 地址
-    message: 与主机通讯中……  # 占位文字
+    private_api_url: https://fcircle-api.example.com/ # api 地址
+    page_turning_number: 10  # 点击加载更多时，一次最多加载几篇文章，默认10
+    error_img: https://cravatar.cn/avatar/57d8260dfb55501c37dde588e7c3852c # 头像加载失败时，默认头像地址
+    sort_rule: created # 进入页面时第一次的排序规则,可选值：created/updated
+    app: https://npm.elemecdn.com/fcircle-theme-yyyz@1.0.5/dist/app.min.js # app.min.js的url
+    bundle: https://npm.elemecdn.com/fcircle-theme-yyyz@1.0.5/dist/bundle.js # bundle.js的url
 
   # 消息提示 
   # izitoast
