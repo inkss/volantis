@@ -24,7 +24,7 @@
       placeholder: placeholder,
       useBackendConf: true,
       site: '<%= config.title %>',
-      darkMode: 'auto',
+      darkMode: volantis.dark.mode === "dark",
       pvEl: '#artalk_visitors',
 
       <% if(!!theme.comments.artalk.imageUploader?.api){ %>
@@ -45,8 +45,6 @@
       },
       <% } %>
     }));
-
-    volantis.artalk.setDarkMode(volantis.dark.mode === "dark")
 
     Artalk.use(ctx => {
       ctx.on('list-loaded', () => {
@@ -74,10 +72,7 @@
 
   function dark_artalk() {
     if(!document.querySelectorAll("#artalk_container")[0]) return;
-    volantis.artalk.setDarkMode(volantis.dark.mode === "dark")
-    // volantis.artalk.then(ctx => {
-    //   ctx.setDarkMode(volantis.dark.mode === "dark")
-    // })
+    volantis?.artalk?.setDarkMode(volantis.dark.mode === "dark")
   }
   volantis.dark.push(dark_artalk);
 </script>
