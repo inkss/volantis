@@ -32,7 +32,7 @@ h1,h2,h3,h4,h6
 
 a
   &:not([href])
-    cursor: default
+    cursor: $default
 
 
 pre
@@ -121,11 +121,11 @@ html input[type="button"], /* 1 */
 input[type="reset"],
 input[type="submit"]
   -webkit-appearance: button /* 2 */
-  cursor: pointer /* 3 */
+  cursor: $pointer /* 3 */
 
 
 button[disabled],html input[disabled]
-  cursor: default
+  cursor: $default
 
 button::-moz-focus-inner,
 input::-moz-focus-inner

@@ -172,7 +172,7 @@
         .new-meta-item
           color: var(--color-meta)
           .notlink
-            cursor: default
+            cursor: $default
             &:hover
               color: var(--color-meta)
               p
@@ -194,7 +194,6 @@
           p,a
             color: var(--color-meta)
             padding: 3px 0
-            margin: 0
           a
             display: flex
             justify-content: center
@@ -204,6 +203,7 @@
               width: 16px
               margin-right: 8px // seo https://web.dev/tap-targets/
             p
+              margin: 0
               font-weight: normal
               trans()
             &:hover
@@ -318,7 +318,7 @@ article#comments
     a.load-comments
       display: inline-block
       border-radius: 2px
-      cursor: pointer
+      cursor: $pointer
       background: $color-button
       color: $color-inner
       padding-left: $gap * 3

@@ -46,7 +46,7 @@ scrollbar($w = 4px, $b = 2px, $c = $color-theme, $h = $color-hover)
     background: transparent
   &::-webkit-scrollbar-thumb
     background: $c
-    cursor: pointer
+    cursor: $pointer
     border-radius: $b
     &:hover
       background: $h
@@ -60,7 +60,7 @@ scrollbar-codeblock()
     background: transparent
   &::-webkit-scrollbar-thumb
     background: transparent
-    cursor: pointer
+    cursor: $pointer
     border-radius: $border-codeblock
   &:hover
     &::-webkit-scrollbar-thumb

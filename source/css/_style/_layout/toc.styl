@@ -14,13 +14,13 @@
   .content
     max-height: "calc(100vh - %s)" % ($gap * 5 + $navbar-height)
     a
-      border-left: $border-line solid transparent
+      border-left: 2px solid transparent
       &.active
         list_active()
-        border-left: $border-line solid $color-theme
+        border-left: 2px  solid $color-theme
       &:hover
         list_hover()
-        border-left: $border-line solid $color-theme
+        border-left: 2px solid $color-theme
 
 
   trans()
@@ -92,6 +92,6 @@
     &.active
       &>.toc-link
         list_active()
-        border-left: $border-line solid $color-theme
+        border-left: 2px solid $color-theme
       &>.toc-child
         max-height: 1000px

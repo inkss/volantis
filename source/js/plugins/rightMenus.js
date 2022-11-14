@@ -566,11 +566,12 @@ RightMenus.fun = (() => {
 
   fn.readMode = () => {
     if (typeof ScrollReveal === 'function') ScrollReveal().clean('#comments');
+    DOMController.setStyle('#l_header', 'opacity', 0);
     DOMController.fadeToggleList([
-      document.querySelector('#l_header'), document.querySelector('footer'),
+      document.querySelector('#l_cover'), document.querySelector('footer'),
       document.querySelector('#s-top'), document.querySelector('.article-meta#bottom'),
       document.querySelector('.prev-next'), document.querySelector('#l_side'),
-      document.querySelector('#comments')
+      document.querySelector('#comments'), 
     ]);
     DOMController.toggleClassList([
       [document.querySelector('#l_main'), 'common_read'], [document.querySelector('#l_main'), 'common_read_main'],

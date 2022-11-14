@@ -15,7 +15,7 @@
     &:not([href])
       opacity: 0.5
       &:hover
-        cursor: $not-allowed,not-allowed
+        cursor: $not-allowed
 
   & a, &.regular a
     color: $color-button
@@ -147,7 +147,7 @@
     img
       margin: .4em auto
     &:not([href])
-      cursor: default
+      cursor: $default
       color: inherit
     &[href]:hover
       background: alpha($color-hover, 15%)
