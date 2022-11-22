@@ -1,7 +1,16 @@
-$text = url(hexo-config('custom_css.cursor.text')),text
-$pointer = url(hexo-config('custom_css.cursor.pointer')),pointer
-$default = url(hexo-config('custom_css.cursor.default')),default
-$not-allowed = url(hexo-config('custom_css.cursor.not-allowed')),not-allowed
-$zoom-out = url(hexo-config('custom_css.cursor.zoom-out')),zoom-out
-$zoom-in = url(hexo-config('custom_css.cursor.zoom-in')),zoom-in
-$grab = url(hexo-config('custom_css.cursor.grab')),grab
+if hexo-config('custom_css.cursor.enable')
+  $text = url(hexo-config('custom_css.cursor.text')),text
+  $pointer = url(hexo-config('custom_css.cursor.pointer')),pointer
+  $default = url(hexo-config('custom_css.cursor.default')),default
+  $not-allowed = url(hexo-config('custom_css.cursor.not-allowed')),not-allowed
+  $zoom-out = url(hexo-config('custom_css.cursor.zoom-out')),zoom-out
+  $zoom-in = url(hexo-config('custom_css.cursor.zoom-in')),zoom-in
+  $grab = url(hexo-config('custom_css.cursor.grab')),grab
+else
+  $text = text
+  $pointer = pointer
+  $default = default
+  $not-allowed = not-allowed
+  $zoom-out = zoom-out
+  $zoom-in = zoom-in
+  $grab = grab
