@@ -1224,7 +1224,7 @@ color_scheme:
     # 辅助性文字              #  Dark Grey 5
     meta: '#bfbfbfde'
     # 版权卡片背景色
-    copyright_bkg: '#21252b'
+    copyright_bkg: '#1f1f1f'
     # 夜间图片亮度
     brightness: 70%
 ############################### Color Scheme ############################### > end
