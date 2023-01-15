@@ -13,7 +13,26 @@
 			  <br>
 			  <%- page.content %>
 			</article>
-		  </div>
+		</div>
+		<div class='post-wrapper'>
+			<article id="cat" class="post article white-box reveal <%- theme.custom_css.body.effect.join(' ') %>">
+				<h2>所有分类</h2>
+				<div class="all-cats">
+					<% if (site.categories.length){ %>
+						<% site.categories.sort('path').each(function(category){ %>
+							<a class="<%= category.parent ? ' child' : ''%>" href="<%= url_for(category.path) %>">
+								<span><i class='fal fa-folder-open fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;<%= category.name %></span>
+								<span class="title">
+									(<%- category.posts.length %>)
+								</span>
+							</a>
+						<% }) %>
+					<% } %>
+				</div>
+				<br>
+				<%- page.content %>
+			</article>
+		</div>
 	  <article id="arc" class="post article white-box reveal <%- theme.custom_css.body.effect.join(' ') %>">
 			<% var year = -1, postid = -1; %>
 			<% site.posts.sort('date', -1).each(function(post) { %>
