@@ -37,7 +37,7 @@
   <% } %>
   <% if (post.headimg) { %>
     <div class='headimg-div'>
-      <a class='headimg-a' title='查看文章：《<%= articlTitle %>》' href="<%- url_for(post.link || post.path) %>">
+      <a class='headimg-a' title='<%= articlTitle %>' href="<%- url_for(post.link || post.path) %>">
         <img itemprop="image" class='headimg' alt="<%- post.title %>" src='<%- post.headimg %>'/>
       </a>
     </div>
@@ -59,7 +59,7 @@
     %>
     <% if(!hiddenTitle) { %>
     <h2 class="article-title" <%- pinTitle ? 'pin' : '' %> itemprop="name headline">
-      <a href="<%- url_for(post.link || post.path) %>" title='查看文章：《<%= articlTitle %>》'  itemprop="url">
+      <a href="<%- url_for(post.link || post.path) %>" title='<%= articlTitle %>'  itemprop="url">
         <%- articlTitle %>
       </a>
     </h2>

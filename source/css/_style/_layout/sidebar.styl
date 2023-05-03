@@ -1,5 +1,5 @@
 #l_side
-  width: 25%
+  width: $sidebar
   float: right
   if hexo-config('sidebar.position') =='left'
     -webkit-box-ordinal-group: 1;
@@ -59,12 +59,10 @@
       color: var(--color-meta)
     >a:hover
       color: $color-hover
-    display: flex
-    span.icon
-      width: 20px
-      margin-right: 2px
-      i
-        display: inline-block
+
+    span.name
+      margin-left: $gap * 0.5
+
 
   >.content
     padding: $gap * 0.5 0
@@ -96,14 +94,14 @@
           font-size: $fontsize-meta
           color: alpha($color-text, .7)
         &.active
-          border-left: 2px solid $color-theme
+          border-left: $border-line solid $color-theme
           list_active()
           .badge
             color: alpha($color-theme, .9)
         &.child
           padding-left: $gap * 2
         &:hover
-          border-left: 2px solid $color-theme
+          border-left: $border-line solid $color-theme
           list_hover()
 
 
@@ -214,7 +212,7 @@
     .content
       padding: $gap * 0.5 0
       a
-        font-size: 0.8rem
+        font-size: $fontsize-meta
         font-weight: bold
         line-height: 1.5
         padding-top: 6px
@@ -337,20 +335,16 @@
 
 
 .webinfo
-  padding 0 1rem
+  padding 0.2rem 1rem
   .webinfo-item
     display block
-    padding 2px 0
+    padding 4px 0 0
     div
       &:first-child
         display inline-block
       &:last-child
         display inline-block
         float right
-    a
-      color: var(--color-text) 
-      &:hover
-        color: #ff5722;
 
 .widget-last
   display: block !important

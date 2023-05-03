@@ -546,7 +546,7 @@ RightMenus.fun = (() => {
       '.cus-article-bkg', '.iziToast-overlay', '.iziToast-wrapper', '.prev-next',
       'footer', '#l_header', '#l_cover', '#l_side', '#comments', '#s-top', '#BKG',
       '#rightmenu-wrapper', '.nav-tabs', '.parallax-mirror', '.new-meta-item.share', 
-      '.new-meta-box', 'button.btn-copy', 'iframe', '#doodle-bg'
+      '.new-meta-box', 'button.btn-copy', 'iframe'
     ]);
     DOMController.setStyleList([
       ['body', 'backgroundColor', 'unset'], ['#l_main, .copyright.license', 'width', '100%'],  

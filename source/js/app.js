@@ -65,7 +65,7 @@ const VolantisApp = (() => {
 
   fn.init = () => {
     if (volantis.dom.header) {
-      scrollCorrection = volantis.dom.header.clientHeight;
+      scrollCorrection = volantis.dom.header.clientHeight + 16;
     }
 
     window.onresize = () => {

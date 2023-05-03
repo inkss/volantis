@@ -1,5 +1,5 @@
 #safearea
-  margin: 0
+  margin: $gap $gap 0
 #l_body
   position: relative
   if hexo-config('custom_css.font_smoothing') == true
@@ -43,7 +43,7 @@
           box-shadow: $boxshadow-card-float
 
 #l_main
-  width: 75%
+  width: "calc(100% - 1 * %s)" % $sidebar
   @media screen and (max-width: $device-tablet)
     width: 100%
   if hexo-config('sidebar.position') =='right'
@@ -291,7 +291,6 @@
   @media screen and (min-width: $device-2k)
     max-width: 55vw
   margin: 0 auto
-  padding: 1rem 1rem
   flex-wrap: wrap
   justify-content: space-between
   align-items: stretch
