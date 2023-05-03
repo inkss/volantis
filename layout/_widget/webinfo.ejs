@@ -54,7 +54,7 @@
       <% } %>
     </div>
   </div>
-  <% if(theme.ShowICPInfo) { %>
+  <% if(theme.ShowICPInfo && theme.ShowICPInfo.enable) { %>
   <header>
     <span class="icon"><i class="fa-light fa-calendar-lines NEPHRITIS fa-fw" aria-hidden="true"></i></span>
     <span class="name">备案信息</span>
@@ -62,10 +62,10 @@
   <div class="content">
     <div class="webinfo">
       <div class="webinfo-item">
-        <a href="https://beian.miit.gov.cn/" target="_blank" rel="external nofollow noopener noreferrer"><span>皖 ICP 备 2021008088 号</span></a>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="external nofollow noopener noreferrer"><span><%= theme.ShowICPInfo.icp %></span></a>
       </div>
       <div class="webinfo-item">
-        <a href="https://www.beian.gov.cn/" target="_blank" rel="external nofollow noopener noreferrer" ><span>辽公网安备 21021702000331 号</span></a>
+        <a href="https://www.beian.gov.cn/" target="_blank" rel="external nofollow noopener noreferrer" ><span><%= theme.ShowICPInfo.gov %></span></a>
       </div>
     </div>
   </div>
