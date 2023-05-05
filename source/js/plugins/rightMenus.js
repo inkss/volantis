@@ -600,6 +600,7 @@ RightMenus.fun = (() => {
       document.querySelector('#post').removeEventListener('click', fn.readMode);
       DOMController.setStyle('.prev-next', 'display', 'flex');
       DOMController.setStyle('.copyright.license', 'margin', '15px -40px');
+      DOMController.setStyle('#l_header', 'opacity', 'unset');
     }
   }
 

@@ -67,7 +67,7 @@ volantis.pjax.push(()=>{_hmt.push(['_trackPageview', document.location.pathname]
   <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
   <script>
     volantis.js("https://sdk.51.la/js-sdk-pro.min.js").then(() => {
-      LA.init({id: "<%= config.v6_51_la %>",ck: "<%= config.v6_51_la %>",autoTrack:true,hashMode:true})
+      LA.init({id: "<%= config.v6_51_la %>",ck: "<%= config.v6_51_la %>",autoTrack:true,hashMode:<%= theme.plugins.pjax.enable == true %>})
     })
   </script>
 <% } %>
