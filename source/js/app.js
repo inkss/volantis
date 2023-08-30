@@ -110,7 +110,9 @@ const VolantisApp = (() => {
       let BirthDay = new Date(volantis.GLOBAL_CONFIG.sidebar.webinfo.runtime.data);
       let timeold = (new Date().getTime() - BirthDay.getTime());
       let daysold = Math.floor(timeold / (24 * 60 * 60 * 1000));
-      document.getElementById('webinfo-runtime-count').innerHTML = `${daysold} ${volantis.GLOBAL_CONFIG.sidebar.webinfo.runtime.unit}`;
+      let count = document.querySelector('#webinfo-runtime-count');
+      count.innerHTML = `${(daysold/365).toFixed(2)} ${volantis.GLOBAL_CONFIG.sidebar.webinfo.runtime.unit}`;
+      count.title = `${count.title} 👾 ${daysold} 天`;
     }
 
     // 消息提示 复制时弹出

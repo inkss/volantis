@@ -13,7 +13,7 @@
       <% if (item.type.runtime.enable) { %>
         <div class="webinfo-item">
           <div><%= item.type.runtime.text %></div>
-          <div id="webinfo-runtime-count"></div>
+          <div id="webinfo-runtime-count" title="<%=  date(item.type.runtime.data) %>"></div>
         </div>
       <% } %>
 
