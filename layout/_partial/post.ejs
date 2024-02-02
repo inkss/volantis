@@ -100,7 +100,7 @@
             <meta itemprop="url" content="<%- author.url %>">
           </span>
         <% } %>
-        <time class="dataToShow" itemprop="dateCreated datePublished" datetime="<%- moment(post.updated).format() %>" title="<%- date(post.date, theme.article.body.meta_library.updated.format) %>"><%= date(post.date, config.date_format) %></time>
+        <time class="dataToShow" itemprop="dateCreated datePublished" datetime="<%- moment(post.updated).format() %>" title="<%- date(post.updated, theme.article.body.meta_library.updated.format) %>"><%= date(post.updated, config.date_format) %></time>
         <% if (post.categories && post.categories.length > 0) { %>
           <span class="dot"></span>
           <%- list_categories(post.categories, {
