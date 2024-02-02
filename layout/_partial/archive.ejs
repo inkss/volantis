@@ -1,5 +1,5 @@
 <% if (site.posts && site.posts.length > 0) { %>
-  <section class="post-list">
+  <section class="post-list tttsadt">
     <% if (!page.prev) { %>
       <% if (is_home()) { %>
         <% site.pages.each(function(post){ %>
@@ -31,7 +31,7 @@
       <% } %>
     <% } %>
     <% if (page.posts && page.posts.length > 0) { %>
-      <% page.posts.each(function(post){ %>
+      <% page.posts.sort('updated', -1).each(function(post){ %>
         <% if (!post.pin) { %>
           <div class='post-wrapper'>
             <%- partial('post', {post: post}) %>
