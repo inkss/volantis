@@ -23,6 +23,7 @@
       margin-top -5px
   .atk-editor-plug-emoticons
     max-width: 496px
+    height: 243px
   .atk-content 
     img[src*="huyao"]
       width 100px
@@ -45,8 +46,8 @@
       height 53px
       width 53px
     img[src*="huyao"]
-      height 78px
-      width 78px
+      height 80px
+      width 80px
     img[src*="aniya"]
       border-radius 4px
       height 80px
@@ -57,5 +58,38 @@
   .atk-header .atk-badge
     padding: 0.2rem
 
-#owo-big p
-  margin-top -4px !important
+
+#artalk_container
+  img[atk-emoticon].error
+    width: 53px
+    height: 53px
+    min-height: 53px
+    min-width: 53px
+    margin: 0 5px
+    border-radius: 6px
+    &[alt]:after
+      content: attr(alt)
+    &:after
+      font-size .5rem
+      content: '表情加载失败'
+  .atk-editor-plug-emoticons img[atk-emoticon]
+    &.error
+      min-width: max-content
+      &:after
+        font-size: 0.6rem
+    &[atk-emoticon][src*="qq"].error:after
+      font-size: 0.5rem
+  .atk-avatar img.error
+    min-width 48px
+    min-height 48px
+    &:before
+      border-radius unset
+  .atk-comment-children .atk-avatar img.error
+    min-width 36px 
+    min-height 36px
+
+#owo-big
+  &:has(img[src*="common/emoji"].error)
+    display none !important
+  p
+    margin-top -4px !important
