@@ -20,8 +20,13 @@
     color var(--color-inlinecode)
     font-family $fontfamily-code
   .atk-editor-plug-emoticons
-    max-width: 496px
-    height: 230px
+    max-width: 495px
+    height: 243px
+    white-space: nowrap
+    .atk-grp-switcher
+      display: inline-flex;
+      overflow-y: hidden;
+      align-items: center;
   .atk-content 
     img[src*="huyao"]
       width 100px
@@ -40,16 +45,11 @@
     img
       height 53px
       width 53px
-    img[src*="quyin"]
-      height 53px
-      width 53px
     img[src*="huyao"]
-      height 80px
-      width 80px
+      height 79px
+      width 79px
     img[src*="aniya"]
       border-radius 4px
-      height 80px
-      width 80px
     img[src*="qq"]
       height 38px
       width 38px
