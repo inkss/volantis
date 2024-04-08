@@ -27,7 +27,6 @@
       display: inline-flex;
       overflow-y: hidden;
       align-items: center;
-  .atk-content 
     img[src*="huyao"]
       width 100px
       max-height 100px
@@ -57,10 +56,22 @@
     padding: 0.2rem
 
 
-#artalk_container
-    &[atk-emoticon][src*="qq"].error:after
+#artalk_container 
+  .atk-editor-plug-emoticons img[atk-emoticon]
+    &[src*="qq"].error:after
       font-size: 0.5rem
-
+    &[src*="huyao"].error
+      width: 74px
+    &[src*="aniya"].error
+      height: 90px
+      width: 137px
+  .atk-content 
+    p:has(img.error)
+      display: flex
+      flex-wrap: wrap
+      align-items: center
+    img.error
+      width: min-content
 
 #owo-big
   p
