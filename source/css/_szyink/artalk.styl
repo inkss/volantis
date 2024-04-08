@@ -27,33 +27,38 @@
       display: inline-flex;
       overflow-y: hidden;
       align-items: center;
-    img[src*="huyao"]
-      width 100px
-      max-height 100px
-    img[src*="aniya"]
-      width 210px
-      max-height 210px
-      display block
-      border-radius 8px
-    img[src*="qq"]
-      height 39px
-      width 39px
-  .atk-grp>.atk-item
-    width unset !important
-    height unset !important
+    .atk-grp>.atk-item
+      width: auto
+      height: auto
     img
       height 53px
       width 53px
-    img[src*="huyao"]
-      height 79px
-      width 79px
-    img[src*="aniya"]
-      border-radius 4px
-    img[src*="qq"]
-      height 38px
-      width 38px
+      border-radius 8px
+      &[src*="huyao"],
+      &[src*="aniya"]
+        height 79px
+        width 79px
+      &[src*="qq"]
+        height 38px
+        width 38px
   .atk-header .atk-badge
     padding: 0.2rem
+  .atk-content
+    img[atk-emoticon]
+      width: 4em;
+      max-height: 210px
+      border-radius: 6px
+      &[src*="aniya"]
+        width: 205px
+        margin 0 2px
+      &[src*="huyao"]
+        width: 100px
+      &[src*="quyin"]
+        width: 80px
+      &[src*="slackmojis"]
+        min-width: 50px
+      &[src*="qq"]
+        width: 38px
 
 
 #artalk_container 
@@ -71,7 +76,7 @@
       flex-wrap: wrap
       align-items: center
     img.error
-      width: min-content
+      width: 4em !important
 
 #owo-big
   p
