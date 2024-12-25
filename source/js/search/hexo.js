@@ -58,8 +58,8 @@ let SearchService = (() => {
       fn.data = await fn.fetchData();
     }
     let results = "";
-    results += fn.buildResultList(fn.data.pages);
-    results += fn.buildResultList(fn.data.posts);
+    results += fn.buildResultList(fn.data?.posts);
+    results += fn.buildResultList(fn.data?.pages);
     if (results === "") {
       results = `<div id="resule-hits-empty"><i class="fa-solid fa-box-open"></i><p>${volantis.GLOBAL_CONFIG.languages.search.hits_empty.replace(/\$\{query}/, fn.queryText)}</p></div>`
     }
@@ -85,14 +85,9 @@ let SearchService = (() => {
       });
   };
   fn.buildResultList = (data) => {
+    data.sort((a, b) => new Date(b.updated) - new Date(a.updated));
     let html = "";
     data.forEach((post) => {
-      if (post.text) {
-        post.text = post.text.replace(/12345\d*/g, "") // 简易移除代码行号
-      }
-      if (!post.title && post.text) {
-        post.title = post.text.trim().slice(0, 15)
-      }
       if (fn.contentSearch(post)) {
         html += fn.buildResult(post.permalink, post.title, post.digest);
       }
@@ -100,8 +95,8 @@ let SearchService = (() => {
     return html;
   };
   fn.contentSearch = (post) => {
-    let post_title = post.title.trim().toLowerCase();
-    let post_content = post.text.trim().toLowerCase();
+    let post_title = post?.title?.trim().toLowerCase();
+    let post_content = post?.content?.trim().toLowerCase();
     let keywords = fn.queryText
       .trim()
       .toLowerCase()
@@ -126,7 +121,8 @@ let SearchService = (() => {
           }
         }
         if (foundMatch) {
-          post_content = post.text.trim();
+          // 临时替换
+          post_content = fn.stripHTML(post?.content);
           let start = 0;
           let end = 0;
           if (first_occur >= 0) {
@@ -155,15 +151,11 @@ let SearchService = (() => {
   };
   fn.buildResult = (url, title, digest) => {
     let result = fn.getUrlRelativePath(url);
-    let html = "";
-    html += "<li>";
-    html +=
-      "<a class='result' href='" + result + "?keyword=" + fn.queryText + "'>";
-    html += "<span class='title'>" + title + "</span>";
-    if (digest !== "") html += "<span class='digest'>" + digest + "</span>";
-    html += "</a>";
-    html += "</li>";
-    return html;
+    let digestDom = "", tagsDom = "";
+    if (digest !== "") {
+      digestDom = `<span class="digest">${digest}</span>`
+    }    
+    return `<li><a class="result" href ="${result}?keyword=${fn.queryText}"><span class="title">${title}</span>${digestDom}${tagsDom}</a></li>`
   };
   fn.getUrlRelativePath = function (url) {
     let arrUrl = url.split("//");
@@ -173,6 +165,20 @@ let SearchService = (() => {
       relUrl = relUrl.split("?")[0];
     }
     return relUrl;
+  };
+  fn.stripHTML = (html) => {
+    // 移除所有换行符
+    html = html.replace(/\n+/g, ' ');
+    // 移除 img 和 figure 标签及其内容
+    html = html.replace(/<(img|figure)[^>]*>.*?<\/\1>/g, '');
+    // 移除其他 HTML 标签
+    html = html.replace(/<[^>]+>/g, '');
+    // 移除所有换行符
+    html = html.trim().replace(/\s+/g, ' ')
+    // 在 https:// 前面添加空格（如果没有的话） 
+    html = html.replace(/(\S)(https:\/\/)/g, '$1 $2');
+    // 移除所有换行符
+    return html;
   };
   return {
     init: () => {
