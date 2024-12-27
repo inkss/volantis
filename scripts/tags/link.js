@@ -27,7 +27,7 @@ hexo.extend.tag.register('link', function(args) {
   result += '<div class="tag link"><a class="link-card" title="' + text + '" href="' + url + '">';
   // left
   result += '<div class="left">';
-  result += '<img src="' + (img || hexo.theme.config.tag_plugins.link.placeholder) + '"/>';
+  result += '<img fancybox src="' + (img || hexo.theme.config.tag_plugins.link.placeholder) + '"/>';
   result += '</div>';
   // right
   result += '<div class="right"><p class="text">' + text + '</p><p class="url">' + url + '</p></div>';
