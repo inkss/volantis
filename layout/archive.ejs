@@ -21,7 +21,7 @@
 					<% if (site.categories.length){ %>
 						<% site.categories.sort('path').each(function(category){ %>
 							<a class="<%= category.parent ? ' child' : ''%>" href="<%= url_for(category.path) %>">
-								<span><i class='fal fa-folder-open fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;<%= category.name %></span>
+								<span><i class='fa-solid fa-folder-open fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;<%= category.name %></span>
 								<span class="title">
 									(<%- category.posts.length %>)
 								</span>
@@ -51,7 +51,7 @@
 										<%= date(post.date, config.date_format) %>
 									<% } %>
 									<% if(theme.plugins.aplayer && theme.plugins.aplayer.enable && post.music && post.music.enable != false){ %>
-										&nbsp;<i class="fal fa-headphones-alt music" aria-hidden="true"></i>
+										&nbsp;<i class="fa-headphones-alt fa-headphones-alt music" aria-hidden="true"></i>
 									<% } %>
 									<% if (post.icon) { %>
 										&nbsp;<i class="<%- post.icon %>" aria-hidden="true"></i>

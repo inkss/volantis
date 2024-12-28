@@ -583,7 +583,7 @@ const VolantisApp = (() => {
           }, 2000)
         }).catch(e => {
           VolantisApp.message('系统提示', e, {
-            icon: 'fal fa-exclamation-circle red'
+            icon: 'fa-solid fa-exclamation-circle red'
           });
           _BtnCopy.classList.add('copied-failed');
           _icon.classList.remove('fa-copy');
