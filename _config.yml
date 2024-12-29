@@ -141,7 +141,7 @@ navbar:
       icon: fa-solid fa-rss
       url: /
     - name: 分类
-      icon: fa-solid fa-folder-open
+      icon: fa-solid fa-code-merge 
       url: categories/
     - name: 标签
       icon: fa-solid fa-tags
@@ -342,7 +342,7 @@ article:
         format: 'll' # 日期格式 http://momentjs.com/docs/
       # 文章分类
       category:
-        icon: fa-solid fa-folder-open
+        icon: fa-solid fa-code-merge 
       # 文章浏览计数
       counter:
         icon: fa-solid fa-eye
@@ -597,7 +597,7 @@ sidebar:
       class: category
       display: [desktop] # [desktop, mobile]
       header:
-        icon: fa-solid fa-folder-open
+        icon: fa-solid fa-code-merge 
         title: 文章分类
         url: /blog/categories/
     # ---------------------------------------
