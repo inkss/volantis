@@ -21,7 +21,7 @@
 					<% if (site.categories.length){ %>
 						<% site.categories.sort('path').each(function(category){ %>
 							<a class="<%= category.parent ? ' child' : ''%>" href="<%= url_for(category.path) %>">
-								<span><i class='fa-solid fa-code-merge  fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;<%= category.name %></span>
+								<span><i class='<%= theme.icon.categories %> fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;<%= category.name %></span>
 								<span class="title">
 									(<%- category.posts.length %>)
 								</span>

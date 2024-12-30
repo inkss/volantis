@@ -9,9 +9,14 @@ function postTimeline(args, content) {
 }
 
 function postTimenode(args, content) {
-  args = args.join(' ').split(',');
-  var time = args[0];
-  return `<li class="timeline-item"> <i class="${args} timeline-axis"></i><div class="timeline-content timeline-content-text"><div class="timeline-title">${content}</div></div></li>`;
+  let icon;
+
+  if (!args || args.length === 0) {
+    icon = 'feather circle';
+  } else {
+    icon = args.join(' ');
+  }
+  return `<li class="timeline-item"><i class="${icon.includes('feather') ? icon : 'feather ' + icon} timeline-axis"></i><div class="timeline-content timeline-content-text"><div class="timeline-title">${content}</div></div></li>`;
 }
 
 

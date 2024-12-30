@@ -8,10 +8,10 @@ let SearchService = (() => {
       <form id="u-search-modal-form" class="u-search-form" name="uSearchModalForm">
         <input type="text" id="u-search-modal-input" class="u-search-input" />
         <button type="submit" id="u-search-modal-btn-submit" class="u-search-btn-submit">
-          <span class="fa-solid fa-search"></span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </button>
       </form>
-      <a id="u-search-btn-close" class="btn-close"> <span class="fa-solid fa-times"></span> </a>
+      <a id="u-search-btn-close" class="btn-close"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> </a>
     </header>
     <main class="modal-body">
       <ul class="modal-results"></ul>

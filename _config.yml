@@ -1352,3 +1352,8 @@ structured_data:
       width: 192
       height: 192
 ############################### Structured Data ############################### > end
+
+icon:
+  page_prev: fa-solid fa-chevron-left
+  page_next: fa-solid fa-chevron-right
+  top: fa-solid fa-arrow-up

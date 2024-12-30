@@ -3,7 +3,7 @@
 .timelines-common
   background-color var(--color-card)
   border-radius 8px
-  padding 10px
+  margin: -10px 0px;
 
 .elem-field
   border-color #e6e6e6
@@ -21,7 +21,7 @@
   border-width 1px 0 0
 
 .timeline
-   margin 0 16px !important
+  padding 0 !important
 
 .timeline-item
   position relative
@@ -34,29 +34,29 @@
     &:before
       display none
   &:before
-    content ''
-    position absolute
-    left 5px
-    top 0
-    z-index 0
-    width 1px
-    height 100%
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 10px;
+    z-index: 0;
+    width: 2px;
+    height: 100%;
 
 .timeline-item:before
   background-color #e6e6e6
 
 .timeline-axis
-  position absolute !important
-  left -5px
-  top 0
-  z-index 10
-  width 20px
-  height 20px
-  line-height 20px !important
-  background-color var(--color-card)
-  color var(--color-meta)
-  border-radius 50%
-  text-align center
+  position: absolute;
+  z-index: 10;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-card);
+  color: var(--color-meta);
+  &.feather.feather-circle
+    width: 10px;
+    height: 10px;
+    left: 2px;
 
 .timeline-icon
   font-family timeline-icon!important
@@ -70,9 +70,9 @@
   margin-bottom 10px
 
 .timeline-content
-  padding-left 25px
+  padding-left 30px
 
 .timeline-content-text
-  line-height 22px
+  line-height 20px
   font-size 0.8rem
   color #666

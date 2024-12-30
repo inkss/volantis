@@ -24,7 +24,9 @@
           <%- partial('_plugins/pjax/pdata') %>
         </div>
         <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
-        <a id="s-top" class="fa-solid fa-arrow-up fa-fw" title="top"></a>
+        <a id="s-top" title="top">
+          <i class="<%= theme.icon.top %> fa-fw"></i>
+        </a>
       </div>
     </div>
     <div>

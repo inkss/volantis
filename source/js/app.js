@@ -60,7 +60,7 @@ Object.freeze(locationHash);
 /* Main */
 const VolantisApp = (() => {
   const fn = {},
-    COPYHTML = '<button class="btn-copy" data-clipboard-snippet=""><i class="fa-solid fa-copy"></i><span>COPY</span></button>';
+    COPYHTML = '<button class="btn-copy" data-clipboard-snippet=""><span>COPY</span></button>';
   let scrollCorrection = 80;
 
   fn.init = () => {
@@ -502,39 +502,6 @@ const VolantisApp = (() => {
     })
   }
 
-  // 评论切换
-  volantis.selectComment = 'beaudar';
-  fn.switchComment = () => {
-    const _btn = document.getElementById('switchBtn');
-    if (_btn) {
-      if (volantis.selectComment !== 'beaudar') {
-        _btn.classList.remove('move');
-      }
-      _btn.onclick = function () {
-        const _twikoo = document.getElementById('twikoo');
-        const _beaudar = document.getElementById('beaudar_container');
-        if (volantis.selectComment === 'twikoo') {
-          _twikoo.classList.toggle('content-in');
-          _beaudar.classList.toggle('content-in');
-          volantis.selectComment = 'beaudar';
-          _twikoo.style.display = 'none';
-          _twikoo.classList.remove('content-in');
-          _beaudar.style.display = 'block';
-          _beaudar.classList.add('content-in');
-        } else {
-          volantis.selectComment = 'twikoo';
-          _twikoo.style.display = 'block';
-          _twikoo.classList.add('content-in');
-          _beaudar.style.display = 'none';
-          _beaudar.classList.remove('content-in');
-        }
-        _btn.classList.toggle("move");
-      }
-    }
-    // console.clear();
-    // console.log("%c ", "background:url(https://api.btstu.cn/sjbz/?lx=dongman) no-repeat center;background-size:cover;padding-left:100%;padding-bottom:55%;overflow:hidden;border-radius:10px;margin:5px 0");
-  }
-
   // hexo-reference 页脚跳转 https://github.com/volantis-x/hexo-theme-volantis/issues/647
   fn.footnotes = () => {
     let ref = document.querySelectorAll('#l_main .footnote-backref, #l_main .footnote-ref > a');
@@ -560,7 +527,6 @@ const VolantisApp = (() => {
       const _BtnCopy = node.previousSibling;
       _BtnCopy.onclick = e => {
         e.stopPropagation();
-        const _icon = _BtnCopy.querySelector('i');
         const _span = _BtnCopy.querySelector('span');
 
         node.focus();
@@ -573,25 +539,15 @@ const VolantisApp = (() => {
         fn.utilWriteClipText(str).then(() => {
           fn.messageCopyright();
           _BtnCopy.classList.add('copied');
-          _icon.classList.remove('fa-copy');
-          _icon.classList.add('fa-check-circle');
           _span.innerText = "COPIED";
           setTimeout(() => {
-            _icon.classList.remove('fa-check-circle');
-            _icon.classList.add('fa-copy');
             _span.innerText = "COPY";
           }, 2000)
         }).catch(e => {
-          VolantisApp.message('系统提示', e, {
-            icon: 'fa-solid fa-exclamation-circle red'
-          });
+          VolantisApp.message('系统提示', '错误');
           _BtnCopy.classList.add('copied-failed');
-          _icon.classList.remove('fa-copy');
-          _icon.classList.add('fa-exclamation-circle');
           _span.innerText = "COPY FAILED";
           setTimeout(() => {
-            _icon.classList.remove('fa-exclamation-circle');
-            _icon.classList.add('fa-copy');
             _span.innerText = "COPY";
           })
         })
@@ -664,6 +620,17 @@ const VolantisApp = (() => {
     } catch (error) {
       console.error(error)
       return ' - '
+    }
+  }
+
+  // feather 图标
+  fn.feather = () => {
+    if(feather) {
+      try {
+        feather.replace({ 'width': 16, 'height': 16 });
+      } catch (error) {
+        console.error('图标加载失败', error)
+      }
     }
   }
 
@@ -835,7 +802,7 @@ const VolantisApp = (() => {
       fn.footnotes();
       fn.dataToShow();
       fn.nextSiteMenu();
-      // fn.switchComment();
+      fn.feather();
     },
     pjaxReload: () => {
       fn.event();
@@ -848,7 +815,7 @@ const VolantisApp = (() => {
       fn.footnotes();
       fn.dataToShow();
       fn.nextSiteMenu();
-      // fn.switchComment();
+      fn.feather();
 
       // 移除小尾巴的移除
       document.querySelector("#l_header .nav-main")?.querySelectorAll('.list-v:not(.menu-phone)')?.forEach(function (e) {

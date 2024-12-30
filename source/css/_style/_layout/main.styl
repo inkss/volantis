@@ -12,6 +12,9 @@
     &,p
       text-align: center
   #s-top
+    display: flex;
+    justify-content: center;
+    align-items: center;
     trans(0.6s)
     z-index: 50
     position: fixed
@@ -32,6 +35,9 @@
         background: $color-theme
         color: $color-inner
         box-shadow: $boxshadow-card
+    svg.feather
+      width 20px
+      height 20px
     @media screen and (min-width: $device-tablet)
       &:hover
         transform: scale(1.2)

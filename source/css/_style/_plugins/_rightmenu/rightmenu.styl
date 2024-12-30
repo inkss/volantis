@@ -4,6 +4,13 @@ div#rightmenu-wrapper
   z-index: 2147483648
   disable-user-select()
 ul.list-v.rightmenu
+  .menuLoad-Content
+    a, span
+      display: flex
+      justify-content: flex-start
+      align-items: center
+      svg.feather
+        margin-right: 6px
   display: block
   max-width: 240px
   min-width: 170px
@@ -59,6 +66,10 @@ ul.list-v.rightmenu
         margin-left: 2px + $gap * 0.5
       &:last-child
         margin-right: 2px + $gap * 0.5
+    a:has(svg.feather)
+      display: flex
+      align-items: center
+      justify-content: center
   li.music
     &.name
       display: flex
