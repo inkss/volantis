@@ -21,19 +21,15 @@ function postCell(args, content) {
     url = 'href=\'' + url + '\'';
   }
   let icon = '';
-  let img = hexo.theme.config.default.image;
+  let img = hexo.theme.config.tag_plugins.link.placeholder;
   if (args.length > 2) {
-    if (args[2].indexOf(' fa-') > -1) {
-      icon = args[2].trim();
-    } else {
-      img = args[2].trim();
+    if (args[2].includes('fa-') || args[2].includes('feather')) {
+      return `<a class="button" ${url} title='${text}'><i class='${args[2].trim()}'></i>${text}</a>`;
+    } else if(args[2].trim() != ''){
+      img = args[2].trim() ;
     }
   }
-  if (icon.length > 0) {
-    return `<a class="button" ${url} title='${text}'><i class='${icon}'></i>${text}</a>`;
-  }
-  return `<a class="button" ${url} title='${text}'><img src='${img}'>${text}</a>`;
-
+  return `<a class="button" ${url} title='${text}'><img src='${img}'></img>${text}</a>`;
 }
 
 hexo.extend.tag.register('btns', postBtns, {ends: true});

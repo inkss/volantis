@@ -16,7 +16,7 @@ function postTimenode(args, content) {
   } else {
     icon = args.join(' ');
   }
-  return `<li class="timeline-item"><i class="${icon.includes('feather') ? icon : 'feather ' + icon} timeline-axis"></i><div class="timeline-content timeline-content-text"><div class="timeline-title">${content}</div></div></li>`;
+  return `<li class="timeline-item"><i class="${icon.includes('feather') ? icon : 'feather ' + icon} timeline-axis"></i><div class="timeline-content timeline-content-text"><div class="timeline-title">${hexo.render.renderSync({text: content, engine: 'markdown'}).split('\n').join('')}</div></div></li>`;
 }
 
 

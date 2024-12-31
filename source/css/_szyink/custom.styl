@@ -386,3 +386,9 @@ details summary,
 // 阅读模式自定义背景
 .common_read .cus-article-bkg
   display none !important
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.fa-spin
+  display: inline-block
+  animation: spin 2s linear infinite

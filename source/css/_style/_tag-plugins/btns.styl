@@ -9,7 +9,7 @@
     margin: 2px
     line-height: 1.1
     border-radius: 2px
-    i
+    i, svg.feather
       margin-right: 2px
     trans()
     &:not([href])
@@ -23,7 +23,7 @@
     &:hover
       color: $color-hover
       border-color: $color-hover
-    i
+    i, svg.feather
       margin-right: 4px
 
   &.regular a, &.solid a
@@ -40,7 +40,7 @@
   &.large a
     font-size: 1rem
     padding: 12px 36px
-    i
+    i, svg.feather
       margin-right: 8px
 
   &.center
@@ -118,7 +118,7 @@
     flex-direction: column
     padding: $gap * 0.5
     text-align: center
-    &>img:first-child, &>i:first-child
+    &>img:first-child, &>i:first-child, &>svg.feather:first-child
       trans()
       height: 64px
       width: 64px
@@ -131,7 +131,10 @@
       background: $color-inner
       line-height: 60px
       font-size: 28px
-    &>i:first-child
+      padding: 4px;
+    &>svg.feather:first-child
+      padding: $gap * 0.5
+    &>i:first-child, &>svg.feather:first-child
       color: $color-inner
       background: $color-theme
     background: var(--color-block)
@@ -153,14 +156,14 @@
       background: alpha($color-hover, 15%)
       &,b
         color: $color-hover
-      &>img:first-child, &>i:first-child
+      &>img:first-child, &>i:first-child, &>svg.feather:first-child
         transform: scale(1.1) translateY(-8px)
         box-shadow: $boxshadow-float
-      &>i:first-child
+      &>i:first-child, &>svg.feather:first-child
         background: $color-hover
   &.circle a
-    &>img:first-child, &>i:first-child
+    &>img:first-child, &>i:first-child, &>svg.feather:first-child
       border-radius: 32px
   &.rounded a
-    &>img:first-child, &>i:first-child
+    &>img:first-child, &>i:first-child, &>svg.feather:first-child
       border-radius: 16px
