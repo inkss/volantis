@@ -55,11 +55,16 @@
     font-weight: bold
     font-size: $fontsize-meta
     padding-bottom: 0
+    display: inline-flex;
+    align-items: center;
     &,a
       color: var(--color-meta)
     >a:hover
       color: $color-hover
-
+    a:has(svg.feather)
+      display: contents;
+    span:has(svg.feather)
+      display: inline-flex
     span.name
       margin-left: $gap * 0.5
 

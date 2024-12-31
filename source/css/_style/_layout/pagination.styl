@@ -11,11 +11,15 @@
       text-align: left
       border-top-right-radius: 32px
       border-bottom-right-radius: 32px
+      display: flex;
+      align-items: center;
 
     .next
       text-align: right
       border-top-left-radius: 32px
       border-bottom-left-radius: 32px
+      display: flex;
+      align-items: center;
 
     p
       margin: $gap
@@ -34,7 +38,7 @@
       width: 100%
       display: flex
       justify-content: space-between
-      align-content: flex-start
+      align-items: stretch;
       margin-top: $gap * 0.5
       >a
         width: 100%
@@ -63,12 +67,18 @@
           margin-right: 0
       .prev
         p.title
-          text-align: left
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
         margin-left: 0
         margin-right: $gap * 0.5
+        display: inline-block;
 
       .next
         p.title
-          text-align: right
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
         margin-left: $gap * 0.5
         margin-right: 0
+        display: inline-block;
