@@ -18,11 +18,12 @@
     <a href="<%- url_for(path) %>#comments"> 
       <i class="<%- theme.article.body.meta_library.artalkcount.icon %> fa-fw"></i> 
       <p> 
+        <%= theme.article.body.meta_library.comment %>
         <span data-page-key="<%- url_for(path) %>" id="ArtalkCount"> 
-          <i class="far fa-loader fa-spin fa-fw" aria-hidden="true"></i>
+          <i class="<%= theme.icon.load %> fa-spin fa-fw" aria-hidden="true"></i>
         </span> 
         <% if(theme.article.body.meta_library.artalkcount.desc) { %> 
-          <span class="leancloud-comments-count">&nbsp;<%- theme.article.body.meta_library.artalkcount.desc %></span> 
+          <%= theme.article.body.meta_library.artalkcount.desc %>
         <% } %> 
       </p>       
     </a> 

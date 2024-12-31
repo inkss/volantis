@@ -347,6 +347,7 @@ article:
       counter:
         icon: fa-solid fa-eye
         unit: '次浏览'
+      comment: '评论：'
       # waline 文章评论数量
       walinecount:
         icon: fa-solid fa-comment-dots
@@ -690,6 +691,7 @@ tag_plugins:
     icon: '\f054'
     color: ''
     iconfont: 'Font Awesome 6 Free'
+    feather: false
   # {% checkbox %}
   checkbox:
     interactive: false # enable interactive for user
@@ -1357,3 +1359,4 @@ icon:
   page_prev: fa-solid fa-chevron-left
   page_next: fa-solid fa-chevron-right
   top: fa-solid fa-arrow-up
+  load: far fa-loader

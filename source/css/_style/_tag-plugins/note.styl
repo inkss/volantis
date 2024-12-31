@@ -1,14 +1,41 @@
-div.note
+
+if hexo-config('tag_plugins.note') && hexo-config('tag_plugins.note.feather')
+  div.note, div.feather
+    p
+      margin 0 !important
+
+
+div.note, div.feather
+  &:has(svg.feather)
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1em 0.8em;
+    svg
+      width: 24px;
+      height: 24px;
+      margin-right 8px;
+    svg.feather
+      color: $color-theme
+      &.feather-quote
+        color: $color-md-blue
+      &.feather-info
+        color: $color-theme
+      &.alert-triangle
+        color: $color-mac-yellow
+      &.check-circle
+        color: $color-mac-green
+      &.x
+        color: $color-mac-red
+    p
+      text-indent: 0 !important;
   $border-codeblock = 4px
   bg($c)
     return mix($c, $color-card, 10)
   border($c)
     return mix($c, $color-card, 100)
   position: relative
-  margin-top: $gap-p
-  margin-bottom: $gap-p
   padding: $gap
-  padding-left: "calc(16px + %s)" % $gap
   border-radius: $border-codeblock
   font-size: $fontsize-list
   h2,
@@ -34,6 +61,11 @@ div.note
     margin-bottom: $gap-p * 0.5
   .link-card
     background: var(--color-card)
+  background: var(--color-block)
+  border-left: $border-codeblock solid $color-theme
+
+if hexo-config('tag_plugins.note') && hexo-config('tag_plugins.note.feather') == false
+  padding-left: "calc(16px + %s)" % $gap
   &::before
     position: absolute
     top: "calc(50% - %s * 0.5)" % (24px)
@@ -45,9 +77,6 @@ div.note
     line-height: 24px
     vertical-align: middle
     font-family: hexo-config('tag_plugins.note.iconfont')
-
-  background: var(--color-block)
-  border-left: $border-codeblock solid $color-theme
   &::before
     color: $color-theme
     content: '\f054'
@@ -60,7 +89,6 @@ div.note
       border-color: border($c)
       &::before
         color: border($c)
-
   &.quote
     background: bg($color-md-blue)
     border-color: border($color-md-blue)
@@ -116,8 +144,6 @@ div.note
     content: '\f2ea'
   &.play::before
     content: '\f144'
-
-
   &.clear
     background: none
     border-color: none

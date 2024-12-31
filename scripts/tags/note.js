@@ -4,8 +4,49 @@
 
 'use strict';
 
+function rFeather(name) {
+  if (name == '') {
+    return 'chevron-right';
+  }
+  if (name.includes('quote')) {
+    return name.replace('quote', 'chevron-right')
+  }
+  //warning to alert-circle
+  if (name.includes('warning')) {
+    return name.replace('warning', 'alert-circle')
+  }
+  //warning to alert-triangle
+  if (name.includes('warning')) {
+    return name.replace('warning', 'alert-triangle')
+  }
+  //success,done to check-circle
+  if (name.includes('success')) {
+    return name.replace('success', 'check-circle')
+  }
+  if (name.includes('done')) {
+    return name.replace('done', 'check-circle')
+  }
+  //danger,error to x
+  if (name.includes('danger')) {
+    return name.replace('danger', 'x')
+  }
+  if (name.includes('error')) {
+    return name.replace('error', 'x')
+  }
+  //radiation to anchor
+  if (name.includes('radiation')) {
+    return name.replace('radiation', 'aperture')
+  }
+  //bug to shield
+  if (name.includes('bug')) {
+    return name.replace('bug', 'shield')
+  }
+  return name;
+}
+
 // {% note style, content %}
 function postNote(args) {
+  const feather = hexo.theme.config.tag_plugins.note.feather;
   if(/::/g.test(args)){
     args = args.join(' ').split('::');
   }
@@ -15,9 +56,16 @@ function postNote(args) {
   if (args.length > 1) {
     const cls = args[0].trim();
     const text = args[1].trim();
+    // 原始内容兼容 feather 表示
+    if(feather) {
+      return `<div class="feather"><i class="feather ${rFeather(cls)}"></i>${hexo.render.renderSync({text: text, engine: 'markdown'}).split('\n').join('')}</div>`;
+    }
     return `<div class="note ${cls}">${hexo.render.renderSync({text: text, engine: 'markdown'}).split('\n').join('')}</div>`;
   } else if (args.length > 0) {
     const text = args[0].trim();
+    if(feather) {
+      return `<div class="feather"><i class="feather chevron-right"></i>${hexo.render.renderSync({text: text, engine: 'markdown'}).split('\n').join('')}</div>`;
+    }
     return `<div class="note">${hexo.render.renderSync({text: text, engine: 'markdown'}).split('\n').join('')}</div>`;
   }
 }

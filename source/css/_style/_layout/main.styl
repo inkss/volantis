@@ -179,12 +179,17 @@
           color: var(--color-meta)
           .notlink
             cursor: $default
+            p
+              display: flex;
+              align-items: center;
+              span
+                margin-right 4px
             &:hover
               color: var(--color-meta)
               p
                 color: var(--color-meta)
           display: flex
-          align-items: baseline
+          align-items: center;
           justify-content: center
           margin: 0 $gap 0 0
           padding: 8px 0  // seo https://web.dev/tap-targets/
@@ -197,6 +202,11 @@
             border-radius: 0
             &.fa-hashtag
               margin-right: 2px
+          .category
+            display: flex;
+            align-items: center;
+          svg.feather
+            margin-right: 4px
           p,a
             color: var(--color-meta)
             padding: 3px 0
@@ -307,10 +317,14 @@
 article#comments
   p[ct]
     margin-top: 0
-    margin-bottom: $gap-p
+    margin-bottom: .5em
     font-size: $fontsize-h4
     color: var(--color-text)
     font-weight: 600
+    display: flex;
+    align-items: center;
+    span
+      margin-left 4px
   p[cst]
     margin-top: $gap-p
     margin-bottom: $gap-p
