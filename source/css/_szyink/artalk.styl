@@ -1,83 +1,73 @@
 #comments
-  overflow: inherit
+  overflow inherit
+
 #artalk_container
-  input,textarea,
-  .atk-send-btn,
-  .atk-item.atk-nick a
+  input,textarea,.atk-send-btn,.atk-item.atk-nick a
     font-size 0.9rem
-  .atk-header,.atk-comment-count,
-  .atk-right-action>span,
-  .atk-actions>span,
-  .atk-actions-new>span,
-  .artalk pre code,
+  .atk-header,.atk-comment-count,.atk-right-action>span,
+  .atk-actions>span,.atk-actions-new>span,.artalk pre code,
   .atk-layer-wrap pre code
     font-size 0.8rem
   font-family $fontfamily
-  font-size 0.9rem
   code
-    *
-      font-family $fontfamily-code
-    color var(--color-inlinecode)
     font-family $fontfamily-code
+    color var(--color-inlinecode)
   .atk-editor-plug-emoticons
-    max-width: 495px
-    height: 243px
-    white-space: nowrap
+    max-width 495px
+    height 243px
+    white-space nowrap
     .atk-grp-switcher
-      display: inline-flex;
-      overflow-y: hidden;
-      align-items: center;
+      display inline-flex
+      overflow-y hidden
+      align-items center
     .atk-grp>.atk-item
-      width: auto
-      height: auto
+      width auto
+      height auto
     img
       height 53px
       width 53px
       border-radius 8px
-      &[src*="huyao"],
-      &[src*="aniya"]
+      &[src*="huyao"],&[src*="aniya"]
         height 79px
         width 79px
       &[src*="qq"]
         height 38px
         width 38px
   .atk-header .atk-badge
-    padding: 0.2rem
+    padding 0.2rem
   .atk-content
     img[atk-emoticon]
-      width: 4em;
-      max-height: 210px
-      border-radius: 6px
+      width 4em
+      max-height 210px
+      border-radius 6px
       &[src*="aniya"]
-        width: 205px
+        width 205px
         margin 0 2px
       &[src*="huyao"]
-        width: 100px
+        width 100px
       &[src*="quyin"]
-        width: 80px
+        width 80px
       &[src*="slackmojis"]
-        min-width: 50px
+        min-width 50px
       &[src*="qq"]
-        width: 38px
+        width 38px
 
-
-#artalk_container 
+#artalk_container
   .atk-editor-plug-emoticons img[atk-emoticon]
     &[src*="qq"].error:after
-      font-size: 0.5rem
+      font-size 0.5rem
     &[src*="huyao"].error
-      width: 74px
+      width 74px
     &[src*="aniya"].error
-      height: 90px
-      width: 137px
-  .atk-content 
+      height 90px
+      width 137px
+  .atk-content
     p:has(img.error)
-      display: flex
-      flex-wrap: wrap
-      align-items: center
+      display flex
+      flex-wrap wrap
+      align-items center
     img.error
-      width: 4em !important
+      width 4em !important
 
-#owo-big
-  p
-    margin-top -4px !important
+#owo-big p
+  margin-top -4px !important

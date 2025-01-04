@@ -816,36 +816,6 @@ plugins:
   comment_typing:
     enable: #true
  
-  # 视差滚动效果 Slide Background
-  parallax:
-    enable: #true
-    position: cover       # cover: sticky on the cover.   fixed: Fixed as background for the site.
-    shuffle: true         # shuffle playlist
-    duration: 10000       # Duration (ms)
-    fade: 1500            # fade duration (ms) (Not more than 1500)
-    images:               # For personal use only. At your own risk if used for commercial purposes !!!
-      - volantis-static/media/wallpaper/minimalist/2020/001.webp
-      - volantis-static/media/wallpaper/minimalist/2020/002.webp
-      - volantis-static/media/wallpaper/minimalist/2020/003.webp
-      - volantis-static/media/wallpaper/minimalist/2020/004.webp
-      - volantis-static/media/wallpaper/minimalist/2020/005.webp
-      - volantis-static/media/wallpaper/minimalist/2020/006.webp
-      - volantis-static/media/wallpaper/minimalist/2020/012.webp
-      - volantis-static/media/wallpaper/minimalist/2020/016.webp
-      - volantis-static/media/wallpaper/minimalist/2020/019.webp
-      - volantis-static/media/wallpaper/minimalist/2020/025.webp
-      - volantis-static/media/wallpaper/minimalist/2020/033.webp
-      - volantis-static/media/wallpaper/minimalist/2020/034.webp
-      - volantis-static/media/wallpaper/minimalist/2020/035.webp
-      - volantis-static/media/wallpaper/minimalist/2020/038.webp
-      - volantis-static/media/wallpaper/minimalist/2020/039.webp
-      - volantis-static/media/wallpaper/minimalist/2020/042.webp
-      - volantis-static/media/wallpaper/minimalist/2020/046.webp
-      - volantis-static/media/wallpaper/minimalist/2020/051.webp
-      - volantis-static/media/wallpaper/minimalist/2020/052.webp
-      - volantis-static/media/wallpaper/minimalist/2020/054.webp
-      - volantis-static/media/wallpaper/minimalist/2020/056.webp
-
   # APlayer is only available in mainland China.
   # https://aplayer.js.org/#/zh-Hans/
   # APlayer config: https://github.com/metowolf/MetingJS
@@ -963,36 +933,6 @@ plugins:
     sort_rule: created # 进入页面时第一次的排序规则,可选值：created/updated
     app: https://npm.elemecdn.com/fcircle-theme-yyyz@1.0.5/dist/app.min.js # app.min.js的url
     bundle: https://npm.elemecdn.com/fcircle-theme-yyyz@1.0.5/dist/bundle.js # bundle.js的url
-
-  # 消息提示 
-  # izitoast
-  message:
-    enable: true
-    icon:     # 默认图标，支持对图标添加颜色，可选值：see：/source/css/_style/_plugins/fontcolor.styl
-      default: fa-solid fa-info-circle light-blue
-      quection: fa-solid fa-question-circle light-blue
-    time:     # 默认持续时间
-      default: 5000
-      quection: 20000
-    position: 'topRight'                 # 弹出位置 可选值：topRight, bottomRight, bottomLeft, topLeft, topCenter, bottomCenter, center
-    transitionIn: 'bounceInLeft'         # 弹窗打开动画 可选值：bounceInLeft, bounceInRight, bounceInUp, bounceInDown, fadeIn, fadeInDown, fadeInUp, fadeInLeft, fadeInRight, flipInX
-    transitionOut: 'fadeOutRight'        # 弹窗关闭动画 可选值：fadeOut, fadeOutUp, fadeOutDown, fadeOutLeft, fadeOutRight, flipOutX
-    titleColor: 'var(--color-text)'      # 标题颜色
-    messageColor: 'var(--color-text)'    # 消息颜色
-    backgroundColor: 'var(--color-card)' # 默认背景色
-    zindex: 2147483647                   # 层级
-    copyright:                           # 是否在复制时弹出版权提示，影响范围：ctrl+c、代码块复制按钮、右键复制选项
-      enable: true
-      title: '知识共享许可协议'
-      message: '请遵守 CC BY-NC-SA 4.0 协议。'
-      icon: 'far fa-copyright light-blue'
-    aplayer:                              # 是否开启音乐通知；播放、暂停、失败 时的图标
-      enable: true
-      play: fa-solid fa-play
-      pause: fa-solid fa-pause
-    rightmenu:
-      enable: true                        # 是否开启右键模块的消息通知
-      notice: true                        # 唤醒原右键菜单的通知
 
   # 聊天功能
   chat_service: # tidio or gitter

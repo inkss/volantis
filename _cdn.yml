@@ -21,13 +21,6 @@ volantis_aplayer:
   npm: true
   static: false
   cdnjs: false
-volantis_parallax:
-  name: hexo-theme-volantis
-  file: source/js/plugins/parallax.js
-  local: true
-  npm: true
-  static: false
-  cdnjs: false
 volantis_rightMenus:
   name: hexo-theme-volantis
   file: source/js/plugins/rightMenus.js

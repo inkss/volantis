@@ -14,124 +14,118 @@ img,
 .lazyload
   filter: brightness(convert(hexo-config('color_scheme.dark.brightness'))) !important
 
-//side
+// side
 .widget.blogger .content .social-wrapper a.social:hover
-  background: var(--color-card)
+  background var(--color-card)
 .widget >.content ul.entry a .badge, .widget >.content ul.popular-posts a .badge
-  color: unset !important
+  color unset !important
 .content
-  color: var(--color-p)
+  color var(--color-p)
 .widget >.content a
-  color: var(--color-p) !important
+  color var(--color-p) !important
   &:hover
-    color: var(--color-list-hl) !important
+    color var(--color-list-hl) !important
 .note
-  background: var(--color-block) !important
+  background var(--color-block) !important
 div.tabs ul.nav-tabs li.tab.active a
-  color: var(--color-p)
-  background: var(--color-card)
+  color var(--color-p)
+  background var(--color-card)
 kbd
-  background: var(--color-block) !important
+  background var(--color-block) !important
 .cover-wrapper.dock .menu .list-h a:hover, .cover-wrapper.featured .menu .list-h a:hover, .cover-wrapper.focus .menu .list-h a:hover
-  color: var(--color-text) !important
+  color var(--color-text) !important
 
-//highlight
+// highlight
 if hexo-config('plugins.code_highlight') == "highlightjs"
   .gutter
-    background: var(--color-card) !important
-    background-color: var(--color-card) !important
+    background var(--color-card) !important
   .highlight figcaption
-    background-color: #14161a
+    background-color #14161a
   .highlight pre .line, .highlight pre .params
-    color: rgba(158, 142, 142, 0.9)
+    color rgba(158, 142, 142, 0.9)
 
-//table
+// table
 *:not(.highlight) >table tr
-  background-color: var(--color-card)
+  background-color var(--color-card)
 *:not(.highlight) >table th
-  background: var(--color-site-bg)
-*:not(.highlight) table td,*:not(.highlight) table th
-  border-color: var(--color-site-bg)
+  background var(--color-site-bg)
+*:not(.highlight) table td, *:not(.highlight) table th
+  border-color var(--color-site-bg)
 *:not(.highlight) >table tr:hover
-  background: var(--color-codeblock)
+  background var(--color-codeblock)
 .timenode .highlight
-  border-color: var(--color-site-bg) !important
+  border-color var(--color-site-bg) !important
 blockquote p
-  color: var(--color-p)
+  color var(--color-p)
 
 // tags
 #archive-page .archive .all-tags ul li span
-  color: var(--color-text)
-  background: #6f6f72
+  color var(--color-text)
+  background #6f6f72
 
 // btn-copy
 .btn-copy:hover
-  background: var(--color-site-body)
+  background var(--color-site-body)
 
-if hexo-config('comments.service')=='gitalk'
+// gitalk comments
+if hexo-config('comments.service') == 'gitalk'
   .gt-container .gt-header-textarea
-    background-color: var(--color-card)
+    background-color var(--color-card)
     &:hover
-      background-color: var(--color-block)
+      background-color var(--color-block)
   .gt-container .gt-comment-content
-    background-color: var(--color-card)
+    background-color var(--color-card)
     &:hover
-      box-shadow: none
+      box-shadow none
   .gt-container .gt-comment-admin .gt-comment-content
-    background-color: var(--color-card)
+    background-color var(--color-card)
 
+// aplayer
 if hexo-config('plugins.aplayer.enable')
   .aplayer
-    background: var(--color-site-bg)
+    background var(--color-site-bg)
   .aplayer .aplayer-list ol li:hover
-    background: rgba($color-theme,.2)
+    background rgba($color-theme, .2)
   .aplayer .aplayer-list ol li.aplayer-list-light
-    background: var(--color-block)
+    background var(--color-block)
   .aplayer-info
-    background: var(--color-site-bg) !important
+    background var(--color-site-bg) !important
   .aplayer .aplayer-lrc:before
-    background: linear-gradient(180deg,#282c34 0,hsla(0,0%,100%,0))
+    background linear-gradient(180deg, #282c34 0, hsla(0, 0%, 100%, 0))
   .aplayer .aplayer-lrc:after
-    background: linear-gradient(180deg,hsla(0,0%,0%,0) 0,hsla(0,0%,13%,.8))
+    background linear-gradient(180deg, hsla(0, 0%, 0%, 0) 0, hsla(0, 0%, 13%, .8))
   .aplayer-pic
-    filter: brightness(convert(hexo-config('color_scheme.dark.brightness')))
+    filter brightness(convert(hexo-config('color_scheme.dark.brightness')))
   .aplayer .aplayer-list ol li
-    border-top: 1px solid var(--color-card)
+    border-top 1px solid var(--color-card)
   .aplayer.aplayer-withlist .aplayer-info
-    border-bottom: 1px solid var(--color-block)
+    border-bottom 1px solid var(--color-block)
   .aplayer .aplayer-notice
-    background-color: var(--color-site-bg) !important
+    background-color var(--color-site-bg) !important
 
-if hexo-config('comments.service')=='twikoo'
+// twikoo comments
+if hexo-config('comments.service') == 'twikoo'
   .OwO
     .OwO-body
-      color: silver !important
-      background-color: #252627 !important
-      border-color: #4a4b50 !important
+      color silver !important
+      background-color #252627 !important
+      border-color #4a4b50 !important
       .OwO-bar
-        border-top: 1px solid #4a4b50 !important
-        background:#4a4b50 !important
-        color: #ccc !important
-        .OwO-packages
-          li:hover
-            background-color: #252627 !important
-          .OwO-package-active
-            background-color: #252627 !important
-      .OwO-items
-        .OwO-item
-          background:#4a4b50 !important
-          color: #ccc !important
-      .OwO-items-image
-        .OwO-item:hover
-          background-color: #252627 !important
+        border-top 1px solid #4a4b50 !important
+        background #4a4b50 !important
+        color #ccc !important
+        .OwO-packages li:hover, .OwO-packages .OwO-package-active
+          background-color #252627 !important
+      .OwO-items .OwO-item
+        background #4a4b50 !important
+        color #ccc !important
+      .OwO-items-image .OwO-item:hover
+        background-color #252627 !important
 
 // Custom Files
 for $injects_dark in hexo-config('injects.dark')
-  @import $injects_dark;
-// eg:
-// body
-//   --color-site-body: blue !important
+  @import $injects_dark
 
-
+// comment-policy
 .comment-policy
-  background-color: #1e2224 !important
+  background-color #1e2224 !important

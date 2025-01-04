@@ -3,13 +3,12 @@
 .timelines-common
   background-color var(--color-card)
   border-radius 8px
-  margin: -10px 0px;
+  margin -10px 0
 
 .elem-field
-  border-color #e6e6e6
+  border 1px solid #e6e6e6
   margin-bottom 10px
   padding 0
-  border-style solid
   legend
     margin-left 20px
     padding 0 10px
@@ -27,36 +26,32 @@
   position relative
   list-style none !important
   padding-bottom 5px
-  &:first-child
-    &:before
-      display block
-  &:last-child
-    &:before
-      display none
+  &:first-child:before
+    display block
+  &:last-child:before
+    display none
   &:before
-    content: '';
-    position: absolute;
-    left: 6px;
-    top: 10px;
-    z-index: 0;
-    width: 2px;
-    height: 100%;
-
-.timeline-item:before
-  background-color #e6e6e6
+    content ''
+    position absolute
+    left 6px
+    top 10px
+    z-index 0
+    width 2px
+    height 100%
+    background-color #e6e6e6
 
 .timeline-axis
-  position: absolute;
-  z-index: 10;
-  top: 4px;
-  width: 14px;
-  height: 14px;
-  background-color: var(--color-card);
-  color: var(--color-meta);
+  position absolute
+  z-index 10
+  top 4px
+  width 14px
+  height 14px
+  background-color var(--color-card)
+  color var(--color-meta)
   &.feather.feather-circle
-    width: 10px;
-    height: 10px;
-    left: 2px;
+    width 10px
+    height 10px
+    left 2px
 
 .timeline-icon
   font-family timeline-icon!important

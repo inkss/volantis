@@ -1,69 +1,68 @@
 // 为1个属性设置动画
 trans1($op, $time = 0.2s)
-  transition: $op $time ease-out
+  transition $op $time ease-out
 
 // 为2个属性设置动画
 trans2($op1, $op2)
-  transition: $op1 0.2s ease-out, $op2 0.2s ease-out
+  transition $op1 0.2s ease-out, $op2 0.2s ease-out
 
 trans2pro($op1, $t1, $op2, $t2)
-  transition: $op1 $t1 ease-out, $op2 $t2 ease-out
+  transition $op1 $t1 ease-out, $op2 $t2 ease-out
 
 trans3($op1, $op2, $op3)
-  transition: $op1 0.2s ease-out, $op2 0.2s ease-out, $op3 0.2s ease-out
+  transition $op1 0.2s ease-out, $op2 0.2s ease-out, $op3 0.2s ease-out
 
 trans($time = 0.28s)
-  transition: all $time ease
+  transition all $time ease
 
 hoverable-card()
   trans()
   &:hover
-    box-shadow: 0 0 4px rgba(0,0,0,.1), 0 0 8px rgba(0,0,0,.08)
+    box-shadow 0 0 4px rgba(0,0,0,.1), 0 0 8px rgba(0,0,0,.08)
 
 txt-ellipsis()
-  white-space: nowrap
-  overflow: hidden
-  text-overflow: ellipsis
+  white-space nowrap
+  overflow hidden
+  text-overflow ellipsis
 
 placeholder(rules)
   &::-webkit-input-placeholder
     rules()
   &:-moz-placeholder
     rules()
-	&::-moz-placeholder
+  &::-moz-placeholder
     rules()
-	&:-ms-input-placeholder
+  &:-ms-input-placeholder
     rules()
 
 disable-user-select()
-  user-select: none
+  user-select none
 
 scrollbar($w = 4px, $b = 2px, $c = $color-theme, $h = $color-hover)
   &::-webkit-scrollbar
-    height: $w
-    width: $w
+    height $w
+    width $w
   &::-webkit-scrollbar-track-piece
-    background: transparent
+    background transparent
   &::-webkit-scrollbar-thumb
-    background: $c
-    cursor: $pointer
-    border-radius: $b
+    background $c
+    cursor $pointer
+    border-radius $b
     &:hover
-      background: $h
-
+      background $h
 
 scrollbar-codeblock()
   &::-webkit-scrollbar
-    height: 4px
-    width: 4px
+    height 4px
+    width 4px
   &::-webkit-scrollbar-track-piece
-    background: transparent
+    background transparent
   &::-webkit-scrollbar-thumb
-    background: transparent
-    cursor: $pointer
-    border-radius: $border-codeblock
+    background transparent
+    cursor $pointer
+    border-radius $border-codeblock
   &:hover
     &::-webkit-scrollbar-thumb
-      background: alpha($color-text, .5)
+      background alpha($color-text, .5)
       &:hover
-        background: $color-hover
+        background $color-hover

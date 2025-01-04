@@ -24,75 +24,86 @@
   /******************** volantis.dom.$ ********************************/
   // 注：这里没有选择器，也没有forEach一次只处理一个dom，这里重新封装主题常用的dom方法，返回的是dom对象，对象包含了以下方法，同时保留dom的原生API
   function volantisDom(ele) {
-    if (!ele) ele = document.createElement("div")
-    this.ele = ele;
+    this.ele = ele || document.createElement("div");
+
     // ==============================================================
-    this.ele.find = (c) => {
-      let q = this.ele.querySelector(c)
-      if (q)
-        return new volantisDom(q)
-    }
+    this.ele.find = (selector) => {
+      const found = this.ele.querySelector(selector);
+      return found ? new volantisDom(found) : null;
+    };
+
     // ==============================================================
-    this.ele.hasClass = (c) => {
-      return this.ele.className.match(new RegExp('(\\s|^)' + c + '(\\s|$)'));
-    }
-    this.ele.addClass = (c) => {
-      this.ele.classList.add(c);
-      return this.ele
-    }
-    this.ele.removeClass = (c) => {
-      this.ele.classList.remove(c);
-      return this.ele
-    }
-    this.ele.toggleClass = (c) => {
-      if (this.ele.hasClass(c)) {
-        this.ele.removeClass(c)
+    this.ele.hasClass = (className) => {
+      return this.ele.classList.contains(className);
+    };
+
+    this.ele.addClass = (classNames) => {
+      classNames.split(' ').forEach(className => {
+        this.ele.classList.add(className);
+      });
+      return this.ele;
+    };
+
+    this.ele.removeClass = (classNames) => {
+      classNames.split(' ').forEach(className => {
+        this.ele.classList.remove(className);
+      });
+      return this.ele;
+    };
+
+    this.ele.toggleClass = (classNames) => {
+      classNames.split(' ').forEach(className => {
+        this.ele.classList.toggle(className);
+      });
+      return this.ele;
+    };
+
+    // ==============================================================
+    // 参数 removeOnPjax 为 true 表示pjax切换页面时事件监听器将被移除，false不移除
+    this.ele.on = (event, handler, removeOnPjax = true) => {
+      this.ele.addEventListener(event, handler, false);
+      if (removeOnPjax) {
+        volantis.EventListener.list.push(new volantisEventListener(event, handler, this.ele));
+      }
+      return this.ele;
+    };
+
+    this.ele.click = (handler, removeOnPjax) => {
+      return this.ele.on("click", handler, removeOnPjax);
+    };
+
+    this.ele.scroll = (handler, removeOnPjax) => {
+      return this.ele.on("scroll", handler, removeOnPjax);
+    };
+
+    // ==============================================================
+    this.ele.html = (content) => {
+      if (content === undefined) {
+        return this.ele.innerHTML;
       } else {
-        this.ele.addClass(c)
+        this.ele.innerHTML = content;
+        return this.ele;
       }
-      return this.ele
-    }
+    };
+
     // ==============================================================
-    // 参数 r 为 true 表示pjax切换页面时事件监听器将被移除，false不移除
-    this.ele.on = (c, f, r = 1) => {
-      this.ele.addEventListener(c, f, false)
-      if (r) {
-        volantis.EventListener.list.push(new volantisEventListener(c, f, this.ele))
-      }
-      return this.ele
-    }
-    this.ele.click = (f, r) => {
-      this.ele.on("click", f, r)
-      return this.ele
-    }
-    this.ele.scroll = (f, r) => {
-      this.ele.on("scroll", f, r)
-      return this.ele
-    }
+    this.ele.hide = () => {
+      this.ele.style.display = "none";
+      return this.ele;
+    };
+
+    this.ele.show = () => {
+      this.ele.style.display = "block";
+      return this.ele;
+    };
+
     // ==============================================================
-    this.ele.html = (c) => {
-      // if(c=== undefined){
-      //   return this.ele.innerHTML
-      // }else{
-      this.ele.innerHTML = c
-      return this.ele
-      // }
-    }
-    // ==============================================================
-    this.ele.hide = (c) => {
-      this.ele.style.display = "none"
-      return this.ele
-    }
-    this.ele.show = (c) => {
-      this.ele.style.display = "block"
-      return this.ele
-    }
-    // ==============================================================
-    return this.ele
+    return this.ele;
   }
+
   volantis.dom.$ = (ele) => {
-    return !!ele ? new volantisDom(ele) : null;
-  }
+    return ele ? new volantisDom(ele) : null;
+  };
   /******************** RunItem ********************************/
   function RunItem() {
     this.list = []; // 存放回调函数
@@ -171,8 +182,6 @@
   volantis.dark = Object.assign(volantis.dark, {
     push: volantis.dark.method.toggle.push,
   });
-  /********************  Message  ********************************/
-  // VolantisApp.message
   /********************  isMobile  ********************************/
   // /source/js/app.js
   // volantis.isMobile
@@ -279,108 +288,91 @@
   volantis.scroll = {
     engine: new RunItem(),
     unengine: new RunItem(),
-  };
-  volantis.scroll = Object.assign(volantis.scroll, {
-    push: volantis.scroll.engine.push,
-  });
-  // 滚动条距离顶部的距离
-  volantis.scroll.getScrollTop = () => {
-    let scrollPos;
-    if (window.pageYOffset) {
-      scrollPos = window.pageYOffset;
-    } else if (document.compatMode && document.compatMode != 'BackCompat') {
-      scrollPos = document.documentElement.scrollTop;
-    } else if (document.body) {
-      scrollPos = document.body.scrollTop;
-    }
-    return scrollPos;
-  }
-  volantis.scroll.scrollHeight = function () {
-    return Math.max(
+    push: null,
+    ele: null,
+    lastScrollTop: 0,
+    del: 0,
+
+    // 滚动条距离顶部的距离
+    getScrollTop: () => window.pageYOffset ||
+      (document.compatMode !== 'BackCompat' ? document.documentElement.scrollTop : document.body.scrollTop),
+
+    scrollHeight: () => Math.max(
       document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-    )
-  }
-  volantis.scroll.offsetHeight = function () {
-    return Math.max(
+      document.documentElement.scrollHeight
+    ),
+
+    offsetHeight: () => Math.max(
       document.body.offsetHeight,
       document.documentElement.offsetHeight,
       document.body.clientHeight,
       document.documentElement.clientHeight
-    )
-  }
-  volantis.scroll.progress = function () {
-    return volantis.scroll.getScrollTop() / (volantis.scroll.scrollHeight() - volantis.scroll.offsetHeight())
-  }
-  // 使用 requestAnimationFrame 处理滚动事件
-  // `volantis.scroll.del` 中存储了一个数值, 该数值检测一定时间间隔内滚动条滚动的位移, 数值的检测频率是浏览器的刷新频率. 数值为正数时, 表示向下滚动. 数值为负数时, 表示向上滚动.
-  volantis.scroll.handleScrollEvents = () => {
-    volantis.scroll.lastScrollTop = volantis.scroll.getScrollTop()
-    function loop() {
-      const scrollTop = volantis.scroll.getScrollTop();
-      if (volantis.scroll.lastScrollTop !== scrollTop) {
-        volantis.scroll.del = scrollTop - volantis.scroll.lastScrollTop;
-        volantis.scroll.lastScrollTop = scrollTop;
-        // if (volantis.scroll.del > 0) {
-        //   console.log("向下滚动");
-        // } else {
-        //   console.log("向上滚动");
-        // }
-        // 注销过期的unengine未滚动事件
-        volantis.scroll.unengine.list = []
-        volantis.scroll.engine.start();
-      } else {
-        volantis.scroll.unengine.start();
-      }
-      volantis.requestAnimationFrame(loop)
-    }
-    volantis.requestAnimationFrame(loop)
-  }
-  volantis.scroll.handleScrollEvents()
-  volantis.scroll.ele = null;
-  // 触发页面滚动至目标元素位置
-  volantis.scroll.to = (ele, option = {}) => {
-    if (!ele) return;
-    volantis.scroll.ele = ele;
-    // 默认配置
-    opt = {
-      top: ele.getBoundingClientRect().top + document.documentElement.scrollTop,
-      behavior: "<%- theme.scroll_smooth ? 'smooth' : 'instant' %>"
-    }
-    // 定义配置
-    if ("top" in option) {
-      opt.top = option.top
-    }
-    if ("behavior" in option) {
-      opt.behavior = option.behavior
-    }
-    if ("addTop" in option) {
-      opt.top += option.addTop
-    }
-    if (!("observerDic" in option)) {
-      option.observerDic = 100
-    }
-    // 滚动
-    window.scrollTo(opt);
-    // 监视器
-    // 监视并矫正元素滚动到指定位置
-    // 用于处理 lazyload 引起的 cls 导致的定位失败问题
-    // option.observer = false
-    if (option.observer) {
-      setTimeout(() => {
-        if (volantis.scroll.ele != ele) {
-          return
+    ),
+
+    progress: () => volantis.scroll.getScrollTop() /
+      (volantis.scroll.scrollHeight() - volantis.scroll.offsetHeight()),
+
+    // 使用 requestAnimationFrame 处理滚动事件
+    // `volantis.scroll.del` 中存储了一个数值, 该数值检测一定时间间隔内滚动条滚动的位移, 数值的检测频率是浏览器的刷新频率. 数值为正数时, 表示向下滚动. 数值为负数时, 表示向上滚动.
+    handleScrollEvents: () => {
+      volantis.scroll.lastScrollTop = volantis.scroll.getScrollTop();
+
+      const loop = () => {
+        const scrollTop = volantis.scroll.getScrollTop();
+        if (volantis.scroll.lastScrollTop !== scrollTop) {
+          volantis.scroll.del = scrollTop - volantis.scroll.lastScrollTop;
+          volantis.scroll.lastScrollTop = scrollTop;
+
+          // 注销过期的unengine未滚动事件
+          volantis.scroll.unengine.list = [];
+          volantis.scroll.engine.start();
+        } else {
+          volantis.scroll.unengine.start();
         }
-        volantis.scroll.unengine.push(() => {
-          let me = ele.getBoundingClientRect().top
-          if (!(me >= -option.observerDic && me <= option.observerDic)) {
-            volantis.scroll.to(ele, option)
-          }
-          volantis.scroll.unengine.remove("unengineObserver")
-        }, "unengineObserver")
-      }, 1000)
+        volantis.requestAnimationFrame(loop);
+      };
+
+      volantis.requestAnimationFrame(loop);
+    },
+
+    // 触发页面滚动至目标元素位置
+    to: (ele, option = {}) => {
+      if (!ele) return;
+      volantis.scroll.ele = ele;
+
+      const opt = {
+        top: ele.getBoundingClientRect().top + document.documentElement.scrollTop,
+        behavior: "<%- theme.scroll_smooth ? 'smooth' : 'instant' %>",
+        observerDic: 100,
+        ...option
+      };
+
+      if (option.addTop) opt.top += option.addTop;
+
+      // 滚动
+      window.scrollTo(opt);
+
+      // 监视器
+      // 监视并矫正元素滚动到指定位置
+      // 用于处理 lazyload 引起的 cls 导致的定位失败问题
+      if (opt.observer) {
+        setTimeout(() => {
+          if (volantis.scroll.ele !== ele) return;
+
+          volantis.scroll.unengine.push(() => {
+            const me = ele.getBoundingClientRect().top;
+            if (!(me >= -opt.observerDic && me <= opt.observerDic)) {
+              volantis.scroll.to(ele, opt);
+            }
+            volantis.scroll.unengine.remove("unengineObserver");
+          }, "unengineObserver");
+        }, 1000);
+      }
     }
-  }
+  };
+
+  volantis.scroll.push = volantis.scroll.engine.push; // 设置push方法
+  volantis.scroll.handleScrollEvents(); // 处理滚动事件
   /********************** Content Visibility ********************************/
   // 见 source/css/first.styl 如果遇到任何问题 删除 .post-story 即可
   // 一个元素被声明 content-visibility 属性后 如果元素不在 viewport 中 浏览器不会计算其后代元素样式和属性 从而节省 Style & Layout 耗时

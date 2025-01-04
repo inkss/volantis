@@ -1,122 +1,126 @@
 div#rightmenu-wrapper
-  display: none
-  position:fixed
-  z-index: 2147483648
-  disable-user-select()
+  display none
+  position fixed
+  z-index 2147483648
+  user-select none
+
 ul.list-v.rightmenu
+  display block
+  max-width 240px
+  min-width 170px
+  overflow hidden
+  &.left
+    right 0
+  &.top
+    bottom 0
+
   .menuLoad-Content
     a, span
-      display: flex
-      justify-content: flex-start
-      align-items: center
+      display flex
+      justify-content flex-start
+      align-items center
       svg.feather
-        margin-right: $gap * 0.5
-  display: block
-  max-width: 240px
-  min-width: 170px
-  overflow: hidden
-  &.left
-    right: 0
-  &.top
-    bottom: 0
+        margin-right $gap * 0.5
+
   $cellH = 32px
+
   a
-    cursor: $default
+    cursor $default
+
   a.vlts-menu
-    text-overflow: ellipsis
-    overflow: hidden
-    line-height: $cellH
-    font-weight: normal
+    text-overflow ellipsis
+    overflow hidden
+    line-height $cellH
+    font-weight normal
+
   >li>span
-    trans()
-    display: block
-    color: var(--color-list)
-    font-size: $fontsize-meta
-    // font-weight: bold
-    line-height: 36px
+    display block
+    color var(--color-list)
+    font-size $fontsize-meta
+    line-height 36px
     @media screen and (max-width: $device-laptop)
-      line-height: 40px
-    padding: 0 $gap + $border-line + 2px 0 $gap
-    text-overflow: ellipsis
-    margin: 0 4px
-    border-radius: 4px
+      line-height 40px
+    padding 0 $gap + $border-line + 2px 0 $gap
+    text-overflow ellipsis
+    margin 0 4px
+    border-radius 4px
     >i
-      margin-right: 8px
-    &:active,&.active
+      margin-right 8px
+    &:active, &.active
       list_active()
     &:hover
       list_hover()
+
   li.navigation, li.music
-    display: flex
-    justify-content: space-between
+    display flex
+    justify-content space-between
     a.icon-only
-      line-height: 0
-      margin: 0
-      padding: 0
-      border-radius: $cellH
-      overflow: hidden
-      width: $cellH
-      height: $cellH
+      line-height 0
+      margin 0
+      padding 0
+      border-radius $cellH
+      overflow hidden
+      width $cellH
+      height $cellH
     a.nav
       i
-        margin: 0
-        width: $cellH
-        line-height: $cellH
+        margin 0
+        width $cellH
+        line-height $cellH
       &:first-child
-        margin-left: 2px + $gap * 0.5
+        margin-left 2px + $gap * 0.5
       &:last-child
-        margin-right: 2px + $gap * 0.5
+        margin-right 2px + $gap * 0.5
     a:has(svg.feather)
-      display: flex
-      align-items: center
-      justify-content: center
+      display flex
+      align-items center
+      justify-content center
+
   li.music
     &.name
-      display: flex
-      flex-direction: column
-      align-items: center
+      display flex
+      flex-direction column
+      align-items center
       p.nav.music-title
-        font-size: $fontsize-meta
-        font-weight: 600
-        max-width: 128px
-        margin: 0 4px + $gap
-        overflow: hidden
+        font-size $fontsize-meta
+        font-weight 600
+        max-width 128px
+        margin 0 4px + $gap
+        overflow hidden
         &:hover
-          background: none
+          background none
     .nav.volume
-      width: 100%
-      padding: 0 $gap * 0.5
+      width 100%
+      padding 0 $gap * 0.5
       &:hover
-        background: transparent
+        background transparent
       .aplayer-volume-bar
-        margin: $gap * 0.25 0 $gap * 0.5
-        position: relative
-        height: 8px
-        width: 100%
-        background: mix($color-block, $color-text, 95)
-        border-radius: $cellH
-        overflow: hidden
-        cursor: $pointer
+        margin $gap * 0.25 0 $gap * 0.5
+        position relative
+        height 8px
+        width 100%
+        background mix($color-block, $color-text, 95)
+        border-radius $cellH
+        overflow hidden
+        cursor $pointer
         i.left, i.right
-          color: mix($color-text, $color-card, 80)
-          position: absolute
-          top: 0
-          width: $cellH - 4px
-          line-height: $cellH - 4px
-          trans()
-          opacity: 0
-          transform: scale(0.5) translateY(-0.5 * $cellH - 2px)
+          color mix($color-text, $color-card, 80)
+          position absolute
+          top 0
+          width $cellH - 4px
+          line-height $cellH - 4px
+          opacity 0
+          transform scale(0.5) translateY(-0.5 * $cellH - 2px)
         i.left
-          left: 0
+          left 0
         i.right
-          right: 0
-        trans()
+          right 0
         &:hover
-          height: $cellH - 4px
+          height $cellH - 4px
           i
-            opacity: 1
-            transform: scale(1) translateY(0)
+            opacity 1
+            transform scale(1) translateY(0)
         .aplayer-volume
-          background: $color-theme
-          height: 100%
-          width: 100%
+          background $color-theme
+          height 100%
+          width 100%

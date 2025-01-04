@@ -1,78 +1,70 @@
 if hexo-config('custom_css.body.highlight.language') == true
-  .hljs,.highlight
+  .hljs, .highlight
     &:before
-      position: absolute
-      top: 0
-      right: 0
-      color: var(--color-meta)
-      font-size: 13px
-      padding: 4px 8px
+      position absolute
+      top 0
+      right 0
+      color var(--color-meta)
+      font-size 13px
+      padding 4px 8px
       z-index 1
-    &.md:before,&.markdown:before
-      content: "md"
+    &.md:before, &.markdown:before
+      content "md"
     &.yaml:before
-      content: "YAML"
+      content "YAML"
     &.json:before
-      content: "JSON"
-
+      content "JSON"
     &.html:before
-      content: "HTML"
-    &.js:before,&.javascript:before
-      content: "JS"
+      content "HTML"
+    &.js:before, &.javascript:before
+      content "JS"
     &.css:before
-      content: "CSS"
+      content "CSS"
     &.less:before
-      content: "Less"
+      content "Less"
     &.stylus:before
-      content: "Stylus"
-
+      content "Stylus"
     &.bash:before
-      content: "Bash"
-    &.shell:before
-      content: "Shell"
-    &.sh:before
-      content: "Shell"
+      content "Bash"
+    &.shell:before, &.sh:before
+      content "Shell"
     &.ini:before
-      content: "Ini"
-
+      content "Ini"
     &.c:before
-      content: "C"
+      content "C"
     &.cpp:before
-      content: "C++"
-    &.objc:before,&.objectivec:before
-      content: "Objective-C"
+      content "C++"
+    &.objc:before, &.objectivec:before
+      content "Objective-C"
     &.swift:before
-      content: "Swift"
-
+      content "Swift"
     &.java:before
-      content: "Java"
+      content "Java"
     &.python:before
-      content: "Python"
+      content "Python"
     &.php:before
-      content: "PHP"
+      content "PHP"
     &.rust:before
-      content: "Rust"
+      content "Rust"
     &.sql:before
-      content: "SQL"
+      content "SQL"
     &.ruby:before
-      content: "Ruby"
+      content "Ruby"
     &.makefile:before
-      content: "Makefile"
+      content "Makefile"
     &.go:before
-      content: "Go"
+      content "Go"
     &.typescript:before
-      content: "TypeScript"
-    
+      content "TypeScript"
     &.plaintext:before
-      content: "Code"
+      content "Code"
     &.conf:before
-      content: "Conf"
+      content "Conf"
     &.toml:before
-      content: "Toml"
+      content "Toml"
     &.properties:before
-      content: "Properties"
+      content "Properties"
     &.xml:before
-      content: "XML"
-    
+      content "XML"
     &.powershell:before
-      content: "powershell"
+      content "powershell"

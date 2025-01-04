@@ -19,51 +19,7 @@
         // improve the accessibility https://web.dev/button-name/
         document.querySelectorAll(".aplayer-icon-menu").forEach(e=>{
           e.setAttribute("aria-label","Aplayer Menu")
-        })
-        // message see: /layout/_plugins/message/script.ejs
-        <% if (theme.plugins.message.enable && theme.plugins.message.aplayer.enable) { %>
-          try {
-            setTimeout(() => {
-              Metings.forEach((item, index) => {
-                const aplayerItem = item.aplayer; if(!aplayerItem) return;
-                const rightAplayerCheck = '<%= theme.rightmenus.order.includes("music") %>' === 'true'
-                  && item.meta.id === '<%= theme.plugins.aplayer.id %>';
-                if(rightAplayerCheck) RightMenuAplayer.checkAPlayer();
-                if(aplayerItem.events.events.play.every(item => {return item.name !== 'messagePlay'})) {
-                  aplayerItem.on('play', function messagePlay() {
-                    let index = aplayerItem.list.index;
-                    let title = aplayerItem.list.audios[index].title;
-                    let artist = aplayerItem.list.audios[index].artist;
-                    setTimeout(() => {
-                      VolantisApp.message('音乐通知', title + ' - ' + artist, {
-                        icon: '<%- theme.plugins.message.aplayer.play %>',
-                        transitionIn: 'flipInX',
-                        transitionOut: 'flipOutX'
-                      });
-                    }, 100)
-                  });
-                }
-                if(aplayerItem.events.events.pause.every(item => {return item.name !== 'messagePause'})) {
-                  aplayerItem.on('pause', function messagePause() {
-                    let index = aplayerItem.list.index;
-                    let title = aplayerItem.list.audios[index].title;
-                    let artist = aplayerItem.list.audios[index].artist;
-                    setTimeout(() => {
-                      // 歌曲播放结束也会触发 pause 事件，为了避免错误提示，等待一会儿
-                      if(aplayerItem.paused) {
-                        VolantisApp.message('音乐通知', title + ' - ' + artist, {
-                          icon: '<%- theme.plugins.message.aplayer.pause %>',
-                          transitionIn: 'flipInX',
-                          transitionOut: 'flipOutX'
-                        });
-                      }
-                    }, 100)
-                  });
-                }
-              });
-            }, 500)
-          } catch (error) { console.error(error); }
-        <% } %>
+        })   
       }else{
         volantis.requestAnimationFrame(SetAPlayerPlugin)
       }

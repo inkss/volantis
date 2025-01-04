@@ -11,22 +11,22 @@ p.title,
 p.subtitle,
 picture,
 .fix-cursor-default
-  cursor: $default
+  cursor $default
 
 a,
 a.fa-fw,
 button span,
 btn-close span,
 .menuitem span
- cursor: $pointer
+  cursor $pointer
 
 span,
 input,
-pre>span,
+pre > span,
 textarea,
 figure.pre,
 article p
-  cursor: $text
+  cursor $text
 
 /////////////////
 // 强制覆盖区域 //
@@ -35,22 +35,23 @@ article p
 .atk-cancel,
 .atk-plug-btn,
 .atk-send-btn,
-.atk-send-reply
+.atk-send-reply,
 .atk-dropdown-wrap,
-.atk-dropdown-item>span,
-.atk-right-action>span,
-.atk-grp-switcher>span,
-.atk-grp>span,
-.atk-actions-new>span,
+.atk-dropdown-item > span,
+.atk-right-action > span,
+.atk-grp-switcher > span,
+.atk-grp > span,
+.atk-actions-new > span,
 .atk-common-action-btn
-  cursor: $pointer !important
-
+  cursor $pointer !important
 
 .fancybox__carousel.is-draggable .fancybox__slide,
 .fancybox__carousel.is-draggable .fancybox__slide .fancybox__content
-  cursor: $grab !important
+  cursor $grab !important
+
 .fancybox__caption
-  cursor: $text !important
+  cursor $text !important
+
 .carousel__button,
 .fancybox__thumbs .carousel__slide
-  cursor: $pointer !important
+  cursor $pointer !important
