@@ -105,3 +105,14 @@ table a:not([class]),
   &:hover
     border-radius 4px
     background linear-gradient(0deg, rgba(32,148,243,0.2), rgba(32,148,243,0.2)) no-repeat left 100% / 100% 100%
+
+// 强制覆盖 fancybox v5
+.fancybox__container
+  padding 10px !important
+.fancybox__slide
+  padding 2.5rem !important
+.f-button
+  &:first-child
+    border-radius 12px 0 0 12px
+  &:last-child
+    border-radius 0 12px 12px 0

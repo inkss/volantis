@@ -31,11 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
     VolantisFancyBox.bind('#post-body img:not([fancybox])');
     highlightKeyWords.startFromURL();
     locationHash();
-    toggleGrayscaleEffect();
     lazyLoadImages();
+    toggleGrayscaleEffect();
     volantis.pjax.push(() => {
-      toggleGrayscaleEffect();
       lazyLoadImages();
+      toggleGrayscaleEffect();
       VolantisApp.pjaxReload();
       VolantisFancyBox.init();
       VolantisFancyBox.bind('#post-body img:not([fancybox])');
@@ -690,13 +690,57 @@ const VolantisFancyBox = (() => {
   fn.bind = (selectors) => {
     fn.init(false, () => {
       Fancybox.bind(selectors, {
-        groupAll: true,
         Hash: false,
-        hideScrollbar: false,
+        groupAll: true,
+        caption: (fancybox, slide) => slide.thumbEl?.alt || "",
+        contentClick: "toggleCover",
+        wheel : "slide",
         Thumbs: {
-          autoStart: false,
+          showOnStart: false
         },
-        caption: (fancybox, carousel, slide) => slide.$trigger.alt || null
+        Images: {
+          content: (_ref, slide) => {
+            // 对 picture 标签和图片懒加载的兼容性处理
+            const imgElement = slide.thumbEl;
+            const pictureElement = imgElement.closest('picture');
+            imgElement.classList.remove("lazy");
+            if (imgElement.hasAttribute('data-src')) {
+              imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
+            }
+            if (pictureElement) {
+              let sources = pictureElement.getElementsByTagName('source');
+              for (let source of sources) {
+                if (source.hasAttribute('data-srcset')) {
+                  source.setAttribute('srcset', source.getAttribute('data-srcset'));
+                }
+              }
+              return pictureElement.outerHTML;
+            } else {
+              return imgElement.outerHTML
+            }
+          },
+          Panzoom: {
+            maxScale: 1,
+            panMode: "mousemove",
+            mouseMoveFactor: 1.1,
+            mouseMoveFriction: 0.12,
+          }
+        },
+        Toolbar: {
+          display: {
+            left: ["infobar"],
+            middle: [
+              "zoomIn",
+              "zoomOut",
+              "toggle1to1",
+              "rotateCCW",
+              "rotateCW",
+              "flipX",
+              "flipY",
+            ],
+            right: ["slideshow", "thumbs", "close"],
+          },
+        }
       });
     });
   };
@@ -713,9 +757,8 @@ const VolantisFancyBox = (() => {
       Fancybox.unbind(`[data-fancybox="${name}"]`);
       Fancybox.bind(`[data-fancybox="${name}"]`, {
         Hash: false,
-        hideScrollbar: false,
         Thumbs: {
-          autoStart: false,
+          showOnStart: false,
         }
       });
     });
