@@ -425,7 +425,11 @@ RightMenus.fun = (() => {
   }
 
   fn.copyImg = () => {
-    RightMenus.writeClipImg(globalData.mediaLinkUrl, e => { }, e => {
+    NProgress?.start();
+    RightMenus.writeClipImg(globalData.mediaLinkUrl, e => { 
+      NProgress?.done();
+    }, e => {
+      NProgress?.done();
       console.error(e);
     });
   }
@@ -531,7 +535,6 @@ volantis.requestAnimationFrame(() => {
   }
 });
 
-
 /* DOM 控制 */
 const DOMController = {
   visible: (ele, type = true) => {
@@ -623,3 +626,30 @@ const DOMController = {
   }
 };
 Object.freeze(DOMController);
+
+
+
+// *******************************************
+
+volantis.rightmenu.jump = (type) => {
+  const item = document.querySelector(type === 'prev' ? 'article .prev-next a.prev' : 'article .prev-next a.next');
+  if (!!item) {
+    if (typeof pjax !== 'undefined') {
+      pjax.loadUrl(item.href)
+    } else {
+      window.location.href = item.href;
+    }
+  }
+}
+
+volantis.rightmenu.handle(() => {
+  const prev = document.querySelector('#prev').parentElement,
+    next = document.querySelector('#next').parentElement,
+    articlePrev = document.querySelector('article .prev-next a.prev p.title'),
+    articleNext = document.querySelector('article .prev-next a.next p.title');
+
+  prev.style.display = articlePrev ? 'block' : 'none';
+  prev.title = articlePrev ? articlePrev.innerText : null;
+  next.style.display = articleNext ? 'block' : 'none';
+  next.title = articleNext ? articleNext.innerText : null;
+}, 'prevNext', false)

@@ -17,13 +17,13 @@
   <%_ } _%>
   <meta name="renderer" content="webkit">
   <meta name="force-rendering" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <%_ if (theme.csp.enable) { _%>
     <meta http-equiv="Content-Security-Policy" content="<%- theme.csp.content %>">
   <%_ } _%>
   <meta name="HandheldFriendly" content="True" >
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
   <meta content="telephone=no" name="format-detection">
   <!-- import head_begin begin -->
@@ -61,36 +61,15 @@
     <%- FirstCSS() %>
   </style>
   <link rel="stylesheet" href="<%- theme.cdn.volantis_style %>" media="print" onload="this.media='all';this.onload=null">
-  <noscript><link rel="stylesheet" href="<%- theme.cdn.volantis_style %>"></noscript>
+  <!-- <noscript><link rel="stylesheet" href="<%- theme.cdn.volantis_style %>"></noscript> -->
   <%_ if (theme.plugins.darkmode.enable) { _%>
     <script>
       let userColorScheme=localStorage.getItem("color-scheme")
       if(userColorScheme){
         document.documentElement.setAttribute("color-scheme", userColorScheme);
       }
+    </script>
     <%_ } _%>
-    document.addEventListener("error", function(e) {
-      const elem = e.target;
-      const parentElem = e.target.parentElement;
-      const parentElemClass = parentElem.classList.toString();
-      const pParentElemClass = parentElem.parentElement.classList.toString();
-      if (elem.tagName.toLowerCase() !== 'img') {
-          return;
-      }
-      elem.classList.add('fix-cursor-default', 'error');
-      if(parentElemClass === 'fancybox' && pParentElemClass === 'fancybox') {
-        parentElem.parentElement.classList.add('hideFancybox');
-        parentElem.parentElement.classList.remove('fancybox');
-        parentElem.classList.remove('fancybox');
-      } else if(parentElemClass === 'img-bg' && pParentElemClass === 'img-wrap') {
-        parentElem.parentElement.classList.add('hideFancybox');
-      } else if(parentElemClass === 'author') {
-        parentElem.parentElement.classList.add('fix-author-imgError');
-      } else if(parentElemClass.indexOf('tk-avatar') != -1 ) {
-        parentElem.parentElement.classList.add('fix-avatar-imgError');
-      }
-    }, true);
-  </script>
   <%- partial('../_plugins/end-of-support/script') %>
   <%- partial('scripts/global') %>
   <!-- import head_end begin -->

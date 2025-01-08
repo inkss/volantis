@@ -1,3 +1,28 @@
+document.addEventListener("error", function(e) {
+  const elem = e.target;
+  if (elem.tagName.toLowerCase() !== 'img') {
+    return;
+  }
+  
+  const parentElem = elem.parentElement;
+  const parentElemClass = parentElem.className;
+  const pParentElemClass = parentElem.parentElement.className;
+
+  elem.classList.add('fix-cursor-default', 'error');
+  
+  if (parentElemClass === 'fancybox' && pParentElemClass === 'fancybox') {
+    parentElem.parentElement.classList.add('hideFancybox');
+    parentElem.parentElement.classList.remove('fancybox');
+    parentElem.classList.remove('fancybox');
+  } else if (parentElemClass === 'img-bg' && pParentElemClass === 'img-wrap') {
+    parentElem.parentElement.classList.add('hideFancybox');
+  } else if (parentElemClass === 'author') {
+    parentElem.parentElement.classList.add('fix-author-imgError');
+  } else if (parentElemClass.includes('tk-avatar')) {
+    parentElem.parentElement.classList.add('fix-avatar-imgError');
+  }
+}, true);
+
 document.addEventListener("DOMContentLoaded", () => {
   volantis.requestAnimationFrame(() => {
     VolantisApp.init();
@@ -6,8 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
     VolantisFancyBox.bind('#post-body img:not([fancybox])');
     highlightKeyWords.startFromURL();
     locationHash();
-
+    toggleGrayscaleEffect();
     volantis.pjax.push(() => {
+      toggleGrayscaleEffect();
       VolantisApp.pjaxReload();
       VolantisFancyBox.init();
       VolantisFancyBox.bind('#post-body img:not([fancybox])');
@@ -36,6 +62,28 @@ const changeTitle = () => {
       ? (titleParts.length === 2 ? titleParts[1] : titleParts[0]) 
       : storedTitle;
   });
+}
+
+// 首屏变灰
+const toggleGrayscaleEffect = () => {
+  const pathName = window.location.pathname;
+  const current = new Date();
+  const year = current.getFullYear();
+  
+  const dateRanges = [
+    [`${year}/4/4`, `${year}/4/5`],
+    [`${year}/12/13`, `${year}/12/14`]
+  ];
+  
+  const isDateBetween = dateRanges.some(([start, end]) => 
+    current >= new Date(start) && current < new Date(end)
+  );
+  
+  if (pathName === "/" && isDateBetween) {
+    document.querySelector('html').classList.add('grayscale');
+  } else {
+    document.querySelector('html').classList.remove('grayscale');
+  }
 }
 
 /*锚点定位*/
@@ -797,6 +845,5 @@ const highlightKeyWords = (() => {
     cleanHighlightStyle: fn.cleanHighlightStyle
   };
 })();
-
 Object.freeze(highlightKeyWords);
 

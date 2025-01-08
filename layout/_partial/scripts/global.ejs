@@ -199,46 +199,49 @@
   // 已经加入了setTimeout
   volantis.js = (src, cb) => {
     return new Promise(resolve => {
-      setTimeout(function () {
-        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
-        var script = document.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        if (cb) {
-          if (JSON.stringify(cb)) {
-            for (let p in cb) {
-              if (p == "onload") {
-                script[p] = () => {
-                  cb[p]()
-                  resolve()
-                }
-              } else {
-                script[p] = cb[p]
-                script.onload = resolve
-              }
-            }
-          } else {
-            script.onload = () => {
-              cb()
-              resolve()
-            };
-          }
-        } else {
-          script.onload = resolve
+      const existingScript = Array.from(document.getElementsByTagName('script')).find(script => script.src === src);
+      if (existingScript) {
+        resolve();
+        return;
+      }
+      const HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.onload = () => {
+        if (cb && typeof cb === "function") {
+          cb();
         }
-        script.setAttribute("src", src);
-        HEAD.appendChild(script);
-      });
+        resolve();
+      };
+      if (cb && typeof cb === "object") {
+        for (let p in cb) {
+          if (p === "onload") {
+            script.onload = () => {
+              cb[p]();
+              resolve();
+            };
+          } else {
+            script[p] = cb[p];
+          }
+        }
+      }
+      script.src = src;
+      HEAD.appendChild(script);
     });
   }
+
   volantis.css = (src) => {
     return new Promise(resolve => {
-      setTimeout(function () {
-        var link = document.createElement('link');
-        link.rel = "stylesheet";
-        link.href = src;
-        link.onload = resolve;
-        document.getElementsByTagName("head")[0].appendChild(link);
-      });
+      const existingLink = Array.from(document.getElementsByTagName('link')).find(link => link.href === src);
+      if (existingLink) {
+        resolve();
+        return;
+      }
+      var link = document.createElement('link');
+      link.rel = "stylesheet";
+      link.href = src;
+      link.onload = resolve;
+      document.getElementsByTagName("head")[0].appendChild(link);
     });
   }
   /********************按需加载的插件********************************/
