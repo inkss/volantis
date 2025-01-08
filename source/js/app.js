@@ -1,15 +1,15 @@
-document.addEventListener("error", function(e) {
+document.addEventListener("error", function (e) {
   const elem = e.target;
   if (elem.tagName.toLowerCase() !== 'img') {
     return;
   }
-  
+
   const parentElem = elem.parentElement;
   const parentElemClass = parentElem.className;
   const pParentElemClass = parentElem.parentElement.className;
 
   elem.classList.add('fix-cursor-default', 'error');
-  
+
   if (parentElemClass === 'fancybox' && pParentElemClass === 'fancybox') {
     parentElem.parentElement.classList.add('hideFancybox');
     parentElem.parentElement.classList.remove('fancybox');
@@ -32,15 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
     highlightKeyWords.startFromURL();
     locationHash();
     toggleGrayscaleEffect();
+    lazyLoadImages();
     volantis.pjax.push(() => {
       toggleGrayscaleEffect();
+      lazyLoadImages();
       VolantisApp.pjaxReload();
       VolantisFancyBox.init();
       VolantisFancyBox.bind('#post-body img:not([fancybox])');
       sessionStorage.setItem("domTitle", document.title);
       highlightKeyWords.startFromURL();
     }, 'app.js');
-    
+
     volantis.pjax.send(() => {
       volantis.dom.switcher?.removeClass('active'); // 关闭移动端激活的搜索框
       volantis.dom.header?.removeClass('z_search-open'); // 关闭移动端激活的搜索框
@@ -54,12 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
 const changeTitle = () => {
   const originalTitle = document.title;
   sessionStorage.setItem("domTitle", originalTitle);
-  
+
   document.addEventListener('visibilitychange', () => {
     const storedTitle = sessionStorage.getItem("domTitle") || originalTitle;
     const titleParts = storedTitle.split(' - ');
-    document.title = document.visibilityState === 'hidden' 
-      ? (titleParts.length === 2 ? titleParts[1] : titleParts[0]) 
+    document.title = document.visibilityState === 'hidden'
+      ? (titleParts.length === 2 ? titleParts[1] : titleParts[0])
       : storedTitle;
   });
 }
@@ -69,20 +71,70 @@ const toggleGrayscaleEffect = () => {
   const pathName = window.location.pathname;
   const current = new Date();
   const year = current.getFullYear();
-  
+
   const dateRanges = [
     [`${year}/4/4`, `${year}/4/5`],
     [`${year}/12/13`, `${year}/12/14`]
   ];
-  
-  const isDateBetween = dateRanges.some(([start, end]) => 
+
+  const isDateBetween = dateRanges.some(([start, end]) =>
     current >= new Date(start) && current < new Date(end)
   );
-  
+
   if (pathName === "/" && isDateBetween) {
     document.querySelector('html').classList.add('grayscale');
   } else {
     document.querySelector('html').classList.remove('grayscale');
+  }
+}
+
+// 图片懒加载
+const lazyLoadImages = () => {
+  let lazyPictures = [].slice.call(document.querySelectorAll("picture.lazy img"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyPictureObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target;
+          let sources = lazyImage.parentElement.getElementsByTagName('source');
+          for (let source of sources) {
+            source.srcset = source.dataset.srcset;
+          }
+          lazyImage.src = lazyImage.dataset.src;
+          lazyImage.classList.remove("lazy");
+          lazyPictureObserver.unobserve(lazyImage);
+        }
+      });
+    });
+
+    lazyPictures.forEach((lazyImage) => {
+      lazyPictureObserver.observe(lazyImage);
+    });
+  } else {
+    // 兼容不支持IntersectionObserver的浏览器
+    const lazyLoad = function () {
+      lazyPictures.forEach((lazyImage) => {
+        if (lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage.getBoundingClientRect().bottom >= 0) {
+          let sources = lazyImage.parentElement.getElementsByTagName('source');
+          for (let source of sources) {
+            source.srcset = source.dataset.srcset;
+          }
+          lazyImage.src = lazyImage.dataset.src;
+          lazyImage.classList.remove("lazy");
+        }
+      });
+
+      if (lazyPictures.length === 0) {
+        document.removeEventListener("scroll", lazyLoad);
+        window.removeEventListener("resize", lazyLoad);
+        window.removeEventListener("orientationchange", lazyLoad);
+      }
+    };
+
+    document.addEventListener("scroll", lazyLoad);
+    window.addEventListener("resize", lazyLoad);
+    window.addEventListener("orientationchange", lazyLoad);
   }
 }
 
