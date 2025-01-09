@@ -102,8 +102,10 @@ const lazyLoadImages = () => {
             source.srcset = source.dataset.srcset;
           }
           lazyImage.src = lazyImage.dataset.src;
-          const pictureElement = lazyImage.closest('picture');
-          pictureElement.classList.remove("lazy");
+          lazyImage.onload = function () {
+            const pictureElement = lazyImage.closest('picture');
+            pictureElement.classList.remove("lazy");
+          }
           lazyPictureObserver.unobserve(lazyImage);
         }
       });
@@ -122,8 +124,10 @@ const lazyLoadImages = () => {
             source.srcset = source.dataset.srcset;
           }
           lazyImage.src = lazyImage.dataset.src;
-          const pictureElement = lazyImage.closest('picture');
-          pictureElement.classList.remove("lazy");
+          lazyImage.onload = function () {
+            const pictureElement = lazyImage.closest('picture');
+            pictureElement.classList.remove("lazy");
+          }
         }
       });
 
@@ -706,12 +710,11 @@ const VolantisFancyBox = (() => {
             // 对 picture 标签和图片懒加载的兼容性处理
             const imgElement = slide.thumbEl;
             const pictureElement = imgElement.closest('picture');
-            imgElement.classList.remove("lazy");
-            pictureElement.classList.remove("lazy");
             if (imgElement.hasAttribute('data-src')) {
               imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
             }
             if (pictureElement) {
+              pictureElement.classList.remove("lazy");
               let sources = pictureElement.getElementsByTagName('source');
               for (let source of sources) {
                 if (source.hasAttribute('data-srcset')) {
