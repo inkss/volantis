@@ -700,8 +700,8 @@ const VolantisFancyBox = (() => {
         Hash: false,
         groupAll: true,
         caption: (fancybox, slide) => slide.thumbEl?.alt || "",
-        contentClick: "toggleCover",
         wheel : "slide",
+        contentClick: 'iterateZoom',
         Thumbs: {
           showOnStart: false
         },
@@ -727,7 +727,7 @@ const VolantisFancyBox = (() => {
             }
           },
           Panzoom: {
-            maxScale: 1,
+            maxScale: 1.5,
             panMode: "mousemove",
             mouseMoveFactor: 1.1,
             mouseMoveFriction: 0.12,
@@ -745,7 +745,7 @@ const VolantisFancyBox = (() => {
               "flipX",
               "flipY",
             ],
-            right: ["slideshow", "thumbs", "close"],
+            right: ["slideshow", "download", "thumbs", "close"],
           },
         }
       });
