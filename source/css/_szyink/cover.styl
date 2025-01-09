@@ -118,6 +118,7 @@ table a:not([class]),
     border-radius 0 12px 12px 0
 
 // 图片懒加载占位图覆盖样式
-img[src$="loading.svg"]
+picture.lazy img
   object-fit: contain !important
   background-color: #efefef !important
+  margin: 0 auto

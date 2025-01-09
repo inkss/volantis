@@ -102,7 +102,8 @@ const lazyLoadImages = () => {
             source.srcset = source.dataset.srcset;
           }
           lazyImage.src = lazyImage.dataset.src;
-          lazyImage.classList.remove("lazy");
+          const pictureElement = lazyImage.closest('picture');
+          pictureElement.classList.remove("lazy");
           lazyPictureObserver.unobserve(lazyImage);
         }
       });
@@ -121,7 +122,8 @@ const lazyLoadImages = () => {
             source.srcset = source.dataset.srcset;
           }
           lazyImage.src = lazyImage.dataset.src;
-          lazyImage.classList.remove("lazy");
+          const pictureElement = lazyImage.closest('picture');
+          pictureElement.classList.remove("lazy");
         }
       });
 
@@ -705,6 +707,7 @@ const VolantisFancyBox = (() => {
             const imgElement = slide.thumbEl;
             const pictureElement = imgElement.closest('picture');
             imgElement.classList.remove("lazy");
+            pictureElement.classList.remove("lazy");
             if (imgElement.hasAttribute('data-src')) {
               imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
             }
