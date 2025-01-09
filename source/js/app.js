@@ -689,7 +689,8 @@ const VolantisFancyBox = (() => {
 
   fn.bind = (selectors) => {
     fn.init(false, () => {
-      Fancybox.bind(selectors, {
+      Fancybox?.unbind(selectors);
+      Fancybox?.bind(selectors, {
         Hash: false,
         groupAll: true,
         caption: (fancybox, slide) => slide.thumbEl?.alt || "",
@@ -754,8 +755,8 @@ const VolantisFancyBox = (() => {
     });
     if (groupName) group.add(groupName);
     group.forEach(name => {
-      Fancybox.unbind(`[data-fancybox="${name}"]`);
-      Fancybox.bind(`[data-fancybox="${name}"]`, {
+      Fancybox?.unbind(`[data-fancybox="${name}"]`);
+      Fancybox?.bind(`[data-fancybox="${name}"]`, {
         Hash: false,
         Thumbs: {
           showOnStart: false,
