@@ -114,33 +114,6 @@ const lazyLoadImages = () => {
     lazyPictures.forEach((lazyImage) => {
       lazyPictureObserver.observe(lazyImage);
     });
-  } else {
-    // 兼容不支持IntersectionObserver的浏览器
-    const lazyLoad = function () {
-      lazyPictures.forEach((lazyImage) => {
-        if (lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage.getBoundingClientRect().bottom >= 0) {
-          let sources = lazyImage.parentElement.getElementsByTagName('source');
-          for (let source of sources) {
-            source.srcset = source.dataset.srcset;
-          }
-          lazyImage.src = lazyImage.dataset.src;
-          lazyImage.onload = function () {
-            const pictureElement = lazyImage.closest('picture');
-            pictureElement.classList.remove("lazy");
-          }
-        }
-      });
-
-      if (lazyPictures.length === 0) {
-        document.removeEventListener("scroll", lazyLoad);
-        window.removeEventListener("resize", lazyLoad);
-        window.removeEventListener("orientationchange", lazyLoad);
-      }
-    };
-
-    document.addEventListener("scroll", lazyLoad);
-    window.addEventListener("resize", lazyLoad);
-    window.addEventListener("orientationchange", lazyLoad);
   }
 }
 
