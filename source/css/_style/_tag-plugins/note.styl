@@ -6,6 +6,9 @@ if hexo-config('tag_plugins.note') && hexo-config('tag_plugins.note.feather')
 
 
 div.note, div.feather
+  margin-bottom: 10px
+  &:last-child
+    margin-bottom: 0
   &:has(svg.feather)
     display: flex;
     align-items: center;

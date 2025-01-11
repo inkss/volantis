@@ -484,8 +484,7 @@ const VolantisApp = (() => {
         const targetID = decodeURI(event.target.hash.slice(1)).replace(/\s/g, '-');
         const target = document.getElementById(targetID);
         if (target) {
-          const tempHeight = volantis.dom.header ? volantis.dom.header.offsetHeight : 0;
-          volantis.scroll.to(target, { addTop: -tempHeight - 5, behavior: 'smooth' });
+          volantis.scroll.to(target, { addTop: - 5, behavior: 'smooth' });
         }
       });
     });
@@ -646,76 +645,85 @@ Object.freeze(VolantisApp);
 // 7. 关闭查找模式
 // 8. 搜索跳转 (URL 入口) 自动开启查找模式 调用 scrollToNextHighlightKeywordMark()
 const highlightKeyWords = (() => {
-  let fn = {};
-  fn.markNum = 0;
-  fn.markNextId = -1;
+  let markNum = 0;
+  let markNextId = -1;
 
-  fn.startFromURL = () => {
-    const params = decodeURI(new URL(location.href).searchParams.get('keyword'));
-    const keywords = params ? params.split(' ') : [];
+  const startFromURL = () => {
+    const params = new URLSearchParams(window.location.search);
+    const keyword = decodeURI(params.get('keyword'));
+    const keywords = keyword ? keyword.split(' ') : [];
     const post = document.querySelector('#l_main');
     if (keywords.length === 1 && keywords[0] === "null") return;
-    fn.start(keywords, post);
-    fn.scrollToFirstHighlightKeywordMark();
+    start(keywords, post);
+    scrollToFirstHighlightKeywordMark();
   };
 
-  fn.scrollToFirstHighlightKeywordMark = () => {
-    volantis.cleanContentVisibility();
-    const target = fn.scrollToNextHighlightKeywordMark("0");
+  const scrollToFirstHighlightKeywordMark = () => {
+    const target = scrollToNextHighlightKeywordMark("0");
     if (!target) {
-      volantis.requestAnimationFrame(fn.scrollToFirstHighlightKeywordMark);
+      requestAnimationFrame(scrollToFirstHighlightKeywordMark);
     }
   };
 
-  fn.scrollToNextHighlightKeywordMark = (id) => {
-    const input = id || (fn.markNextId + 1) % fn.markNum;
-    fn.markNextId = parseInt(input, 10);
-    let target = document.getElementById("keyword-mark-" + fn.markNextId);
+  const scrollToNextHighlightKeywordMark = (id) => {
+    const input = id || (markNextId + 1) % markNum;
+    markNextId = parseInt(input, 10);
+    let target = document.getElementById(`keyword-mark-${markNextId}`);
     if (!target) {
-      fn.markNextId = (fn.markNextId + 1) % fn.markNum;
-      target = document.getElementById("keyword-mark-" + fn.markNextId);
+      markNextId = (markNextId + 1) % markNum;
+      target = document.getElementById(`keyword-mark-${markNextId}`);
     }
     if (target) {
-      const tempHeight = volantis.dom.header ? volantis.dom.header.offsetHeight : 0;
-      volantis.scroll.to(target, { addTop: -tempHeight - 5, behavior: 'instant' });
+      const tempHeight = document.querySelector('#s-top') ? document.querySelector('#s-top').offsetHeight : 0;
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + window.pageYOffset - tempHeight - 5,
+        behavior: 'smooth'
+      });
+      document.querySelector('.highlighted')?.classList.remove('highlighted');
+      target.classList.add('highlighted'); 
     }
     return target;
   };
 
-  fn.scrollToPrevHighlightKeywordMark = (id) => {
-    const input = id || (fn.markNextId - 1 + fn.markNum) % fn.markNum;
-    fn.markNextId = parseInt(input, 10);
-    let target = document.getElementById("keyword-mark-" + fn.markNextId);
+  const scrollToPrevHighlightKeywordMark = (id) => {
+    const input = id || (markNextId - 1 + markNum) % markNum;
+    markNextId = parseInt(input, 10);
+    let target = document.getElementById(`keyword-mark-${markNextId}`);
     if (!target) {
-      fn.markNextId = (fn.markNextId - 1 + fn.markNum) % fn.markNum;
-      target = document.getElementById("keyword-mark-" + fn.markNextId);
+      markNextId = (markNextId - 1 + markNum) % markNum;
+      target = document.getElementById(`keyword-mark-${markNextId}`);
     }
     if (target) {
-      const tempHeight = volantis.dom.header ? volantis.dom.header.offsetHeight : 0;
-      volantis.scroll.to(target, { addTop: -tempHeight - 5, behavior: 'instant' });
+      const tempHeight = document.querySelector('#s-top') ? document.querySelector('#s-top').offsetHeight : 0;
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + window.pageYOffset - tempHeight - 5,
+        behavior: 'smooth'
+      });
+      document.querySelector('.highlighted')?.classList.remove('highlighted');
+      target.classList.add('highlighted'); 
     }
     return target;
   };
 
-  fn.start = (keywords, querySelector) => {
-    fn.markNum = 0;
+  const start = (keywords, querySelector) => {
+    markNum = 0;
     if (!keywords.length || !querySelector || (keywords.length === 1 && keywords[0] === "null")) return;
-    console.log(keywords);
     const walk = document.createTreeWalker(querySelector, NodeFilter.SHOW_TEXT, null);
     const allNodes = [];
     while (walk.nextNode()) {
-      if (!walk.currentNode.parentNode.matches('button, select, textarea')) allNodes.push(walk.currentNode);
+      if (!walk.currentNode.parentNode.matches('button, select, textarea')) {
+        allNodes.push(walk.currentNode);
+      }
     }
     allNodes.forEach(node => {
-      const [indexOfNode] = fn.getIndexByWord(keywords, node.nodeValue);
+      const [indexOfNode] = getIndexByWord(keywords, node.nodeValue);
       if (!indexOfNode.length) return;
-      const slice = fn.mergeIntoSlice(0, node.nodeValue.length, indexOfNode);
-      fn.highlightText(node, slice, 'keyword');
-      fn.highlightStyle();
+      const slice = mergeIntoSlice(0, node.nodeValue.length, indexOfNode);
+      highlightText(node, slice, 'keyword');
     });
   };
 
-  fn.getIndexByWord = (words, text, caseSensitive = false) => {
+  const getIndexByWord = (words, text, caseSensitive = false) => {
     const index = [];
     const included = new Set();
     const lowerText = caseSensitive ? text : text.toLowerCase();
@@ -737,7 +745,7 @@ const highlightKeyWords = (() => {
     return [index, included];
   };
 
-  fn.mergeIntoSlice = (start, end, index) => {
+  const mergeIntoSlice = (start, end, index) => {
     const hits = [];
     const count = new Set();
     while (index.length) {
@@ -751,14 +759,16 @@ const highlightKeyWords = (() => {
     return { hits, start, end, count: count.size };
   };
 
-  fn.highlightText = (node, slice, className) => {
+  const highlightText = (node, slice, className) => {
     const val = node.nodeValue;
     let index = slice.start;
     const children = [];
     for (const { position, length } of slice.hits) {
       children.push(document.createTextNode(val.substring(index, position)));
-      const mark = fn.highlightStyle(document.createElement('mark').appendChild(document.createTextNode(val.substr(position, length))));
+      const mark = document.createElement('mark');
+      mark.appendChild(document.createTextNode(val.substr(position, length)));
       mark.className = className;
+      highlightStyle(mark);
       children.push(mark);
       index = position + length;
     }
@@ -766,34 +776,27 @@ const highlightKeyWords = (() => {
     children.forEach(child => node.parentNode.insertBefore(child, node));
   };
 
-  fn.highlightStyle = (mark) => {
+  const highlightStyle = (mark) => {
     if (!mark) return;
-    mark.id = "keyword-mark-" + fn.markNum++;
-    mark.style.background = "#ff0";
-    mark.style.borderBottom = "1px dashed #ff2a2a";
-    mark.style.color = "#ff2a2a";
-    mark.style.fontWeight = "bold";
+    mark.id = `keyword-mark-${markNum++}`;
+    mark.classList.add('highlightKey')
     return mark;
   };
 
-  fn.cleanHighlightStyle = () => {
+  const cleanHighlightStyle = () => {
     document.querySelectorAll(".keyword").forEach(mark => {
-      mark.style.background = "transparent";
-      mark.style.borderBottom = null;
-      mark.style.color = null;
-      mark.style.fontWeight = null;
+      mark.classList.remove('highlightKey')
     });
   };
 
   return {
-    start: fn.start,
-    startFromURL: fn.startFromURL,
-    scrollToNextHighlightKeywordMark: fn.scrollToNextHighlightKeywordMark,
-    scrollToPrevHighlightKeywordMark: fn.scrollToPrevHighlightKeywordMark,
-    cleanHighlightStyle: fn.cleanHighlightStyle
+    start,
+    startFromURL,
+    scrollToNextHighlightKeywordMark,
+    scrollToPrevHighlightKeywordMark,
+    cleanHighlightStyle
   };
 })();
-Object.freeze(highlightKeyWords);
 
 /* FancyBox */
 class VolantisFancyBox {
