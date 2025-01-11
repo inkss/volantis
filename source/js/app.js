@@ -514,6 +514,7 @@ const VolantisApp = (() => {
 
   // 工具类：复制字符串到剪切板
   fn.utilWriteClipText = (str) => {
+    NProgress?.start();
     return navigator.clipboard.writeText(str).catch(e => {
       const input = document.createElement('textarea');
       input.setAttribute('readonly', 'readonly');
@@ -528,6 +529,9 @@ const VolantisApp = (() => {
         document.body.removeChild(input);
         throw new Error('当前浏览器不支持复制功能，请检查更新或更换其他浏览器操作!');
       }
+      NProgress?.done();
+    }).finally(() => {
+      NProgress?.done();
     });
   }
 
