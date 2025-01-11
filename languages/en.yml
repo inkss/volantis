@@ -57,3 +57,4 @@ search:
   load_data: Loading the Database
   hits_empty: "We didn't find any results for the search: ${query}."
   hits_stats: '${hits} results found in ${time} ms'
+  normal: '输入关键词搜索'

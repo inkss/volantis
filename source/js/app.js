@@ -632,133 +632,6 @@ const VolantisApp = (() => {
 })()
 Object.freeze(VolantisApp);
 
-/* FancyBox */
-const VolantisFancyBox = (() => {
-  const fn = {};
-
-  fn.loadFancyBox = (done) => {
-    volantis.css(volantis.GLOBAL_CONFIG.cdn.fancybox_css);
-    volantis.js(volantis.GLOBAL_CONFIG.cdn.fancybox_js).then(() => {
-      if (done) done();
-    });
-  };
-
-  fn.init = (checkMain = true, done = fn.groupBind) => {
-    if (!document.querySelector(".md .gallery img, .fancybox") && checkMain) return;
-    if (typeof Fancybox === "undefined") {
-      fn.loadFancyBox(done);
-    } else {
-      done();
-    }
-  };
-
-  fn.elementHandling = (selectors, name) => {
-    document.querySelectorAll(selectors).forEach($item => {
-      if ($item.hasAttribute('fancybox')) return;
-      $item.setAttribute('fancybox', '');
-      const $link = document.createElement('a');
-      $link.setAttribute('href', $item.src);
-      $link.setAttribute('data-caption', $item.alt);
-      $link.setAttribute('data-fancybox', name);
-      $link.classList.add('fancybox');
-      $link.append($item.cloneNode());
-      $item.replaceWith($link);
-    });
-  };
-
-  fn.bind = (selectors) => {
-    fn.init(false, () => {
-      Fancybox?.unbind(selectors);
-      Fancybox?.bind(selectors, {
-        Hash: false,
-        groupAll: true,
-        caption: (fancybox, slide) => slide.thumbEl?.alt || "",
-        wheel : "slide",
-        contentClick: 'iterateZoom',
-        Thumbs: {
-          showOnStart: false
-        },
-        Images: {
-          content: (_ref, slide) => {
-            // 对 picture 标签和图片懒加载的兼容性处理
-            const imgElement = slide.thumbEl;
-            const pictureElement = imgElement.closest('picture');
-            if (imgElement.hasAttribute('data-src')) {
-              imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
-            }
-            if (pictureElement) {
-              pictureElement.classList.remove("lazy");
-              let sources = pictureElement.getElementsByTagName('source');
-              for (let source of sources) {
-                if (source.hasAttribute('data-srcset')) {
-                  source.setAttribute('srcset', source.getAttribute('data-srcset'));
-                }
-              }
-              return pictureElement.outerHTML;
-            } else {
-              return imgElement.outerHTML
-            }
-          },
-          Panzoom: {
-            maxScale: 1.5,
-            panMode: "mousemove",
-            mouseMoveFactor: 1.1,
-            mouseMoveFriction: 0.12,
-          }
-        },
-        Toolbar: {
-          display: {
-            left: ["infobar"],
-            middle: [
-              "zoomIn",
-              "zoomOut",
-              "toggle1to1",
-              "rotateCCW",
-              "rotateCW",
-              "flipX",
-              "flipY",
-            ],
-            right: ["slideshow", "download", "thumbs", "close"],
-          },
-        }
-      });
-    });
-  };
-
-  fn.groupBind = (groupName = null) => {
-    const group = new Set();
-    document.querySelectorAll(".gallery").forEach(ele => {
-      if (ele.querySelector("img")) {
-        group.add(ele.getAttribute('data-group') || 'default');
-      }
-    });
-    if (groupName) group.add(groupName);
-    group.forEach(name => {
-      Fancybox?.unbind(`[data-fancybox="${name}"]`);
-      Fancybox?.bind(`[data-fancybox="${name}"]`, {
-        Hash: false,
-        Thumbs: {
-          showOnStart: false,
-        }
-      });
-    });
-  };
-
-  return {
-    init: fn.init,
-    bind: fn.bind,
-    groupBind: (selectors, groupName = 'default') => {
-      try {
-        fn.elementHandling(selectors, groupName);
-        fn.init(false, () => fn.groupBind(groupName));
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-})();
-Object.freeze(VolantisFancyBox);
-
 
 // highlightKeyWords 与 搜索功能搭配 https://github.com/next-theme/hexo-theme-next/blob/eb194a7258058302baf59f02d4b80b6655338b01/source/js/third-party/search/local-search.js
 // Question: 锚点稳定性未知
@@ -922,3 +795,115 @@ const highlightKeyWords = (() => {
 })();
 Object.freeze(highlightKeyWords);
 
+/* FancyBox */
+class VolantisFancyBox {
+  static isInitialized = false;
+
+  static init(checkMain = true, done = VolantisFancyBox.groupBind) {
+    if (!document.querySelector(".md .gallery img, .fancybox") && checkMain) return;
+    if (typeof Fancybox === "undefined") {
+      VolantisFancyBox.loadFancyBox(done);
+    } else {
+      done();
+    }
+  }
+
+  static loadFancyBox(done) {
+    volantis.css(volantis.GLOBAL_CONFIG.cdn.fancybox_css);
+    volantis.js(volantis.GLOBAL_CONFIG.cdn.fancybox_js).then(() => {
+      if (done) done();
+    });
+  }
+
+  static elementHandling(selectors, name) {
+    document.querySelectorAll(selectors).forEach($item => {
+      if ($item.hasAttribute('fancybox')) return;
+      $item.setAttribute('fancybox', '');
+      const $link = document.createElement('a');
+      $link.setAttribute('href', $item.src);
+      $link.setAttribute('data-caption', $item.alt);
+      $link.setAttribute('data-fancybox', name);
+      $link.classList.add('fancybox');
+      $link.append($item.cloneNode());
+      $item.replaceWith($link);
+    });
+  }
+
+  static bind(selectors) {
+    VolantisFancyBox.init(false, () => {
+      Fancybox?.unbind(selectors);
+      Fancybox?.bind(selectors, {
+        Hash: false,
+        groupAll: true,
+        caption: (fancybox, slide) => slide.thumbEl?.alt || "",
+        wheel: "slide",
+        contentClick: 'iterateZoom',
+        Thumbs: {
+          showOnStart: false
+        },
+        Images: {
+          content: (_ref, slide) => {
+            // 对 picture 标签和图片懒加载的兼容性处理
+            const imgElement = slide.thumbEl;
+            const pictureElement = imgElement.closest('picture');
+            if (imgElement.hasAttribute('data-src')) {
+              imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
+            }
+            if (pictureElement) {
+              pictureElement.classList.remove("lazy");
+              let sources = pictureElement.getElementsByTagName('source');
+              for (let source of sources) {
+                if (source.hasAttribute('data-srcset')) {
+                  source.setAttribute('srcset', source.getAttribute('data-srcset'));
+                }
+              }
+              return pictureElement.outerHTML;
+            } else {
+              return imgElement.outerHTML;
+            }
+          },
+          Panzoom: {
+            maxScale: 1.5,
+            panMode: "mousemove",
+            mouseMoveFactor: 1.1,
+            mouseMoveFriction: 0.12,
+          }
+        },
+        Toolbar: {
+          display: {
+            left: ["infobar"],
+            middle: [
+              "zoomIn",
+              "zoomOut",
+              "toggle1to1",
+              "rotateCCW",
+              "rotateCW",
+              "flipX",
+              "flipY",
+            ],
+            right: ["slideshow", "download", "thumbs", "close"],
+          },
+        }
+      });
+    });
+  }
+
+  static groupBind(groupName = null) {
+    const group = new Set();
+    document.querySelectorAll(".gallery").forEach(ele => {
+      if (ele.querySelector("img")) {
+        group.add(ele.getAttribute('data-group') || 'default');
+      }
+    });
+    if (groupName) group.add(groupName);
+    group.forEach(name => {
+      Fancybox?.unbind(`[data-fancybox="${name}"]`);
+      Fancybox?.bind(`[data-fancybox="${name}"]`, {
+        Hash: false,
+        Thumbs: {
+          showOnStart: false,
+        }
+      });
+    });
+  }
+}
