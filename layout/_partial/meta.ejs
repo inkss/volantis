@@ -10,7 +10,7 @@ if (post.bottom_meta == false) {
 %>
 
 <% if (position == 'top') { %>
-  <% if (post.headimg && post.showPostHeadimg === true) { %>
+  <% if (post.headimg && post.seo_title == undefined) { %>
     <div class='headimg-div'>
       <a class='headimg-a'>
         <img itemprop="image" class='headimg' src='<%- post.headimg %>'/>
@@ -30,24 +30,26 @@ if (post.bottom_meta == false) {
         <img itemprop="image" class='thumbnail' src='<%- post.thumbnail %>'>
       </a>
     <% } %>
-    <% if (post.title && post.seo_title == undefined) { %>
+    <% if (post.seo_title == undefined && post.headimg == undefined) { %>
       <h1 class="title allow-select" itemprop="name headline">
         <%- post.title %>
       </h1>
-      <div class='new-meta-box'>
-        <% (topMetas).forEach(function(meta) { %>
-          <% if (meta in theme.article.body.meta_library){ %>
-            <%- partial('../_meta/' + meta, {post: post}) %>
-          <% } %>
-        <% }) %>
-        <!-- Custom Files topMeta begin-->
-        <%- volantis_inject('topMeta') %>
-        <!-- Custom Files topMeta end-->
-      </div>
     <% } else { %>
       <span hidden itemprop="name headline">
         <%- post.title %>
       </span>
+    <% } %>
+    <% if (post.title && post.seo_title == undefined) { %>
+    <div class='new-meta-box'>
+      <% (topMetas).forEach(function(meta) { %>
+        <% if (meta in theme.article.body.meta_library){ %>
+          <%- partial('../_meta/' + meta, {post: post}) %>
+        <% } %>
+      <% }) %>
+      <!-- Custom Files topMeta begin-->
+      <%- volantis_inject('topMeta') %>
+      <!-- Custom Files topMeta end-->
+    </div>
     <% } %>
   </div>
 <% } else if (position == 'bottom') { %>
