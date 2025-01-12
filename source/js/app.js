@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
   volantis.requestAnimationFrame(() => {
     VolantisApp.init();
     VolantisApp.subscribe();
-    VolantisFancyBox.init();
-    VolantisFancyBox.bind('#post-body img:not([fancybox])');
+    const fancyBoxInstance = new VolantisFancyBox();
+    fancyBoxInstance.bind('#post-body img:not([fancybox])');
     highlightKeyWords.startFromURL();
     locationHash();
     lazyLoadImages();
@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
       lazyLoadImages();
       toggleGrayscaleEffect();
       VolantisApp.pjaxReload();
-      VolantisFancyBox.init();
-      VolantisFancyBox.bind('#post-body img:not([fancybox])');
+      const fancyBoxInstance = new VolantisFancyBox();
+      fancyBoxInstance.bind('#post-body img:not([fancybox])');
       sessionStorage.setItem("domTitle", document.title);
       highlightKeyWords.startFromURL();
     }, 'app.js');
@@ -804,112 +804,112 @@ const highlightKeyWords = (() => {
 
 /* FancyBox */
 class VolantisFancyBox {
-  static isInitialized = false;
+  constructor(checkMain = true) {
+    this.option = {
+      Hash: false,
+      groupAll: true,
+      caption: (fancybox, slide) => slide.thumbEl?.alt || "",
+      wheel: "slide",
+      contentClick: 'iterateZoom',
+      Thumbs: {
+        showOnStart: false
+      },
+      Images: {
+        content: (_ref, slide) => {
+          const imgElement = slide.thumbEl;
+          const pictureElement = imgElement.closest('picture');
+          if (imgElement.hasAttribute('data-src')) {
+            imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
+          }
+          if (pictureElement) {
+            pictureElement.classList.remove("lazy");
+            let sources = pictureElement.getElementsByTagName('source');
+            for (let source of sources) {
+              if (source.hasAttribute('data-srcset')) {
+                source.setAttribute('srcset', source.getAttribute('data-srcset'));
+              }
+            }
+            return pictureElement.outerHTML;
+          } else {
+            return imgElement.outerHTML;
+          }
+        },
+        Panzoom: {
+          maxScale: 1.5,
+          panMode: "mousemove",
+          mouseMoveFactor: 1.1,
+          mouseMoveFriction: 0.12,
+        }
+      },
+      Toolbar: {
+        display: {
+          left: ["infobar"],
+          middle: [
+            "zoomIn",
+            "zoomOut",
+            "toggle1to1",
+            "rotateCCW",
+            "rotateCW",
+            "flipX",
+            "flipY",
+          ],
+          right: ["slideshow", "download", "thumbs", "close"],
+        },
+      }
+    };
+    this.#init(checkMain);
+  }
 
-  static init(checkMain = true, done = VolantisFancyBox.groupBind) {
+  #init(checkMain) {
     if (!document.querySelector(".md .gallery img, .fancybox") && checkMain) return;
+    this.groupBind();
+  }
+
+  async #checkFancybox(done) {
     if (typeof Fancybox === "undefined") {
-      VolantisFancyBox.loadFancyBox(done);
+      await volantis.css(volantis.GLOBAL_CONFIG.cdn.fancybox_css);
+      await volantis.js(volantis.GLOBAL_CONFIG.cdn.fancybox_js);
+      done.call(this);
     } else {
-      done();
+      done.call(this);
     }
   }
 
-  static loadFancyBox(done) {
-    volantis.css(volantis.GLOBAL_CONFIG.cdn.fancybox_css);
-    volantis.js(volantis.GLOBAL_CONFIG.cdn.fancybox_js).then(() => {
-      if (done) done();
-    });
-  }
-
-  static elementHandling(selectors, name) {
+  #elementHandling(selectors, groupName) {
+    if (!selectors) return;
     document.querySelectorAll(selectors).forEach($item => {
       if ($item.hasAttribute('fancybox')) return;
       $item.setAttribute('fancybox', '');
       const $link = document.createElement('a');
-      $link.setAttribute('href', $item.src);
-      $link.setAttribute('data-caption', $item.alt);
-      $link.setAttribute('data-fancybox', name);
+      $link.setAttribute('href', $item.src || $item.dataset?.src);
+      $link.setAttribute('data-caption', $item.alt || '');
+      $link.setAttribute('data-fancybox', groupName);
       $link.classList.add('fancybox');
       $link.append($item.cloneNode());
       $item.replaceWith($link);
     });
   }
 
-  static bind(selectors) {
-    VolantisFancyBox.init(false, () => {
+  bind(selectors) {
+    this.#checkFancybox(() => {
       Fancybox?.unbind(selectors);
-      Fancybox?.bind(selectors, {
-        Hash: false,
-        groupAll: true,
-        caption: (fancybox, slide) => slide.thumbEl?.alt || "",
-        wheel: "slide",
-        contentClick: 'iterateZoom',
-        Thumbs: {
-          showOnStart: false
-        },
-        Images: {
-          content: (_ref, slide) => {
-            // 对 picture 标签和图片懒加载的兼容性处理
-            const imgElement = slide.thumbEl;
-            const pictureElement = imgElement.closest('picture');
-            if (imgElement.hasAttribute('data-src')) {
-              imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
-            }
-            if (pictureElement) {
-              pictureElement.classList.remove("lazy");
-              let sources = pictureElement.getElementsByTagName('source');
-              for (let source of sources) {
-                if (source.hasAttribute('data-srcset')) {
-                  source.setAttribute('srcset', source.getAttribute('data-srcset'));
-                }
-              }
-              return pictureElement.outerHTML;
-            } else {
-              return imgElement.outerHTML;
-            }
-          },
-          Panzoom: {
-            maxScale: 1.5,
-            panMode: "mousemove",
-            mouseMoveFactor: 1.1,
-            mouseMoveFriction: 0.12,
-          }
-        },
-        Toolbar: {
-          display: {
-            left: ["infobar"],
-            middle: [
-              "zoomIn",
-              "zoomOut",
-              "toggle1to1",
-              "rotateCCW",
-              "rotateCW",
-              "flipX",
-              "flipY",
-            ],
-            right: ["slideshow", "download", "thumbs", "close"],
-          },
-        }
-      });
+      Fancybox?.bind(selectors, this.option);
     });
   }
 
-  static groupBind(groupName = null) {
-    const group = new Set();
-    document.querySelectorAll(".gallery").forEach(ele => {
-      if (ele.querySelector("img")) {
-        group.add(ele.getAttribute('data-group') || 'default');
-      }
-    });
-    if (groupName) group.add(groupName);
-    group.forEach(name => {
-      Fancybox?.unbind(`[data-fancybox="${name}"]`);
-      Fancybox?.bind(`[data-fancybox="${name}"]`, {
-        Hash: false,
-        Thumbs: {
-          showOnStart: false,
+  groupBind(selectors, groupName = 'default') {
+    this.#checkFancybox(() => {
+      this.#elementHandling(selectors, groupName);
+      const group = new Set();
+      document.querySelectorAll('.gallery').forEach(ele => {
+        if (ele.querySelector("img")) {
+          group.add(ele.getAttribute('data-group') || 'default');
         }
+      });
+      if (groupName) group.add(groupName);
+      group.forEach(name => {
+        Fancybox?.unbind(`[data-fancybox="${name}"]`);
+        Fancybox?.bind(`[data-fancybox="${name}"]`, this.option);
       });
     });
   }

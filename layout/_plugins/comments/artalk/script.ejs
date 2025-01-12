@@ -45,16 +45,11 @@
       },
       <% } %>
     }));
-
-    if (typeof VolantisFancyBox === "undefined"){
-      const checkFancyBox = setInterval(() => {
-        if(typeof VolantisFancyBox === "undefined") return;
-        clearInterval(checkFancyBox);
-        VolantisFancyBox.bind('.atk-content img:not([atk-emoticon])');
-      })
-    } else {
-      VolantisFancyBox.bind('.atk-content img:not([atk-emoticon])');
-    }
+    
+    volantis.artalk.on('list-loaded', () => {
+      const fancyBoxInstance = new VolantisFancyBox();
+      fancyBoxInstance.groupBind('.atk-content img:not([atk-emoticon])', 'Comments');
+    })
   }
 
   load_artalk();
