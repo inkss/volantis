@@ -18,5 +18,8 @@ hexo.extend.helper.register("generate_preload_fontfamily", function (theme) {
   if (theme.custom_css.fontfamily.bodyfont && theme.custom_css.fontfamily.bodyfont.url) {
     preload += getLink_preload(theme.custom_css.fontfamily.bodyfont.url)
   }
+  if (theme.custom_css.fontfamily.codefont && theme.custom_css.fontfamily.codefont.url) {
+    preload += getLink_preload(theme.custom_css.fontfamily.codefont.url)
+  }
   return preload
 });
