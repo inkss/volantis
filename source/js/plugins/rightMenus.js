@@ -1,7 +1,7 @@
 
 const RightMenus = {
   defaultEvent: ['copyText', 'copyLink', 'copyPaste', 'copyAll', 'copyCut', 'copyImg', 'printMode', 'readMode'],
-  defaultGroup: ['navigation', 'inputBox', 'seletctText', 'elementCheck', 'elementImage', 'articlePage'],
+  defaultGroup: ['navigation', 'inputBox', 'selectText', 'elementCheck', 'elementImage', 'articlePage'],
   corsAnywhere: volantis.GLOBAL_CONFIG.plugins.rightmenus.options.corsAnywhere,
   urlRegx: /^((https|http)?:\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/,
   imgRegx: /\.(jpe?g|png|webp|svg|gif|jifi|avif)(-|_|!|\?|\/)?.*$/,
@@ -25,15 +25,14 @@ const RightMenus = {
     try {
       const result = await navigator.permissions.query({ name: 'clipboard-read' });
       if (result.state === 'granted' || result.state === 'prompt') {
-        return await navigator.clipboard.readText();
+        return await navigator.clipboard.read();
       } else {
         window.clipboardRead = false;
-        return '';
       }
     } catch (err) {
       console.error('读取剪切板失败: ', err);
-      return '';
     }
+    return null;
   },
 
   /**
@@ -81,16 +80,15 @@ const RightMenus = {
    * @param {HTMLElement} elemt
    * @param {String} value
    */
-  insertAtCaret: (elemt, value) => {
-    const { selectionStart: startPos, selectionEnd: endPos, scrollTop } = elemt;
-    const newValue = elemt.value.substring(0, startPos) + value + elemt.value.substring(endPos);
+  insertAtCaret: (elem, value) => {
+    const { selectionStart: startPos, selectionEnd: endPos, scrollTop } = elem;
+    const newValue = elem.value.substring(0, startPos) + value + elem.value.substring(endPos);
 
-    elemt.value = newValue;
-    elemt.setSelectionRange(startPos + value.length, startPos + value.length);
-    elemt.scrollTop = scrollTop;
-    elemt.focus();
+    elem.value = newValue;
+    elem.setSelectionRange(startPos + value.length, startPos + value.length);
+    elem.scrollTop = scrollTop;
+    elem.focus();
   }
-
 }
 
 /**
@@ -188,11 +186,17 @@ RightMenus.fun = (() => {
    */
   fn.menuControl = (event) => {
     fn.globalDataSet(event);
-    if (_menuMusic) _menuMusic.style.display = globalData.isShowMusic ? 'block' : 'none';
+    if (_menuMusic) {
+      _menuMusic.style.display = globalData.isShowMusic ? 'block' : 'none';
+    }
 
     _rightMenuList.forEach(item => {
       const { nodeName, dataset: { group: groupName, event: itemEvent } } = item.firstElementChild;
       item.style.display = 'none';
+
+      const showItem = () => {
+        item.style.display = 'block';
+      };
 
       if (globalData.statusCheck || globalData.isArticle) {
         switch (groupName) {
@@ -203,29 +207,32 @@ RightMenus.fun = (() => {
                 itemEvent !== 'copyAll' || globalData.inputValue,
                 itemEvent !== 'copyPaste' || globalData.isReadClipboard
               ];
-              item.style.display = conditions.every(cond => cond) ? 'block' : 'none';
+              if (conditions.every(cond => cond)) showItem();
             }
             break;
-          case 'seletctText':
-            if (globalData.selectText) item.style.display = 'block';
+          case 'selectText':
+            if (globalData.selectText) showItem();
             break;
           case 'elementCheck':
-            if (globalData.isLink || globalData.isMediaLink) item.style.display = 'block';
+            if (globalData.isLink || globalData.isMediaLink) showItem();
             break;
           case 'elementImage':
-            if (globalData.isImage) item.style.display = 'block';
+            if (globalData.isImage) showItem();
             break;
           case 'articlePage':
-            if (globalData.isArticle) item.style.display = 'block';
+            if (globalData.isArticle) showItem();
             break;
           default:
-            item.style.display = nodeName === 'A'
-              ? globalData.isArticle && !globalData.statusCheck && rightMenuConfig.options.articleShowLink ? 'block' : 'none'
-              : 'block';
+            if (nodeName !== 'A'
+              || (globalData.isArticle
+                && !globalData.statusCheck
+                && rightMenuConfig.options.articleShowLink)) {
+              showItem();
+            }
             break;
         }
       } else if (nodeName === 'A' || !RightMenus.defaultGroup.includes(groupName)) {
-        item.style.display = 'block';
+        showItem();
       }
     });
 
@@ -234,24 +241,21 @@ RightMenus.fun = (() => {
     volantis.rightmenu.method.handle.start();
 
     // 过滤 HR 元素
-    let elementHrItem = { item: null, hide: true };
+    let elementHrItem = null;
     _rightMenuListWithHr.forEach(item => {
       if (item.nodeName === "HR") {
         item.style.display = 'block';
-        if (!elementHrItem.item) {
-          elementHrItem.item = item;
-          return;
+        if (elementHrItem) {
+          elementHrItem.style.display = 'none';
         }
-        if (elementHrItem.hide || elementHrItem.item.nextElementSibling.nodeName === "HR") {
-          elementHrItem.item.style.display = 'none';
-        }
-        elementHrItem.item = item;
-        elementHrItem.hide = true;
-      } else if (item.style.display === 'block' && elementHrItem.hide) {
-        elementHrItem.hide = false;
+        elementHrItem = item;
+      } else if (item.style.display === 'block') {
+        elementHrItem = null;
       }
     });
-    if (elementHrItem.item && elementHrItem.hide) elementHrItem.item.style.display = 'none';
+    if (elementHrItem) {
+      elementHrItem.style.display = 'none';
+    }
   }
 
   /**
@@ -336,7 +340,7 @@ RightMenus.fun = (() => {
         try {
           if (!RightMenus.defaultEvent.includes(eventName)) {
             switch (groupName) {
-              case 'seletctText':
+              case 'selectText':
                 RightMenusFunction[id](globalData.selectText);
                 break;
               case 'elementCheck':
@@ -406,13 +410,52 @@ RightMenus.fun = (() => {
   }
 
   fn.copyPaste = async () => {
-    const result = await RightMenus.readClipboard() || '';
-    if (window.clipboardRead === false) {
-      console.error('系统提示', '未授予剪切板读取权限！');
-    } else if (result === '') {
-      console.error('系统提示', '仅支持复制文本内容！');
-    } else {
-      RightMenus.insertAtCaret(globalData.mouseEvent.target, result);
+    try {
+      NProgress?.start();
+      const clipboardItems = await RightMenus.readClipboard();
+      if (clipboardItems === null && window?.clipboardRead === false) {
+        throw new Error('没有读取剪切板的权限！')
+      }
+      let text = '';
+      let imageFiles = [];
+
+      for (const item of clipboardItems) {
+        if (item.types.length === 0) {
+          throw new Error('剪切板中没有可读取的内容，目前仅支持文本和图像。')
+        }
+        for (const type of item.types) {
+          if (type.startsWith('image/')) {
+            const imageBlob = await item.getType(type);
+            const file = new File([imageBlob], 'clipboard-image.png', { type: type });
+            imageFiles.push(file);
+          } else if (type === 'text/plain') {
+            const textBlob = await item.getType(type);
+            const textContent = await textBlob.text();
+            text += textContent;
+          }
+        }
+      }
+
+      // 粘贴文本内容
+      RightMenus.insertAtCaret(globalData.mouseEvent.target, text);
+
+      for (const file of imageFiles) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        const pasteEvent = new ClipboardEvent('paste', {
+          clipboardData: dataTransfer,
+          bubbles: true,
+          cancelable: true
+        });
+
+        // 对剪切板中的图片尝试触发 paste 事件
+        globalData.mouseEvent.target.dispatchEvent(pasteEvent);
+      }
+      NProgress?.done();
+    } catch (err) {
+      console.error(`粘贴失败，详细信息: ${err.stack}`);
+      RightMenus.insertAtCaret(globalData.mouseEvent.target, err);
+      NProgress?.done();
     }
   }
 
@@ -426,7 +469,7 @@ RightMenus.fun = (() => {
 
   fn.copyImg = () => {
     NProgress?.start();
-    RightMenus.writeClipImg(globalData.mediaLinkUrl, e => { 
+    RightMenus.writeClipImg(globalData.mediaLinkUrl, e => {
       NProgress?.done();
     }, e => {
       NProgress?.done();

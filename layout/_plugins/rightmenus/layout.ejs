@@ -1,7 +1,7 @@
 <%
   const rightMenu = {
     defaultEvent: ['copyText', 'copyLink', 'copyPaste', 'copyAll', 'copyCut', 'copyImg', 'printMode', 'readMode'],
-    defaultGroup: ['navigation', 'inputBox', 'seletctText', 'elementCheck', 'elementImage', 'articlePage'],
+    defaultGroup: ['navigation', 'inputBox', 'selectText', 'elementCheck', 'elementImage', 'articlePage'],
     dataGet: (data, keyStr) => {
       const keys = keyStr.split('.');
       let currentData = data;
@@ -83,7 +83,7 @@
 <%   if (!!item && !!item['event'] && item['group'] !== 'navigation') { %>
 <%     if (rightMenu.defaultEvent.some(value => { return value === item['event'] })) { %>
   //RightMenusFunction['<%- item.id %>'] = (fun) => {fun()}
-<%     } else if (item['group'] === 'seletctText') { %>
+<%     } else if (item['group'] === 'selectText') { %>
   RightMenusFunction['<%- item.id %>'] = (__text__) => {<%- item.event %>}
 <%     } else if (item['group'] === 'elementCheck' || item['group'] === 'elementImage') { %>
   RightMenusFunction['<%- item.id %>'] = (__link__) => {<%- item.event %>}

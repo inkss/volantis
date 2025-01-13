@@ -965,7 +965,7 @@ rightmenus:
     - plugins.navigation
     - hr
     - plugins.inputBox
-    - plugins.seletctText
+    - plugins.selectText
     - plugins.elementCheck
     - plugins.elementImage
     - menus.link
@@ -984,7 +984,7 @@ rightmenus:
   # 注： 
   # 1. link/event 二选一，同时出现时仅处理 link
   # 2. 内置事件列表： copyText, copyLink, copyPaste, copyAll, copyCut, copyImg, printMode, readMode
-  # 3. 内置组列表：navigation, inputBox, seletctText, elementCheck, elementImage, articlePage
+  # 3. 内置组列表：navigation, inputBox, selectText, elementCheck, elementImage, articlePage
   # 4. plugins 列允许自定义组内项目
   # 5. menus   列允许自定义组及其内容
   # 6. 除 navigation 外的内置组，在显示时会隐藏含 link 属性的菜单项
@@ -1010,16 +1010,16 @@ rightmenus:
     # 文本输入框相关组件
     # 生效于 input/textarea，粘贴、剪切、全选
     inputBox:
-      - {id: 'copyPaste', name: '粘贴文本', icon: 'fa-solid fa-paste', event: 'copyPaste', group: 'inputBox'}
+      - {id: 'copyPaste', name: '粘贴内容', icon: 'fa-solid fa-paste', event: 'copyPaste', group: 'inputBox'}
       - {id: 'copyAll', name: '全选文本', icon: 'fa-solid fa-object-ungroup', event: 'copyAll', group: 'inputBox'}
       - {id: 'copyCut', name: '剪切文本', icon: 'fa-solid fa-cut', event: 'copyCut', group: 'inputBox'}
     # 文本选中类组件
     # 生效于右键选中文本，__text__ 为选中的文本。
-    seletctText:
-      - {id: 'copyText', name: '复制文本', icon: 'fa-solid fa-copy', event: 'copyText', group: 'seletctText'}
-      - {id: 'searchWord', name: '站内搜索', icon: 'fa-solid fa-search', event: 'OpenSearch(__text__)', group: 'seletctText'}
-      - {id: 'bingSearch', name: '必应搜索', icon: 'fa-solid fa-search', event: 'window.open(`https://cn.bing.com/search?q=${__text__}`)', group: 'seletctText'}
-      #- {id: 'googleSearch', name: '谷歌搜索', icon: 'fa-solid fa-search', event: 'window.open(`https://www.google.com/search?q=${__text__}`)', group: 'seletctText'}
+    selectText:
+      - {id: 'copyText', name: '复制文本', icon: 'fa-solid fa-copy', event: 'copyText', group: 'selectText'}
+      - {id: 'searchWord', name: '站内搜索', icon: 'fa-solid fa-search', event: 'OpenSearch(__text__)', group: 'selectText'}
+      - {id: 'bingSearch', name: '必应搜索', icon: 'fa-solid fa-search', event: 'window.open(`https://cn.bing.com/search?q=${__text__}`)', group: 'selectText'}
+      #- {id: 'googleSearch', name: '谷歌搜索', icon: 'fa-solid fa-search', event: 'window.open(`https://www.google.com/search?q=${__text__}`)', group: 'selectText'}
     # 链接判断组件
     # 生效于链接处的右键行为，__link__ 为链接地址
     elementCheck:

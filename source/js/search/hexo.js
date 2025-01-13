@@ -35,9 +35,12 @@ class SearchService {
   }
 
   init() {
-    const div = document.createElement("div");
-    div.innerHTML = this.template;
-    document.body.append(div);
+    if (!document.querySelector('#u-search')) {
+      const div = document.createElement("div");
+      div.innerHTML = this.template;
+      document.body.append(div);
+    }
+    
     this.bindEvents();
   }
 
