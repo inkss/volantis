@@ -122,7 +122,8 @@ const VolantisApp = (() => {
         fn.setHeaderSearch();
       }
     }
-    volantis.scroll.push(fn.scrollEventCallBack, "scrollEventCallBack");
+
+    volantis.scroll.push(volantis.scroll.debounce(fn.scrollEventCallBack, 200), "scrollEventCallBack");
   }
 
   fn.event = () => {

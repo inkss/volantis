@@ -335,10 +335,10 @@
         } else {
           volantis.scroll.unengine.start();
         }
-        volantis.requestAnimationFrame(loop);
+        volantis.requestAnimationFrame(volantis.scroll.debounce(loop, 200));
       };
 
-      volantis.requestAnimationFrame(loop);
+      volantis.requestAnimationFrame(volantis.scroll.debounce(loop, 200));
     },
 
     handleScrollStop: () => {
@@ -350,7 +350,20 @@
             window.lazyLoader.reinitObserver()
           }
         }
-      }, 100);
+      }, 200);
+    },
+
+    debounce: (func, wait = 200) => {
+      let timer = null;
+      return function () {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+          func.apply(this, arguments)
+          timer = null
+        }, wait)
+      }
     },
 
     // 触发页面滚动至目标元素位置
