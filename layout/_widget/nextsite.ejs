@@ -21,8 +21,7 @@
       <% theme.nextNavbar.menu.forEach(value => { %>
         <li class="next-main-item">
           <a 
-          <%- value.url ? `href="` + url_for(value.url) + `" title="` + (value.description || value.name) + `"`
-                        : ` href="/" onclick="return false;" title="` + (value.description || value.name) + `"` %>
+          <%- value.url ? `href="` + url_for(value.url) + `" ` : ` href="/" onclick="return false;" ` %>
           <% if (value.url) { %>
             active-action="action-<%= url_for(value.url).replace(/\/|%|\./g, "")?url_for(value.url).replace(/\/|%|\./g, ""):"home" %>"
           <% } %>

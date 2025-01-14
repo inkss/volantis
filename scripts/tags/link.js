@@ -1,5 +1,14 @@
 'use strict';
 
+function getFullDomainFromUrl(url) {
+  try {
+    const urlObj = new URL(url);
+    return `${urlObj.protocol}//${urlObj.hostname}`;
+  } catch (error) {
+    return url;
+  }
+}
+
 // {% link title, url %}
 // {% link title, url, img %}
 hexo.extend.tag.register('link', function(args) {
@@ -24,13 +33,13 @@ hexo.extend.tag.register('link', function(args) {
   }
   let result = '';
   // 发现如果不套一层 div 在其它可渲染 md 的容器中容易被分解
-  result += '<div class="tag link"><a class="link-card" title="' + text + '" href="' + url + '">';
+  result += '<div class="tag link"><a class="link-card" href="' + url + '">';
   // left
   result += '<div class="left">';
   result += '<img fancybox src="' + (img || hexo.theme.config.tag_plugins.link.placeholder) + '"/>';
   result += '</div>';
   // right
-  result += '<div class="right"><p class="text">' + text + '</p><p class="url">' + url + '</p></div>';
+  result += '<div class="right"><p class="text">' + text + '</p><p class="url">' + getFullDomainFromUrl(url) + '</p></div>';
   result += '</a></div>';
 
   return result;
