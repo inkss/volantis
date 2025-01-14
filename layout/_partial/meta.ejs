@@ -7,14 +7,15 @@ var bottomMetas = theme.article.body.bottom_meta || [];
 if (post.bottom_meta == false) {
   bottomMetas = [];
 }
+let articlTitle = (post.title || post.seo_title) ? (post.title || post.seo_title) : date(post.date, theme.article.body.meta_library.date.format);
 %>
 
 <% if (position == 'top') { %>
   <% if (post.headimg && post.seo_title == undefined) { %>
     <div class='headimg-div'>
-      <a class='headimg-a'>
-        <img itemprop="image" class='headimg' src='<%- post.headimg %>'/>
-      </a>
+      <div class='headimg-a'>
+        <img itemprop="image" class='headimg' alt="<%- articlTitle %>" src='<%- post.headimg %>'/>
+      </div>
     </div>
   <% } else { %>
     <span hidden>

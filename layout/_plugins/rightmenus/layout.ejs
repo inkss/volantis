@@ -70,7 +70,7 @@
   <li class='navigation menuNavigation-Content'>
 <%   objs.forEach(item => { %>
 <%     if(item.link === undefined) { %>
-    <a class="nav icon-only fix-cursor-default" onclick="<%- item.event %>"><i class="<%- item.icon %> fa-fw"></i></a>
+    <a class="nav icon-only fix-cursor-default" rel="nofollow" onclick="<%- item.event %>"><i class="<%- item.icon %> fa-fw"></i></a>
 <%     } else { %>
     <a class="nav icon-only fix-cursor-default" href="<%- item.link %>"><i class="<%- item.icon %> fa-fw"></i></a>
 <%     } %>
