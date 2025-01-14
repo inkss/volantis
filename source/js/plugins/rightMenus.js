@@ -421,7 +421,7 @@ RightMenus.fun = (() => {
 
       for (const item of clipboardItems) {
         if (item.types.length === 0) {
-          throw new Error('剪切板中没有可读取的内容，目前仅支持文本和图像。')
+          throw new Error('剪切板中没有可被读取的内容，目前仅支持文本和图像数据，暂不支持操作系统级别的文件复制粘贴操作。')
         }
         for (const type of item.types) {
           if (type.startsWith('image/')) {

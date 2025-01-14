@@ -1,40 +1,52 @@
 class SearchService {
+  static instance = null;
+
   constructor() {
-    this.queryText = null;
-    this.data = null;
-    this.hitsEmpty = volantis.GLOBAL_CONFIG.languages.search.hits_empty;
-    this.normalText = volantis.GLOBAL_CONFIG.languages.search.normal;
-    this.normal = `<div id="resule-hits-empty"><p>${this.normalText}🔍</p></div>`;
-    this.template = `
-      <div id="u-search">
-        <div class="modal">
-          <header class="modal-header clearfix">
-            <form id="u-search-modal-form" class="u-search-form" name="uSearchModalForm">
-              <input type="text" id="u-search-modal-input" class="u-search-input" placeholder="${this.normalText}" />
-              <button type="submit" id="u-search-modal-btn-submit" class="u-search-btn-submit">
+    if (!SearchService.instance) {
+      this.queryText = null;
+      this.data = null;
+      this.hitsEmpty = volantis.GLOBAL_CONFIG.languages.search.hits_empty;
+      this.normalText = volantis.GLOBAL_CONFIG.languages.search.normal;
+      this.normal = `<div id="resule-hits-empty"><p>${this.normalText}🔍</p></div>`;
+      this.template = `
+        <div id="u-search">
+          <div class="modal">
+            <header class="modal-header clearfix">
+              <form id="u-search-modal-form" class="u-search-form" name="uSearchModalForm">
+                <input type="text" id="u-search-modal-input" class="u-search-input" placeholder="${this.normalText}" />
+                <button type="submit" id="u-search-modal-btn-submit" class="u-search-btn-submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </button>
+              </form>
+              <a id="u-search-btn-close" class="btn-close">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
-              </button>
-            </form>
-            <a id="u-search-btn-close" class="btn-close">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </a>
-          </header>
-          <main class="modal-body">
-            <ul class="modal-results"></ul>
-          </main>
-        </div>
-        <div id="modal-overlay" class="modal-overlay"></div>
-      </div>`;
-    this.init();
+              </a>
+            </header>
+            <main class="modal-body">
+              <ul class="modal-results"></ul>
+            </main>
+          </div>
+          <div id="modal-overlay" class="modal-overlay"></div>
+        </div>`;
+      this.initInstance();
+      SearchService.instance = this;
+    }
+    return SearchService.instance;
   }
 
-  init() {
+  static init() {
+    if (!SearchService.instance) {
+      new SearchService();
+    }
+  }
+
+  initInstance() {
     if (!document.querySelector('#u-search')) {
       const div = document.createElement("div");
       div.innerHTML = this.template;
@@ -46,22 +58,24 @@ class SearchService {
 
   bindEvents() {
     const uSearchModalInput = document.querySelector("#u-search-modal-input");
-    let isComposing = false;
-
-    uSearchModalInput.addEventListener("compositionstart", () => (isComposing = true));
-    uSearchModalInput.addEventListener("compositionend", (event) => {
-      isComposing = false;
-      this.onSubmit(event);
-    });
-    uSearchModalInput.addEventListener("input", (event) => {
-      if (!isComposing) this.onSubmit(event);
-    });
-
-    document.querySelectorAll(".u-search-form").forEach((e) => {
-      e.addEventListener("submit", this.onSubmit.bind(this), false);
-    });
-    document.querySelector("#u-search-btn-close").addEventListener("click", this.close.bind(this), false);
-    document.querySelector("#modal-overlay").addEventListener("click", this.close.bind(this), false);
+    if (!uSearchModalInput.hasAttribute('data-event-bound')) {
+      let isComposing = false;
+      uSearchModalInput.addEventListener("compositionstart", () => (isComposing = true));
+      uSearchModalInput.addEventListener("compositionend", (event) => {
+        isComposing = false;
+        this.onSubmit(event);
+      });
+      uSearchModalInput.addEventListener("input", (event) => {
+        if (!isComposing) this.onSubmit(event);
+      });
+  
+      document.querySelectorAll(".u-search-form").forEach((e) => {
+        e.addEventListener("submit", this.onSubmit.bind(this));
+      });
+      document.querySelector("#u-search-btn-close").addEventListener("click", this.close.bind(this));
+      document.querySelector("#modal-overlay").addEventListener("click", this.close.bind(this));
+      uSearchModalInput.setAttribute('data-event-bound', 'true');
+    }
   }
 
   async onSubmit(event) {
@@ -179,25 +193,18 @@ class SearchService {
   }
 
   static setQueryText(queryText) {
-    if (this.instance) {
-      this.instance.queryText = queryText;
-    }
+    SearchService.init();
+    SearchService.instance.queryText = queryText;
   }
 
   static async search() {
-    if (this.instance) {
-      await this.instance.search();
-    }
-  }
-
-  static init() {
-    const instance = new SearchService();
-    this.instance = instance;
+    SearchService.init();
+    await SearchService.instance.search();
   }
 }
 
-SearchService.init();
-document.addEventListener("pjax:success", SearchService.init);
+new SearchService();
+document.addEventListener("pjax:success", new SearchService());
 document.addEventListener("pjax:send", () => {
   document.querySelector("#u-search").style.display = "none";
 });
