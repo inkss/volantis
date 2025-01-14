@@ -29,12 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
     VolantisApp.subscribe();
     const fancyBoxInstance = new VolantisFancyBox();
     fancyBoxInstance.bind('#post-body img:not([fancybox])');
+    window.lazyLoader = new LazyLoader("picture.lazy img");
     highlightKeyWords.startFromURL();
     locationHash();
-    lazyLoadImages();
     toggleGrayscaleEffect();
     volantis.pjax.push(() => {
-      lazyLoadImages();
+      window.lazyLoader.reinitObserver();
       toggleGrayscaleEffect();
       VolantisApp.pjaxReload();
       const fancyBoxInstance = new VolantisFancyBox();
@@ -88,43 +88,6 @@ const toggleGrayscaleEffect = () => {
   }
 }
 
-// 图片懒加载
-let lazyPictureObserver;
-const lazyLoadImages = () => {
-  let lazyPictures = [].slice.call(document.querySelectorAll("picture.lazy img"));
-
-  if (!lazyPictureObserver) {
-    lazyPictureObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && (!volantis?.scroll || !volantis?.scroll?.isScrolling)) {
-          let lazyImage = entry.target;
-          let sources = lazyImage.parentElement.getElementsByTagName('source');
-          for (let source of sources) {
-            source.srcset = source.dataset.srcset;
-          }
-          lazyImage.src = lazyImage.dataset.src;
-          lazyImage.onload = function () {
-            const pictureElement = lazyImage.closest('picture');
-            pictureElement.classList.remove("lazy");
-          }
-          lazyPictureObserver.unobserve(lazyImage);
-        }
-      });
-    });
-  }
-
-  lazyPictures.forEach((lazyImage) => {
-    lazyPictureObserver.observe(lazyImage);
-    // 手动触发一次 IntersectionObserver 回调
-    lazyPictureObserver.takeRecords().forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('intersecting');
-      }
-    });
-  });
-};
-window.lazyLoadImages = lazyLoadImages;
-
 /*锚点定位*/
 const locationHash = () => {
   if (window.location.hash) {
@@ -132,7 +95,7 @@ const locationHash = () => {
     const target = document.getElementById(locationID);
     if (target) {
       setTimeout(() => {
-        const offset =  target.id == 'comments' ? 0 : 80;
+        const offset = target.id == 'comments' ? 0 : 80;
         volantis.scroll.to(target, { addTop: offset, behavior: 'smooth', observer: true });
       }, 500);
     }
@@ -701,12 +664,12 @@ const highlightKeyWords = (() => {
       target = document.getElementById(`keyword-mark-${markNextId}`);
     }
     if (target) {
-      volantis.scroll.to(target, { 
-        addTop: -10, 
+      volantis.scroll.to(target, {
+        addTop: -10,
         behavior: 'smooth'
       });
       document.querySelector('.highlighted')?.classList.remove('highlighted');
-      target.classList.add('highlighted'); 
+      target.classList.add('highlighted');
     }
     return target;
   };
@@ -721,12 +684,12 @@ const highlightKeyWords = (() => {
     }
     if (target) {
       const tempHeight = document.querySelector('#s-top') ? document.querySelector('#s-top').offsetHeight : 0;
-      volantis.scroll.to(target, { 
-        addTop: -10, 
+      volantis.scroll.to(target, {
+        addTop: -10,
         behavior: 'smooth'
       });
       document.querySelector('.highlighted')?.classList.remove('highlighted');
-      target.classList.add('highlighted'); 
+      target.classList.add('highlighted');
     }
     return target;
   };
@@ -934,5 +897,72 @@ class VolantisFancyBox {
         Fancybox?.bind(`[data-fancybox="${name}"]`, this.option);
       });
     });
+  }
+}
+
+/* 图片懒加载 */
+class LazyLoader {
+  constructor(selector) {
+    this.lazyPictureObserver = null;
+    this.observedElements = new Set();
+    this.selector = selector;
+    this.initObserver();
+    this.observeElements();
+  }
+
+  // 初始化观察器
+  initObserver() {
+    this.lazyPictureObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && (!volantis?.scroll || !volantis?.scroll?.isScrolling)) {
+          this.loadImage(entry.target);
+          this.lazyPictureObserver.unobserve(entry.target);
+          this.observedElements.delete(entry.target);
+        }
+      });
+    });
+  }
+
+  // 开始观察元素
+  observeElement(element) {
+    if (!this.observedElements.has(element)) {
+      this.lazyPictureObserver.observe(element);
+      this.observedElements.add(element);
+    }
+  }
+
+  // 观察所有符合选择器的元素
+  observeElements() {
+    document.querySelectorAll(this.selector).forEach(element => {
+      this.observeElement(element);
+    });
+  }
+
+  // 加载图片
+  loadImage(lazyImage) {
+    let sources = lazyImage.parentElement.getElementsByTagName('source');
+    for (let source of sources) {
+      source.srcset = source.dataset.srcset;
+    }
+    lazyImage.src = lazyImage.dataset.src;
+    lazyImage.onload = function () {
+      const pictureElement = lazyImage.closest('picture');
+      pictureElement.classList.remove("lazy");
+    };
+  }
+
+  // 卸载所有观察器
+  unobserveAll() {
+    if (this.lazyPictureObserver) {
+      this.lazyPictureObserver.disconnect();
+      this.observedElements.clear();
+    }
+  }
+
+  // 重新初始化观察器并观察新元素
+  reinitObserver() {
+    this.unobserveAll();
+    this.initObserver();
+    this.observeElements();
   }
 }

@@ -345,9 +345,9 @@
       clearTimeout(volantis.scroll.scrollingTimeOut);
       volantis.scroll.scrollingTimeOut = setTimeout(() => {
         if (volantis.scroll.lastScrollTop === window.pageYOffset) {
-          if (typeof window.lazyLoadImages === 'function' && volantis.scroll.isScrolling) { 
+          if (typeof window.lazyLoader?.reinitObserver === 'function' && volantis.scroll.isScrolling) { 
             volantis.scroll.isScrolling = false;
-            window.lazyLoadImages(); 
+            window.lazyLoader.reinitObserver()
           }
         }
       }, 100);
