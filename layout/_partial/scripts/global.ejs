@@ -291,6 +291,8 @@
   volantis.scroll = {
     engine: new RunItem(),
     unengine: new RunItem(),
+    isScrolling: false,
+    scrollingTimeOut: null,
     push: null,
     ele: null,
     lastScrollTop: 0,
@@ -329,6 +331,7 @@
           // 注销过期的unengine未滚动事件
           volantis.scroll.unengine.list = [];
           volantis.scroll.engine.start();
+          volantis.scroll.handleScrollStop()
         } else {
           volantis.scroll.unengine.start();
         }
@@ -338,9 +341,22 @@
       volantis.requestAnimationFrame(loop);
     },
 
+    handleScrollStop: () => {
+      clearTimeout(volantis.scroll.scrollingTimeOut);
+      volantis.scroll.scrollingTimeOut = setTimeout(() => {
+        if (volantis.scroll.lastScrollTop === window.pageYOffset) {
+          if (typeof window.lazyLoadImages === 'function' && volantis.scroll.isScrolling) { 
+            volantis.scroll.isScrolling = false;
+            window.lazyLoadImages(); 
+          }
+        }
+      }, 100);
+    },
+
     // 触发页面滚动至目标元素位置
     to: (ele, option = {}) => {
       if (!ele) return;
+      volantis.scroll.isScrolling = true;
       volantis.scroll.ele = ele;
 
       const opt = {
@@ -358,19 +374,18 @@
       // 监视器
       // 监视并矫正元素滚动到指定位置
       // 用于处理 lazyload 引起的 cls 导致的定位失败问题
-      if (opt.observer) {
-        setTimeout(() => {
-          if (volantis.scroll.ele !== ele) return;
-
-          volantis.scroll.unengine.push(() => {
-            const me = ele.getBoundingClientRect().top;
-            if (!(me >= -opt.observerDic && me <= opt.observerDic)) {
-              volantis.scroll.to(ele, opt);
-            }
-            volantis.scroll.unengine.remove("unengineObserver");
-          }, "unengineObserver");
-        }, 1000);
-      }
+      // if (opt.observer) {
+      //   setTimeout(() => {
+      //     if (volantis.scroll.ele !== ele) return;
+      //     volantis.scroll.unengine.push(() => {
+      //       const me = ele.getBoundingClientRect().top;
+      //       if (!(me >= -opt.observerDic && me <= opt.observerDic)) {
+      //         volantis.scroll.to(ele, opt);
+      //       }
+      //       volantis.scroll.unengine.remove("unengineObserver");
+      //     }, "unengineObserver");
+      //   }, 1000);
+      // }
     }
   };
 

@@ -2,6 +2,8 @@
 function listenSidebarTOC() {
   const navItems = document.querySelectorAll(".toc li");
   if (!navItems.length) return;
+
+  volantis.activateNavIndex = 0;
   
   const targets = Array.from(navItems).map((element) => {
     const link = element.querySelector(".toc-link");
@@ -27,13 +29,19 @@ function listenSidebarTOC() {
     return target;
   });
 
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
   function activateNavByIndex(target) {
     if (target.classList.contains("active-current")) return;
-
     document.querySelectorAll(".toc .active").forEach((element) => {
       element.classList.remove("active", "active-current");
     });
-
     target.classList.add("active", "active-current");
     let parent = target.parentNode;
     while (!parent.matches(".toc")) {
@@ -42,25 +50,30 @@ function listenSidebarTOC() {
     }
   }
 
-  volantis.activateNavIndex = 0;
-  activateNavByIndex(navItems[volantis.activateNavIndex]);
+  const updateNavDebounced = debounce(() => {
+    const topOffsets = targets.map(target => target.getBoundingClientRect().top);
+    const firstOffset = topOffsets[0];
+    const lastOffset = topOffsets[topOffsets.length - 1];
 
-  if (targets[0]) {
-    volantis.scroll.push(() => {
-      const topOffset = targets.map(target => target.getBoundingClientRect().top);
-      if (topOffset[0] >= 0) {
-        volantis.activateNavIndex = 0;
-      } else if (topOffset[targets.length - 1] < 0) {
-        volantis.activateNavIndex = targets.length - 1;
-      } else {
-        for (let index = 0; index < targets.length - 1; index++) {
-          if (topOffset[index] < 0 && topOffset[index + 1] >= 0) {
-            volantis.activateNavIndex = index;
-            break;
-          }
+    if (firstOffset >= 0) {
+      volantis.activateNavIndex = 0;
+    } else if (lastOffset < 0) {
+      volantis.activateNavIndex = targets.length - 1;
+    } else {
+      for (let index = 0; index < topOffsets.length - 1; index++) {
+        if (topOffsets[index] < 0 && topOffsets[index + 1] >= 0) {
+          volantis.activateNavIndex = index;
+          break;
         }
       }
-      activateNavByIndex(navItems[volantis.activateNavIndex]);
+    }
+    activateNavByIndex(navItems[volantis.activateNavIndex]);
+  }, 100)
+
+  activateNavByIndex(navItems[volantis.activateNavIndex]);
+  if (targets[0]) {
+    volantis.scroll.push(() => {
+      updateNavDebounced()
     });
   }
 }

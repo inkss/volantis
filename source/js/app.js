@@ -89,13 +89,14 @@ const toggleGrayscaleEffect = () => {
 }
 
 // 图片懒加载
+let lazyPictureObserver;
 const lazyLoadImages = () => {
   let lazyPictures = [].slice.call(document.querySelectorAll("picture.lazy img"));
 
-  if ("IntersectionObserver" in window) {
-    let lazyPictureObserver = new IntersectionObserver((entries, observer) => {
+  if (!lazyPictureObserver) {
+    lazyPictureObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && (!volantis?.scroll || !volantis?.scroll?.isScrolling)) {
           let lazyImage = entry.target;
           let sources = lazyImage.parentElement.getElementsByTagName('source');
           for (let source of sources) {
@@ -110,12 +111,19 @@ const lazyLoadImages = () => {
         }
       });
     });
-
-    lazyPictures.forEach((lazyImage) => {
-      lazyPictureObserver.observe(lazyImage);
-    });
   }
-}
+
+  lazyPictures.forEach((lazyImage) => {
+    lazyPictureObserver.observe(lazyImage);
+    // 手动触发一次 IntersectionObserver 回调
+    lazyPictureObserver.takeRecords().forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('intersecting');
+      }
+    });
+  });
+};
+window.lazyLoadImages = lazyLoadImages;
 
 /*锚点定位*/
 const locationHash = () => {
@@ -124,9 +132,9 @@ const locationHash = () => {
     const target = document.getElementById(locationID);
     if (target) {
       setTimeout(() => {
-        const offset = 80;
-        volantis.scroll.to(target, { addTop: offset, behavior: 'instant', observer: true });
-      }, 1000);
+        const offset =  target.id == 'comments' ? 0 : 80;
+        volantis.scroll.to(target, { addTop: offset, behavior: 'smooth', observer: true });
+      }, 500);
     }
   }
 };
@@ -192,6 +200,18 @@ const VolantisApp = (() => {
         menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
       }
     });
+
+    // 为评论添加点击事件
+    const linksComments = document.querySelectorAll('a[href$="#comments"]');
+    linksComments.forEach(link => {
+      const comments = document.querySelector('#comments');
+      if (comments) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          volantis.scroll.to(comments, { addTop: 0, behavior: 'smooth', observer: true });
+        });
+      }
+    })
   }
 
   fn.restData = () => {
@@ -224,8 +244,11 @@ const VolantisApp = (() => {
       const topBtn = volantis.dom.topBtn;
       if (scrollTop > volantis.dom.bodyAnchor.offsetTop) {
         topBtn.addClass('show');
-        // 向上滚动高亮 topBtn
-        topBtn.toggleClass('hl', volantis.scroll.del <= 0);
+        if (volantis.scroll.del <= 0) {
+          topBtn.classList.add('hl'); // 向上滚动高亮 topBtn
+        } else {
+          topBtn.classList.remove('hl');
+        }
       } else {
         topBtn.removeClass('show hl');
       }
@@ -678,9 +701,8 @@ const highlightKeyWords = (() => {
       target = document.getElementById(`keyword-mark-${markNextId}`);
     }
     if (target) {
-      const tempHeight = document.querySelector('#s-top') ? document.querySelector('#s-top').offsetHeight : 0;
-      window.scrollTo({
-        top: target.getBoundingClientRect().top + window.pageYOffset - tempHeight - 5,
+      volantis.scroll.to(target, { 
+        addTop: -10, 
         behavior: 'smooth'
       });
       document.querySelector('.highlighted')?.classList.remove('highlighted');
@@ -699,8 +721,8 @@ const highlightKeyWords = (() => {
     }
     if (target) {
       const tempHeight = document.querySelector('#s-top') ? document.querySelector('#s-top').offsetHeight : 0;
-      window.scrollTo({
-        top: target.getBoundingClientRect().top + window.pageYOffset - tempHeight - 5,
+      volantis.scroll.to(target, { 
+        addTop: -10, 
         behavior: 'smooth'
       });
       document.querySelector('.highlighted')?.classList.remove('highlighted');
