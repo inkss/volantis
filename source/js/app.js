@@ -27,19 +27,23 @@ document.addEventListener("DOMContentLoaded", () => {
   volantis.requestAnimationFrame(() => {
     VolantisApp.init();
     VolantisApp.subscribe();
+
     const fancyBoxInstance = new VolantisFancyBox();
     fancyBoxInstance.bind('#post-body img:not([fancybox])');
     window.lazyLoader = new LazyLoader("picture.lazy img");
+
+    Tools.locationHash();
+    Tools.changeTitle();
+    Tools.toggleGrayscaleEffect();
     highlightKeyWords.startFromURL();
-    locationHash();
-    toggleGrayscaleEffect();
     volantis.pjax.push(() => {
-      window.lazyLoader.reinitObserver();
-      toggleGrayscaleEffect();
       VolantisApp.pjaxReload();
-      const fancyBoxInstance = new VolantisFancyBox();
+
+      window.lazyLoader.reinitObserver();
       fancyBoxInstance.bind('#post-body img:not([fancybox])');
-      sessionStorage.setItem("domTitle", document.title);
+
+      Tools.changeTitle();
+      Tools.toggleGrayscaleEffect();
       highlightKeyWords.startFromURL();
     }, 'app.js');
 
@@ -52,56 +56,59 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// 动态修改标题
-const changeTitle = () => {
-  const originalTitle = document.title;
-  sessionStorage.setItem("domTitle", originalTitle);
-
-  document.addEventListener('visibilitychange', () => {
+const Tools = {
+  handleTitleChange: (originalTitle) => {
     const storedTitle = sessionStorage.getItem("domTitle") || originalTitle;
     const titleParts = storedTitle.split(' - ');
     document.title = document.visibilityState === 'hidden'
       ? (titleParts.length === 2 ? titleParts[1] : titleParts[0])
       : storedTitle;
-  });
-}
+  },
+  changeTitle: () => {
+    const originalTitle = document.title;
+    const handleChange = () => Tools.handleTitleChange(originalTitle);
+    sessionStorage.setItem("domTitle", originalTitle);
 
-// 首屏变灰
-const toggleGrayscaleEffect = () => {
-  const pathName = window.location.pathname;
-  const current = new Date();
-  const year = current.getFullYear();
-
-  const dateRanges = [
-    [`${year}/4/4`, `${year}/4/5`],
-    [`${year}/12/13`, `${year}/12/14`]
-  ];
-
-  const isDateBetween = dateRanges.some(([start, end]) =>
-    current >= new Date(start) && current < new Date(end)
-  );
-
-  if (pathName === "/" && isDateBetween) {
-    document.querySelector('html').classList.add('grayscale');
-  } else {
-    document.querySelector('html').classList.remove('grayscale');
-  }
-}
-
-/*锚点定位*/
-const locationHash = () => {
-  if (window.location.hash) {
-    const locationID = decodeURI(window.location.hash.slice(1)).replace(/\s/g, '-');
-    const target = document.getElementById(locationID);
-    if (target) {
-      setTimeout(() => {
-        const offset = target.id == 'comments' ? 0 : 80;
-        volantis.scroll.to(target, { addTop: offset, behavior: 'smooth', observer: true });
-      }, 500);
+    document.removeEventListener('visibilitychange', handleChange); 
+    window.removeEventListener('beforeunload', handleChange); 
+    document.addEventListener('visibilitychange', handleChange); 
+    window.addEventListener('beforeunload', handleChange);
+  },
+  toggleGrayscaleEffect: (isTestMode = false) => {
+    const pathName = window.location.pathname;
+    const current = new Date();
+    const year = current.getFullYear();
+  
+    const dateRanges = [
+      [`${year}/4/4`, `${year}/4/5`],
+      [`${year}/12/13`, `${year}/12/14`]
+    ];
+  
+    const isDateBetween = dateRanges.some(([start, end]) =>
+      current >= new Date(start) && current < new Date(end)
+    );
+  
+    const shouldApplyGrayscale = pathName === "/" && (isDateBetween || isTestMode);
+  
+    if (shouldApplyGrayscale) {
+      document.querySelector('html').classList.add('grayscale');
+    } else {
+      document.querySelector('html').classList.remove('grayscale');
+    }
+  },
+  locationHash: () => {
+    if (window.location.hash) {
+      const locationID = decodeURI(window.location.hash.slice(1)).replace(/\s/g, '-');
+      const target = document.getElementById(locationID);
+      if (target) {
+        setTimeout(() => {
+          const offset = target.id == 'comments' ? 0 : 80;
+          volantis.scroll.to(target, { addTop: offset, behavior: 'smooth', observer: true });
+        }, 500);
+      }
     }
   }
-};
-Object.freeze(locationHash);
+}
 
 /* Main */
 const VolantisApp = (() => {
