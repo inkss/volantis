@@ -198,21 +198,26 @@
 
   // 已经加入了setTimeout
   volantis.js = (src, cb) => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       const existingScript = Array.from(document.getElementsByTagName('script')).find(script => script.src === src);
       if (existingScript) {
         resolve();
         return;
       }
+      
       const HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
       const script = document.createElement("script");
       script.type = "text/javascript";
+      
       script.onload = () => {
         if (cb && typeof cb === "function") {
           cb();
         }
         resolve();
       };
+      
+      script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+      
       if (cb && typeof cb === "object") {
         for (let p in cb) {
           if (p === "onload") {
@@ -225,22 +230,27 @@
           }
         }
       }
+      
       script.src = src;
       HEAD.appendChild(script);
     });
   }
 
   volantis.css = (src) => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       const existingLink = Array.from(document.getElementsByTagName('link')).find(link => link.href === src);
       if (existingLink) {
         resolve();
         return;
       }
-      var link = document.createElement('link');
+      
+      const link = document.createElement('link');
       link.rel = "stylesheet";
       link.href = src;
-      link.onload = resolve;
+      
+      link.onload = () => resolve();
+      link.onerror = () => reject(new Error(`Failed to load CSS: ${src}`));
+      
       document.getElementsByTagName("head")[0].appendChild(link);
     });
   }

@@ -843,22 +843,45 @@ class VolantisFancyBox {
         },
       }
     };
-    this.#init(checkMain);
+    if (checkMain) {
+      this.#init();
+    }
   }
 
-  #init(checkMain) {
-    if (!document.querySelector(".md .gallery img, .fancybox") && checkMain) return;
-    this.groupBind();
+  async #init() {
+    await this.loadFancybox();
+    if (document.querySelector(".md .gallery img, .fancybox")) {
+      this.groupBind();
+    }
   }
 
-  async #checkFancybox(done) {
+  async loadFancybox() {
     if (typeof Fancybox === "undefined") {
       await volantis.css(volantis.GLOBAL_CONFIG.cdn.fancybox_css);
       await volantis.js(volantis.GLOBAL_CONFIG.cdn.fancybox_js);
-      done.call(this);
-    } else {
-      done.call(this);
     }
+  }
+
+  async bind(selectors) {
+    await this.loadFancybox();
+    Fancybox.unbind(selectors);
+    Fancybox.bind(selectors, this.option);
+  }
+
+  async groupBind(selectors, groupName = 'default') {
+    await this.loadFancybox();
+    this.#elementHandling(selectors, groupName);
+    const group = new Set();
+    document.querySelectorAll('.gallery').forEach(ele => {
+      if (ele.querySelector("img")) {
+        group.add(ele.getAttribute('data-group') || 'default');
+      }
+    });
+    if (groupName) group.add(groupName);
+    group.forEach(name => {
+      Fancybox.unbind(`[data-fancybox="${name}"]`);
+      Fancybox.bind(`[data-fancybox="${name}"]`, this.option);
+    });
   }
 
   #elementHandling(selectors, groupName) {
@@ -873,30 +896,6 @@ class VolantisFancyBox {
       $link.classList.add('fancybox');
       $link.append($item.cloneNode());
       $item.replaceWith($link);
-    });
-  }
-
-  bind(selectors) {
-    this.#checkFancybox(() => {
-      Fancybox?.unbind(selectors);
-      Fancybox?.bind(selectors, this.option);
-    });
-  }
-
-  groupBind(selectors, groupName = 'default') {
-    this.#checkFancybox(() => {
-      this.#elementHandling(selectors, groupName);
-      const group = new Set();
-      document.querySelectorAll('.gallery').forEach(ele => {
-        if (ele.querySelector("img")) {
-          group.add(ele.getAttribute('data-group') || 'default');
-        }
-      });
-      if (groupName) group.add(groupName);
-      group.forEach(name => {
-        Fancybox?.unbind(`[data-fancybox="${name}"]`);
-        Fancybox?.bind(`[data-fancybox="${name}"]`, this.option);
-      });
     });
   }
 }
