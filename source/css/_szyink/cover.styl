@@ -13,6 +13,33 @@ article#post
   h3
     font-weight 900
 
+// 调整移动端的显示
+#safearea
+  @media screen and (max-width: $device-mobile)
+    margin 0 !important
+    box-shadow none
+    .body-wrapper
+      padding 0
+    #l_main
+      padding-left 0
+      article#comments,
+      article#friends,
+      article#post,
+      article#page,
+      article#arc      
+        border-radius 0
+      article#cat,
+      article#tag
+        margin 0
+        border-radius 0
+      .post-wrapper
+        margin 0 0 16px
+        .post
+          border-radius 0
+    #l_side
+      .widget.mobile
+        border-radius 0
+
 // <kbd></kbd>
 kbd
   background-color #f2f2f2
@@ -78,6 +105,53 @@ details summary
 .cus-shadow
   box-shadow 0 1px 3px #0000001f, 0 1px 2px #0000003d
 
+// iconfont 自定义图标样式修饰
+.iconfont
+  width 1em
+  height 1em
+  vertical-align -0.15em
+  fill currentColor
+  overflow hidden
+  &.emoji
+    width 1.5em
+    height 1.5em
+    vertical-align -0.3em
+
+// 移动端字体大小
+.cover-wrapper .cover-body .title
+  @media screen and (max-width: 500px)
+    font-size 2rem
+
+//修复开启首行缩进后的图片，标签
+#l_main>article.cus-indent 
+  p img
+    display block
+  div.checkbox p
+    text-indent 0
+  p + ul
+    margin-left 2rem
+
+// 修复侧边栏 list 链接处字体粗细问题
+.widget.list .content a > div.name 
+  font-weight initial 
+
+// 首屏灰色
+html.grayscale::before
+  content ""
+  position absolute
+  inset 0
+  backdrop-filter grayscale(95%)
+  z-index 5000
+  pointer-events none
+
+// 仿 Next 时修饰固定高度
+.widget-sticky
+  top $gap !important
+
+// 江西拙楷 字体修饰
+.article-title a
+  font-weight 400
+
 // 侧边栏 宫格布局
 // 侧边栏 Artalk
 .grid.navigation,
@@ -107,15 +181,18 @@ table a:not([class]),
     background linear-gradient(0deg, rgba(32,148,243,0.2), rgba(32,148,243,0.2)) no-repeat left 100% / 100% 100%
 
 // 强制覆盖 fancybox v5
-.fancybox__container
-  padding 10px !important
-.fancybox__slide
-  padding 2.5rem !important
-.f-button
-  &:first-child
-    border-radius 12px 0 0 12px
-  &:last-child
-    border-radius 0 12px 12px 0
+@media (min-width: 600px)
+  .fancybox__container
+    padding 10px !important
+  .fancybox__slide
+    padding 2.5rem !important
+
+@media (min-width: 720px)
+  .f-button
+    &:first-child
+      border-radius 12px 0 0 12px
+    &:last-child
+      border-radius 0 12px 12px 0
 
 // 图片懒加载占位图覆盖样式
 picture.lazy img

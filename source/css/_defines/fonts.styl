@@ -13,11 +13,6 @@ if hexo-config('custom_css.fontfamily.logofont')
   if hexo-config('custom_css.fontfamily.logofont.fontfamily')
     $fontfamily-logo = convert(hexo-config('custom_css.fontfamily.logofont.fontfamily')), Helvetica, monospace
 
-.article-title,
-.widget header,
-.md .footer .header
-  font-family $fontfamily-logo
-
 // font size
 $fontsize-root = convert(hexo-config('custom_css.fontsize.root')) || 16px
 $fontsize-h1 = convert(hexo-config('custom_css.fontsize.h1')) || 1.625rem

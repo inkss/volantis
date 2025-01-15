@@ -40,7 +40,7 @@
     <link rel="shortcut icon" type='image/x-icon' href="<%- url_for(config.favicon) %>">
   <%_ } _%>
   <link rel="preload" href="<%- theme.cdn.volantis_style %>" as="style">
-  <%- generate_preload_fontfamily(theme) %>
+  <!-- <%- generate_preload_fontfamily(theme) %> -->
   <!-- feed -->
   <%_ if (config.feed && config.feed.path){ _%>
     <%_ if (typeof(config.feed.path)=="string"){ _%>
