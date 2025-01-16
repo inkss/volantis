@@ -105,9 +105,9 @@ svg.feather
 
 //======================================//
 // 禁止选中
-.not-select, figcaption, footer, section, details summary,
-.new-meta-box, .prev-next, .atk-main-editor, .atk-list-header, .nav-tabs
-  -webkit-touch-callout none
+.not-select, figcaption, footer, section:not(.footnotes), details summary,
+.new-meta-box, .prev-next, .atk-main-editor, .atk-list-header, .nav-tabs,
+.copyright.license, .comment-policy, .commentTitle, .headimg-div
   user-select none
   & p, & span
     cursor $default
@@ -116,7 +116,6 @@ svg.feather
   & a span
     cursor $pointer !important
 .allow-select
-  -webkit-touch-callout all
   user-select all
 //======================================//
 
@@ -379,9 +378,4 @@ svg.feather
       line-height 1.45em !important
     .comment-policy-link
       font-size 14px
-
-//======================================//
-// 阅读模式自定义背景
-.common_read .cus-article-bkg
-  display none !important
 

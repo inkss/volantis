@@ -1,0 +1,87 @@
+html
+  font-size: 20px !important
+
+body:before
+  content: "";
+  transition opacity 1s cubic-bezier(.23,1,.32,1) 0ms
+  background-color var(--color-read-bkg)
+  display block
+  position fixed
+  top 0
+  left 0
+  right 0
+  bottom 0
+
+body.read-mode
+  #l_side,
+  #l_header,
+  #l_cover,
+  #l_side,
+  #comments,
+  #BKG,
+  #owo-big,
+  #u-search,
+  #s-top,
+  footer,
+  .prev-next,
+  .cus-article-bkg,
+  .article-meta#bottom
+    display none !important
+
+body.read-mode
+  #l_main,
+  #l_body,
+  #safearea,
+  #pjax-container
+    z-index: auto
+    opacity: 1
+    overflow: visible
+    transform: none
+    animation: none
+    position: relative
+
+  #l_main
+    width: 860px
+    padding: 0
+    margin: 0 auto
+    float: initial
+    @media screen and (max-width: 900px)
+      width: auto
+
+  #post,
+  .widget.toc-wrapper
+    background-color: var(--color-read-post)
+    z-index: 2147483646
+    overflow: visible
+    box-shadow: 0 6px 12px 3px #00000033
+
+  #l_cover
+    min-height: 10px
+    @media screen and (max-width: 900px)
+      min-height: 0
+
+  .copyright.license
+    margin: 15px 0
+
+  h1.title
+    text-align: center
+    font-size: 2.5rem !important
+
+  .body-wrapper
+    display: block
+
+  #safearea
+    padding-bottom: 16px
+    @media screen and (max-width: 900px)
+      padding: 0
+      margin: 0
+
+  #l_body
+    z-index: 2147483646
+
+  .headimg-a
+    border-radius: 10px
+  
+  details .content
+    background-color var(--color-read-post) 
+

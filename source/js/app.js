@@ -871,8 +871,10 @@ class VolantisFancyBox {
 
   async bind(selectors) {
     await this.loadFancybox();
-    Fancybox.unbind(selectors);
-    Fancybox.bind(selectors, this.option);
+    if (typeof Fancybox !== 'undefined') {
+      Fancybox.unbind(selectors);
+      Fancybox.bind(selectors, this.option);
+    }
   }
 
   async groupBind(selectors, groupName = 'default') {
@@ -886,8 +888,10 @@ class VolantisFancyBox {
     });
     if (groupName) group.add(groupName);
     group.forEach(name => {
-      Fancybox.unbind(`[data-fancybox="${name}"]`);
-      Fancybox.bind(`[data-fancybox="${name}"]`, this.option);
+      if (typeof Fancybox !== 'undefined') {
+        Fancybox.unbind(`[data-fancybox="${name}"]`);
+        Fancybox.bind(`[data-fancybox="${name}"]`, this.option);
+      }
     });
   }
 

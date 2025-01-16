@@ -14,7 +14,7 @@
     <span hidden>
       <meta itemprop="discussionUrl" content="<%- url_for(path) %>#comments">
     </span>
-    <p ct><%- theme.comments && theme.comments.title %></p>
+    <p class="commentTitle"><%- theme.comments && theme.comments.title %></p>
     <% if (theme.comments && theme.comments.subtitle) { %>
       <p cst><%- theme.comments.subtitle %></p>
     <% } %>
@@ -32,7 +32,7 @@
       <span hidden>
         <meta itemprop="discussionUrl" content="<%- url_for(path) %>#comments">
       </span>
-      <p ct><%- theme.comments && theme.comments.title %></p>
+      <p class="commentTitle"><%- theme.comments && theme.comments.title %></p>
       <% if (theme.comments && theme.comments.subtitle) { %>
         <p cst><%- theme.comments.subtitle %></p>
       <% } %>

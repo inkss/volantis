@@ -60,8 +60,10 @@
     /* 首屏样式 */
     <%- FirstCSS() %>
   </style>
-  <link rel="stylesheet" href="<%- theme.cdn.volantis_style %>" media="print" onload="this.media='all';this.onload=null">
-  <!-- <noscript><link rel="stylesheet" href="<%- theme.cdn.volantis_style %>"></noscript> -->
+  <link rel="stylesheet" href="<%- theme.cdn.volantis_style %>" onload="this.media='all';this.onload=null">
+  <noscript><link rel="stylesheet" href="<%- theme.cdn.volantis_style %>"></noscript>
+  <link id="reading-mode-stylesheet" rel="stylesheet" disabled="true" href="/css/read.css">
+  <link rel="stylesheet" href="/css/print.css" media="print">
   <%_ if (theme.plugins.darkmode.enable) { _%>
     <script>
       let userColorScheme=localStorage.getItem("color-scheme")

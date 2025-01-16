@@ -1,6 +1,6 @@
 
 const RightMenus = {
-  defaultEvent: ['copyText', 'copyLink', 'copyPaste', 'copyAll', 'copyCut', 'copyImg', 'printMode', 'readMode'],
+  defaultEvent: ['copyText', 'copyLink', 'copyPaste', 'copyAll', 'copyCut', 'copyImg', 'printMode', 'readMode', 'jumpArticle'],
   defaultGroup: ['navigation', 'inputBox', 'selectText', 'elementCheck', 'elementImage', 'articlePage'],
   corsAnywhere: volantis.GLOBAL_CONFIG.plugins.rightmenus.options.corsAnywhere,
   urlRegx: /^((https|http)?:\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/,
@@ -15,6 +15,9 @@ const RightMenus = {
       RightMenus.fun.hideMenu();
       if (volantis.isReadModel) RightMenus.fun.readMode();
     });
+    volantis.pjax.push(() => {
+      RightMenus.fun.updateDate();
+    })
   },
 
   /**
@@ -131,21 +134,9 @@ RightMenus.fun = (() => {
    * 初始化监听事件处理
    */
   fn.initEvent = () => {
-    fn.elementAppend();
     fn.contextmenu();
     fn.menuEvent();
-  }
-
-  /**
-   * 预置元素设定
-   */
-  fn.elementAppend = () => {
-    // 阅读模式
-    if (_readBkg) _readBkg.remove();
-    const readBkg = document.createElement("div");
-    readBkg.className = "common_read_bkg common_read_hide";
-    readBkg.id = "read_bkg";
-    document.body.appendChild(readBkg);
+    fn.updateDate();
   }
 
   /**
@@ -221,6 +212,16 @@ RightMenus.fun = (() => {
             break;
           case 'articlePage':
             if (globalData.isArticle) showItem();
+            break;
+          case 'prevNext':
+            const isPrev = item.firstElementChild.id === 'prev';
+            const isNext = item.firstElementChild.id === 'next';
+            const hasPrevLink = document.querySelector('.prev-next > a.prev');
+            const hasNextLink = document.querySelector('.prev-next > a.next');
+
+            if ((isPrev && hasPrevLink) || (isNext && hasNextLink)) {
+              showItem();
+            }
             break;
           default:
             if (nodeName !== 'A'
@@ -332,11 +333,11 @@ RightMenus.fun = (() => {
    */
   fn.menuEvent = () => {
     _rightMenuList.forEach(item => {
-      const eventName = item.firstElementChild.getAttribute('data-event');
-      const id = item.firstElementChild.getAttribute('id');
-      const groupName = item.firstElementChild.getAttribute('data-group');
       if (item.firstElementChild.nodeName === "A") return;
-      item.addEventListener('click', () => {
+      const id = item.firstElementChild.getAttribute('id');
+      const eventName = item.firstElementChild.getAttribute('data-event');
+      const groupName = item.firstElementChild.getAttribute('data-group');
+      item.addEventListener('click', e => {
         try {
           if (!RightMenus.defaultEvent.includes(eventName)) {
             switch (groupName) {
@@ -350,10 +351,10 @@ RightMenus.fun = (() => {
                 RightMenusFunction[id](globalData.mediaLinkUrl);
                 break;
               default:
-                RightMenusFunction[id]();
+                RightMenusFunction[id](e);
             }
           } else {
-            fn[eventName]();
+            fn[eventName](e);
           }
         } catch (error) {
           if (volantis.GLOBAL_CONFIG.debug === "rightMenus") {
@@ -485,85 +486,55 @@ RightMenus.fun = (() => {
 
   fn.printHtml = () => {
     if (volantis.isReadModel) fn.readMode();
-
-    DOMController.setAttribute('details', 'open', 'true');
-
-    const elementsToRemove = [
-      '.cus-article-bkg', '.iziToast-overlay', '.iziToast-wrapper', '.prev-next',
-      'footer', '#l_header', '#l_cover', '#l_side', '#comments', '#s-top', '#BKG',
-      '#rightmenu-wrapper', '.nav-tabs', '.new-meta-item.share',
-      '.new-meta-box', 'button.btn-copy', 'iframe'
-    ];
-    DOMController.removeList(elementsToRemove);
-
-    const styleList = [
-      ['body', 'backgroundColor', 'unset'], ['#l_main, .copyright.license', 'width', '100%'],
-      ['#post', 'boxShadow', 'none'], ['#post', 'background', 'none'], ['#post', 'padding', '0'],
-      ['h1', 'textAlign', 'center'], ['h1', 'fontWeight', '600'], ['h1', 'fontSize', '2rem'], ['h1', 'marginBottom', '20px'],
-      ['.tab-pane', 'display', 'block'], ['.tab-content', 'borderTop', 'none'], ['.highlight>table pre', 'whiteSpace', 'pre-wrap'],
-      ['.highlight>table pre', 'wordBreak', 'break-all'], ['.fancybox img', 'height', 'auto'], ['.fancybox img', 'weight', 'auto'],
-      ['.copyright.license', 'margin', '0'], ['.copyright.license', 'padding', '1.25em 20px'],
-      ['figure.highlight, .copyright.license', 'display', 'inline-block']
-    ];
-    DOMController.setStyleList(styleList);
-
+    document.querySelectorAll('details').forEach(ele => ele.setAttribute('open', 'true'));
     setTimeout(() => {
       window.print();
-      document.body.innerHTML = '';
-      window.location.reload();
-    }, 50);
+    }, 200);
   }
 
   fn.readMode = () => {
-    if (typeof ScrollReveal === 'function') ScrollReveal().clean('#comments');
-    const elementsToFade = [
-      document.querySelector('#l_cover'), document.querySelector('footer'),
-      document.querySelector('#s-top'), document.querySelector('.article-meta#bottom'),
-      document.querySelector('.prev-next'), document.querySelector('#l_side'),
-      document.querySelector('#comments')
-    ];
-
-    DOMController.setStyle('#l_header', 'opacity', 0);
-    DOMController.fadeToggleList(elementsToFade);
-
-    const elementsToToggle = [
-      ['#l_main', 'common_read'], ['#l_main', 'common_read_main'],
-      ['#l_body', 'common_read'], ['#safearea', 'common_read'],
-      ['#pjax-container', 'common_read'], ['#read_bkg', 'common_read_hide'],
-      ['h1', 'common_read_h1'], ['#post', 'post_read'],
-      ['#l_cover', 'read_cover'], ['.widget.toc-wrapper', 'post_read']
-    ];
-
-    elementsToToggle.forEach(([selector, className]) => {
-      DOMController.toggleClass(document.querySelector(selector), className);
-    });
-
-    DOMController.setStyle('.copyright.license', 'margin', '15px 0');
-
-    volantis.isReadModel = volantis.isReadModel === undefined ? true : !volantis.isReadModel;
+    if (!globalData.isArticle) return;
+    const themeStylesheet = document.getElementById('reading-mode-stylesheet');
+    themeStylesheet.disabled = !themeStylesheet.disabled
+    volantis.isReadModel = !themeStylesheet.disabled;
 
     if (volantis.isReadModel) {
-      const readModeHandler = event => {
-        if (DOMController.hasClass(event.target, 'common_read')) {
-          fn.readMode();
-        }
-      };
-      document.querySelector('#l_body').removeEventListener('click', fn.readMode);
-      document.querySelector('#l_body').addEventListener('click', readModeHandler);
+      // 开启阅读模式
+      document.body.classList.add('read-mode');
     } else {
-      document.querySelector('#l_body').removeEventListener('click', fn.readMode);
-      document.querySelector('#post').removeEventListener('click', fn.readMode);
-      DOMController.setStyle('.prev-next', 'display', 'flex');
-      DOMController.setStyle('.copyright.license', 'margin', '15px -40px');
-      DOMController.setStyle('#l_header', 'opacity', 'unset');
+      // 关闭阅读模式
+      document.body.classList.remove('read-mode');
     }
   }
 
+  // 查看上一篇、下一篇
+  fn.jumpArticle = (e) => {
+    const direction = e.target.id === 'prev' ? 'prev' : 'next';
+    const itemSelector = `article .prev-next a.${direction}`;
+    const item = document.querySelector(itemSelector);
+    
+    if (item) {
+      const href = item.href;
+      if (typeof pjax !== 'undefined') {
+        pjax.loadUrl(href);
+      } else {
+        window.location.href = href;
+      }
+    }
+  }  
+
+  /**
+   * 回调更新内部数据
+   */
+  fn.updateDate = () => {
+    globalData.isArticle = !!document.querySelector('#post.article');
+  }
 
   return {
     init: fn.initEvent,
     hideMenu: fn.hideMenu,
-    readMode: fn.readMode
+    readMode: fn.readMode,
+    updateDate: fn.updateDate
   }
 })()
 
@@ -577,122 +548,3 @@ volantis.requestAnimationFrame(() => {
     })
   }
 });
-
-/* DOM 控制 */
-const DOMController = {
-  visible: (ele, type = true) => {
-    if (ele) ele.style.display = type ? 'block' : 'none';
-  },
-
-  remove: (param) => {
-    document.querySelectorAll(param).forEach(ele => ele.remove());
-  },
-
-  removeList: (list) => {
-    list.forEach(DOMController.remove);
-  },
-
-  setAttribute: (param, attrName, attrValue) => {
-    document.querySelectorAll(param).forEach(ele => ele.setAttribute(attrName, attrValue));
-  },
-
-  setAttributeList: (list) => {
-    list.forEach(([param, attrName, attrValue]) => {
-      DOMController.setAttribute(param, attrName, attrValue);
-    });
-  },
-
-  setStyle: (param, styleName, styleValue) => {
-    document.querySelectorAll(param).forEach(ele => ele.style[styleName] = styleValue);
-  },
-
-  setStyleList: (list) => {
-    list.forEach(([param, styleName, styleValue]) => {
-      DOMController.setStyle(param, styleName, styleValue);
-    });
-  },
-
-  fadeIn: (e) => {
-    if (!e) return;
-    Object.assign(e.style, {
-      visibility: "visible",
-      opacity: 1,
-      display: "block",
-      transition: "all 0.5s linear"
-    });
-    return e;
-  },
-
-  fadeOut: (e) => {
-    if (!e) return;
-    Object.assign(e.style, {
-      visibility: "hidden",
-      opacity: 0,
-      display: "none",
-      transition: "all 0.5s linear"
-    });
-    return e;
-  },
-
-  fadeToggle: (e) => {
-    if (!e) return;
-    return e.style.visibility == "hidden" ? DOMController.fadeIn(e) : DOMController.fadeOut(e);
-  },
-
-  fadeToggleList: (list) => {
-    list.forEach(DOMController.fadeToggle);
-  },
-
-  hasClass: (e, c) => {
-    return e ? e.className.match(new RegExp(`(\\s|^)${c}(\\s|$)`)) : false;
-  },
-
-  addClass: (e, c) => {
-    if (e) e.classList.add(c);
-    return e;
-  },
-
-  removeClass: (e, c) => {
-    if (e) e.classList.remove(c);
-    return e;
-  },
-
-  toggleClass: (e, c) => {
-    if (!e) return;
-    return DOMController.hasClass(e, c) ? DOMController.removeClass(e, c) : DOMController.addClass(e, c);
-  },
-
-  toggleClassList: (list) => {
-    list.forEach(([e, c]) => {
-      DOMController.toggleClass(e, c);
-    });
-  }
-};
-Object.freeze(DOMController);
-
-
-
-// *******************************************
-
-volantis.rightmenu.jump = (type) => {
-  const item = document.querySelector(type === 'prev' ? 'article .prev-next a.prev' : 'article .prev-next a.next');
-  if (!!item) {
-    if (typeof pjax !== 'undefined') {
-      pjax.loadUrl(item.href)
-    } else {
-      window.location.href = item.href;
-    }
-  }
-}
-
-volantis.rightmenu.handle(() => {
-  const prev = document.querySelector('#prev').parentElement,
-    next = document.querySelector('#next').parentElement,
-    articlePrev = document.querySelector('article .prev-next a.prev p.title'),
-    articleNext = document.querySelector('article .prev-next a.next p.title');
-
-  prev.style.display = articlePrev ? 'block' : 'none';
-  prev.title = articlePrev ? articlePrev.innerText : null;
-  next.style.display = articleNext ? 'block' : 'none';
-  next.title = articleNext ? articleNext.innerText : null;
-}, 'prevNext', false)

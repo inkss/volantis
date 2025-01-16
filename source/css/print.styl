@@ -1,0 +1,78 @@
+
+
+
+@media print
+  #l_side,
+  #l_header,
+  #l_cover,
+  #comments,
+  #s-top,
+  #BKG,
+  #read_bkg,
+  #owo-big,
+  #u-search,
+  #rightmenu-wrapper,
+  button.btn-copy,
+  picture.lazy,
+  .img-wrap:has(picture.lazy),
+  .new-meta-item:has(#artalk_visitors),
+  .prev-next,
+  .cus-article-bkg
+  footer
+    display none !important
+  body
+    background-color unset
+  #safearea
+    padding 16px
+    margin 0
+    .body-wrapper
+      width 800px
+    #l_main
+      padding 0
+      width 100%
+      article
+        padding 0
+        margin 0
+        .headimg-div
+          margin 0
+          width 100%
+          .headimg-a
+            height auto
+            img
+              border-radius 12px
+        .article-meta
+          margin 16px 0
+      .article-meta
+        margin-bottom 0
+      #post-body
+        h1,h2,h3,h4,h5,h6
+          &:before
+            height 1rem
+            margin 0 !important
+        .highlight
+          &:before
+            font-size 0.8rem
+          pre
+            white-space pre-wrap
+        .gallery img
+          height auto
+          weight auto
+        p img
+          display flex
+          margin 0 auto
+        span.image-caption
+          opacity 1
+          transform translateY(0)
+      .footer
+        margin-top 1rem
+        .copyright.license
+          margin 0
+          padding 1rem
+  details,
+  div.tabs,
+  .footer .copyright
+    page-break-inside avoid
+  .footer:has(.references)
+    page-break-inside auto
+  h1, h2
+    page-break-before always
