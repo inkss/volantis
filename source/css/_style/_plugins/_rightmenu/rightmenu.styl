@@ -14,8 +14,13 @@ ul.list-v.rightmenu
   &.top
     bottom 0
 
-  .menuLoad-Content
+  li.menuNavigation-Content
+    a
+      cursor $pointer
+
+  li.menuLoad-Content
     a, span
+      cursor $pointer
       display flex
       justify-content flex-start
       align-items center
@@ -23,9 +28,6 @@ ul.list-v.rightmenu
         margin-right $gap * 0.5
 
   $cellH = 32px
-
-  a
-    cursor $default
 
   a.vlts-menu
     text-overflow ellipsis

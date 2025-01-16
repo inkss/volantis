@@ -6,10 +6,11 @@ if hexo-config('plugins.aplayer.enable')
   @import 'aplayer'
 if hexo-config('comments.service')=='gitalk'
   @import 'gitalk'
-if hexo-config('custom_css.cursor.enable')
-  @import 'cursor'
 if hexo-config('rightmenus.enable')
   @import '_rightmenu/*'
+
+if hexo-config('custom_css.cursor.enable')
+  @import 'cursor'
 
 // 暗黑模式样式放到最后加载
 if hexo-config('plugins.darkmode.enable')
