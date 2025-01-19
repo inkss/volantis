@@ -48,7 +48,7 @@
     
     volantis.artalk.on('list-loaded', () => {
       const fancyBoxInstance = new VolantisFancyBox(false);
-      fancyBoxInstance.groupBind('.atk-content img:not([atk-emoticon])', 'Comments');
+      fancyBoxInstance.bind('.atk-content img:not([atk-emoticon])');
     })
   }
 
