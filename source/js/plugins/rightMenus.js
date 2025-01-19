@@ -1,550 +1,562 @@
+const contextMenuManager = {
+  urlRegx: /^(https?:\/\/)?([A-Za-z0-9.-]+)\.([A-Za-z]{2,})(\/[A-Za-z0-9.-]*)*\/?(\?[A-Za-z0-9&=_-]*)?(#[A-Za-z0-9-_]*)?$/,
+  readModeStylesheet: document.getElementById('reading-mode-stylesheet'),
+  maxMenuItems: 0,
+  isClipboardReadAllowed: true
+};
 
-const RightMenus = {
-  defaultEvent: ['copyText', 'copyLink', 'copyPaste', 'copyAll', 'copyCut', 'copyImg', 'printMode', 'readMode', 'jumpArticle'],
-  defaultGroup: ['navigation', 'inputBox', 'selectText', 'elementCheck', 'elementImage', 'articlePage'],
-  corsAnywhere: volantis.GLOBAL_CONFIG.plugins.rightmenus.options.corsAnywhere,
-  urlRegx: /^((https|http)?:\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/,
-  imgRegx: /\.(jpe?g|png|webp|svg|gif|jifi|avif)(-|_|!|\?|\/)?.*$/,
+// 初始化自定义右键菜单的函数
+contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-wrapper') {
+  const menuContainer = document.querySelector(menuSelector);
+  if (!menuContainer) return;
 
-  /**
-   * 加载右键菜单
-   */
-  initialMenu: () => {
-    RightMenus.fun.init();
-    volantis.pjax.send(() => {
-      RightMenus.fun.hideMenu();
-      if (volantis.isReadModel) RightMenus.fun.readMode();
-    });
-    volantis.pjax.push(() => {
-      RightMenus.fun.updateDate();
-    })
-  },
+  this.maxMenuItems = Number(menuContainer.dataset.maxMenuItems);
 
-  /**
-   * 读取剪切板
-   * @returns {Promise<string>}
-   */
-  readClipboard: async () => {
-    try {
-      const result = await navigator.permissions.query({ name: 'clipboard-read' });
-      if (result.state === 'granted' || result.state === 'prompt') {
-        return await navigator.clipboard.read();
-      } else {
-        window.clipboardRead = false;
+  // 右键导航项
+  const navigationItems = Array.from(menuContainer.querySelectorAll('.navigation.menuNavigation-Content a'))
+    .map(item => ({
+      id: item.dataset.id || item.id,
+      displayCondition: item.dataset.displayCondition,
+      menuContentElement: item
+    }));
+
+  // 右键菜单项  
+  const menuItems = Array.from(menuContainer.querySelectorAll('.menuLoad-Content'))
+    .flatMap(item => {
+      const elem = item.firstElementChild;
+      if (elem) {
+        return [{
+          link: elem.href,
+          id: elem.dataset.id || elem.id,
+          linkTarget: elem.target || elem.dataset.linkTarget,
+          eventName: elem.dataset.eventName,
+          displayCondition: elem.dataset.displayCondition,
+          isHrElement: elem.tagName === 'HR',
+          menuContentElement: item
+        }];
       }
-    } catch (err) {
-      console.error('读取剪切板失败: ', err);
+      return [];
+    });
+
+  // 公共数据
+  const globalData = {
+    pointerEvent: null,  // 右键事件
+    linkAddress: null,   // 链接地址
+    selectedText: null,  // 选取文本
+    inputContent: null   // 输入框
+  };
+
+  // 预设条件
+  const conditions = {
+    inInputField: (menuItem, pointerEvent) => {
+      if (pointerEvent.target.tagName === 'INPUT' || pointerEvent.target.tagName === 'TEXTAREA') {
+        globalData.inputContent = pointerEvent.target;
+        globalData.selectedText = window.getSelection().toString();
+        switch (menuItem.id) {
+          case 'selectAllText':
+            if (globalData.inputContent.value !== '') {
+              return true;
+            }
+            break;
+          case 'cutText':
+            if (globalData.selectedText !== '') {
+              return true;
+            }
+            break;
+          case 'copyPaste':
+            if (contextMenuManager.isClipboardReadAllowed) {
+              return true;
+            }
+            break;
+          default:
+            return true;
+        }
+      }
+      return false;
+    },
+    selectedText: () => {
+      globalData.selectedText = window.getSelection().toString();
+      return globalData.selectedText !== '';
+    },
+    onImage: (menuItem, pointerEvent) => {
+      const target = pointerEvent.target;
+      if (target.tagName === 'IMG' && target.hasAttribute('src')) {
+        globalData.linkAddress = target.src;
+        return true;
+      }
+      return false;
+    },
+    onLink: (menuItem, pointerEvent) => {
+      if (this.urlRegx.test(globalData.selectedText)) {
+        globalData.linkAddress = globalData.selectedText;
+        return true;
+      }
+      const target = pointerEvent.target;
+      if (target.tagName === 'A' && target.hasAttribute('href')) {
+        globalData.linkAddress = target.href;
+        return true;
+      }
+      if (target.tagName === 'IMG' && target.hasAttribute('src')) {
+        globalData.linkAddress = target.src;
+        return true;
+      }
+      return false;
+    },
+    articlePage: (menuItem) => {
+      if (menuItem.id === 'prev' || menuItem.id === 'next') {
+        return !!document.querySelector(`article .prev-next a.${menuItem.id}`)
+      }
+
+      if (menuItem.id === 'comment') {
+        const element = document.querySelector('#comments');
+
+        // 校验元素存在，页面中显示，屏幕上显示
+        return element
+          && !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length)
+          && (window.scrollY < (element.getBoundingClientRect().top - 50 + window.scrollY))
+      }
+      return !!document.querySelector('#post.article');
+    },
+    scrolledFromTop: () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop; 
+      const halfScreenHeight = window.innerHeight / 2; 
+      return scrollTop >= halfScreenHeight;
+    },
+    homePage: () => {
+      return new URL(window.location.href).pathname !== '/'
     }
-    return null;
-  },
+  };
+
+  // 预设事件
+  const eventHandlers = {
+    scrollTop: () => {
+      if (typeof volantis.scroll.to === 'function') {
+        volantis.scroll.to(volantis.dom.bodyAnchor)
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    },
+    scrollComment: () => {
+      const element = document.querySelector('#comments');
+      if (typeof volantis.scroll.to === 'function') {
+        volantis.scroll.to(element)
+      } else {
+        window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY, behavior: 'smooth' });
+      }
+    },
+    jumpArticle: (menuItem) => {
+      const item = document.querySelector(`.prev-next a.${menuItem.id}`);
+
+      if (item) {
+        const href = item.href;
+        if (typeof pjax !== 'undefined') {
+          pjax.loadUrl(href);
+        } else {
+          window.location.href = href;
+        }
+      }
+    },
+    readMode: () => {
+      this.readModeStylesheet.disabled = !this.readModeStylesheet.disabled;
+
+      if (!this.readModeStylesheet.disabled) {
+        document.body.classList.add('read-mode');
+      } else {
+        document.body.classList.remove('read-mode');
+      }
+    },
+    printMode: () => {
+      if (!this.readModeStylesheet.disabled) {
+        eventHandlers.readMode()
+      }
+
+      document.querySelectorAll('details').forEach(ele => ele.setAttribute('open', 'true'));
+      setTimeout(() => {
+        window.print();
+      }, 200);
+    },
+    copyText: () => {
+      VolantisApp.utilWriteClipText(globalData.selectedText);
+    },
+    copyLink: () => {
+      const target = globalData.pointerEvent.target;
+      let link = '';
+      if (target.tagName === 'IMG') {
+        link = target.dataset.src || target.src
+      }
+      if (target.tagName === 'A') {
+        link = target.href
+      }
+      VolantisApp.utilWriteClipText(link);
+    },
+    copyImg: (menuItem) => {
+      NProgress?.start();
+      try {
+        const link = globalData.pointerEvent.target.dataset.src || globalData.pointerEvent.target.src;
+        const image = new Image();
+        image.crossOrigin = "Anonymous";
+        image.src = `${link}?(lll￢ω￢)~~`;
+        image.onerror = null;
+        image.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = image.width;
+          canvas.height = image.height;
+          const context = canvas.getContext("2d");
+          context.drawImage(image, 0, 0);
+          canvas.toBlob(blob => {
+            navigator.clipboard.write([
+              new ClipboardItem({ 'image/png': blob })
+            ]).finally(() => {
+              NProgress?.done();
+            });
+          }, 'image/png');
+        };
+      } catch (err) {
+        console.error(`Menu: ${menuItem.id}, event:[${menuItem.eventName}] error: ${err}`)
+        NProgress?.done();
+      }
+    },
+    selectAllText: () => {
+      globalData.inputContent.select();
+    },
+    cutText: (text) => {
+      // 公共调用时第一个参数传递的是 Object
+      let value = '';
+      if (typeof text !== 'string') {
+        VolantisApp.utilWriteClipText(globalData.selectedText);
+      } else {
+        VolantisApp.utilWriteClipText(text);
+        value = text;
+      }
+
+      const element = globalData.inputContent;
+      const { selectionStart: start, selectionEnd: end, scrollTop } = element;
+
+      element.value = `${element.value.substring(0, start)}${value}${element.value.substring(end)}`
+      element.setSelectionRange(start + value.length, start + value.length);
+      element.scrollTop = scrollTop;
+      element.focus();
+    },
+    copyPaste: async (menuItem, pointerEvent) => {
+      try {
+        NProgress?.start();
+        const result = await navigator.permissions.query({ name: 'clipboard-read' });
+        if (result.state === 'granted' || result.state === 'prompt') {
+          const clipboardItems = await navigator.clipboard.read();
+
+          let text = '';
+          let imageFiles = [];
+          for (const item of clipboardItems) {
+            if (item.types.length === 0) {
+              throw new Error('剪切板中没有可被读取的内容，目前仅支持文本和图像数据，暂不支持操作系统级别的文件复制粘贴操作。')
+            }
+            for (const type of item.types) {
+              if (type.startsWith('image/')) {
+                const imageBlob = await item.getType(type);
+                const file = new File([imageBlob], 'clipboard-image.png', { type: type });
+                imageFiles.push(file);
+              } else if (type === 'text/plain') {
+                const textBlob = await item.getType(type);
+                const textContent = await textBlob.text();
+                text += textContent;
+              }
+            }
+          }
+
+          // 粘贴文本内容
+          eventHandlers.cutText(text);
+
+          for (const file of imageFiles) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            const pasteEvent = new ClipboardEvent('paste', {
+              clipboardData: dataTransfer,
+              bubbles: true,
+              cancelable: true
+            });
+
+            // 对剪切板中的图片尝试触发 paste 事件
+            pointerEvent.target.dispatchEvent(pasteEvent);
+          }
+
+          contextMenuManager.isClipboardReadAllowed = true;
+        } else {
+          contextMenuManager.isClipboardReadAllowed = false;
+          throw new Error('没有读取剪切板的权限！')
+        }
+        NProgress?.done();
+      } catch (err) {
+        console.error(`粘贴失败，详细信息: ${err}`);
+        eventHandlers.cutText(err.toString());
+        contextMenuManager.isClipboardReadAllowed = false;
+        NProgress?.done();
+      }
+    }
+  };
 
   /**
-   * 写入文本到剪切板
-   * @param {String} text
-   * @returns {Promise<void>}
+   * 调用外部判断/事件
+   * 
+   * @param {string} type 区分是调用外部执行事件还是外部控制条件。
+   * @param {menuItems} menuItem 菜单定义项 
+   * @param {Array} args 传递给事件函数的参数数组
+   * @returns {*} 事件函数的返回值（如果存在）。
    */
-  writeClipText: text => {
-    return navigator.clipboard.writeText(text)
-      .then(() => Promise.resolve())
-      .catch(err => Promise.reject(err));
-  },
+  const executeEvent = (type, menuItem, args = []) => {
+    const eventString = menuItem[type];
+    const functionMatch = eventString.match(/^([^\(]+)\((.*)\)$/);
 
-  /**
-   * 写入图片到剪切板
-   * @param {*} link
-   * @param {Function} success
-   * @param {Function} error
-   */
-  writeClipImg: async (link, success, error) => {
+    let functionPath, functionArgs;
+    if (functionMatch) {
+      functionPath = functionMatch[1].trim();
+      functionArgs = functionMatch[2].split(',').map(arg => arg.trim().replace(/['"]/g, ''));
+    } else {
+      functionPath = eventString.trim();
+      functionArgs = [];
+    }
+
+    if (functionArgs.length === 1) {
+      const arg = functionArgs[0];
+      if (globalData[arg]) {
+        functionArgs[0] = globalData[arg];
+      } else {
+        const matches = arg.match(/##(.*?)##/);
+        if (matches) {
+          const matchedValue = globalData[matches[1]];
+          if (matchedValue && typeof matchedValue === 'string') {
+            functionArgs[0] = arg.replace(matches[0], matchedValue);
+          }
+        }
+      }
+    }
+
     try {
-      const image = new Image();
-      image.crossOrigin = "Anonymous";
-      image.src = `${link}?(lll￢ω￢)~~`;
-      image.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = image.width;
-        canvas.height = image.height;
-        const context = canvas.getContext("2d");
-        context.drawImage(image, 0, 0);
-        canvas.toBlob(blob => {
-          navigator.clipboard.write([
-            new ClipboardItem({ 'image/png': blob })
-          ]).then(success).catch(error);
-        }, 'image/png');
-      };
-      image.onerror = error;
-    } catch (err) {
-      error(err);
+      const properties = functionPath.split('.');
+      let context = window;
+      let parentContext = null;
+
+      for (let i = 0; i < properties.length; i++) {
+        parentContext = context;
+        context = context[properties[i]];
+        if (typeof context === 'undefined') {
+          console.error(`Invalid ${type}: ${menuItem[type]}`);
+          return;
+        }
+      }
+
+      if (typeof context === 'function') {
+        return context.apply(parentContext, functionArgs.concat(args));
+      } else {
+        const { menuContentElement, ...menu } = menuItem;
+        console.error(`Invalid ${type} [${menuItem[type]}], Menu: ${JSON.stringify(menu)}`);
+      }
+    } catch (error) {
+      console.error(error)
     }
-  },
+  };
 
   /**
-   * 粘贴文本到剪切板
-   * @param {HTMLElement} elemt
-   * @param {String} value
+   * 条件判断
+   * 
+   * @param {menuItems} menuItem 菜单项
+   * @param {PointerEvent} pointerEvent 右键事件
+   * @returns {boolean} - true/false
    */
-  insertAtCaret: (elem, value) => {
-    const { selectionStart: startPos, selectionEnd: endPos, scrollTop } = elem;
-    const newValue = elem.value.substring(0, startPos) + value + elem.value.substring(endPos);
+  const evaluateCondition = (menuItem, pointerEvent) => {
+    if (!menuItem.displayCondition) {
+      return true;
+    }
+    if (conditions[menuItem.displayCondition]) {
+      return conditions[menuItem.displayCondition](menuItem, pointerEvent);
+    }
+    const result = executeEvent('displayCondition', menuItem, [pointerEvent]);
+    if (typeof result === 'boolean') {
+      return result;
+    }
+    return false;
+  };
 
-    elem.value = newValue;
-    elem.setSelectionRange(startPos + value.length, startPos + value.length);
-    elem.scrollTop = scrollTop;
-    elem.focus();
+  /**
+   * 事件调用
+   * 
+   * @param {string} id 事件 id
+   * @param {string} eventName 事件名称
+   * @param {Event} event 点击事件
+   */
+  const handleEvent = (id, eventName, event) => {
+    const item = menuItems.find(item => item.eventName === eventName && item.id === id)
+      || navigationItems.find(item => item.eventName === eventName && item.id === id)
+      || { id: id, eventName: eventName };
+    if (eventHandlers[eventName]) {
+      eventHandlers[eventName](item, globalData.pointerEvent);
+    } else {
+      executeEvent('eventName', item, [event, globalData.pointerEvent]);
+    }
+  };
+
+  /**
+   * 显示菜单项
+   * 
+   * @param {PointerEvent} pointerEvent 右键事件
+   */
+  const showCustomContextMenu = (pointerEvent) => {
+    let menuItemsCount = 0;
+
+    // 根据条件显示/隐藏菜单项  
+    menuItems.forEach(item => {
+      if (evaluateCondition(item, pointerEvent)) {
+        item.menuContentElement.classList.add('active');
+        if (!item.isHrElement) {
+          menuItemsCount++;
+        }
+      } else {
+        item.menuContentElement.classList.remove('active');
+      }
+    })
+
+    // 处理过长菜单项
+    // 当总菜单项累计显示数量大于设定数量时，隐藏所有链接型菜单
+    if (menuItemsCount > this.maxMenuItems) {
+      menuItems.forEach(item => {
+        if (item.link) {
+          item.menuContentElement.classList.remove('active');
+        }
+      })
+    }
+
+    // 处理“相邻、第一个显示、最后一个显示”的菜单分割项
+    let lastSeparator = null;
+    menuItems.forEach(menuItem => {
+      if (menuItem.isHrElement) {
+        menuItem.menuContentElement.classList.add('active');
+        if (lastSeparator) {
+          lastSeparator.classList.remove('active');
+        }
+        lastSeparator = menuItem.menuContentElement;
+      } else if (menuItem.menuContentElement.classList.contains('active')) {
+        lastSeparator = null;
+      }
+    });
+    if (lastSeparator) {
+      lastSeparator.classList.remove('active');
+    }
+    if (navigationItems.length === 0) {
+      const firstActiveMenuItem = menuItems.find(item => item.menuContentElement.classList.contains('active'))
+      if (firstActiveMenuItem.isHrElement) {
+        firstActiveMenuItem.menuContentElement.classList.remove('active');
+      }
+    }
+
+    // 处理导航栏显隐
+    navigationItems.forEach(menuNav => {
+      menuNav.menuContentElement.style.display = evaluateCondition(menuNav, pointerEvent)
+        ? 'flex' : 'none';
+    })
+  };
+
+  /**
+   * 定位显示菜单
+   * 
+   * @param {PointerEvent} pointerEvent 右键事件
+   */
+  const positionMenu = (pointerEvent) => {
+    pointerEvent.preventDefault();
+
+    showCustomContextMenu(pointerEvent);
+
+    menuContainer.classList.add('active');
+    const { clientX: mouseClientX, clientY: mouseClientY } = pointerEvent;
+    const screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
+    const screenHeight = document.documentElement.clientHeight || document.body.clientHeight;
+    const menuWidth = menuContainer.offsetWidth;
+    const menuHeight = menuContainer.offsetHeight;
+
+    let posX = mouseClientX + menuWidth > screenWidth ? mouseClientX - menuWidth + 10 : mouseClientX;
+    let posY = mouseClientY + menuHeight > screenHeight ? mouseClientY - menuHeight + 10 : mouseClientY;
+    if (mouseClientY + menuHeight > screenHeight && posY < menuHeight && mouseClientY < menuHeight) {
+      posY += screenHeight - menuHeight - posY - 10;
+    }
+
+    menuContainer.style.left = `${posX}px`;
+    menuContainer.style.top = `${posY}px`;
+  };
+
+  /**
+   * 隐藏自定义右键菜单
+   */
+  const hideContextMenu = () => {
+    menuContainer.classList.remove('active');
+  };
+
+  /**
+   * 覆盖浏览器默认右键菜单
+   */
+  document.addEventListener('contextmenu', (pointerEvent) => {
+    hideContextMenu();
+    globalData.pointerEvent = pointerEvent;
+    if (pointerEvent.ctrlKey || document.body.offsetWidth <= 500) {
+      return true;
+    }
+
+    try {
+      positionMenu(pointerEvent)
+
+      window.removeEventListener('blur', hideContextMenu);
+      document.body.removeEventListener('click', hideContextMenu);
+
+      window.addEventListener('blur', hideContextMenu);
+      document.body.addEventListener('click', hideContextMenu);
+    } catch (error) {
+      console.error('Error positioning menu:', error);
+      return true;
+    }
+  });
+
+  /**
+   * 阻止右键菜单上的右键行为
+   */
+  menuContainer.addEventListener('contextmenu', event => {
+    event.stopPropagation();
+    event.preventDefault();
+    return false;
+  });
+
+  /**
+   * 菜单项点击事件（事件委托）
+   */
+  menuContainer.addEventListener('click', event => {
+    const navigation = event.target.closest('.menuNavigation-Content a'); // 导航栏
+    const menuContent = event.target.closest('.menuLoad-Content span'); // 菜单项
+    const targetElement = navigation || menuContent;
+
+    if (targetElement && targetElement.dataset.eventName && targetElement.dataset.id) {
+      handleEvent(targetElement.dataset.id, targetElement.dataset.eventName, event);
+    }
+    // else 普通链接型 无需处理
+  });
+
+  /**
+   * Pjax 回调事件
+   */
+  try {
+    volantis.pjax.send(() => {
+      hideContextMenu();
+      if (!this.readModeStylesheet.disabled) {
+        eventHandlers.readMode()
+      }
+    })
+  } catch (error) {
+    console.error(`Pjax error: ${error}`)
   }
 }
 
 /**
- * 事件处理区域
+ * 初始化加载
  */
-RightMenus.fun = (() => {
-  const rightMenuConfig = volantis.GLOBAL_CONFIG.plugins.rightmenus;
-
-  const fn = {},
-    _rightMenuWrapper = document.getElementById('rightmenu-wrapper'),
-    _rightMenuContent = document.getElementById('rightmenu-content'),
-    _rightMenuList = document.querySelectorAll('#rightmenu-content li.menuLoad-Content'),
-    _rightMenuListWithHr = document.querySelectorAll('#rightmenu-content li, #rightmenu-content hr, #menuMusic'),
-    _readBkg = document.getElementById('read_bkg'),
-    _menuMusic = document.getElementById('menuMusic'),
-    _backward = document.querySelector('#menuMusic .backward'),
-    _toggle = document.querySelector('#menuMusic .toggle'),
-    _forward = document.querySelector('#menuMusic .forward');
-
-  // 公共数据
-  let globalData = {
-    mouseEvent: null,
-    isInputBox: false,
-    selectText: '',
-    inputValue: '',
-    isLink: false,
-    linkUrl: '',
-    isMediaLink: false,
-    mediaLinkUrl: '',
-    isImage: false,
-    isArticle: false,
-    pathName: '',
-    isReadClipboard: true,
-    isShowMusic: false,
-    statusCheck: false
-  };
-  const globalDataBackup = { ...globalData };
-
-  /**
-   * 初始化监听事件处理
-   */
-  fn.initEvent = () => {
-    fn.contextmenu();
-    fn.menuEvent();
-    fn.updateDate();
-  }
-
-  /**
-   * 右键菜单位置设定
-   * @param {*} event
-   */
-  fn.menuPosition = (event) => {
-    try {
-      const { clientX: mouseClientX, clientY: mouseClientY } = event;
-      const screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
-      const screenHeight = document.documentElement.clientHeight || document.body.clientHeight;
-
-      _rightMenuWrapper.style.display = 'block';
-      fn.menuControl(event);
-
-      const menuWidth = _rightMenuContent.offsetWidth;
-      const menuHeight = _rightMenuContent.offsetHeight;
-      let showLeft = mouseClientX + menuWidth > screenWidth ? mouseClientX - menuWidth + 10 : mouseClientX;
-      let showTop = mouseClientY + menuHeight > screenHeight ? mouseClientY - menuHeight + 10 : mouseClientY;
-
-      if (mouseClientY + menuHeight > screenHeight && showTop < menuHeight && mouseClientY < menuHeight) {
-        showTop += screenHeight - menuHeight - showTop - 10;
-      }
-
-      _rightMenuWrapper.style.left = `${showLeft}px`;
-      _rightMenuWrapper.style.top = `${showTop}px`;
-    } catch (error) {
-      console.error(error);
-      fn.hideMenu();
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * 菜单项控制
-   * @param {*} event
-   */
-  fn.menuControl = (event) => {
-    fn.globalDataSet(event);
-    if (_menuMusic) {
-      _menuMusic.style.display = globalData.isShowMusic ? 'block' : 'none';
-    }
-
-    _rightMenuList.forEach(item => {
-      const { nodeName, dataset: { group: groupName, event: itemEvent } } = item.firstElementChild;
-      item.style.display = 'none';
-
-      const showItem = () => {
-        item.style.display = 'block';
-      };
-
-      if (globalData.statusCheck || globalData.isArticle) {
-        switch (groupName) {
-          case 'inputBox':
-            if (globalData.isInputBox) {
-              const conditions = [
-                itemEvent !== 'copyCut' || globalData.selectText,
-                itemEvent !== 'copyAll' || globalData.inputValue,
-                itemEvent !== 'copyPaste' || globalData.isReadClipboard
-              ];
-              if (conditions.every(cond => cond)) showItem();
-            }
-            break;
-          case 'selectText':
-            if (globalData.selectText) showItem();
-            break;
-          case 'elementCheck':
-            if (globalData.isLink || globalData.isMediaLink) showItem();
-            break;
-          case 'elementImage':
-            if (globalData.isImage) showItem();
-            break;
-          case 'articlePage':
-            if (globalData.isArticle) showItem();
-            break;
-          case 'prevNext':
-            const isPrev = item.firstElementChild.id === 'prev';
-            const isNext = item.firstElementChild.id === 'next';
-            const hasPrevLink = document.querySelector('.prev-next > a.prev');
-            const hasNextLink = document.querySelector('.prev-next > a.next');
-
-            if ((isPrev && hasPrevLink) || (isNext && hasNextLink)) {
-              showItem();
-            }
-            break;
-          default:
-            if (nodeName !== 'A'
-              || (globalData.isArticle
-                && !globalData.statusCheck
-                && rightMenuConfig.options.articleShowLink)) {
-              showItem();
-            }
-            break;
-        }
-      } else if (nodeName === 'A' || !RightMenus.defaultGroup.includes(groupName)) {
-        showItem();
-      }
-    });
-
-    // 执行外部事件
-    volantis.mouseEvent = event;
-    volantis.rightmenu.method.handle.start();
-
-    // 过滤 HR 元素
-    let elementHrItem = null;
-    _rightMenuListWithHr.forEach(item => {
-      if (item.nodeName === "HR") {
-        item.style.display = 'block';
-        if (elementHrItem) {
-          elementHrItem.style.display = 'none';
-        }
-        elementHrItem = item;
-      } else if (item.style.display === 'block') {
-        elementHrItem = null;
-      }
-    });
-    if (elementHrItem) {
-      elementHrItem.style.display = 'none';
-    }
-  }
-
-  /**
-   * 元素状态判断/全局数据设置
-   * @param {*} event
-   */
-  fn.globalDataSet = (event) => {
-    globalData = { ...globalDataBackup };
-    globalData.mouseEvent = event;
-    globalData.selectText = window.getSelection().toString();
-
-    const targetTag = event.target.tagName.toLowerCase();
-    globalData.isInputBox = targetTag === 'input' || targetTag === 'textarea';
-
-    if (globalData.isInputBox) {
-      globalData.inputValue = event.target.value;
-      globalData.isReadClipboard = window.clipboardRead !== false;
-    }
-
-    const { href, currentSrc } = event.target;
-    const { urlRegx, imgRegx } = RightMenus;
-    globalData.isLink = !!href && urlRegx.test(href);
-    globalData.linkUrl = globalData.isLink ? href : undefined;
-    globalData.isMediaLink = !!currentSrc && urlRegx.test(currentSrc);
-    globalData.mediaLinkUrl = globalData.isMediaLink ? currentSrc : undefined;
-    globalData.isImage = globalData.isMediaLink && imgRegx.test(globalData.mediaLinkUrl);
-
-    globalData.isArticle = !!document.querySelector('#post.article');
-    globalData.pathName = globalData.isArticle ? window.location.pathname : undefined;
-
-    const aplayerEnabled = volantis.GLOBAL_CONFIG.plugins.aplayer?.enable;
-    const aplayerDefined = typeof RightMenuAplayer !== 'undefined';
-    const aplayerPlayer = aplayerDefined && RightMenuAplayer.APlayer.player;
-
-    if (aplayerEnabled && aplayerPlayer) {
-      const aplayerStatus = RightMenuAplayer.APlayer.status;
-      globalData.isShowMusic = rightMenuConfig.options.musicAlwaysShow
-        || aplayerStatus === 'play'
-        || aplayerStatus === 'undefined';
-    }
-
-    globalData.statusCheck = !!globalData.selectText || globalData.isInputBox || globalData.isLink || globalData.isMediaLink;
-  }
-
-  /**
-   * 全局右键监听函数
-   */
-  fn.contextmenu = () => {
-    document.oncontextmenu = event => {
-      if (event.ctrlKey || document.body.offsetWidth <= 500) {
-        fn.hideMenu();
-        return true;
-      }
-      return fn.menuPosition(event);
-    };
-
-    _rightMenuWrapper.oncontextmenu = event => {
-      event.stopPropagation();
-      event.preventDefault();
-      return false;
-    };
-
-    const handleHideMenu = () => fn.hideMenu();
-
-    window.removeEventListener('blur', handleHideMenu);
-    window.addEventListener('blur', handleHideMenu);
-
-    document.body.removeEventListener('click', handleHideMenu);
-    document.body.addEventListener('click', handleHideMenu);
-  }
-
-  /**
-   * 菜单项事件处理函数
-   */
-  fn.menuEvent = () => {
-    _rightMenuList.forEach(item => {
-      if (item.firstElementChild.nodeName === "A") return;
-      const id = item.firstElementChild.getAttribute('id');
-      const eventName = item.firstElementChild.getAttribute('data-event');
-      const groupName = item.firstElementChild.getAttribute('data-group');
-      item.addEventListener('click', e => {
-        try {
-          if (!RightMenus.defaultEvent.includes(eventName)) {
-            switch (groupName) {
-              case 'selectText':
-                RightMenusFunction[id](globalData.selectText);
-                break;
-              case 'elementCheck':
-                RightMenusFunction[id](globalData.isLink ? globalData.linkUrl : globalData.mediaLinkUrl);
-                break;
-              case 'elementImage':
-                RightMenusFunction[id](globalData.mediaLinkUrl);
-                break;
-              default:
-                RightMenusFunction[id](e);
-            }
-          } else {
-            fn[eventName](e);
-          }
-        } catch (error) {
-          if (volantis.GLOBAL_CONFIG.debug === "rightMenus") {
-            console.error({
-              id: id,
-              error: error,
-              globalData: globalData,
-              groupName: groupName,
-              eventName: eventName
-            });
-          }
-        }
-      });
-    });
-
-    if (_forward && _toggle && _backward) {
-      _backward.addEventListener('click', e => {
-        e.preventDefault();
-        e.stopPropagation();
-        RightMenuAplayer.aplayerBackward();
-      });
-      _toggle.addEventListener('click', e => {
-        e.preventDefault();
-        e.stopPropagation();
-        RightMenuAplayer.aplayerToggle();
-      });
-      _forward.addEventListener('click', e => {
-        e.preventDefault();
-        e.stopPropagation();
-        RightMenuAplayer.aplayerForward();
-      });
-    }
-  }
-
-  /**
-   * 隐藏菜单显示
-   */
-  fn.hideMenu = () => {
-    _rightMenuWrapper.style.display = null;
-    _rightMenuWrapper.style.left = null;
-    _rightMenuWrapper.style.top = null;
-  }
-
-  fn.copyText = () => {
-    VolantisApp.utilWriteClipText(globalData.selectText);
-  }
-
-  fn.copyLink = () => {
-    VolantisApp.utilWriteClipText(globalData.linkUrl || globalData.mediaLinkUrl);
-  }
-
-  fn.copyAll = () => {
-    globalData.mouseEvent.target.select();
-  }
-
-  fn.copyPaste = async () => {
-    try {
-      NProgress?.start();
-      const clipboardItems = await RightMenus.readClipboard();
-      if (clipboardItems === null && window?.clipboardRead === false) {
-        throw new Error('没有读取剪切板的权限！')
-      }
-      let text = '';
-      let imageFiles = [];
-
-      for (const item of clipboardItems) {
-        if (item.types.length === 0) {
-          throw new Error('剪切板中没有可被读取的内容，目前仅支持文本和图像数据，暂不支持操作系统级别的文件复制粘贴操作。')
-        }
-        for (const type of item.types) {
-          if (type.startsWith('image/')) {
-            const imageBlob = await item.getType(type);
-            const file = new File([imageBlob], 'clipboard-image.png', { type: type });
-            imageFiles.push(file);
-          } else if (type === 'text/plain') {
-            const textBlob = await item.getType(type);
-            const textContent = await textBlob.text();
-            text += textContent;
-          }
-        }
-      }
-
-      // 粘贴文本内容
-      RightMenus.insertAtCaret(globalData.mouseEvent.target, text);
-
-      for (const file of imageFiles) {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        const pasteEvent = new ClipboardEvent('paste', {
-          clipboardData: dataTransfer,
-          bubbles: true,
-          cancelable: true
-        });
-
-        // 对剪切板中的图片尝试触发 paste 事件
-        globalData.mouseEvent.target.dispatchEvent(pasteEvent);
-      }
-      NProgress?.done();
-    } catch (err) {
-      console.error(`粘贴失败，详细信息: ${err.stack}`);
-      RightMenus.insertAtCaret(globalData.mouseEvent.target, err);
-      NProgress?.done();
-    }
-  }
-
-  fn.copyCut = () => {
-    const { selectionStart: start, selectionEnd: end, value } = globalData.mouseEvent.target;
-    fn.copyText(globalData.selectText);
-    globalData.mouseEvent.target.value = value.substring(0, start) + value.substring(end);
-    globalData.mouseEvent.target.setSelectionRange(start, start);
-    globalData.mouseEvent.target.focus();
-  }
-
-  fn.copyImg = () => {
-    NProgress?.start();
-    RightMenus.writeClipImg(globalData.mediaLinkUrl, e => {
-      NProgress?.done();
-    }, e => {
-      NProgress?.done();
-      console.error(e);
-    });
-  }
-
-  fn.printMode = () => {
-    if (window.location.pathname === globalData.pathName) {
-      fn.printHtml();
-    }
-  }
-
-  fn.printHtml = () => {
-    if (volantis.isReadModel) fn.readMode();
-    document.querySelectorAll('details').forEach(ele => ele.setAttribute('open', 'true'));
-    setTimeout(() => {
-      window.print();
-    }, 200);
-  }
-
-  fn.readMode = () => {
-    if (!globalData.isArticle) return;
-    const themeStylesheet = document.getElementById('reading-mode-stylesheet');
-    themeStylesheet.disabled = !themeStylesheet.disabled
-    volantis.isReadModel = !themeStylesheet.disabled;
-
-    if (volantis.isReadModel) {
-      // 开启阅读模式
-      document.body.classList.add('read-mode');
-    } else {
-      // 关闭阅读模式
-      document.body.classList.remove('read-mode');
-    }
-  }
-
-  // 查看上一篇、下一篇
-  fn.jumpArticle = (e) => {
-    const direction = e.target.id === 'prev' ? 'prev' : 'next';
-    const itemSelector = `article .prev-next a.${direction}`;
-    const item = document.querySelector(itemSelector);
-    
-    if (item) {
-      const href = item.href;
-      if (typeof pjax !== 'undefined') {
-        pjax.loadUrl(href);
-      } else {
-        window.location.href = href;
-      }
-    }
-  }  
-
-  /**
-   * 回调更新内部数据
-   */
-  fn.updateDate = () => {
-    globalData.isArticle = !!document.querySelector('#post.article');
-  }
-
-  return {
-    init: fn.initEvent,
-    hideMenu: fn.hideMenu,
-    readMode: fn.readMode,
-    updateDate: fn.updateDate
-  }
-})()
-
-Object.freeze(RightMenus);
-volantis.requestAnimationFrame(() => {
-  if (document.readyState !== 'loading') {
-    RightMenus.initialMenu();
-  } else {
-    document.addEventListener("DOMContentLoaded", function () {
-      RightMenus.initialMenu();
-    })
-  }
-});
+if (document.readyState !== 'loading') {
+  contextMenuManager.initializeContextMenu();
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    contextMenuManager.initializeContextMenu();
+  });
+}

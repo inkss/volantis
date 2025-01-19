@@ -80,11 +80,6 @@
 %>
 
 
-
-<% if (theme.plugins.busuanzi.enable) { %>
-  <script defer src="<%- theme.cdn.busuanzi %>" data-pjax></script>
-<% } %>
-
 <!-- optional -->
 <% if (theme.search && theme.search.enable) { %>
   <%- partial('../../_plugins/search/script') %>
@@ -131,14 +126,10 @@
   <%- partial('../../_plugins/content-visibility/script') %>
 <% } %>
 
-<%- partial('../../_plugins/slow-network/script') %>
+<!-- <%- partial('../../_plugins/slow-network/script') %> -->
 
 <% if (theme.structured_data && theme.structured_data.enable) { %>
   <%- structured_data() %>
 <% } %>
 
-<%- partial('../szyink') %>
-
-<% if (theme.InconfontFlag) { %>
-  <script src="<%- theme.cdn.iconfontInkss %>"></script>
-<% } %>
+<%- partial('../../_plugins/szyink/script') %>

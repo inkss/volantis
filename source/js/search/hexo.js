@@ -9,31 +9,29 @@ class SearchService {
       this.normalText = volantis.GLOBAL_CONFIG.languages.search.normal;
       this.normal = `<div id="resule-hits-empty"><p>${this.normalText}🔍</p></div>`;
       this.template = `
-        <div id="u-search">
-          <div class="modal">
-            <header class="modal-header clearfix">
-              <form id="u-search-modal-form" class="u-search-form" name="uSearchModalForm">
-                <input type="text" id="u-search-modal-input" class="u-search-input" placeholder="${this.normalText}" />
-                <button type="submit" id="u-search-modal-btn-submit" class="u-search-btn-submit">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  </svg>
-                </button>
-              </form>
-              <a id="u-search-btn-close" class="btn-close">
+        <div class="modal">
+          <header class="modal-header clearfix">
+            <form id="u-search-modal-form" class="u-search-form" name="uSearchModalForm">
+              <input type="text" id="u-search-modal-input" class="u-search-input" placeholder="${this.normalText}" />
+              <button type="submit" id="u-search-modal-btn-submit" class="u-search-btn-submit">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-              </a>
-            </header>
-            <main class="modal-body">
-              <ul class="modal-results"></ul>
-            </main>
-          </div>
-          <div id="modal-overlay" class="modal-overlay"></div>
-        </div>`;
+              </button>
+            </form>
+            <a id="u-search-btn-close" class="btn-close">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </a>
+          </header>
+          <main class="modal-body">
+            <ul class="modal-results"></ul>
+          </main>
+        </div>
+        <div id="modal-overlay" class="modal-overlay"></div>`;
       this.initInstance();
       SearchService.instance = this;
     }
@@ -49,6 +47,7 @@ class SearchService {
   initInstance() {
     if (!document.querySelector('#u-search')) {
       const div = document.createElement("div");
+      div.id = "u-search";
       div.innerHTML = this.template;
       document.body.append(div);
     }

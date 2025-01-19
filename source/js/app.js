@@ -874,6 +874,7 @@ class VolantisFancyBox {
     if (typeof Fancybox !== 'undefined') {
       Fancybox.unbind(selectors);
       Fancybox.bind(selectors, this.option);
+      Fancybox.close();
     }
   }
 

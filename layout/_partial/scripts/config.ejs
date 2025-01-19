@@ -5,8 +5,6 @@
     default: <%- JSON.stringify(theme.default) %>,
     lastupdate: new Date(<%- theme.getStartTime %>),
     cdn: {
-      izitoast_css: '<%- theme.cdn.izitoast_css %>',
-      izitoast_js: '<%- theme.cdn.izitoast_js %>',
       fancybox_css: '<%- theme.cdn.fancybox_css %>',
       fancybox_js: '<%- theme.cdn.fancybox_js %>'
     },
@@ -29,10 +27,7 @@
       aplayer: {
         id: <%- JSON.stringify(theme.plugins.aplayer.id) %>,
         enable:<%- JSON.stringify(theme.plugins.aplayer.enable) %>
-      },
-      <% } %>
-      <% if(theme.rightmenus.enable) { %>
-      rightmenus: <%- JSON.stringify(theme.rightmenus) %>
+      }
       <% } %>
     },
     search: {
