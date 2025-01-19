@@ -956,6 +956,9 @@ class LazyLoader {
     for (let source of sources) {
       source.srcset = source.dataset.srcset;
     }
+    if (!lazyImage.classList.contains('not-animation')) {
+      lazyImage.classList.add('content-in')
+    }
     lazyImage.src = lazyImage.dataset.src;
     lazyImage.onload = function () {
       const pictureElement = lazyImage.closest('picture');

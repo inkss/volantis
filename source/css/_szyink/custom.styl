@@ -143,6 +143,7 @@ svg.feather
 .cus-article-bkg
   @media screen and (max-width: $device-mobile)
     display none
+  animation content-fadeIn-2s 2s ease-in-out
   background cover center
   position fixed
   top 0
@@ -169,23 +170,33 @@ svg.feather
 //======================================//
 // 自定义的淡入淡出
 .content-in
-  animation content-fadeIn 1s
-.content-out
-  animation content-fadeOut 1s
+  animation content-fadeIn 1s ease-in-out
 @keyframes content-fadeIn
   0%
     opacity 0
+    filter blur(10px)
+    transform: scale(0.9)
   50%
     opacity 0
+    filter blur(10px)
+    transform: scale(0.95)
   100%
     opacity 1
-@keyframes content-fadeOut
+    filter blur(0px)
+    transform: scale(1)
+@keyframes content-fadeIn-2s
   0%
-    opacity 1
+    opacity 0
+    filter blur(10px)
   50%
     opacity 0
-  100%
+    filter blur(10px)
+  70%
     opacity 0
+    filter blur(10px)
+  100%
+    opacity 1
+    filter blur(0px)
 //======================================//
 
 

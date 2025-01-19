@@ -17,7 +17,7 @@ hexo.extend.filter.register('after_render:html', function (htmlContent) {
   $('img').each(function () {
     const img = $(this);
     img.attr('data-src', img.attr('src'));
-    img.attr('src', '/img/default/loading.svg');
+    img.attr('src', '/img/default/transparent-placeholder-1x1.svg');
     img.attr('loading', 'lazy');
 
     const picture = $('<picture class="lazy"></picture>');
