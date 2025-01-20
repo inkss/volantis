@@ -24,12 +24,12 @@ function postCell(args, content) {
   let img = hexo.theme.config.tag_plugins.link.placeholder;
   if (args.length > 2) {
     if (args[2].includes('fa-') || args[2].includes('feather')) {
-      return `<a class="button" ${url} title='${text}'><i class='${args[2].trim()}'></i>${text}</a>`;
+      return `<a class="button" ${url}'><i class='${args[2].trim()}'></i>${text}</a>`;
     } else if(args[2].trim() != ''){
       img = args[2].trim() ;
     }
   }
-  return `<a class="button" ${url} title='${text}'><img src='${img}'></img>${text}</a>`;
+  return `<a class="button" ${url}'><img fancybox src='${img}'></img>${text}</a>`;
 }
 
 hexo.extend.tag.register('btns', postBtns, {ends: true});

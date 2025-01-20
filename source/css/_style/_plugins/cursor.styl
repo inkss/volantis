@@ -17,7 +17,9 @@ a,
 a.fa-fw,
 button span,
 btn-close span,
-.menuitem span
+.menuitem span,
+#post-body img:not([fancybox]),
+.atk-content img:not([atk-emoticon])
   cursor $pointer
 
 span,
@@ -45,20 +47,21 @@ article p
 .atk-common-action-btn,
 .fancybox__container button,
 .fancybox__container a,
-.atk-footer-normal span
+.atk-footer-normal span,
+.carousel__button,
+.fancybox__thumbs .carousel__slide
   cursor $pointer !important
 
-
 .fancybox__viewport.is-draggable,
+.is-draggable .fancybox__content,
 .fancybox-image img
   cursor $grab !important
 
 .fancybox__caption
   cursor $text !important
 
-.carousel__button,
-.fancybox__thumbs .carousel__slide
-  cursor $pointer !important
+.can-zoom_in .fancybox__content
+  cursor $zoom-in !important
 
-
-
+.can-zoom_out .fancybox__content
+  cursor $zoom-out !important

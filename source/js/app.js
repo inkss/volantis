@@ -811,6 +811,7 @@ class VolantisFancyBox {
         content: (_ref, slide) => {
           const imgElement = slide.thumbEl;
           const pictureElement = imgElement.closest('picture');
+          imgElement.classList.remove("content-in")
           if (imgElement.hasAttribute('data-src')) {
             imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
           }

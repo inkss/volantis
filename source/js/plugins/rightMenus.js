@@ -485,7 +485,9 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
    * 隐藏自定义右键菜单
    */
   const hideContextMenu = () => {
-    menuContainer.classList.remove('active');
+    if (menuContainer.classList.contains('active')) {
+      menuContainer.classList.remove('active');
+    }
   };
 
   /**
@@ -506,6 +508,8 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
 
       window.addEventListener('blur', hideContextMenu);
       document.body.addEventListener('click', hideContextMenu);
+
+      volantis.scroll.push(hideContextMenu);
     } catch (error) {
       console.error('Error positioning menu:', error);
       return true;
