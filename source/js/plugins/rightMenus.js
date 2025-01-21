@@ -15,7 +15,7 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
   // 右键导航项
   const navigationItems = Array.from(menuContainer.querySelectorAll('.navigation.menuNavigation-Content a'))
     .map(item => ({
-      id: item.dataset.id || item.id,
+      id: item.dataset.id,
       displayCondition: item.dataset.displayCondition,
       menuContentElement: item
     }));
@@ -26,9 +26,9 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       const elem = item.firstElementChild;
       if (elem) {
         return [{
+          id: elem.dataset.id,
           link: elem.href,
-          id: elem.dataset.id || elem.id,
-          linkTarget: elem.target || elem.dataset.linkTarget,
+          linkTarget: elem.target,
           eventName: elem.dataset.eventName,
           displayCondition: elem.dataset.displayCondition,
           isHrElement: elem.tagName === 'HR',

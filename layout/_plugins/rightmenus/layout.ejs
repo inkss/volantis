@@ -32,7 +32,7 @@
 <% } %>
 
 <% rightMenu.loadMenu = (objs, flag) => { %>
-  <% let displayCondition = null; %>
+  <% let lastDisplayCondition = null; %>
   <% objs.forEach((item, index) => { %>
     <% if (flag) { %>
       <% if(item === 'hr' || item.id === undefined || item.id === 'hr') { %>
@@ -40,11 +40,11 @@
         <% return; %>
       <% } %>
     <% } else { %>
-      <% if (index > 0 && item.displayCondition !== displayCondition) { %>
+      <% if (index > 0 && item.displayCondition !== lastDisplayCondition) { %>
         <li class="menuLoad-Content"><hr></li>
       <% } %>
     <% } %>
-    <% displayCondition = item.displayCondition; %>
+    <% lastDisplayCondition = item.displayCondition; %>
     <% if(item.link === undefined) { %>
       <li class="menuLoad-Content">
         <span class="vlts-menu" data-id="<%- item.id %>" data-event-name="<%= item.eventName %>" data-display-condition="<%- item.displayCondition %>">
