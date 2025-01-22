@@ -132,10 +132,10 @@
       line-height: normal
       &#top
         margin-top: 1 * $gap
-        margin-bottom: 2 * $gap
+        margin-bottom: 1 * $gap
       &#bottom
         margin-top: 2 * $gap
-        margin-bottom: 0.5 * $gap
+        margin-bottom: 1.5 * $gap
       .aplayer,.aplayer-pic,.thumbnail
         width: 48px
         height: 48px
@@ -194,7 +194,6 @@
           align-items: center;
           justify-content: center
           margin: 0 $gap 0 0
-          padding: 8px 0  // seo https://web.dev/tap-targets/
           &:last-child
             margin-right: 0
           img,i
@@ -213,6 +212,7 @@
             color: var(--color-meta)
             padding: 3px 0
           a
+            cursor: $pointer
             display: flex
             justify-content: center
             align-items: center
@@ -224,6 +224,8 @@
               margin: 0
               font-weight: normal
               trans()
+            &[href] p
+              cursor: $pointer
             &:hover
               color: $color-hover
               p
