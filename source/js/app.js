@@ -953,6 +953,9 @@ class LazyLoader {
 
   // 加载图片
   loadImage(lazyImage) {
+    if (lazyImage.src === lazyImage.dataset.src) {
+      return;
+    }
     let sources = lazyImage.parentElement.getElementsByTagName('source');
     for (let source of sources) {
       source.srcset = source.dataset.srcset;

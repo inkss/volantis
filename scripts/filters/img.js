@@ -16,6 +16,12 @@ hexo.extend.filter.register('after_render:html', function (htmlContent) {
 
   $('img').each(function () {
     const img = $(this);
+    let src = img.attr('src');
+    if (src && src.includes('../../')) { 
+      src = src.replace('../../', '/'); 
+      img.attr('src', src); 
+    }
+
     img.attr('data-src', img.attr('src'));
     img.attr('src', '/img/default/transparent-placeholder-1x1.svg');
     img.attr('loading', 'lazy');

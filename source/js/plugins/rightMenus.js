@@ -169,11 +169,36 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       if (!this.readModeStylesheet.disabled) {
         eventHandlers.readMode()
       }
-
+      NProgress?.start();
       document.querySelectorAll('details').forEach(ele => ele.setAttribute('open', 'true'));
-      setTimeout(() => {
-        window.print();
-      }, 200);
+      const lazyImages = document.querySelectorAll("#post.article picture.lazy img");
+      const loadImage = img => {
+        return new Promise((resolve, reject) => {
+          let sources = img.parentElement.getElementsByTagName('source');
+          for (let source of sources) {
+            source.srcset = source.dataset.srcset;
+          }
+          img.removeAttribute('loading');
+          img.src = img.dataset.src;
+          if (img.complete) {
+            resolve(img);
+          } else {
+            img.addEventListener('load', () => {
+              img.closest('picture').classList.remove("lazy");
+              resolve(img);
+            });
+            img.addEventListener('error', reject);
+          }
+        });
+      };
+      const imageLoadPromises = Array.from(lazyImages).map(loadImage);
+      const timeoutPromise = new Promise(resolve => setTimeout(resolve, 20000));
+      Promise.race([Promise.all(imageLoadPromises), timeoutPromise]).finally(() => {
+        NProgress?.done();
+        setTimeout(() => {
+          window.print();
+        }, 200);
+      });
     },
     copyText: () => {
       VolantisApp.utilWriteClipText(globalData.selectedText);
