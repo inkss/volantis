@@ -335,9 +335,9 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       let context = window;
       let parentContext = null;
 
-      for (let i = 0; i < properties.length; i++) {
+      for (const prop of properties) {
         parentContext = context;
-        context = context[properties[i]];
+        context = context[prop];
         if (typeof context === 'undefined') {
           console.error(`Invalid ${type}: ${menuItem[type]}`);
           return;
@@ -345,7 +345,7 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       }
 
       if (typeof context === 'function') {
-        return context.apply(parentContext, functionArgs.concat(args));
+        return context.apply(parentContext, [...functionArgs, ...args]);
       } else {
         const { menuContentElement, ...menu } = menuItem;
         console.error(`Invalid ${type} [${menuItem[type]}], Menu: ${JSON.stringify(menu)}`);
