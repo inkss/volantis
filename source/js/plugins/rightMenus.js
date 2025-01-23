@@ -181,10 +181,11 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
           img.removeAttribute('loading');
           img.src = img.dataset.src;
           if (img.complete) {
+            img.closest('picture')?.classList.remove("lazy");
             resolve(img);
           } else {
             img.addEventListener('load', () => {
-              img.closest('picture').classList.remove("lazy");
+              img.closest('picture')?.classList.remove("lazy");
               resolve(img);
             });
             img.addEventListener('error', reject);

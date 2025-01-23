@@ -950,24 +950,32 @@ class LazyLoader {
       this.observeElement(element);
     });
   }
+  
+  removeLazy(lazyImage) {
+    const pictureElement = lazyImage.closest('picture');
+    if (pictureElement && pictureElement.classList.contains('lazy')) {
+      pictureElement.classList.remove("lazy")
+    }
+  }
 
   // 加载图片
   loadImage(lazyImage) {
-    if (lazyImage.src === lazyImage.dataset.src) {
-      return;
+    if (decodeURIComponent(lazyImage.src) === decodeURIComponent(lazyImage.dataset.src) 
+          && lazyImage.complete) {
+      this.removeLazy(lazyImage);
+    } else {
+      let sources = lazyImage.parentElement.getElementsByTagName('source');
+      for (let source of sources) {
+        source.srcset = source.dataset.srcset;
+      }
+      if (!lazyImage.classList.contains('not-animation')) {
+        lazyImage.classList.add('content-in')
+      }
+      lazyImage.src = lazyImage.dataset.src;
+      lazyImage.onload = () => {
+        this.removeLazy(lazyImage)
+      };
     }
-    let sources = lazyImage.parentElement.getElementsByTagName('source');
-    for (let source of sources) {
-      source.srcset = source.dataset.srcset;
-    }
-    if (!lazyImage.classList.contains('not-animation')) {
-      lazyImage.classList.add('content-in')
-    }
-    lazyImage.src = lazyImage.dataset.src;
-    lazyImage.onload = function () {
-      const pictureElement = lazyImage.closest('picture');
-      pictureElement.classList.remove("lazy");
-    };
   }
 
   // 卸载所有观察器

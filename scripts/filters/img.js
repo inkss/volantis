@@ -12,17 +12,28 @@ const cheerio = require('cheerio');
 hexo.extend.filter.register('after_render:html', function (htmlContent) {
   if (this.env.cmd !== 'server') return htmlContent;
 
+  const serverConfig = hexo.config.server;
+
+  // 获取服务器的主机地址和端口
+  const host = serverConfig.host || 'localhost'; // 默认值为 localhost
+  const port = serverConfig.port || 4000; // 默认值为 4000
+  const actualHost = host === '0.0.0.0' ? 'localhost' : host;
+  const serverUrl = `http://${actualHost}:${port}`;
+
   const $ = cheerio.load(htmlContent);
 
   $('img').each(function () {
     const img = $(this);
-    let src = img.attr('src');
-    if (src && src.includes('../../')) { 
-      src = src.replace('../../', '/'); 
-      img.attr('src', src); 
+    let src = decodeURIComponent(img.attr('src'));
+    if (src && src.startsWith('../../')) { 
+      src = src.replace('../../', `${serverUrl}/`); 
+      img.attr('src', decodeURIComponent(src)); 
+    } else if (src && src.startsWith('/img/')) { 
+      src = src.replace('/img/', `${serverUrl}/img/`); 
+      img.attr('src', decodeURIComponent(src)); 
     }
 
-    img.attr('data-src', img.attr('src'));
+    img.attr('data-src', src);
     img.attr('src', '/img/default/transparent-placeholder-1x1.svg');
     img.attr('loading', 'lazy');
 
