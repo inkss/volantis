@@ -157,6 +157,7 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       }
     },
     readMode: () => {
+      Fancybox?.close();
       this.readModeStylesheet.disabled = !this.readModeStylesheet.disabled;
 
       if (!this.readModeStylesheet.disabled) {
@@ -169,6 +170,7 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       if (!this.readModeStylesheet.disabled) {
         eventHandlers.readMode()
       }
+      Fancybox?.close();
       NProgress?.start();
       document.querySelectorAll('details').forEach(ele => ele.setAttribute('open', 'true'));
       const lazyImages = document.querySelectorAll("#post.article picture.lazy img");
