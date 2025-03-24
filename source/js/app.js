@@ -802,7 +802,7 @@ class VolantisFancyBox {
       Hash: false,
       groupAll: true,
       caption: (fancybox, slide) => slide.thumbEl?.alt || "",
-      wheel: "slide",
+      // wheel: "slide",
       contentClick: 'iterateZoom',
       Thumbs: {
         showOnStart: false
@@ -829,10 +829,7 @@ class VolantisFancyBox {
           }
         },
         Panzoom: {
-          maxScale: 1.5,
-          panMode: "mousemove",
-          mouseMoveFactor: 1.1,
-          mouseMoveFriction: 0.12,
+          maxScale: 1
         }
       },
       Toolbar: {
