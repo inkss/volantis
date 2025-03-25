@@ -149,7 +149,7 @@ const VolantisApp = (() => {
     if (sidebarConfig.for_page.includes('webinfo') || sidebarConfig.for_post.includes('webinfo')) {
       const lastupd = sidebarConfig.webinfo.lastupd;
       const lastUpdateShow = document.getElementById('last-update-show');
-      if (lastUpdateShow && lastupd.enable && lastupd.friendlyShow) {
+      if (!!lastUpdateShow && lastupd.enable && lastupd.friendlyShow) {
         lastUpdateShow.innerHTML = fn.utilTimeAgo(volantis.GLOBAL_CONFIG.lastupdate);
       }
     }

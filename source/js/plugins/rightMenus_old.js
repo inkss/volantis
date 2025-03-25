@@ -358,7 +358,7 @@ RightMenus.fun = (() => {
             fn[eventName](e);
           }
         } catch (error) {
-          if (volantis.GLOBAL_CONFIG.debug === "rightMenus") {
+          if (volantis.debug === "rightMenus") {
             console.error({
               id: id,
               error: error,

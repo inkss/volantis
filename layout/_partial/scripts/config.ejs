@@ -1,9 +1,10 @@
 <script>
   volantis.GLOBAL_CONFIG ={
     root: '<%- config.root %>',
-    debug: <%- JSON.stringify(theme.debug) %>,
     default: <%- JSON.stringify(theme.default) %>,
+    <% if(theme.sidebar.widget_library.webinfo.type.lastupd.enable){ %>
     lastupdate: new Date(<%- theme.getStartTime %>),
+    <% } %>
     cdn: {
       fancybox_css: '<%- theme.cdn.fancybox_css %>',
       fancybox_js: '<%- theme.cdn.fancybox_js %>'
