@@ -1,8 +1,11 @@
 <script>
   <% if (theme.plugins.busuanzi.enable) { %>
-  volantis.js("<%- theme.cdn.busuanzi %>");
+  volantis.js("<%- theme.cdn.busuanzi %>", {
+    'defer': true, 
+    'pjax': true, 
+    'data-style': 'comma'
+  });
   <% } %>
-
   <% if (theme.InconfontFlag) { %>
   volantis.js("<%- theme.cdn.iconfontInkss %>");
   <% } %>

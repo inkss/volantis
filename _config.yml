@@ -719,8 +719,8 @@ site_footer:
   source: https://github.com/volantis-x/volantis-docs/
   # analytics using busuanzi
   analytics: >
-    <span>本站总访问量为 <span id='busuanzi_value_site_pv'><i class="fa-solid fa-loader fa-spin fa-fw" aria-hidden="true"></i></span> 次</span>
-    <span>访客数为 <span id='busuanzi_value_site_uv'><i class="fa-solid fa-loader fa-spin fa-fw" aria-hidden="true"></i></span> 人</span>
+    <span>本站总访问量为 <span id='busuanzi_site_pv'><i class="fa-solid fa-loader fa-spin fa-fw" aria-hidden="true"></i></span> 次</span>
+    <span>访客数为 <span id='busuanzi_site_uv'><i class="fa-solid fa-loader fa-spin fa-fw" aria-hidden="true"></i></span> 人</span>
   # site copyright
   copyright: '[Copyright © since 2017 XXX](/)'
   # You can add your own property here. (Support markdown, for example: br: '<br>')

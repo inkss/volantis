@@ -197,7 +197,7 @@
         resolve();
         return;
       }
-      
+
       const HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
       const script = document.createElement("script");
       script.type = "text/javascript";
@@ -208,9 +208,9 @@
         }
         resolve();
       };
-      
+
       script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-      
+
       if (cb && typeof cb === "object") {
         for (let p in cb) {
           if (p === "onload") {
@@ -218,12 +218,14 @@
               cb[p]();
               resolve();
             };
+          } else if (p.startsWith("data-")) {
+            script.setAttribute(p, cb[p]);
           } else {
-            script[p] = cb[p];
+            script.setAttribute(p, cb[p]);
           }
         }
       }
-      
+
       script.src = src;
       HEAD.appendChild(script);
     });
