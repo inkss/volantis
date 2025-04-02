@@ -312,9 +312,9 @@ ul.list-v
         transform rotate(360deg)
 
 .menu-phone li ul.list-v
-  right calc(100% - 0.5 * $gap)
+  right "calc(100% - 0.5 * %s)" % $gap
   ul
-    right calc(100% - 0.5 * $gap)
+    right "calc(100% - 0.5 * %s)" % $gap
 
 #wrapper
   if hexo-config('custom_css.navbar.width') == 'auto'
@@ -326,7 +326,7 @@ ul.list-v
       flex 1 1 auto
       margin 0 $gap 0 0
       .list-v ul
-        left calc(100% - 0.5 * $gap)
+        left "calc(100% - 0.5 * %s)" % $gap
   else
     .m_search
       margin-left auto
@@ -336,14 +336,14 @@ ul.list-v
     .menu li ul.list-v
       right 0
       ul
-        right calc(100% - 0.5 * $gap)
+        right "calc(100% - 0.5 * %s)" % $gap
 
 .menu-phone
   display none
   margin-top $gap
   right $gap * 0.5
   ul
-    right calc(100% - 0.5 * $gap)
+    right "calc(100% - 0.5 * %s)" % $gap
   @media screen and (max-width: $device-mobile)
     display block
   trans()
@@ -351,12 +351,12 @@ ul.list-v
 .l_header
   if hexo-config('custom_css.navbar.width') == 'auto'
     max-width 65vw
-    left calc((100% - $max-width) * 0.5)
+    left "calc((100% - %s) * 0.5)" % @max-width
     border-bottom-left-radius $border-card
     border-bottom-right-radius $border-card
     @media screen and (max-width: $device-2k)
       max-width $layout-width + 2 * $gap
-      left calc((100% - $max-width) * 0.5)
+      left "calc((100% - %s) * 0.5)" % @max-width
     @media screen and (max-width: $layout-width + 2 * $gap)
       left 0
       border-radius 0
