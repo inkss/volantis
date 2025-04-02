@@ -4,9 +4,13 @@
     <div class='nav-sub'>
       <p class="title fix-header-title"></p>
       <ul class='switcher nav-list-h m-phone' id="pjax-header-nav-list">
-        <li><a id="s-comment" class="fa-solid fa-comments fa-fw" target="_self" title="comment"></a></li>
+        <li><a id="s-comment" target="_self" title="comment">
+          <i class="feather message-circle"></i>
+        </a></li>
         <% if (page.sidebar == undefined || page.sidebar != false) { %>
-          <li><a id="s-toc" class="s-toc fa-solid fa-list fa-fw" target="_self" title="toc"></a></li>
+          <li><a id="s-toc" target="_self" title="toc">
+            <i class="feather list"></i>
+          </a></li>
         <% } %>
       </ul>
     </div>
@@ -95,7 +99,7 @@
       <% if (theme.search.enable) { %>
       <div class="m_search">
         <form name="searchform" class="form u-search-form">
-          <i class="icon far fa-search fa-fw"></i>
+          <i class="icon feather search"></i>
           <input type="text" class="input u-search-input" placeholder="<%- theme.navbar && theme.navbar.search %>" />
         </form>
       </div>
@@ -103,10 +107,12 @@
 
 			<ul class='switcher nav-list-h m-phone'>
 				<% if (theme.search.enable === true) { %>
-					<li><a class="s-search fa-solid fa-search fa-fw" target="_self" title="search"></a></li>
+					<li><a class="s-search feather search" target="_self" title="search"></a></li>
 				<% } %>
 				<li>
-          <a class="s-menu fa-solid fa-bars fa-fw" target="_self" title="menu"></a>
+          <a target="_self" title="menu">
+            <i class="icon feather layers"></i>
+          </a>
           <ul class="menu-phone list-v navigation white-box">
             <% menu_list.forEach(function(value){ %>
               <% menu(value, 'mobile') %>

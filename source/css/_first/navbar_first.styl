@@ -15,9 +15,6 @@
       opacity 1 !important
       visibility visible
 
-  .container
-    margin $gap
-
   #wrapper
     height 100%
     user-select none
@@ -31,7 +28,7 @@
       trans()
 
     &.sub .nav-main
-      transform translateY(-$navbar-height)
+      transform translateY(0 - 1 * $navbar-height)
 
     .nav-sub
       ::-webkit-scrollbar
@@ -39,7 +36,7 @@
       trans()
       opacity 0
       height $navbar-height
-      width calc(100% - 2 * $gap)
+      width "calc(100% - 2 * %s)" % $gap
       position absolute
       @media screen and (min-width: $device-2k)
         max-width 55vw
@@ -84,11 +81,12 @@
   .switcher
     display none
     line-height $navbar-height
-    .s-toc
+    #s-toc
       display none
+      padding 0 2px
     align-items center
     @media screen and (max-width: $device-tablet)
-      .s-toc
+      #s-toc
         display flex
     > li
       height $navbar-height - $gap
@@ -199,7 +197,7 @@
     &.z_search-open .m_search
       width 100%
       .input
-        width calc(100% - (3 * $gap + 2 * $iconW))
+        width: "calc(100% - %s)" % (3 * $gap + 2 * $iconW)
 
 ul.m-pc, ul.list-v
   li:hover > ul.list-v
