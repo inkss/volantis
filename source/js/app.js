@@ -103,7 +103,7 @@ const Tools = {
       if (target) {
         setTimeout(() => {
           const offset = target.id == 'comments' ? 0 :
-            document.getElementById('l_header') ? 16 : 80;
+            volantis.dom.header ? 16 : 80;
           volantis.scroll.to(target, { addTop: offset, behavior: 'smooth', observer: true });
         }, 500);
       }
@@ -174,16 +174,16 @@ const VolantisApp = (() => {
     });
 
     // 为评论添加点击事件
-    const linksComments = document.querySelectorAll('a[href$="#comments"]');
-    linksComments.forEach(link => {
-      const comments = document.querySelector('#comments');
-      if (comments) {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          volantis.scroll.to(comments, { addTop: 0, behavior: 'smooth', observer: true });
-        });
-      }
-    })
+    // const linksComments = document.querySelectorAll('a[href$="#comments"]');
+    // linksComments.forEach(link => {
+    //   const comments = document.querySelector('#comments');
+    //   if (comments) {
+    //     link.addEventListener('click', (e) => {
+    //       e.preventDefault();
+    //       volantis.scroll.to(comments, { addTop: 0, behavior: 'smooth', observer: true });
+    //     });
+    //   }
+    // })
   }
 
   fn.restData = () => {
@@ -200,7 +200,6 @@ const VolantisApp = (() => {
   // 校正页面定位（被导航栏挡住的区域）
   fn.scrolltoElement = (elem, correction = scrollCorrection) => {
     const topOffset = elem.getBoundingClientRect().top + document.documentElement.scrollTop - correction;
-    console.log(`滚动至元素: ${elem.id}，距离顶部: ${topOffset}px, 校正: ${correction}px`);
     volantis.scroll.to(elem, { top: topOffset });
   }
 
@@ -551,9 +550,7 @@ const VolantisApp = (() => {
         event.preventDefault();
         const targetID = decodeURI(event.target.hash.slice(1)).replace(/\s/g, '-');
         const target = document.getElementById(targetID);
-        if (target) {
-          volantis.scroll.to(target, { addTop: - 5, behavior: 'smooth' });
-        }
+        fn.scrolltoElement(target)
       });
     });
   }
@@ -749,7 +746,7 @@ const highlightKeyWords = (() => {
     }
     if (target) {
       volantis.scroll.to(target, {
-        addTop: -10,
+        addTop: volantis.dom.header ? -volantis.dom.header.clientHeight -10 : -10,
         behavior: 'smooth'
       });
       document.querySelector('.highlighted')?.classList.remove('highlighted');
@@ -769,7 +766,7 @@ const highlightKeyWords = (() => {
     if (target) {
       const tempHeight = document.querySelector('#s-top') ? document.querySelector('#s-top').offsetHeight : 0;
       volantis.scroll.to(target, {
-        addTop: -10,
+        addTop: volantis.dom.header ? -volantis.dom.header.clientHeight -10 : -10,
         behavior: 'smooth'
       });
       document.querySelector('.highlighted')?.classList.remove('highlighted');
