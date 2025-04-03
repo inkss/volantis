@@ -69,27 +69,27 @@ const Tools = {
     const handleChange = () => Tools.handleTitleChange(originalTitle);
     sessionStorage.setItem("domTitle", originalTitle);
 
-    document.removeEventListener('visibilitychange', handleChange); 
-    window.removeEventListener('beforeunload', handleChange); 
-    document.addEventListener('visibilitychange', handleChange); 
+    document.removeEventListener('visibilitychange', handleChange);
+    window.removeEventListener('beforeunload', handleChange);
+    document.addEventListener('visibilitychange', handleChange);
     window.addEventListener('beforeunload', handleChange);
   },
   toggleGrayscaleEffect: (isTestMode = false) => {
     const pathName = window.location.pathname;
     const current = new Date();
     const year = current.getFullYear();
-  
+
     const dateRanges = [
       [`${year}/4/4`, `${year}/4/5`],
       [`${year}/12/13`, `${year}/12/14`]
     ];
-  
+
     const isDateBetween = dateRanges.some(([start, end]) =>
       current >= new Date(start) && current < new Date(end)
     );
-  
+
     const shouldApplyGrayscale = pathName === "/" && (isDateBetween || isTestMode);
-  
+
     if (shouldApplyGrayscale) {
       document.querySelector('html').classList.add('grayscale');
     } else {
@@ -102,7 +102,8 @@ const Tools = {
       const target = document.getElementById(locationID);
       if (target) {
         setTimeout(() => {
-          const offset = target.id == 'comments' ? 0 : 80;
+          const offset = target.id == 'comments' ? 0 :
+            document.getElementById('l_header') ? 16 : 80;
           volantis.scroll.to(target, { addTop: offset, behavior: 'smooth', observer: true });
         }, 500);
       }
@@ -118,7 +119,7 @@ const VolantisApp = (() => {
 
   fn.init = () => {
     if (volantis.dom.header) {
-      scrollCorrection = volantis.dom.header.clientHeight + 16;
+      scrollCorrection = volantis.dom.header.clientHeight;
     }
     window.onresize = () => {
       const isMobile = document.documentElement.clientWidth < 500 ? 1 : 0;
@@ -199,7 +200,80 @@ const VolantisApp = (() => {
   // 校正页面定位（被导航栏挡住的区域）
   fn.scrolltoElement = (elem, correction = scrollCorrection) => {
     const topOffset = elem.getBoundingClientRect().top + document.documentElement.scrollTop - correction;
+    console.log(`滚动至元素: ${elem.id}，距离顶部: ${topOffset}px, 校正: ${correction}px`);
     volantis.scroll.to(elem, { top: topOffset });
+  }
+
+  // 监听侧边栏目录 TOC
+  fn.listenSidebarTOC = () => {
+    const navItems = document.querySelectorAll(".toc li");
+    if (!navItems.length) return;
+
+    volantis.activateNavIndex = 0;
+
+    const targets = Array.from(navItems).map((element) => {
+      const link = element.querySelector(".toc-link");
+      const href = link.getAttribute("href");
+      const targetId = href ? decodeURI(href).replace("#", "") : link.getAttribute("toc-action").split("toc-")[1]; // 兼容 hexo-blog-encrypt
+      const target = document.getElementById(targetId);
+
+      // 解除 a 标签 href 的 锚点定位
+      if (href) {
+        link.setAttribute("toc-action", `toc-${targetId}`);
+        link.removeAttribute("href");
+      }
+
+      // 配置点击触发新的锚点定位
+      if (target && target.id) {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          fn.scrolltoElement(target, -16);
+          history.pushState(null, document.title, `#${target.id}`);
+        });
+      }
+
+      return target;
+    });
+
+    function activateNavByIndex(target) {
+      if (target.classList.contains("active-current")) return;
+      document.querySelectorAll(".toc .active").forEach((element) => {
+        element.classList.remove("active", "active-current");
+      });
+      target.classList.add("active", "active-current");
+      let parent = target.parentNode;
+      while (!parent.matches(".toc")) {
+        if (parent.matches("li")) parent.classList.add("active");
+        parent = parent.parentNode;
+      }
+    }
+
+    function updateNav() {
+      const topOffsets = targets.map(target => target.getBoundingClientRect().top);
+      const firstOffset = topOffsets[0];
+      const lastOffset = topOffsets[topOffsets.length - 1];
+
+      if (firstOffset >= 0) {
+        volantis.activateNavIndex = 0;
+      } else if (lastOffset < 0) {
+        volantis.activateNavIndex = targets.length - 1;
+      } else {
+        for (let index = 0; index < topOffsets.length - 1; index++) {
+          if (topOffsets[index] < 0 && topOffsets[index + 1] >= 0) {
+            volantis.activateNavIndex = index;
+            break;
+          }
+        }
+      }
+      activateNavByIndex(navItems[volantis.activateNavIndex]);
+    }
+
+    activateNavByIndex(navItems[volantis.activateNavIndex]);
+    if (targets[0]) {
+      volantis.scroll.push(() => {
+        volantis.scroll.debounce(updateNav(), 200)
+      });
+    }
   }
 
   // 滚动事件回调们
@@ -598,6 +672,7 @@ const VolantisApp = (() => {
       fn.setHeaderSearch();
       fn.setScrollAnchor();
       fn.setTabs();
+      fn.listenSidebarTOC();
       fn.footnotes();
       fn.dataToShow();
       fn.nextSiteMenu();
@@ -611,6 +686,7 @@ const VolantisApp = (() => {
       fn.setPageHeaderMenuEvent();
       fn.setScrollAnchor();
       fn.setTabs();
+      fn.listenSidebarTOC();
       fn.footnotes();
       fn.dataToShow();
       fn.nextSiteMenu();
@@ -947,7 +1023,7 @@ class LazyLoader {
       this.observeElement(element);
     });
   }
-  
+
   removeLazy(lazyImage) {
     const pictureElement = lazyImage.closest('picture');
     if (pictureElement && pictureElement.classList.contains('lazy')) {
@@ -957,8 +1033,8 @@ class LazyLoader {
 
   // 加载图片
   loadImage(lazyImage) {
-    if (decodeURIComponent(lazyImage.src) === decodeURIComponent(lazyImage.dataset.src) 
-          && lazyImage.complete) {
+    if (decodeURIComponent(lazyImage.src) === decodeURIComponent(lazyImage.dataset.src)
+      && lazyImage.complete) {
       this.removeLazy(lazyImage);
     } else {
       let sources = lazyImage.parentElement.getElementsByTagName('source');
