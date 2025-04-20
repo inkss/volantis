@@ -14,16 +14,11 @@ hexo.extend.filter.register('after_render:html', function (htmlContent) {
 
   const serverConfig = hexo.config.server;
 
-  if (serverConfig.cnb == 'true') {
-    return htmlContent;
-  }
-
   // 获取服务器的主机地址和端口
   const host = serverConfig.host || 'localhost'; // 默认值为 localhost
   const port = serverConfig.port || 4000; // 默认值为 4000
   const actualHost = host === '0.0.0.0' ? 'localhost' : host;
-  const serverUrl = `http://${actualHost}:${port}`;
-
+  const serverUrl = hexo.config.cnb ? "" : `http://${actualHost}:${port}`;
   const $ = cheerio.load(htmlContent);
 
   $('img').each(function () {
