@@ -45,6 +45,9 @@ let SearchService = (() => {
       document.querySelector('#u-search main.modal-body').style.textAlign = 'center';
       document.querySelector('#u-search .modal').style.maxHeight = '128px';
     }
+
+    fn.uSearch = document.querySelector("#u-search");
+    fn.uSearchModal = document.querySelector("#u-search > .modal");
   }
 
   fn.event = () => {
@@ -177,7 +180,10 @@ let SearchService = (() => {
   }
 
   fn.search = () => {
-    document.querySelector("#u-search").style.display = "block";
+    fn.uSearch.style.display = "block";
+    setTimeout(() => {
+      fn.uSearchModal.style.transform = "translate(0px, 0px)";
+    }, 100);
     document.addEventListener("keydown", event => {
       if (event.code === "Escape") {
         fn.close();
@@ -220,7 +226,10 @@ let SearchService = (() => {
   }
 
   fn.close = () => {
-    document.querySelector("#u-search").style.display = "none";
+    fn.uSearchModal.style.transform = "translateY(120%)";
+    setTimeout(() => {
+      fn.uSearch.style.display = "none";
+    }, 400);
   };
 
   return {
