@@ -36,9 +36,9 @@ let articlTitle = (post.title || post.seo_title) ? (post.title || post.seo_title
         <%- post.title %>
       </h1>
     <% } else { %>
-      <span hidden itemprop="name headline">
+      <h1 class="hidden" itemprop="name headline">
         <%- post.title %>
-      </span>
+      </h1>
     <% } %>
     <% if (post.title && post.seo_title == undefined) { %>
     <div class='new-meta-box'>
