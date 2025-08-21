@@ -14,8 +14,10 @@
 	// https://developers.google.cn/analytics/devguides/collection/gtagjs/single-page-applications?hl=zh-cn
 	volantis.pjax.push(()=>{
 		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('config', '<%- config.google_analytics_key %>', {'page_path': document.location.pathname});
+    gtag('config', '<%- config.google_analytics_key %>', {
+      page_path: window.location.pathname + window.location.search,
+      page_title: document.title
+    });
 	},'google_analytics')
 </script>
 <% } %>
