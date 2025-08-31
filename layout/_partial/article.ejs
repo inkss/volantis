@@ -1,216 +1,352 @@
-<% if(theme.ShowICPInfo.enable == true && post.http451 == true) {%>
-<article itemscope itemtype="http://schema.org/Article" class="<%- page.indent == true ? 'cus-indent' : '' %> article post white-box reveal md <%- theme.custom_css.body.effect.join(' ') %> article-type-<%= post.layout %>" id="<%= post.layout %>" itemscope itemprop="blogPost">
-  <link itemprop="mainEntityOfPage" href="<%- decodeURI(post.permalink) %>">
-  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="<%- config.title %>">
-  </span>
-  <div id="layoutHelper-page-plugins"></div>
-  <div id="post-body" itemprop="articleBody">
-    <div class="note quote cus451">
-      <p><strong>Unavailable For Legal Reasons</strong></p>
-      <p><strong>此页面在您的地区不可用</strong></p>
-      <p>您尝试访问的页面在您的地区不可用。</p>
-      <p><em>相关资料参见：</em></p>
-      <ul>
-        <li><a href="http://www.cac.gov.cn/2016-11/07/c_1119867116.htm"><em>《中华人民共和国网络安全法》</em></a></li>
-        <li><a href="http://www.cac.gov.cn/2000-09/30/c_126193701.htm"><em>《互联网信息服务管理办法》</em></a></li>
-      </ul>
+<% 
+/**
+ * 页面核心渲染逻辑：区分「451法律不可访问页」与「正常内容页」
+ * 触发条件：主题启用ICP信息展示 + 文章标记为451状态
+ */
+const is451Page = theme.ShowICPInfo.enable && post.http451; // 简化条件判断，提升可读性
+const articleBaseClass = `${page.indent ? 'cus-indent' : ''} article post white-box reveal md ${theme.custom_css.body.effect.join(' ')} article-type-${post.layout}`; // 提取公共类名，避免重复拼接
+const pagePermalink = decodeURI(post.permalink); // 统一解码永久链接，避免重复调用decodeURI
+%>
+
+<% if (is451Page) { %>
+  <!-- 451状态页：因法律原因不可访问，符合Schema.org Article结构化标准 -->
+  <article 
+    itemscope itemtype="http://schema.org/Article" 
+    class="<%= articleBaseClass %>" 
+    id="<%= post.layout %>" 
+    itemprop="blogPost"
+  >
+    <!-- 结构化数据：标记当前页为主要内容载体 -->
+    <link itemprop="mainEntityOfPage" href="<%= pagePermalink %>">
+    
+    <!-- 结构化数据：隐藏的发布者信息（关联站点标题） -->
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="<%= config.title %>">
+    </span>
+
+    <!-- 插件注入点：供第三方插件插入顶部内容（如统计脚本） -->
+    <div id="layoutHelper-page-plugins"></div>
+
+    <!-- 451状态提示区：法律依据+不可访问说明 -->
+    <div id="post-body" itemprop="articleBody">
+      <div class="note quote cus451">
+        <p><strong>Unavailable For Legal Reasons</strong></p>
+        <p><strong>此页面在您的地区不可用</strong></p>
+        <p>该页面在您当前地区无法访问，请更换网络环境或地区设置以继续查看。</p>
+        <p><em>相关资料参见：</em></p>
+        <ul>
+          <li><a href="http://www.cac.gov.cn/2016-11/07/c_1119867116.htm" target="_blank" rel="external nofollow"><em>《中华人民共和国网络安全法》</em></a></li>
+          <li><a href="http://www.cac.gov.cn/2000-09/30/c_126193701.htm" target="_blank" rel="external nofollow"><em>《互联网信息服务管理办法》</em></a></li>
+        </ul>
+      </div>
     </div>
-  </div>
-</article>
+  </article>
+
 <% } else { %>
-<article itemscope itemtype="http://schema.org/Article" class="<%- page.indent == true ? 'cus-indent' : '' %> article post white-box reveal md <%- theme.custom_css.body.effect.join(' ') %> article-type-<%= post.layout %>" id="<%= post.layout %>" itemscope itemprop="blogPost">
-  <link itemprop="mainEntityOfPage" href="<%- post.permalink %>">
-  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="<%- config.title %>">
-  </span>
-  <%- partial('meta', {post: post, position: 'top'}) %>
-  <div id="layoutHelper-page-plugins"></div>
-  <div id="post-body" itemprop="articleBody">
-    <%- post.content %>
-  </div>
-  <% if (page.link) { %>
-    <div class='div-ori-link'>
-      <a class='ori-link' href='<%- url_for(post.link || post.path) %>'>
-        <%- post.link ? __('post.readoriginal') : __('post.readmore') %>
-      </a>
+  <!-- 正常内容页：统一使用公共类名+结构化标记 -->
+  <article 
+    itemscope itemtype="http://schema.org/Article" 
+    class="<%= articleBaseClass %>" 
+    id="<%= post.layout %>" 
+    itemprop="blogPost"
+  >
+    <!-- 结构化数据：统一解码永久链接 -->
+    <link itemprop="mainEntityOfPage" href="<%= pagePermalink %>">
+    
+    <!-- 结构化数据：发布者信息（隐藏） -->
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="<%= config.title %>">
+    </span>
+
+    <!-- 文章顶部元信息：标题、作者、日期等（复用子模板） -->
+    <%- partial('meta', { post, position: 'top' }) %>
+
+    <!-- 插件注入点 -->
+    <div id="layoutHelper-page-plugins"></div>
+
+    <!-- 文章核心内容区 -->
+    <div id="post-body" itemprop="articleBody">
+      <%- post.content %>
     </div>
-  <% } %>
-  <% if (['post','docs'].includes(page.layout)) { %>
-    <% let footer_widget = theme.article.body.footer_widget; %>
-    <div class='footer'>
-      <!-- 参考资料、相关资料等 -->
-      <% if (page.references && page.references.length > 0) { %>
-        <div class='references'>
-          <section class='header'>
-            <% if (footer_widget.references.icon) { %>
-              <i class="<%- footer_widget.references.icon %> fa-fw" aria-hidden="true"></i>
-            <% } %>
-            <span><%- footer_widget.references.title %></span>
-          </section>
-          <section class='body'>
-            <ul>
-              <% (page.references||[]).forEach(function(row){ %>
-                <li>
-                  <a href="<%- url_for(row.url) %>" rel="external nofollow noopener noreferrer" target="_blank">
-                  <%- row.title || url_for(row.url) %>
-                  </a>
-                </li>
-              <% }) %>
-            </ul>
-          </section>
-        </div>
-      <% } %>
-      <!-- 相关文章 -->
-      <% if (['post'].includes(page.layout) && footer_widget.related_posts && footer_widget.related_posts.enable == true) { %>
-        <%-
-        htmlGenerator(
-          popular_posts_json({ maxCount: footer_widget.related_posts.max_count , ulClass: 'vlts-rps' , PPMixingRate: 0.2 , isImage: true , isExcerpt: true} , post )
-        )
-        %>
-      <% } %>
-      <!-- 版权声明组件 -->
-      <% if (['post'].includes(page.layout) && footer_widget.copyright && footer_widget.copyright.enable == true && post.copyright != false) { %>
-        <% if (footer_widget.copyright.custom) { %>
-          <%
-            let author = theme.article.body.meta_library.author;
-            let aid = post.author;
-            if (aid && site.data && site.data.author && (aid in site.data.author)) {
-              author = site.data.author[aid];
-            }
-            let articleCreate =  date(post.date, theme.article.body.meta_library.date.format);
-            let articleUpdate = date(post.updated, theme.article.body.meta_library.updated.format);
-            let copyrightRule = post.copyright?.type || theme.article.body.footer_widget.copyright.customData.default;
-            let copyrightRuleText = theme.article.body.footer_widget.copyright.customData.rules[copyrightRule]?.text;
-            let copyrightRuleDesc = theme.article.body.footer_widget.copyright.customData.rules[copyrightRule]?.desc;
-          %>
-          <div class="copyright license">
-            <div class="license-title"><%- post.title %></div>
-            <div class="license-link"><a href="<%- decodeURI(page.permalink) %>"><%- decodeURI(page.permalink) %></a>
-            </div>
-            <div class="license-meta">
-              <div class="license-meta-item">
-                <div class="license-meta-title"><%- __('post.copyright.author') %></div>
-                <div class="license-meta-text"><%- post.copyright?.author || author.name %></div>
-              </div>
-              <div class="license-meta-item">
-                <div class="license-meta-title"><%- __('post.copyright.date') %></div>
-                <div class="license-meta-text"><%- articleCreate %></div>
-              </div>
-              <% if (articleCreate !== articleUpdate) { %>
-              <div class="license-meta-item">
-                <div class="license-meta-title"><%- __('post.copyright.updated') %></div>
-                <div class="license-meta-text"><%- articleUpdate %></div>
-              </div>
+
+    <!-- 原文链接/阅读更多：仅当page.link存在时显示 -->
+    <% if (page.link) { %>
+      <div class="div-ori-link">
+        <a 
+          class="ori-link" 
+          href="<%= url_for(post.link || post.path) %>"
+          target="_blank" 
+          rel="external nofollow"
+        >
+          <%= post.link ? __('post.readoriginal') : __('post.readmore') %>
+        </a>
+      </div>
+    <% } %>
+
+    <!-- 文章底部组件区：仅对「post」「docs」布局生效 -->
+    <% if (['post', 'docs'].includes(post.layout)) { %>
+      <% const footerWidget = theme.article.body.footer_widget; // 统一定义，避免重复调用主题配置 %>
+      <div class="footer">
+        <!-- 1. 参考资料：仅当参考列表非空时显示 -->
+        <% if (page.references?.length) { %>
+          <div class="references">
+            <section class="header">
+              <% if (footerWidget.references.icon) { %>
+                <i class="<%= footerWidget.references.icon %> fa-fw" aria-hidden="true"></i>
               <% } %>
-              <% if (post.copyright?.ref?.title) { %>
-              <div class="license-meta-item">
-                <div class="license-meta-title"><%- __('post.copyright.references') %></div>
-                <div class="license-meta-text">
-                  <a href="<%- post.copyright.ref?.url %>" target="_blank"><%- post.copyright.ref?.title %></a>
+              <span><%= footerWidget.references.title %></span>
+            </section>
+            <section class="body">
+              <ul>
+                <% page.references.forEach(row => { %>
+                  <li>
+                    <a 
+                      href="<%= url_for(row.url) %>" 
+                      target="_blank" 
+                      rel="external nofollow noopener noreferrer"
+                    >
+                      <%= row.title || url_for(row.url) %>
+                    </a>
+                  </li>
+                <% }) %>
+              </ul>
+            </section>
+          </div>
+        <% } %>
+
+        <!-- 2. 相关文章：仅post布局+主题启用时显示 -->
+        <% if (post.layout === 'post' && footerWidget.related_posts?.enable) { %>
+          <%- htmlGenerator(
+            popular_posts_json({
+              maxCount: footerWidget.related_posts.max_count,
+              ulClass: 'vlts-rps',
+              PPMixingRate: 0.2,
+              isImage: true,
+              isExcerpt: true
+            }, post)
+          ) %>
+        <% } %>
+
+        <!-- 3. 版权声明：post布局+启用+未禁用时显示 -->
+        <% if (post.layout === 'post' && footerWidget.copyright?.enable && post.copyright !== false) { %>
+          <% if (footerWidget.copyright.custom) { %>
+            <% 
+              // 简化作者信息逻辑：优先文章作者，其次站点默认作者
+              const authorInfo = post.author && site.data?.author?.[post.author] 
+                ? site.data.author[post.author] 
+                : theme.article.body.meta_library.author;
+              // 统一日期格式化
+              const createDate = date(post.date, theme.article.body.meta_library.date.format);
+              const updateDate = date(post.updated, theme.article.body.meta_library.updated.format);
+              // 版权规则：优先文章配置，其次主题默认
+              const copyrightRule = post.copyright?.type || footerWidget.copyright.customData.default;
+              const copyrightText = footerWidget.copyright.customData.rules[copyrightRule]?.text;
+              const copyrightDesc = footerWidget.copyright.customData.rules[copyrightRule]?.desc;
+            %>
+            <div class="copyright license">
+              <div class="license-title"><%= post.title %></div>
+              <div class="license-link"><a href="<%= pagePermalink %>"><%= pagePermalink %></a></div>
+              <div class="license-meta">
+                <div class="license-meta-item">
+                  <div class="license-meta-title"><%= __('post.copyright.author') %></div>
+                  <div class="license-meta-text"><%= post.copyright?.author || authorInfo.name %></div>
+                </div>
+                <div class="license-meta-item">
+                  <div class="license-meta-title"><%= __('post.copyright.date') %></div>
+                  <div class="license-meta-text"><%= createDate %></div>
+                </div>
+                <!-- 仅当创建/更新日期不同时显示更新时间 -->
+                <% if (createDate !== updateDate) { %>
+                  <div class="license-meta-item">
+                    <div class="license-meta-title"><%= __('post.copyright.updated') %></div>
+                    <div class="license-meta-text"><%= updateDate %></div>
+                  </div>
+                <% } %>
+                <!-- 显示参考来源（若有） -->
+                <% if (post.copyright?.ref?.title) { %>
+                  <div class="license-meta-item">
+                    <div class="license-meta-title"><%= __('post.copyright.references') %></div>
+                    <div class="license-meta-text">
+                      <a 
+                        href="<%= post.copyright.ref.url %>" 
+                        target="_blank" 
+                        rel="external nofollow"
+                      ><%= post.copyright.ref.title %></a>
+                    </div>
+                  </div>
+                <% } %>
+                <div class="license-meta-item">
+                  <div class="license-meta-title"><%= __('post.copyright.license') %></div>
+                  <div class="license-meta-text"><%- copyrightText %></div>
                 </div>
               </div>
-              <% } %>
-              <div class="license-meta-item">
-                <div class="license-meta-title"><%- __('post.copyright.license') %></div>
-                <div class="license-meta-text"><%- copyrightRuleText %></div>
-              </div>
+              <div class="license-statement"><%- copyrightDesc %></div>
             </div>
-            <div class="license-statement"><%- copyrightRuleDesc %></div>
-          </div>
-        <% } else { %>
-          <div class='copyright'>
-            <blockquote>
-              <% (footer_widget.copyright.content||[]).forEach(function(row){ %>
-                <% if (row == 'permalink') { %>
-                  <p><%- footer_widget.copyright.permalink %><a href="<%- decodeURI(page.permalink) %>"><%- decodeURI(page.permalink) %></a></p>
-                <% } else { %>
-                  <%- markdown(row) %>
-                <% } %>
+          <% } else { %>
+            <!-- 默认版权声明：支持Markdown解析 -->
+            <div class="copyright">
+              <blockquote>
+                <% (footerWidget.copyright.content || []).forEach(row => { %>
+                  <% if (row === 'permalink') { %>
+                    <p><%= footerWidget.copyright.permalink %><a href="<%= pagePermalink %>"><%= pagePermalink %></a></p>
+                  <% } else { %>
+                    <%- markdown(row) %>
+                  <% } %>
+                <% }) %>
+              </blockquote>
+            </div>
+          <% } %>
+        <% } %>
+
+        <!-- 4. 打赏组件：post布局+启用时显示 -->
+        <% if (post.layout === 'post' && footerWidget.donate?.enable) { %>
+          <div class="donate">
+            <div class="imgs">
+              <% (footerWidget.donate.images || []).forEach(url => { %>
+                <img src="<%= url_for(url) %>" alt="Donate QR Code">
               <% }) %>
-            </blockquote>
+            </div>
           </div>
-        <% } %>
-      <% } %>
-      <!-- 打赏组件 -->
-      <% if (['post'].includes(page.layout) && footer_widget.donate && footer_widget.donate.enable == true) { %>
-        <div class='donate'>
-          <div class='imgs'>
-            <% (footer_widget.donate.images||[]).forEach(function(url){ %>
-              <img src='<%- url_for(url) %>'>
-            <% }) %>
-          </div>
-        </div>
-      <% } %>
-    </div>
-  <% } %>
-  <% if (['page', 'post', 'docs'].includes(post.layout)) { %>
-    <%- partial('meta', {post: post, position: 'bottom'}) %>
-  <% } %>
-  <% if ((post.group != undefined) && (post.order != undefined)) { %>
-    <%
-    let prev = new Object();
-    let next = new Object();
-    site.pages.each(function(p){
-      if ((p.title || p.seo_title) && p.path && (p.group == post.group)) {
-        if (p.order < post.order && (p.order > prev.order || prev.order == undefined)) {
-          prev = {title: p.title || p.seo_title, exp: truncate(strip_html(p.content), {length: 100}), path: p.path, order: p.order};
-        }
-        if (p.order > post.order && (p.order < next.order || next.order == undefined)) {
-          next = {title: p.title || p.seo_title, exp: truncate(strip_html(p.content), {length: 100}), path: p.path, order: p.order};
-        }
-      }
-    })
-    %>
-    <% if (['docs'].includes(post.layout) && (prev || next)) { %>
-      <div class="prev-next">
-        <% if (prev.path) { %>
-          <a class='prev' href='<%- url_for(prev.path) %>'>
-            <p class='title'><i class="<%= theme.icon.page_prev %>" aria-hidden="true"></i><%- prev.title || '' %></p>
-            <p class='content'><%- prev.exp %></p>
-          </a>
-        <% } %>
-        <% if (next.path) { %>
-          <a class='next' href='<%- url_for(next.path) %>'>
-            <p class='title'><%- next.title || '' %><i class="<%= theme.icon.page_next %>" aria-hidden="true"></i></p>
-            <p class='content'><%- next.exp %></p>
-          </a>
         <% } %>
       </div>
     <% } %>
-  <% } %>
 
-  <% if (post.prev || post.next) { %>
-    <div class="prev-next">
-      <% if (post.prev) { %>
-        <a class='prev' href='<%- url_for(post.prev.path) %>'>
-          <p class='title'><i class="<%= theme.icon.page_prev %>" aria-hidden="true"></i><%- post.prev.title || post.prev.seo_title || date(post.date, theme.article.body.meta_library.date.format) %></p>
-          <p class='content'><%- truncate(strip_html(page.prev.content), {length: 100}) %></p>
-        </a>
+    <!-- 文章底部元信息：复用子模板 -->
+    <% if (['page', 'post', 'docs'].includes(post.layout)) { %>
+      <%- partial('meta', { post, position: 'bottom' }) %>
+    <% } %>
+
+    <!-- 【关键优化】文档导航（group+order）：post.link为空时才显示 -->
+    <% if ((post.group !== undefined && post.order !== undefined) && !post.link) { %>
+      <% 
+        let docsPrev = {};
+        let docsNext = {};
+        // 遍历同分组页面，筛选上/下一篇
+        site.pages.each(p => {
+          if ((p.title || p.seo_title) && p.path && p.group === post.group) {
+            // 上一篇：order更小且最接近当前
+            if (p.order < post.order && (p.order > docsPrev.order || !docsPrev.order)) {
+              docsPrev = {
+                title: p.title || p.seo_title,
+                exp: truncate(strip_html(p.content), { length: 100 }),
+                path: p.path,
+                order: p.order
+              };
+            }
+            // 下一篇：order更大且最接近当前
+            if (p.order > post.order && (p.order < docsNext.order || !docsNext.order)) {
+              docsNext = {
+                title: p.title || p.seo_title,
+                exp: truncate(strip_html(p.content), { length: 100 }),
+                path: p.path,
+                order: p.order
+              };
+            }
+          }
+        });
+      %>
+      <% if (post.layout === 'docs' && (docsPrev.path || docsNext.path)) { %>
+        <div class="prev-next">
+          <% if (docsPrev.path) { %>
+            <a class="prev" href="<%= url_for(docsPrev.path) %>">
+              <p class="title"><i class="<%= theme.icon.page_prev %>" aria-hidden="true"></i><%= docsPrev.title %></p>
+              <p class="content"><%= docsPrev.exp %></p>
+            </a>
+          <% } %>
+          <% if (docsNext.path) { %>
+            <a class="next" href="<%= url_for(docsNext.path) %>">
+              <p class="title"><%= docsNext.title %><i class="<%= theme.icon.page_next %>" aria-hidden="true"></i></p>
+              <p class="content"><%= docsNext.exp %></p>
+            </a>
+          <% } %>
+        </div>
       <% } %>
-      <% if (post.next) { %>
-        <a class='next' href='<%- url_for(post.next.path) %>'>
-          <p class='title'><%- post.next.title || post.next.seo_title || date(post.date, theme.article.body.meta_library.date.format) %><i class="<%= theme.icon.page_next %>" aria-hidden="true"></i></p>
-          <p class='content'><%- truncate(strip_html(page.next.content), {length: 100}) %></p>
-        </a>
+    <% } %>
+
+    <!-- 通用文章导航（prev/next） -->
+    <% if (!post.link) { %>
+      <%
+        const validPosts = [];
+        site.posts.each(page => {
+          // 筛选条件：link 为空 + 属于文章/文档类布局
+          if (!page.link && ['post', 'docs', 'page'].includes(page.layout)) {
+            validPosts.push(page);
+          }
+        });
+
+        // 按日期降序排序，确保最新文章在前
+        validPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const currentIndex = validPosts.findIndex(item => item.path === post.path);
+
+        // 找上一篇
+        let realPrev = null;
+        if (currentIndex > 0) {
+          for (let i = currentIndex - 1; i >= 0; i--) {
+            if (!validPosts[i].link) {
+              realPrev = validPosts[i];
+              break;
+            }
+          }
+        }
+
+        // 找下一篇
+        let realNext = null;
+        if (currentIndex < validPosts.length - 1) {
+          for (let i = currentIndex + 1; i < validPosts.length; i++) {
+            if (!validPosts[i].link) {
+              realNext = validPosts[i];
+              break;
+            }
+          }
+        }
+      %>
+      <% if (realPrev || realNext) { %>
+        <div class="prev-next">
+          <% if (realPrev) { %>
+            <a class="prev" href="<%= url_for(realPrev.path) %>">
+              <p class="title">
+                <i class="<%= theme.icon.page_prev %>" aria-hidden="true"></i>
+                <%= realPrev.title || realPrev.seo_title || date(realPrev.date, theme.article.body.meta_library.date.format) %>
+              </p>
+              <p class="content"><%= truncate(strip_html(realPrev.content), { length: 100 }) %></p>
+            </a>
+          <% } %>
+          <% if (realNext) { %>
+            <a class="next" href="<%= url_for(realNext.path) %>">
+              <p class="title">
+                <%= realNext.title || realNext.seo_title || date(realNext.date, theme.article.body.meta_library.date.format) %>
+                <i class="<%= theme.icon.page_next %>" aria-hidden="true"></i>
+              </p>
+              <p class="content"><%= truncate(strip_html(realNext.content), { length: 100 }) %></p>
+            </a>
+          <% } %>
+        </div>
       <% } %>
-    </div>
-  <% } %>
-  <!-- 文章推荐 -->
-  <% let footer_widget = theme.article.body.footer_widget; %>
-  <% if (footer_widget.recommended_article && footer_widget.recommended_article.enable == true && footer_widget.recommended_article.layout.includes(page.layout) && !page.skip_recommended_article) { %>
-    <%- 文章推荐生成器(post) %>
-  <% } %>
-  <!-- Custom Files postEnd begin-->
-  <%- volantis_inject('postEnd') %>
-  <!-- Custom Files postEnd end-->
-</article>
+    <% } %>
+
+    <!-- 文章推荐：主题启用+布局匹配+未禁用时显示 -->
+    <% const footerWidget = theme.article.body.footer_widget; %>
+    <% if (footerWidget.recommended_article?.enable 
+      && footerWidget.recommended_article.layout.includes(post.layout) 
+      && !page.skip_recommended_article) { %>
+      <%- 文章推荐生成器(post) %>
+    <% } %>
+
+    <!-- 自定义代码注入点（文章末尾） -->
+    <%- volantis_inject('postEnd') %>
+  </article>
 <% } %>
 
-<% if (page.comments == undefined || page.comments != false) { %>
+<!-- 评论区：仅当未明确禁用时显示（简化条件判断） -->
+<% if (page.comments !== false) { %>
   <%- partial('../_plugins/comments/index') %>
 <% } %>
 
-<% if(page.background) { %>
-  <div class="cus-article-bkg" style="background-image: url(<%- page.background %>)"></div>
+<!-- 页面背景图：仅当背景链接存在时显示 -->
+<% if (page.background) { %>
+  <div 
+    class="cus-article-bkg" 
+    style="background-image: url('<%= url_for(page.background) %>')"
+    aria-label="Article background image"
+  ></div>
 <% } %>
