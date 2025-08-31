@@ -74,30 +74,30 @@ const classes = {
     <div class='<%= classes.headimg %>'>
       <a class='headimg-a' href="<%- url_for(post.link || post.path) %>">
         <img itemprop="image" class='headimg' alt="<%- articleTitle %>" src='<%- post.headimg %>'/>
-      </a>
-      <% if (post.headimg && post.cover) { %>
-        <div class="cover-info" position="bottom">
-          <div class="text headline"><%- articleTitle %></div>
-          <div class="text caption">
-            <% if (post.excerpt) { %>
-            <!-- 显示文章摘要 -->
-              <%- post.excerpt %>
-            <% } else if (post.description) { %>
-              <!-- 若没有摘要则显示描述 -->
-              <%- post.description %>
-            <% } else if (post.content) { %>
-              <!-- 若既没有摘要也没有描述，则使用文章内容 -->
-              <% if (theme.article.preview.auto_excerpt) { %>
-                <!-- 主题启用自动摘要时，显示截断后的内容（200字符） -->
-                <%- truncate(strip_html(post.content), {length: 200}) %>
-              <% } else if (!theme.article.preview.hide_excerpt) { %>
-                <!-- 未禁用摘要显示时，显示完整内容 -->
-                <%- post.content %>
+        <% if (post.headimg && post.cover) { %>
+          <div class="cover-info" position="bottom">
+            <div class="text headline"><%- articleTitle %></div>
+            <div class="text caption">
+              <% if (post.excerpt) { %>
+              <!-- 显示文章摘要 -->
+                <%- post.excerpt %>
+              <% } else if (post.description) { %>
+                <!-- 若没有摘要则显示描述 -->
+                <%- post.description %>
+              <% } else if (post.content) { %>
+                <!-- 若既没有摘要也没有描述，则使用文章内容 -->
+                <% if (theme.article.preview.auto_excerpt) { %>
+                  <!-- 主题启用自动摘要时，显示截断后的内容（200字符） -->
+                  <%- truncate(strip_html(post.content), {length: 200}) %>
+                <% } else if (!theme.article.preview.hide_excerpt) { %>
+                  <!-- 未禁用摘要显示时，显示完整内容 -->
+                  <%- post.content %>
+                <% } %>
               <% } %>
-            <% } %>
+            </div>
           </div>
-        </div>
-      <% } %>
+        <% } %>
+      </a>
     </div>
   <% } else { %>
     <!-- 如果没有头图，使用主题配置的默认图片作为结构化数据 -->
