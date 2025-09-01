@@ -3,12 +3,17 @@
  * 页面核心渲染逻辑：区分「451法律不可访问页」与「正常内容页」
  * 触发条件：主题启用ICP信息展示 + 文章标记为451状态
  */
-const is451Page = theme.ShowICPInfo.enable && post.http451; // 简化条件判断，提升可读性
-const articleBaseClass = `${page.indent ? 'cus-indent' : ''} article post white-box reveal md ${theme.custom_css.body.effect.join(' ')} article-type-${post.layout}`; // 提取公共类名，避免重复拼接
-const pagePermalink = decodeURI(post.permalink); // 统一解码永久链接，避免重复调用decodeURI
+const is451Page = theme.ShowICPInfo.enable && post.http451; 
+const isExternalLink = post.link && (post.link.startsWith('http://') || post.link.startsWith('https://'));
+const articleBaseClass = `${page.indent ? 'cus-indent' : ''} article post white-box reveal md ${theme.custom_css.body.effect.join(' ')} article-type-${post.layout}`;
+const pagePermalink = decodeURI(post.permalink);
 %>
 
-<% if (is451Page) { %>
+<% if (isExternalLink) { %>
+  <script id="external-link-redirect">
+    window.location.href = "<%= post.link %>";
+  </script>
+<% } else if (is451Page) { %>
   <!-- 451状态页：因法律原因不可访问，符合Schema.org Article结构化标准 -->
   <article 
     itemscope itemtype="http://schema.org/Article" 
@@ -41,7 +46,6 @@ const pagePermalink = decodeURI(post.permalink); // 统一解码永久链接，�
       </div>
     </div>
   </article>
-
 <% } else { %>
   <!-- 正常内容页：统一使用公共类名+结构化标记 -->
   <article 
@@ -85,7 +89,7 @@ const pagePermalink = decodeURI(post.permalink); // 统一解码永久链接，�
 
     <!-- 文章底部组件区：仅对「post」「docs」布局生效 -->
     <% if (['post', 'docs'].includes(post.layout)) { %>
-      <% const footerWidget = theme.article.body.footer_widget; // 统一定义，避免重复调用主题配置 %>
+      <% const footerWidget = theme.article.body.footer_widget; %>
       <div class="footer">
         <!-- 1. 参考资料：仅当参考列表非空时显示 -->
         <% if (page.references?.length) { %>
@@ -216,8 +220,8 @@ const pagePermalink = decodeURI(post.permalink); // 统一解码永久链接，�
       <%- partial('meta', { post, position: 'bottom' }) %>
     <% } %>
 
-    <!-- 【关键优化】文档导航（group+order）：post.link为空时才显示 -->
-    <% if ((post.group !== undefined && post.order !== undefined) && !post.link) { %>
+    <!-- 文档导航（group+order） -->
+    <% if (post.group !== undefined && post.order !== undefined) { %>
       <% 
         let docsPrev = {};
         let docsNext = {};
@@ -350,3 +354,4 @@ const pagePermalink = decodeURI(post.permalink); // 统一解码永久链接，�
     aria-label="Article background image"
   ></div>
 <% } %>
+

@@ -102,11 +102,11 @@
   .headimg-a
     height: 380px
     @media screen and (max-width: $device-tablet)
-      height: 250px
+      height: 350px
     @media screen and (max-width: $device-mobile)
-      height: 220px
+      height: 320px
     @media screen and (max-width: $device-mobile-l)
-      height: 190px
+      height: 290px
   &:before
     content: ''
     z-index: 1
@@ -114,12 +114,14 @@
     left: 0
     right: 0
     bottom: 0
-    height: 128px
+    height: 152px
     transition: all 0.2s ease-out
     backdrop-filter: saturate(120%) blur(1em)
     mask: linear-gradient(transparent, rgba(0, 0, 0, 0.75), #000)
   .cover-info
     padding: 1.5 * $gap
+    @media screen and (max-width: $device-tablet)
+      padding: $gap
     position: absolute
     bottom: 0
     width: 100%
