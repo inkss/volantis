@@ -92,9 +92,27 @@ hexo.extend.helper.register("generate_description", function (config, theme, pag
   }
   return `<meta desc name="description" content="${description}">`
 });
-// open_graph() 函数会生成一个 description 标签???  https://github.com/hexojs/hexo/blob/92b979f4a3fa8714aebd3d11c3295d466b870905/lib/plugins/helper/open_graph.js#L98
-// 移除 open_graph() 函数会生成的 description
-hexo.extend.filter.register('after_render:html', function(data) {
-  data = data.replace(/<meta name="description".*>/g, "");
-  return data;
-},99);
+
+
+hexo.extend.filter.register('after_render:html', function(html, data) {
+  // 移除 open_graph() 函数会生成的 description
+  html = html.replace(/<meta name="description".*>/g, "");
+
+  // 如果是文章页面且有自定义头图，则替换 og:image 和 twitter:image
+  // 因为文章中的 headimg 是相对地址，所以此处需要强制指定一下（在有其他位置统一完成替换为完整地址）
+  if (data.page.layout === 'post' && data.page.headimg) {
+    let headimg = data.page.headimg;
+
+    // 替换 meta 标签
+    const replaceMetaTag = (html, property, content) => {
+      const regex = new RegExp(`<meta (property|name)=(["']?)${property}\\2 content=(["']?).*?\\3\\s*\/?>`, 'gi');
+      if (regex.test(html)) {
+        return html.replace(regex, `<meta $1="${property}" content="${content}"/>`);
+      }
+    };
+
+    html = replaceMetaTag(html, 'og:image', headimg);
+    html = replaceMetaTag(html, 'twitter:image', headimg);
+  }
+  return html;
+}, 99); 

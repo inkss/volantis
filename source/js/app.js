@@ -391,12 +391,12 @@ const VolantisApp = (() => {
   // 设置导航栏菜单选中状态 【移动端 PC】
   fn.setHeaderMenuSelection = () => {
     // !!! 此处的Dom对象需要重载 !!!
-    volantis.dom.headerMenu = volantis.dom.$(document.querySelectorAll('#l_header .navigation,#l_cover .navigation,#l_side .navigation')); // 导航列表
+    volantis.dom.headerMenu = volantis.dom.$(document.querySelectorAll('#l_header .navigation,#l_cover .navigation,#l_side .navigation'));
 
     // 先把已经激活的取消激活
     volantis.dom.headerMenu.forEach(element => {
-      volantis.dom.$(element).find('li a.active')?.removeClass('active');
-      volantis.dom.$(element).find('div a.active')?.removeClass('active');
+      element.find('li a.active')?.removeClass('active');
+      element.find('div a.active')?.removeClass('active');
     });
 
     // replace '%' '/' '.'

@@ -1,12 +1,9 @@
-<head hexo-theme='https://github.com/volantis-x/hexo-theme-volantis/#<%- theme.info.theme_version %>'>
+<head>
   <%- meta_generator() %>
   <meta charset="utf-8">
-
   <!-- SEO相关 -->
   <%- generate_seo(theme, page) %>
   <%- autoCanonical(config, page) %>
-  
-  
   <!-- 渲染优化 -->
   <%_ if (theme.dns_prefetch && theme.dns_prefetch.length){ _%>
     <meta http-equiv='x-dns-prefetch-control' content='on' />
@@ -17,7 +14,6 @@
   <%_ } _%>
   <meta name="renderer" content="webkit">
   <meta name="force-rendering" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <%_ if (theme.csp.enable) { _%>
     <meta http-equiv="Content-Security-Policy" content="<%- theme.csp.content %>">
   <%_ } _%>
@@ -40,7 +36,6 @@
     <link rel="shortcut icon" type='image/x-icon' href="<%- url_for(config.favicon) %>">
   <%_ } _%>
   <link rel="preload" href="<%- theme.cdn.volantis_style %>" as="style">
-  <!-- <%- generate_preload_fontfamily(theme) %> -->
   <!-- feed -->
   <%_ if (config.feed && config.feed.path){ _%>
     <%_ if (typeof(config.feed.path)=="string"){ _%>
@@ -61,17 +56,11 @@
     <%- FirstCSS() %>
   </style>
   <link rel="stylesheet" href="<%- theme.cdn.volantis_style %>" onload="this.media='all';this.onload=null">
-  <noscript><link rel="stylesheet" href="<%- theme.cdn.volantis_style %>"></noscript>
   <link id="reading-mode-stylesheet" rel="stylesheet" disabled="true" href="/css/read.css">
   <link rel="stylesheet" href="/css/print.css" media="print">
   <%_ if (theme.plugins.darkmode.enable) { _%>
-    <script>
-      let userColorScheme=localStorage.getItem("color-scheme")
-      if(userColorScheme){
-        document.documentElement.setAttribute("color-scheme", userColorScheme);
-      }
-    </script>
-    <%_ } _%>
+    <script>let c=localStorage.getItem("color-scheme");c&&document.documentElement.setAttribute("color-scheme",c)</script>
+  <%_ } _%>
   <%- partial('../_plugins/end-of-support/script') %>
   <%- partial('scripts/global') %>
   <!-- import head_end begin -->
