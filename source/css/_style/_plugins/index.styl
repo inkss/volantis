@@ -9,6 +9,10 @@ if hexo-config('comments.service')=='gitalk'
 if hexo-config('rightmenus.enable')
   @import '_rightmenu/*'
 
+if hexo-config('search.enable')
+  if hexo-config('search.service')=='hexo'
+    @import '_search/hexo'
+
 if hexo-config('custom_css.cursor.enable')
   @import 'cursor'
 

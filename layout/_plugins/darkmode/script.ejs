@@ -78,6 +78,11 @@ volantis.dark.toggle=()=>{
   applyCustomDarkModeSettings(mode);
   // 使用 volantis.dark.push 方法传入volantis.dark.toggle回调函数 参见layout/_partial/scripts/global.ejs
   volantis.dark.method.toggle.start();
+  // 触发自定义事件，传递当前模式
+  const event = new CustomEvent("darkModeChanged", {
+    detail: { mode: mode || getModeFromCSSMediaQuery() }
+  });
+  window.dispatchEvent(event); // 全局触发事件
 }
 /**
  * bind event for toggle button
