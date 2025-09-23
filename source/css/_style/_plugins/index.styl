@@ -12,6 +12,10 @@ if hexo-config('rightmenus.enable')
 if hexo-config('search.enable')
   if hexo-config('search.service')=='hexo'
     @import '_search/hexo'
+  if hexo-config('search.service')=='algolia'
+    @import '_search/algolia'
+  if hexo-config('search.service')=='meilisearch'
+    @import '_search/meilisearch'
 
 if hexo-config('custom_css.cursor.enable')
   @import 'cursor'
