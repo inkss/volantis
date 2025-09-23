@@ -41,7 +41,6 @@ class SearchService {
       // 搜索界面HTML模板（模态框结构：输入区+筛选区+结果区+历史区+加载区+遮罩层）
       this.template = `
         <div class="modal">
-          <!-- 搜索头部：输入框+关闭按钮 -->
           <header class="modal-header clearfix">
             <form id="u-search-modal-form" class="u-search-form" name="uSearchModalForm">
               <input type="text" id="u-search-modal-input" class="u-search-input" placeholder="${this.normalText}" autocomplete="off" />
@@ -59,30 +58,27 @@ class SearchService {
               </svg>
             </a>
           </header>
-          <!-- 筛选按钮区：全部/文章/页面/标签 -->
           <div class="search-filters">
             <button class="filter-btn active" data-filter="all">全部</button>
             <button class="filter-btn" data-filter="posts">文章</button>
             <button class="filter-btn" data-filter="pages">页面</button>
             <button class="filter-btn" data-filter="tags">标签</button>
           </div>
-          <!-- 搜索主体：结果统计+结果列表+搜索历史 -->
           <main class="modal-body">
-            <div class="search-stats hidden"></div> <!-- 搜索结果统计（默认隐藏） -->
-            <ul class="modal-results"></ul> <!-- 搜索结果列表 -->
-            <div class="search-history hidden"> <!-- 搜索历史（默认隐藏） -->
+            <div class="search-stats hidden"></div>
+            <ul class="modal-results"></ul>
+            <div class="search-history hidden">
               <h3>${this.searchHistoryText}</h3>
-              <button class="clear-history">清除历史</button> <!-- 清空历史按钮 -->
-              <ul class="history-list"></ul> <!-- 历史记录列表 -->
+              <button class="clear-history">清除历史</button>
+              <ul class="history-list"></ul>
             </div>
-            <!-- 加载状态（默认隐藏） -->
             <div class="search-loading hidden">
               <div class="spinner"></div>
               <p>${this.loadDataText}</p>
             </div>
           </main>
         </div>
-        <div id="modal-overlay" class="modal-overlay"></div> <!-- 模态框遮罩层 -->`;
+        <div id="modal-overlay" class="modal-overlay"></div>`;
 
       // 初始化实例（创建DOM、绑定事件、加载历史）
       this.initInstance();
@@ -444,7 +440,7 @@ class SearchService {
                   <line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line>
                 </svg>
               </span>
-              <span class="tag-name">${this.highlightMatch(tag.name)}</span> <!-- 高亮关键词 -->
+              <span class="tag-name">${this.highlightMatch(tag.name)}</span>
             </a>
           </li>
         `;
@@ -546,7 +542,7 @@ class SearchService {
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
         </svg>
-        ${item.categories.map(cat => `<a href="${cat.permalink}">${cat.name}</a>`).join('')} <!-- 分类链接 -->
+        ${item.categories.map(cat => `<a href="${cat.permalink}">${cat.name}</a>`).join('')}
       </div>`;
     }
 
@@ -554,23 +550,23 @@ class SearchService {
     let headimgHtml = '';
     if (item.headimg) {
       headimgHtml = `<div class="result-image">
-        <img src="${item.headimg}" alt="${item.title}的缩略图"> <!-- 头图+alt属性 -->
+        <img src="${item.headimg}" alt="${item.title}">
       </div>`;
     }
 
     // 拼接单个结果项HTML（包含类型标识、链接、头图、内容区）
     return `
-      <li class="result-item ${type}-result"> <!-- 类型标识：post-result/page-result -->
-        <a class="result-link" href="${resultUrl}?keyword=${encodeURIComponent(this.queryText)}"> <!-- 带关键词的链接 -->
-          ${headimgHtml} <!-- 头图（可选） -->
-          <div class="result-content"> <!-- 内容区 -->
-            <h3 class="title">${this.highlightMatch(item.title)}</h3> <!-- 标题（高亮关键词） -->
-            <div class="meta"> <!-- 元数据：日期+分类 -->
-              <span class="date">${formattedDate}</span> <!-- 格式化日期 -->
-              ${categoryHtml} <!-- 分类（可选） -->
+      <li class="result-item ${type}-result">
+        <a class="result-link" href="${resultUrl}?keyword=${encodeURIComponent(this.queryText)}">
+          ${headimgHtml}
+          <div class="result-content">
+            <h3 class="title">${this.highlightMatch(item.title)}</h3>
+            <div class="meta">
+              <span class="date">${formattedDate}</span>
+              ${categoryHtml}
             </div>
-            ${tagsHtml} <!-- 标签（可选） -->
-            ${item.digest ? `<p class="digest">${item.digest}</p>` : ''} <!-- 摘要（可选，contentSearch生成） -->
+            ${tagsHtml}
+            ${item.digest ? `<p class="digest">${item.digest}</p>` : ''}
           </div>
         </a>
       </li>
