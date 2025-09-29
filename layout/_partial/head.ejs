@@ -1,5 +1,4 @@
 <head>
-  <%- meta_generator() %>
   <meta charset="utf-8">
   <!-- SEO相关 -->
   <%- generate_seo(theme, page) %>
@@ -12,12 +11,9 @@
       <link rel="preconnect" href="<%- item %>" crossorigin>
     <%_ }) _%>
   <%_ } _%>
-  <meta name="renderer" content="webkit">
-  <meta name="force-rendering" content="webkit">
   <%_ if (theme.csp.enable) { _%>
     <meta http-equiv="Content-Security-Policy" content="<%- theme.csp.content %>">
   <%_ } _%>
-  <meta name="HandheldFriendly" content="True" >
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
@@ -35,6 +31,7 @@
   <%_ if (config.favicon) { _%>
     <link rel="shortcut icon" type='image/x-icon' href="<%- url_for(config.favicon) %>">
   <%_ } _%>
+  <link rel="stylesheet" href="/css/first.css">
   <link rel="preload" href="<%- theme.cdn.volantis_style %>" as="style">
   <!-- feed -->
   <%_ if (config.feed && config.feed.path){ _%>
@@ -51,10 +48,7 @@
   <%- generate_keywords(config, theme, page) %>
   <%- generate_description(config, theme, page) %>
   <%- open_graph(theme.open_graph) %>
-  <style>
-    /* 首屏样式 */
-    <%- FirstCSS() %>
-  </style>
+  <!-- <style>//FirstCSS() %></style> -->
   <link rel="stylesheet" href="<%- theme.cdn.volantis_style %>" onload="this.media='all';this.onload=null">
   <link id="reading-mode-stylesheet" rel="stylesheet" disabled="true" href="/css/read.css">
   <link rel="stylesheet" href="/css/print.css" media="print">

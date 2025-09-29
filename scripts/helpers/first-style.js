@@ -15,5 +15,5 @@ function generateFirstCSS() {
 function getFirstCSS() {
   return hexo.locals.get('FirstCSS');
 }
-hexo.extend.filter.register("before_generate", generateFirstCSS);
-hexo.extend.helper.register("FirstCSS", getFirstCSS);
+//hexo.extend.filter.register("before_generate", generateFirstCSS);
+//hexo.extend.helper.register("FirstCSS", getFirstCSS);

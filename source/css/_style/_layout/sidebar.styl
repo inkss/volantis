@@ -259,6 +259,8 @@
             margin-top: .3em
             margin-bottom: .3em
             font-size: 1.8em
+            width 16px
+            height 16px
 
           img
             display: inline
@@ -276,6 +278,7 @@
 
         &.fixed a
           width: "calc(100%/3 - 0 * %s)" % $gap
+          min-height 43px
           @media screen and (max-width: $device-tablet)
             width: "calc(100%/6 - 0 * %s)" % $gap
           @media screen and (max-width: $device-mobile)
