@@ -32,8 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fancyBoxInstance.bind('#post-body img:not([fancybox])');
     window.lazyLoader = new LazyLoader("picture.lazy img");
 
-    Tools.locationHash();
-    Tools.changeTitle();
     Tools.toggleGrayscaleEffect();
     highlightKeyWords.startFromURL();
     volantis.pjax.push(() => {
@@ -42,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
       window.lazyLoader.reinitObserver();
       fancyBoxInstance.bind('#post-body img:not([fancybox])');
 
-      Tools.changeTitle();
       Tools.toggleGrayscaleEffect();
       highlightKeyWords.startFromURL();
     }, 'app.js');
@@ -57,23 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const Tools = {
-  handleTitleChange: (originalTitle) => {
-    const storedTitle = sessionStorage.getItem("domTitle") || originalTitle;
-    const titleParts = storedTitle.split(' - ');
-    document.title = document.visibilityState === 'hidden'
-      ? (titleParts.length === 2 ? titleParts[1] : titleParts[0])
-      : storedTitle;
-  },
-  changeTitle: () => {
-    const originalTitle = document.title;
-    const handleChange = () => Tools.handleTitleChange(originalTitle);
-    sessionStorage.setItem("domTitle", originalTitle);
-
-    document.removeEventListener('visibilitychange', handleChange);
-    window.removeEventListener('beforeunload', handleChange);
-    document.addEventListener('visibilitychange', handleChange);
-    window.addEventListener('beforeunload', handleChange);
-  },
   toggleGrayscaleEffect: (isTestMode = false) => {
     const pathName = window.location.pathname;
     const current = new Date();
@@ -96,26 +76,14 @@ const Tools = {
       document.querySelector('html').classList.remove('grayscale');
     }
   },
-  locationHash: () => {
-    if (window.location.hash) {
-      const locationID = decodeURI(window.location.hash.slice(1)).replace(/\s/g, '-');
-      const target = document.getElementById(locationID);
-      if (target) {
-        setTimeout(() => {
-          const offset = target.id == 'comments' ? 0 :
-            volantis.dom.header ? 16 : 80;
-          volantis.scroll.to(target, { addTop: offset, behavior: 'smooth', observer: true });
-        }, 500);
-      }
-    }
-  }
 }
 
 /* Main */
 const VolantisApp = (() => {
   const fn = {},
+    REM = parseFloat(getComputedStyle(document.documentElement).fontSize),
     COPYHTML = '<button class="btn-copy" data-clipboard-snippet=""><span>COPY</span></button>';
-  let scrollCorrection = 80;
+  let scrollCorrection = 64; // 默认导航栏高度
 
   fn.init = () => {
     if (volantis.dom.header) {
@@ -132,6 +100,17 @@ const VolantisApp = (() => {
     }
 
     volantis.scroll.push(volantis.scroll.debounce(fn.scrollEventCallBack, 200), "scrollEventCallBack");
+
+    // 处理 locationHash
+    if (window.location.hash) {
+      const locationID = decodeURI(window.location.hash.slice(1)).replace(/\s/g, '-');
+      const target = document.getElementById(locationID);
+      if (target) {
+        setTimeout(() => {
+          fn.scrolltoElement(target, -REM * 2);
+        }, 500);
+      }
+    }
   }
 
   fn.event = () => {
@@ -188,7 +167,7 @@ const VolantisApp = (() => {
 
   fn.restData = () => {
     const header = volantis.dom.header;
-    scrollCorrection = header ? header.clientHeight : 80;
+    scrollCorrection = header ? header.clientHeight : 64;
   }
 
   fn.setIsMobile = () => {
@@ -226,7 +205,7 @@ const VolantisApp = (() => {
       if (target && target.id) {
         link.addEventListener("click", (event) => {
           event.preventDefault();
-          fn.scrolltoElement(target, -16);
+          fn.scrolltoElement(target, -REM * 2);
           history.pushState(null, document.title, `#${target.id}`);
         });
       }
@@ -351,13 +330,21 @@ const VolantisApp = (() => {
     // ====== 绑定每个按钮的事件 =========
     // 评论按钮 【移动端 PC】
     volantis.dom.comment = volantis.dom.$(document.getElementById("s-comment")); // 评论按钮  桌面端 移动端
+    volantis.dom.commentCount = volantis.dom.$(document.querySelector(".comments-count > a")); // 评论数
     volantis.dom.commentTarget = volantis.dom.$(document.querySelector('#l_main article#comments')); // 评论区域
     if (volantis.dom.commentTarget && volantis.dom.comment) {
       volantis.dom.comment.click(e => { // 评论按钮点击后 跳转到评论区域
         e.preventDefault();
         e.stopPropagation();
         volantis.cleanContentVisibility();
-        fn.scrolltoElement(volantis.dom.commentTarget);
+        fn.scrolltoElement(volantis.dom.commentTarget, REM + scrollCorrection);
+        e.stopImmediatePropagation();
+      });
+      volantis.dom.commentCount && volantis.dom.commentCount.click(e => { // 评论数点击后 跳转到评论区域
+        e.preventDefault();
+        e.stopPropagation();
+        volantis.cleanContentVisibility();
+        fn.scrolltoElement(volantis.dom.commentTarget, REM + scrollCorrection);
         e.stopImmediatePropagation();
       });
     } else {
@@ -746,7 +733,7 @@ const highlightKeyWords = (() => {
     }
     if (target) {
       volantis.scroll.to(target, {
-        addTop: volantis.dom.header ? -volantis.dom.header.clientHeight -10 : -10,
+        addTop: volantis.dom.header ? -volantis.dom.header.clientHeight - 10 : -10,
         behavior: 'smooth'
       });
       document.querySelector('.highlighted')?.classList.remove('highlighted');
@@ -766,7 +753,7 @@ const highlightKeyWords = (() => {
     if (target) {
       const tempHeight = document.querySelector('#s-top') ? document.querySelector('#s-top').offsetHeight : 0;
       volantis.scroll.to(target, {
-        addTop: volantis.dom.header ? -volantis.dom.header.clientHeight -10 : -10,
+        addTop: volantis.dom.header ? -volantis.dom.header.clientHeight - 10 : -10,
         behavior: 'smooth'
       });
       document.querySelector('.highlighted')?.classList.remove('highlighted');

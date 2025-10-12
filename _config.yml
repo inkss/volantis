@@ -1066,7 +1066,7 @@ color_scheme:
     # 主题色块内部的文字颜色
     inner: '#fff'
     # 选中区域文字的背景颜色
-    selection: 'alpha(#3390ff, 0.2)'
+    selection: 'alpha(#ffe600, 0.5)'
   # ------------
   # 亮色主题（默认）
   light:
