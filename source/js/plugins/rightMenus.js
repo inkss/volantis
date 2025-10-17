@@ -1,6 +1,7 @@
 const contextMenuManager = {
   urlRegx: /^(https?:\/\/)?([A-Za-z0-9.-]+)\.([A-Za-z]{2,})(\/[A-Za-z0-9.-]*)*\/?(\?[A-Za-z0-9&=_-]*)?(#[A-Za-z0-9-_]*)?$/,
   readModeStylesheet: document.getElementById('reading-mode-stylesheet'),
+  rem: parseFloat(getComputedStyle(document.documentElement).fontSize),
   maxMenuItems: 0,
   isClipboardReadAllowed: true
 };
@@ -138,10 +139,12 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
     },
     scrollComment: () => {
       const element = document.querySelector('#comments');
+      const l_header = document.querySelector('#l_header');
+      const headerTotalOffset = l_header ? - contextMenuManager.rem - l_header.offsetHeight : 0;
       if (typeof volantis.scroll.to === 'function') {
-        volantis.scroll.to(element)
+        volantis.scroll.to(element, {addTop: headerTotalOffset});
       } else {
-        window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY, behavior: 'smooth' });
+        window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY - headerTotalOffset, behavior: 'smooth' });
       }
     },
     jumpArticle: (menuItem) => {

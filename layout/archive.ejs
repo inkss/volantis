@@ -3,7 +3,7 @@
 	<% if (page.year || page.month) { %>
 		<%- partial('_partial/archive') %>
 	<% } else { %>
-		<div class='post-wrapper'>
+		<!-- <div class='post-wrapper'>
 			<article id="tag" class="post article white-box reveal <%- theme.custom_css.body.effect.join(' ') %>">
 			  <h2>所有标签</h2>
 			  <div class="all-tags">
@@ -33,7 +33,7 @@
 				<br>
 				<%- page.content %>
 			</article>
-		</div>
+		</div> -->
 	  <article id="arc" class="post article white-box reveal <%- theme.custom_css.body.effect.join(' ') %>">
 			<% var year = -1, postid = -1; %>
 			<% site.posts.sort('date', -1).each(function(post) { %>
