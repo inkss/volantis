@@ -268,7 +268,7 @@ const pagePermalink = decodeURI(post.permalink);
     <% } %>
 
     <!-- 通用文章导航（prev/next） -->
-    <% if (!post.link) { %>
+    <% if (!post.link && post.layout === 'post') { %>
       <%
         const validPosts = [];
         site.posts.each(page => {
