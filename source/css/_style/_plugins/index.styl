@@ -1,24 +1,11 @@
-@import 'mathjax'
-
 if hexo-config('plugins.code_highlight')
   @import '_highlight'
-if hexo-config('plugins.aplayer.enable')
-  @import 'aplayer'
-if hexo-config('comments.service')=='gitalk'
-  @import 'gitalk'
 if hexo-config('rightmenus.enable')
   @import '_rightmenu/*'
 
 if hexo-config('search.enable')
   if hexo-config('search.service')=='hexo'
     @import '_search/hexo'
-  if hexo-config('search.service')=='algolia'
-    @import '_search/algolia'
-  if hexo-config('search.service')=='meilisearch'
-    @import '_search/meilisearch'
-
-if hexo-config('custom_css.cursor.enable')
-  @import 'cursor'
 
 // 暗黑模式样式放到最后加载
 if hexo-config('plugins.darkmode.enable')

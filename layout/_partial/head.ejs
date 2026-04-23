@@ -54,7 +54,6 @@
   <%_ if (theme.plugins.darkmode.enable) { _%>
     <script>let c=localStorage.getItem("color-scheme");c&&document.documentElement.setAttribute("color-scheme",c)</script>
   <%_ } _%>
-  <%- partial('../_plugins/end-of-support/script') %>
   <%- partial('scripts/global') %>
   <!-- import head_end begin -->
   <%_ if (config.import && config.import.head_end){ _%>
