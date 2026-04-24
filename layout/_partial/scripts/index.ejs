@@ -1,7 +1,7 @@
 <script>
   /******************** volantis.dom ********************************/
   // 页面选择器 将dom对象缓存起来 see: /source/js/app.js etc.
-  volantis.dom.bodyAnchor = volantis.dom.$(document.getElementById("safearea")); // 页面主体
+  volantis.dom.bodyAnchor = volantis.dom.$(document.getElementById('safearea')); // 页面主体
   volantis.dom.topBtn = volantis.dom.$(document.getElementById('s-top')); // 向上
   volantis.dom.wrapper = volantis.dom.$(document.getElementById('wrapper')); // 整个导航栏
   volantis.dom.switcher = volantis.dom.$(document.querySelector('#l_header .switcher .s-search')); // 搜索按钮   移动端 1个
@@ -9,7 +9,12 @@
   volantis.dom.search = volantis.dom.$(document.querySelector('#l_header .m_search')); //搜索框 桌面端 移动端 1个
   volantis.dom.mPhoneList = volantis.dom.$(document.querySelectorAll('#l_header .m-phone .list-v')); //  手机端 子菜单 多个
 
-  top.location!=self.location&&(top.location=self.location);
+  // 防止iframe嵌套
+  if (top.location !== self.location) {
+    top.location = self.location;
+  }
+  
+  // 加载FontAwesome
   <% if (theme.plugins.fontawesome) { %>
   volantis.css("<%- theme.cdn.fontawesome %>");
   <% } %>
@@ -23,27 +28,23 @@
 <!-- internal -->
 <%- js(theme.cdn.volantis_app) %>
 
+<!-- rightmenu -->
 <% if (theme.rightmenus.enable) { %>
   <%- partial('../../_plugins/rightmenus/layout') %>
 <% } %>
 
-<!-- rightmenu要在darkmode之前（ToggleButton） darkmode要在comments之前（volantis.dark.push）-->
+<!-- darkmode (rightmenu要在darkmode之前) -->
 <% if (theme.plugins.darkmode.enable) { %>
   <%- partial('../../_plugins/darkmode/script') %>
 <% } %>
 
-
-
-
-
-
-
-<%
-  if (theme.comments.service && theme.comments.service.length > 0) {
-    try { %>
-      <%- partial('../../_plugins/comments/' + theme.comments.service + '/script') %>
-    <% } catch (e) {
-      // error friendly
+<!-- comments (darkmode要在comments之前) -->
+<% if (theme.comments.service && theme.comments.service.length > 0) { %>
+  <% try { %>
+    <%- partial('../../_plugins/comments/' + theme.comments.service + '/script') %>
+  <% } catch (e) { %>
+    <!-- error friendly -->
+    <script>
       console.log(`
 ===============================================================================
     没有找到评论插件：${theme.comments.service}
@@ -53,32 +54,18 @@
     There is no comments plugin: ${theme.comments.service}
     Please check if the plugin exists, or check the plugin name is correct: ${theme.comments.service}
     see: https://volantis.js.org/v5/theme-settings/#选择评论系统
-=================================================================================`)
-    }
-  }
-%>
+=================================================================================`);
+    </script>
+  <% } %>
+<% } %>
 
-
-
-
-
-
-
-
+<!-- code highlight -->
 <% if (theme.plugins.code_highlight) { %>
   <%- partial('../../_plugins/highlight/script') %>
 <% } %>
 
-
-
-
-
-
-
-
-
 <!-- pjax 标签必须存在于所有页面 否则 pjax error -->
-<pjax>
-</pjax>
+<pjax></pjax>
 
+<!-- custom scripts -->
 <%- partial('../../_plugins/szyink/script') %>

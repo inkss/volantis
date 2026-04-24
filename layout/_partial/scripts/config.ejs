@@ -1,8 +1,8 @@
 <script>
-  volantis.GLOBAL_CONFIG ={
+  volantis.GLOBAL_CONFIG = {
     root: '<%- config.root %>',
     default: <%- JSON.stringify(theme.default) %>,
-    <% if(theme.sidebar.widget_library.webinfo.type.lastupd.enable){ %>
+    <% if(theme.sidebar.widget_library.webinfo.type.lastupd.enable){%>
     lastupdate: new Date(<%- theme.getStartTime %>),
     <% } %>
     cdn: {
@@ -23,27 +23,26 @@
         }
       }
     },
-    plugins: {
-    },
+    plugins: {},
     search: {
       <% if(theme.search.service === 'algolia') { %>
         appId: '<%- env.ALGOLIA_APP_ID || config.algolia.appId || config.algolia.applicationID %>',
-        indexName: '<%- env.ALGOLIA_APP_ID || config.algolia.indexName %>',
+        indexName: '<%- config.algolia.indexName %>',
         apiKey: '<%- env.ALGOLIA_API_KEY || config.algolia.apiKey %>',
         hitsPerPage: '<%- theme.search.algolia.hitsPerPage %>',
         placeholder: '<%- theme.search.algolia.placeholder %>',
-        searchAsYouType: <%- theme.search.algolia.searchAsYouType %>,
+        searchAsYouType: <%- theme.search.algolia.searchAsYouType %>
       <% } %>
 
       <% if(theme.search.service === 'hexo') { %>
-        dataPath: (("<%- config.root %>" || "/").endsWith("/") ? "<%- config.root %>" || "/" : "<%- config.root %>/" || "/") + "<%- config?.jsonContent?.file || "content.json" %>",
+        dataPath: (("<%- config.root %>" || "/").endsWith("/") ? "<%- config.root %>" || "/" : "<%- config.root %>/" || "/") + "<%- config?.jsonContent?.file || 'content.json' %>"
       <% } %>
 
       <% if(theme.search.service === 'meilisearch') { %>
         placeholder: '<%- theme.search.meilisearch.placeholder %>',
         apiKey: '<%- theme.search.meilisearch.searchKey %>',
         indexName: '<%- theme.search.meilisearch.indexName %>',
-        appId: '<%- theme.search.meilisearch.hostUrl %>',
+        appId: '<%- theme.search.meilisearch.hostUrl %>'
       <% } %>
     },
     languages: {
@@ -51,9 +50,9 @@
         search: {
           hits_empty: "<%- __('search.hits_empty') %>",
           hits_stats: "<%- __('search.hits_stats') %>",
-          normal: "<%- __('search.normal') %>",
+          normal: "<%- __('search.normal') %>"
         }
       <% } %>
     }
-  }
+  };
 </script>

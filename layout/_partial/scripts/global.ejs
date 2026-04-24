@@ -2,11 +2,12 @@
   /************这个文件存放不需要重载的全局变量和全局函数*********/
   window.volantis = {}; // volantis 全局变量
   
-  <% if(theme.debug && theme.debug != 'false') {%>
+  <% if(theme.debug && theme.debug !== 'false') {%>
     volantis.debug = "<%- theme.debug %>"; // 调试模式
   <% } %>
-    // 页面DOM操作模块
-    volantis.dom = { };
+  
+  // 页面DOM操作模块
+  volantis.dom = {};
 
   /******************** 事件监听器模块 ********************/
   volantis.EventListener = {
@@ -34,7 +35,7 @@
   /******************** DOM操作封装 ********************/
   class VolantisDom {
     constructor(ele) {
-      this._ele = ele || document.createElement("div");
+      this._ele = ele || document.createElement('div');
       return new Proxy(this, {
         get(target, prop) {
           if (target[prop] !== undefined) {
@@ -66,32 +67,37 @@
       const found = this._ele.querySelector(selector);
       return found ? new VolantisDom(found) : null;
     }
+    
     hasClass(className) {
       return this._ele.classList.contains(className);
     }
+    
     addClass(classNames) {
-      if (typeof classNames !== "string") return this;
-      classNames.split(" ").forEach(className => {
+      if (typeof classNames !== 'string') return this;
+      classNames.split(' ').forEach(className => {
         className && this._ele.classList.add(className);
       });
       return this;
     }
+    
     removeClass(classNames) {
-      if (typeof classNames !== "string") return this;
-      classNames.split(" ").forEach(className => {
+      if (typeof classNames !== 'string') return this;
+      classNames.split(' ').forEach(className => {
         className && this._ele.classList.remove(className);
       });
       return this;
     }
+    
     toggleClass(classNames) {
-      if (typeof classNames !== "string") return this;
-      classNames.split(" ").forEach(className => {
+      if (typeof classNames !== 'string') return this;
+      classNames.split(' ').forEach(className => {
         className && this._ele.classList.toggle(className);
       });
       return this;
     }
+    
     on(event, handler, removeOnPjax = true) {
-      if (typeof handler !== "function") return this;
+      if (typeof handler !== 'function') return this;
       this._ele.addEventListener(event, handler, false);
       if (removeOnPjax) {
         volantis.EventListener.list.push(
@@ -100,12 +106,15 @@
       }
       return this;
     }
+    
     click(handler, removeOnPjax) {
-      return this.on("click", handler, removeOnPjax);
+      return this.on('click', handler, removeOnPjax);
     }
+    
     scroll(handler, removeOnPjax) {
-      return this.on("scroll", handler, removeOnPjax);
+      return this.on('scroll', handler, removeOnPjax);
     }
+    
     html(content) {
       if (content === undefined) {
         return this._ele.innerHTML;
@@ -113,12 +122,14 @@
       this._ele.innerHTML = content;
       return this;
     }
+    
     hide() {
-      this._ele.style.display = "none";
+      this._ele.style.display = 'none';
       return this;
     }
+    
     show() {
-      this._ele.style.display = "block";
+      this._ele.style.display = 'block';
       return this;
     }
   }
@@ -165,7 +176,6 @@
     // 移除指定名称的任务
     remove(name) {
       if (typeof name !== 'string') return;
-
       this.list = this.list.filter(item => item.name !== name);
     }
   }
@@ -186,6 +196,7 @@
       }
     }
   }
+  
   /******************** Pjax ********************************/
   // /layout/_plugins/pjax/index.ejs
   // volantis.pjax.send(callBack[,"callBackName"]) 传入pjax:send回调函数
@@ -195,13 +206,14 @@
   volantis.pjax.method = {
     complete: new RunItem(),
     error: new RunItem(),
-    send: new RunItem(),
+    send: new RunItem()
   };
   volantis.pjax = Object.assign(volantis.pjax, {
     push: volantis.pjax.method.complete.push.bind(volantis.pjax.method.complete),
     error: volantis.pjax.method.error.push.bind(volantis.pjax.method.error),
-    send: volantis.pjax.method.send.push.bind(volantis.pjax.method.send),
+    send: volantis.pjax.method.send.push.bind(volantis.pjax.method.send)
   });
+  
   /********************  Dark Mode  ********************************/
   // /layout/_partial/scripts/darkmode.ejs
   // volantis.dark.mode 当前模式 dark or light
@@ -209,15 +221,17 @@
   // volantis.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
   volantis.dark = {};
   volantis.dark.method = {
-    toggle: new RunItem(),
+    toggle: new RunItem()
   };
   volantis.dark = Object.assign(volantis.dark, {
     push: volantis.dark.method.toggle.push.bind(volantis.dark.method.toggle)
   });
+  
   /********************  isMobile  ********************************/
   // /source/js/app.js
   // volantis.isMobile
   // volantis.isMobileOld
+  
   /********************脚本动态加载函数********************************/
   // volantis.js(src, cb)  cb 可以传入onload回调函数 或者 JSON对象 例如: volantis.js("src", ()=>{}) 或 volantis.js("src", {defer:true,onload:()=>{}})
   // volantis.css(src)
@@ -239,12 +253,15 @@
       }
       const script = document.createElement('script');
       script.src = src;
+      
       const handleLoad = () => {
         if (typeof cb === 'function') cb();
         resolve();
       };
+      
       script.onload = handleLoad;
       script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+      
       if (cb && typeof cb === 'object' && !Array.isArray(cb)) {
         for (const p in cb) {
           if (!cb.hasOwnProperty(p)) continue;
@@ -258,12 +275,13 @@
           }
         }
       }
+      
       (document.head || document.documentElement).appendChild(script);
     });
-  }
+  };
 
   volantis.css = (src) => {
-    const escapeSelector = (str) => str.replace(/[#".'()[\]]/g, '\\$&');
+    const escapeSelector = str => str.replace(/[#".'()[\]]/g, '\\$&');
     return new Promise((resolve, reject) => {
       const existingLink = document.querySelector(`link[href="${escapeSelector(src)}"]`);
       if (existingLink) {
@@ -279,40 +297,43 @@
       });
       document.head.appendChild(link);
     });
-  }
+  };
+  
   /********************按需加载的插件********************************/
   // volantis.import.jQuery().then(()=>{})
   <% if (theme.plugins.globalJquery) { %>
     volantis.import = {
       jQuery: () => {
-        if (typeof jQuery == "undefined") {
-          return volantis.js("<%- theme.cdn.jquery %>")
+        if (typeof jQuery === 'undefined') {
+          return volantis.js("<%- theme.cdn.jquery %>");
         } else {
-          return new Promise(resolve => {
-            resolve()
-          });
+          return Promise.resolve();
         }
       }
-    }
+    };
   <% } %>
+  
   /********************** requestAnimationFrame ********************************/
   // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
   // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
   volantis.requestAnimationFrame = (fn) => {
     if (!window.requestAnimationFrame) {
-      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function(callback) {
+        return window.setTimeout(callback, 1000 / 60);
+      };
     }
-    window.requestAnimationFrame(fn)
-  }
+    return window.requestAnimationFrame(fn);
+  };
+  
   /************************ layoutHelper *****************************************/
   volantis.layoutHelper = (helper, html, opt = {}) => {
-    const { clean = false, pjax = true } = { ...{ clean: false, pjax: true }, ...opt };
+    const { clean = false, pjax = true } = { ...opt };
     const handleLayout = () => {
-      const tempDiv = document.createElement("div");
+      const tempDiv = document.createElement('div');
       tempDiv.innerHTML = html;
       const layoutHelper = document.querySelector(`#layoutHelper-${helper}`);
       if (layoutHelper) {
-        if (clean) layoutHelper.innerHTML = "";
+        if (clean) layoutHelper.innerHTML = '';
         layoutHelper.append(tempDiv);
       }
     };
@@ -321,7 +342,8 @@
     if (pjax) {
       volantis.pjax.push(handleLayout, `layoutHelper-${helper}`);
     }
-  }
+  };
+  
   /****************************** 滚动事件处理 ****************************************/
   volantis.scroll = {
     engine: new RunItem(),
@@ -343,31 +365,33 @@
       document.body.clientHeight,
       document.documentElement.clientHeight
     ),
-    progress: () => volantis.scroll.getScrollTop() / (volantis.scroll.scrollHeight() - volantis.scroll.offsetHeight()),
-    handleScrollEvents: () => {
-      volantis.scroll.lastScrollTop = volantis.scroll.getScrollTop(); 
-      const loop = () => {
-          const scrollTop = volantis.scroll.getScrollTop();
-          if (volantis.scroll.lastScrollTop !== scrollTop) {
-            volantis.scroll.del = scrollTop - volantis.scroll.lastScrollTop;
-            volantis.scroll.lastScrollTop = scrollTop; 
-            volantis.scroll.unengine.list.length = 0;
-            volantis.scroll.engine.start();
-            volantis.scroll.handleScrollStop();
-          } else {
-            volantis.scroll.unengine.start();
-          }
-          window.requestAnimationFrame(loop);
-        };
-        window.requestAnimationFrame(loop);
+    progress: function() {
+      return this.getScrollTop() / (this.scrollHeight() - this.offsetHeight());
     },
-    handleScrollStop: () => {
-      clearTimeout(volantis.scroll.scrollTimer);
-      volantis.scroll.scrollTimer = setTimeout(() => {
-        if (volantis.scroll.lastScrollTop === window.pageYOffset) {
+    handleScrollEvents: function() {
+      this.lastScrollTop = this.getScrollTop(); 
+      const loop = () => {
+        const scrollTop = this.getScrollTop();
+        if (this.lastScrollTop !== scrollTop) {
+          this.del = scrollTop - this.lastScrollTop;
+          this.lastScrollTop = scrollTop; 
+          this.unengine.list.length = 0;
+          this.engine.start();
+          this.handleScrollStop();
+        } else {
+          this.unengine.start();
+        }
+        window.requestAnimationFrame(loop);
+      };
+      window.requestAnimationFrame(loop);
+    },
+    handleScrollStop: function() {
+      clearTimeout(this.scrollTimer);
+      this.scrollTimer = setTimeout(() => {
+        if (this.lastScrollTop === window.pageYOffset) {
           const lazyLoader = window.lazyLoader;
-          if (lazyLoader?.reinitObserver && volantis.scroll.isScrolling) {
-            volantis.scroll.isScrolling = false;
+          if (lazyLoader?.reinitObserver && this.isScrolling) {
+            this.isScrolling = false;
             lazyLoader.reinitObserver();
           }
         }
@@ -398,25 +422,26 @@
 
   volantis.scroll.push = volantis.scroll.engine.push.bind(volantis.scroll.engine);
   volantis.scroll.handleScrollEvents(); // 处理滚动事件
+  
   /********************** Content Visibility ********************************/
   // 见 source/css/first.styl 如果遇到任何问题 删除 .post-story 即可
   // 一个元素被声明 content-visibility 属性后 如果元素不在 viewport 中 浏览器不会计算其后代元素样式和属性 从而节省 Style & Layout 耗时
   // content-visibility 的副作用: 锚点失效 等等(实验初期 暂不明确), 使用此方法清除样式
   volantis.cleanContentVisibility = () => {
-    const elements = document.querySelectorAll(".post-story");
+    const elements = document.querySelectorAll('.post-story');
     if (elements.length) {
-      console.log("cleanContentVisibility");
-      elements.forEach(e => e.classList.remove("post-story"));
+      console.log('cleanContentVisibility');
+      elements.forEach(e => e.classList.remove('post-story'));
     }
   };
-  /******************************************************************************/
-  /******************************************************************************/
+  
   /******************************************************************************/
   //图像加载出错时的处理
   function errorImgAvatar(img) {
     img.src = "<%- theme.default.avatar %>";
     img.onerror = null;
   }
+  
   function errorImgCover(img) {
     img.src = "<%- theme.default.cover %>";
     img.onerror = null;
