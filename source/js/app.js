@@ -1,25 +1,27 @@
 document.addEventListener("error", function (e) {
   const elem = e.target;
-  if (elem.tagName.toLowerCase() !== 'img') {
-    return;
-  }
+  if (elem.tagName.toLowerCase() !== 'img') return;
 
   const parentElem = elem.parentElement;
+  if (!parentElem) return;
+
   const parentElemClass = parentElem.className;
-  const pParentElemClass = parentElem.parentElement.className;
+  const pParentElem = parentElem.parentElement;
+  if (!pParentElem) return;
+  const pParentElemClass = pParentElem.className;
 
   elem.classList.add('fix-cursor-default', 'error');
 
   if (parentElemClass === 'fancybox' && pParentElemClass === 'fancybox') {
-    parentElem.parentElement.classList.add('hideFancybox');
-    parentElem.parentElement.classList.remove('fancybox');
+    pParentElem.classList.add('hideFancybox');
+    pParentElem.classList.remove('fancybox');
     parentElem.classList.remove('fancybox');
   } else if (parentElemClass === 'img-bg' && pParentElemClass === 'img-wrap') {
-    parentElem.parentElement.classList.add('hideFancybox');
+    pParentElem.classList.add('hideFancybox');
   } else if (parentElemClass === 'author') {
-    parentElem.parentElement.classList.add('fix-author-imgError');
+    pParentElem.classList.add('fix-author-imgError');
   } else if (parentElemClass.includes('tk-avatar')) {
-    parentElem.parentElement.classList.add('fix-avatar-imgError');
+    pParentElem.classList.add('fix-avatar-imgError');
   }
 }, true);
 
@@ -188,18 +190,30 @@ const VolantisApp = (() => {
     if (!navItems.length) return;
 
     volantis.activateNavIndex = 0;
+    const targets = [];
 
-    const targets = Array.from(navItems).map((element) => {
+    // 收集目标元素和绑定事件
+    for (let i = 0; i < navItems.length; i++) {
+      const element = navItems[i];
       const link = element.querySelector(".toc-link");
-      const href = link.getAttribute("href");
-      const targetId = href ? decodeURI(href).replace("#", "") : link.getAttribute("toc-action").split("toc-")[1]; // 兼容 hexo-blog-encrypt
-      const target = document.getElementById(targetId);
+      if (!link) continue;
 
-      // 解除 a 标签 href 的 锚点定位
+      const href = link.getAttribute("href");
+      let targetId;
       if (href) {
+        targetId = decodeURI(href).replace("#", "");
+        // 解除 a 标签 href 的 锚点定位
         link.setAttribute("toc-action", `toc-${targetId}`);
         link.removeAttribute("href");
+      } else {
+        const tocAction = link.getAttribute("toc-action");
+        if (tocAction) {
+          targetId = tocAction.split("toc-")[1];
+        }
       }
+
+      const target = targetId ? document.getElementById(targetId) : null;
+      targets.push(target);
 
       // 配置点击触发新的锚点定位
       if (target && target.id) {
@@ -209,47 +223,57 @@ const VolantisApp = (() => {
           history.pushState(null, document.title, `#${target.id}`);
         });
       }
-
-      return target;
-    });
+    }
 
     function activateNavByIndex(target) {
       if (target.classList.contains("active-current")) return;
-      document.querySelectorAll(".toc .active").forEach((element) => {
-        element.classList.remove("active", "active-current");
-      });
+      // 批量移除活动状态
+      const activeElements = document.querySelectorAll(".toc .active");
+      for (let i = 0; i < activeElements.length; i++) {
+        activeElements[i].classList.remove("active", "active-current");
+      }
+      // 添加活动状态
       target.classList.add("active", "active-current");
+      // 向上遍历添加父级活动状态
       let parent = target.parentNode;
-      while (!parent.matches(".toc")) {
+      while (parent && !parent.matches(".toc")) {
         if (parent.matches("li")) parent.classList.add("active");
         parent = parent.parentNode;
       }
     }
 
     function updateNav() {
-      const topOffsets = targets.map(target => target.getBoundingClientRect().top);
-      const firstOffset = topOffsets[0];
-      const lastOffset = topOffsets[topOffsets.length - 1];
+      if (!targets.length) return;
 
-      if (firstOffset >= 0) {
-        volantis.activateNavIndex = 0;
-      } else if (lastOffset < 0) {
-        volantis.activateNavIndex = targets.length - 1;
-      } else {
-        for (let index = 0; index < topOffsets.length - 1; index++) {
-          if (topOffsets[index] < 0 && topOffsets[index + 1] >= 0) {
-            volantis.activateNavIndex = index;
-            break;
-          }
+      let currentIndex = 0;
+      const scrollTop = volantis.scroll.getScrollTop();
+
+      // 找到当前可见的章节
+      for (let i = 0; i < targets.length; i++) {
+        const target = targets[i];
+        if (!target) continue;
+        const offsetTop = target.offsetTop;
+        if (scrollTop >= offsetTop - 100) {
+          currentIndex = i;
+        } else {
+          break;
         }
       }
-      activateNavByIndex(navItems[volantis.activateNavIndex]);
+
+      if (volantis.activateNavIndex !== currentIndex) {
+        volantis.activateNavIndex = currentIndex;
+        activateNavByIndex(navItems[currentIndex]);
+      }
     }
 
+    // 初始激活
     activateNavByIndex(navItems[volantis.activateNavIndex]);
-    if (targets[0]) {
+    
+    // 添加滚动监听
+    if (targets.length) {
       volantis.scroll.push(() => {
-        volantis.scroll.debounce(updateNav(), 200)
+        // 使用防抖优化滚动性能
+        volantis.scroll.debounce(updateNav, 200)();
       });
     }
   }
@@ -259,6 +283,8 @@ const VolantisApp = (() => {
     // 【移动端 PC】//////////////////////////////////////////////////////////////////////
 
     // 显示/隐藏 Header导航 topBtn 【移动端 PC】
+    if (!volantis.dom.bodyAnchor) return;
+    
     const showHeaderPoint = volantis.dom.bodyAnchor.offsetTop - scrollCorrection;
     const scrollTop = volantis.scroll.getScrollTop(); // 滚动条距离顶部的距离
 
@@ -285,10 +311,10 @@ const VolantisApp = (() => {
     // 决定一二级导航栏的切换 【向上滚动切换为一级导航栏；向下滚动切换为二级导航栏】  【移动端 PC】
     if (pdata.ispage && volantis.dom.wrapper) {
       const wrapper = volantis.dom.wrapper;
-      if (volantis.scroll.del > 0 && scrollTop > 100) { // 向下滚动
-        wrapper.addClass('sub'); // <---- 二级导航显示
-      } else if (volantis.scroll.del < 0) { // 向上滚动
-        wrapper.removeClass('sub'); // <---- 取消二级导航显示 一级导航显示
+      if (volantis.scroll.del > 0 && scrollTop > 100) {
+        wrapper.addClass('sub'); // 二级导航显示
+      } else if (volantis.scroll.del < 0) {
+        wrapper.removeClass('sub'); // 取消二级导航显示 一级导航显示
       }
     }
 
@@ -590,6 +616,11 @@ const VolantisApp = (() => {
   // 工具类：返回时间间隔
   fn.utilTimeAgo = (date, limit = 30) => {
     try {
+      // 确保输入是Date对象
+      if (!(date instanceof Date)) {
+        date = new Date(date);
+      }
+      
       const diffValue = Date.now() - date.getTime();
       const days = Math.floor(diffValue / (24 * 3600 * 1000));
 
@@ -609,13 +640,14 @@ const VolantisApp = (() => {
       if (days < 0) return '刚刚';
       if (days < limit) return `${days} 天前`;
 
-      const Nyear = date.getFullYear();
-      const Nmonth = String(date.getMonth() + 1).padStart(2, '0');
-      const Ndate = String(date.getDate()).padStart(2, '0');
-      return `${Nyear}年${Nmonth}月${Ndate}日`;
+      // 格式化日期
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}年${month}月${day}日`;
 
     } catch (error) {
-      console.error(error);
+      console.error('utilTimeAgo error:', error);
       return ' - ';
     }
   }
@@ -862,7 +894,6 @@ class VolantisFancyBox {
       Hash: false,
       groupAll: true,
       caption: (fancybox, slide) => slide.thumbEl?.alt || "",
-      // wheel: "slide",
       contentClick: 'iterateZoom',
       Thumbs: {
         showOnStart: false
@@ -870,15 +901,21 @@ class VolantisFancyBox {
       Images: {
         content: (_ref, slide) => {
           const imgElement = slide.thumbEl;
+          if (!imgElement) return '';
+          
           const pictureElement = imgElement.closest('picture');
-          imgElement.classList.remove("content-in")
+          imgElement.classList.remove("content-in");
+          
+          // 处理懒加载图片
           if (imgElement.hasAttribute('data-src')) {
             imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
           }
+          
           if (pictureElement) {
             pictureElement.classList.remove("lazy");
-            let sources = pictureElement.getElementsByTagName('source');
-            for (let source of sources) {
+            const sources = pictureElement.getElementsByTagName('source');
+            for (let i = 0; i < sources.length; i++) {
+              const source = sources[i];
               if (source.hasAttribute('data-srcset')) {
                 source.setAttribute('srcset', source.getAttribute('data-srcset'));
               }
@@ -908,6 +945,7 @@ class VolantisFancyBox {
         },
       }
     };
+    
     if (checkMain) {
       this.#init();
     }
@@ -922,12 +960,18 @@ class VolantisFancyBox {
 
   async loadFancybox() {
     if (typeof Fancybox === "undefined") {
-      await volantis.css(volantis.GLOBAL_CONFIG.cdn.fancybox_css);
-      await volantis.js(volantis.GLOBAL_CONFIG.cdn.fancybox_js);
+      try {
+        await volantis.css(volantis.GLOBAL_CONFIG.cdn.fancybox_css);
+        await volantis.js(volantis.GLOBAL_CONFIG.cdn.fancybox_js);
+      } catch (error) {
+        console.error('Failed to load Fancybox:', error);
+      }
     }
   }
 
   async bind(selectors) {
+    if (!selectors) return;
+    
     await this.loadFancybox();
     if (typeof Fancybox !== 'undefined') {
       Fancybox.unbind(selectors);
@@ -939,25 +983,34 @@ class VolantisFancyBox {
   async groupBind(selectors, groupName = 'default') {
     await this.loadFancybox();
     this.#elementHandling(selectors, groupName);
+    
     const group = new Set();
-    document.querySelectorAll('.gallery').forEach(ele => {
+    const galleries = document.querySelectorAll('.gallery');
+    for (let i = 0; i < galleries.length; i++) {
+      const ele = galleries[i];
       if (ele.querySelector("img")) {
         group.add(ele.getAttribute('data-group') || 'default');
       }
-    });
+    }
+    
     if (groupName) group.add(groupName);
-    group.forEach(name => {
-      if (typeof Fancybox !== 'undefined') {
+    
+    if (typeof Fancybox !== 'undefined') {
+      group.forEach(name => {
         Fancybox.unbind(`[data-fancybox="${name}"]`);
         Fancybox.bind(`[data-fancybox="${name}"]`, this.option);
-      }
-    });
+      });
+    }
   }
 
   #elementHandling(selectors, groupName) {
     if (!selectors) return;
-    document.querySelectorAll(selectors).forEach($item => {
-      if ($item.hasAttribute('fancybox')) return;
+    
+    const items = document.querySelectorAll(selectors);
+    for (let i = 0; i < items.length; i++) {
+      const $item = items[i];
+      if ($item.hasAttribute('fancybox')) continue;
+      
       $item.setAttribute('fancybox', '');
       const $link = document.createElement('a');
       $link.setAttribute('href', $item.src || $item.dataset?.src);
@@ -966,7 +1019,7 @@ class VolantisFancyBox {
       $link.classList.add('fancybox');
       $link.append($item.cloneNode());
       $item.replaceWith($link);
-    });
+    }
   }
 }
 
@@ -983,19 +1036,20 @@ class LazyLoader {
   // 初始化观察器
   initObserver() {
     this.lazyPictureObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
+      for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i];
         if (entry.isIntersecting && (!volantis?.scroll || !volantis?.scroll?.isScrolling)) {
           this.loadImage(entry.target);
           this.lazyPictureObserver.unobserve(entry.target);
           this.observedElements.delete(entry.target);
         }
-      });
+      }
     });
   }
 
   // 开始观察元素
   observeElement(element) {
-    if (!this.observedElements.has(element)) {
+    if (element && !this.observedElements.has(element)) {
       this.lazyPictureObserver.observe(element);
       this.observedElements.add(element);
     }
@@ -1003,36 +1057,54 @@ class LazyLoader {
 
   // 观察所有符合选择器的元素
   observeElements() {
-    document.querySelectorAll(this.selector).forEach(element => {
-      this.observeElement(element);
-    });
+    if (!this.selector) return;
+    const elements = document.querySelectorAll(this.selector);
+    for (let i = 0; i < elements.length; i++) {
+      this.observeElement(elements[i]);
+    }
   }
 
   removeLazy(lazyImage) {
+    if (!lazyImage) return;
     const pictureElement = lazyImage.closest('picture');
     if (pictureElement && pictureElement.classList.contains('lazy')) {
-      pictureElement.classList.remove("lazy")
+      pictureElement.classList.remove("lazy");
     }
   }
 
   // 加载图片
   loadImage(lazyImage) {
-    if (decodeURIComponent(lazyImage.src) === decodeURIComponent(lazyImage.dataset.src)
-      && lazyImage.complete) {
+    if (!lazyImage || !lazyImage.dataset.src) return;
+    
+    if (decodeURIComponent(lazyImage.src) === decodeURIComponent(lazyImage.dataset.src) && lazyImage.complete) {
       this.removeLazy(lazyImage);
-    } else {
-      let sources = lazyImage.parentElement.getElementsByTagName('source');
-      for (let source of sources) {
-        source.srcset = source.dataset.srcset;
-      }
-      if (!lazyImage.classList.contains('not-animation')) {
-        lazyImage.classList.add('content-in')
-      }
-      lazyImage.src = lazyImage.dataset.src;
-      lazyImage.onload = () => {
-        this.removeLazy(lazyImage)
-      };
+      return;
     }
+    
+    // 处理source标签
+    const parentElement = lazyImage.parentElement;
+    if (parentElement) {
+      const sources = parentElement.getElementsByTagName('source');
+      for (let i = 0; i < sources.length; i++) {
+        const source = sources[i];
+        if (source.dataset.srcset) {
+          source.srcset = source.dataset.srcset;
+        }
+      }
+    }
+    
+    // 添加动画效果
+    if (!lazyImage.classList.contains('not-animation')) {
+      lazyImage.classList.add('content-in');
+    }
+    
+    // 设置图片源
+    lazyImage.src = lazyImage.dataset.src;
+    
+    // 图片加载完成后移除lazy类
+    lazyImage.onload = () => {
+      this.removeLazy(lazyImage);
+    };
   }
 
   // 卸载所有观察器

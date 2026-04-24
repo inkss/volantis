@@ -3,72 +3,73 @@ const contextMenuManager = {
   readModeStylesheet: document.getElementById('reading-mode-stylesheet'),
   rem: parseFloat(getComputedStyle(document.documentElement).fontSize),
   maxMenuItems: 0,
-  isClipboardReadAllowed: true
+  isClipboardReadAllowed: true,
+  menuContainer: null,
+  menuItems: [],
+  navigationItems: []
+};
+
+// 公共数据
+const globalData = {
+  pointerEvent: null,  // 右键事件
+  linkAddress: null,   // 链接地址
+  selectedText: null,  // 选取文本
+  inputContent: null   // 输入框
 };
 
 // 初始化自定义右键菜单的函数
 contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-wrapper') {
-  const menuContainer = document.querySelector(menuSelector);
-  if (!menuContainer) return;
+  this.menuContainer = document.querySelector(menuSelector);
+  if (!this.menuContainer) return;
 
-  this.maxMenuItems = Number(menuContainer.dataset.maxMenuItems);
+  this.maxMenuItems = Number(this.menuContainer.dataset.maxMenuItems) || 12;
 
   // 右键导航项
-  const navigationItems = Array.from(menuContainer.querySelectorAll('.navigation.menuNavigation-Content a'))
-    .map(item => ({
+  this.navigationItems = [];
+  const navLinks = this.menuContainer.querySelectorAll('.navigation.menuNavigation-Content a');
+  for (let i = 0; i < navLinks.length; i++) {
+    const item = navLinks[i];
+    this.navigationItems.push({
       id: item.dataset.id,
       displayCondition: item.dataset.displayCondition,
       menuContentElement: item
-    }));
+    });
+  }
 
   // 右键菜单项  
-  const menuItems = Array.from(menuContainer.querySelectorAll('.menuLoad-Content'))
-    .flatMap(item => {
-      const elem = item.firstElementChild;
-      if (elem) {
-        return [{
-          id: elem.dataset.id,
-          link: elem.href,
-          linkTarget: elem.target,
-          eventName: elem.dataset.eventName,
-          displayCondition: elem.dataset.displayCondition,
-          isHrElement: elem.tagName === 'HR',
-          menuContentElement: item
-        }];
-      }
-      return [];
-    });
-
-  // 公共数据
-  const globalData = {
-    pointerEvent: null,  // 右键事件
-    linkAddress: null,   // 链接地址
-    selectedText: null,  // 选取文本
-    inputContent: null   // 输入框
-  };
+  this.menuItems = [];
+  const menuContents = this.menuContainer.querySelectorAll('.menuLoad-Content');
+  for (let i = 0; i < menuContents.length; i++) {
+    const item = menuContents[i];
+    const elem = item.firstElementChild;
+    if (elem) {
+      this.menuItems.push({
+        id: elem.dataset.id,
+        link: elem.href,
+        linkTarget: elem.target,
+        eventName: elem.dataset.eventName,
+        displayCondition: elem.dataset.displayCondition,
+        isHrElement: elem.tagName === 'HR',
+        menuContentElement: item
+      });
+    }
+  }
 
   // 预设条件
   const conditions = {
     inInputField: (menuItem, pointerEvent) => {
-      if (pointerEvent.target.tagName === 'INPUT' || pointerEvent.target.tagName === 'TEXTAREA') {
-        globalData.inputContent = pointerEvent.target;
+      const target = pointerEvent.target;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        globalData.inputContent = target;
         globalData.selectedText = window.getSelection().toString();
+        
         switch (menuItem.id) {
           case 'selectAllText':
-            if (globalData.inputContent.value !== '') {
-              return true;
-            }
-            break;
+            return globalData.inputContent.value !== '';
           case 'cutText':
-            if (globalData.selectedText !== '') {
-              return true;
-            }
-            break;
+            return globalData.selectedText !== '';
           case 'copyPaste':
-            if (contextMenuManager.isClipboardReadAllowed) {
-              return true;
-            }
-            break;
+            return contextMenuManager.isClipboardReadAllowed;
           default:
             return true;
         }
@@ -88,15 +89,19 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       return false;
     },
     onLink: (menuItem, pointerEvent) => {
-      if (this.urlRegx.test(globalData.selectedText)) {
+      // 检查选中的文本是否是链接
+      if (contextMenuManager.urlRegx.test(globalData.selectedText)) {
         globalData.linkAddress = globalData.selectedText;
         return true;
       }
+      
       const target = pointerEvent.target;
+      // 检查目标是否是链接
       if (target.tagName === 'A' && target.hasAttribute('href')) {
         globalData.linkAddress = target.href;
         return true;
       }
+      // 检查目标是否是图片
       if (target.tagName === 'IMG' && target.hasAttribute('src')) {
         globalData.linkAddress = target.src;
         return true;
@@ -105,86 +110,118 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
     },
     articlePage: (menuItem) => {
       if (menuItem.id === 'prev' || menuItem.id === 'next') {
-        return !!document.querySelector(`article .prev-next a.${menuItem.id}`)
+        return !!document.querySelector(`article .prev-next a.${menuItem.id}`);
       }
 
       if (menuItem.id === 'comment') {
         const element = document.querySelector('#comments');
-
+        if (!element) return false;
+        
         // 校验元素存在，页面中显示，屏幕上显示
-        return element
-          && !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length)
-          && (window.scrollY < (element.getBoundingClientRect().top - 50 + window.scrollY))
+        const isVisible = !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
+        const isBelowViewport = window.scrollY < (element.getBoundingClientRect().top - 50 + window.scrollY);
+        return isVisible && isBelowViewport;
       }
+      
       return !!document.querySelector('#post.article');
     },
     scrolledFromTop: () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop; 
-      const halfScreenHeight = window.innerHeight / 2; 
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const halfScreenHeight = window.innerHeight / 2;
       return scrollTop >= halfScreenHeight;
     },
     homePage: () => {
-      return new URL(window.location.href).pathname !== '/'
+      return new URL(window.location.href).pathname !== '/';
     }
   };
 
   // 预设事件
   const eventHandlers = {
     scrollTop: () => {
-      if (typeof volantis.scroll.to === 'function') {
-        volantis.scroll.to(volantis.dom.bodyAnchor)
+      if (typeof VolantisApp?.scrolltoElement === 'function' && volantis.dom?.bodyAnchor) {
+        VolantisApp.scrolltoElement(volantis.dom.bodyAnchor);
+      } else if (typeof volantis?.scroll?.to === 'function' && volantis.dom?.bodyAnchor) {
+        volantis.scroll.to(volantis.dom.bodyAnchor);
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     },
     scrollComment: () => {
       const element = document.querySelector('#comments');
+      if (!element) return;
+      
       const l_header = document.querySelector('#l_header');
-      const headerTotalOffset = l_header ? - contextMenuManager.rem - l_header.offsetHeight : 0;
-      if (typeof volantis.scroll.to === 'function') {
-        volantis.scroll.to(element, {addTop: headerTotalOffset});
+      const headerTotalOffset = l_header ? -contextMenuManager.rem - l_header.offsetHeight : 0;
+      
+      if (typeof volantis?.scroll?.to === 'function') {
+        volantis.scroll.to(element, { addTop: headerTotalOffset });
       } else {
-        window.scrollTo({ top: element.getBoundingClientRect().top + window.scrollY - headerTotalOffset, behavior: 'smooth' });
+        window.scrollTo({ 
+          top: element.getBoundingClientRect().top + window.scrollY - headerTotalOffset, 
+          behavior: 'smooth' 
+        });
       }
     },
     jumpArticle: (menuItem) => {
       const item = document.querySelector(`.prev-next a.${menuItem.id}`);
+      if (!item) return;
 
-      if (item) {
-        const href = item.href;
-        if (typeof pjax !== 'undefined') {
-          pjax.loadUrl(href);
-        } else {
-          window.location.href = href;
-        }
+      const href = item.href;
+      if (typeof pjax !== 'undefined') {
+        pjax.loadUrl(href);
+      } else {
+        window.location.href = href;
       }
     },
     readMode: () => {
       Fancybox?.close();
-      this.readModeStylesheet.disabled = !this.readModeStylesheet.disabled;
-
-      if (!this.readModeStylesheet.disabled) {
-        document.body.classList.add('read-mode');
-      } else {
-        document.body.classList.remove('read-mode');
+      if (contextMenuManager.readModeStylesheet) {
+        contextMenuManager.readModeStylesheet.disabled = !contextMenuManager.readModeStylesheet.disabled;
+        
+        if (!contextMenuManager.readModeStylesheet.disabled) {
+          document.body.classList.add('read-mode');
+        } else {
+          document.body.classList.remove('read-mode');
+        }
       }
     },
     printMode: () => {
-      if (!this.readModeStylesheet.disabled) {
-        eventHandlers.readMode()
+      // 确保阅读模式关闭
+      if (contextMenuManager.readModeStylesheet && !contextMenuManager.readModeStylesheet.disabled) {
+        eventHandlers.readMode();
       }
+      
       Fancybox?.close();
       NProgress?.start();
+      
+      // 展开所有details元素
       document.querySelectorAll('details').forEach(ele => ele.setAttribute('open', 'true'));
+      
+      // 加载懒加载图片
       const lazyImages = document.querySelectorAll("#post.article picture.lazy img");
-      const loadImage = img => {
+      const loadImage = (img) => {
         return new Promise((resolve, reject) => {
-          let sources = img.parentElement.getElementsByTagName('source');
-          for (let source of sources) {
-            source.srcset = source.dataset.srcset;
+          if (!img) {
+            resolve(null);
+            return;
           }
+          
+          const parentElement = img.parentElement;
+          if (parentElement) {
+            const sources = parentElement.getElementsByTagName('source');
+            for (let i = 0; i < sources.length; i++) {
+              const source = sources[i];
+              if (source.dataset.srcset) {
+                source.srcset = source.dataset.srcset;
+              }
+            }
+          }
+          
           img.removeAttribute('loading');
-          img.src = img.dataset.src;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+          }
+          
           if (img.complete) {
             img.closest('picture')?.classList.remove("lazy");
             resolve(img);
@@ -197,8 +234,14 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
           }
         });
       };
-      const imageLoadPromises = Array.from(lazyImages).map(loadImage);
+      
+      const imageLoadPromises = [];
+      for (let i = 0; i < lazyImages.length; i++) {
+        imageLoadPromises.push(loadImage(lazyImages[i]));
+      }
+      
       const timeoutPromise = new Promise(resolve => setTimeout(resolve, 20000));
+      
       Promise.race([Promise.all(imageLoadPromises), timeoutPromise]).finally(() => {
         NProgress?.done();
         setTimeout(() => {
@@ -207,54 +250,90 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       });
     },
     copyText: () => {
-      VolantisApp.utilWriteClipText(globalData.selectedText);
+      if (globalData.selectedText) {
+        VolantisApp.utilWriteClipText(globalData.selectedText);
+      }
     },
     copyLink: () => {
-      const target = globalData.pointerEvent.target;
+      const target = globalData.pointerEvent?.target;
+      if (!target) return;
+      
       let link = '';
       if (target.tagName === 'IMG') {
-        link = target.dataset.src || target.src
+        link = target.dataset.src || target.src;
+      } else if (target.tagName === 'A') {
+        link = target.href;
       }
-      if (target.tagName === 'A') {
-        link = target.href
+      
+      if (link) {
+        VolantisApp.utilWriteClipText(link);
       }
-      VolantisApp.utilWriteClipText(link);
     },
     copyImg: (menuItem) => {
       NProgress?.start();
       try {
-        const link = globalData.pointerEvent.target.dataset.src || globalData.pointerEvent.target.src;
+        const target = globalData.pointerEvent?.target;
+        if (!target) {
+          throw new Error('目标元素不存在');
+        }
+        
+        const link = target.dataset.src || target.src;
+        if (!link) {
+          throw new Error('图片链接不存在');
+        }
+        
         const image = new Image();
         image.crossOrigin = "Anonymous";
         image.src = `${link}?(lll￢ω￢)~~`;
-        image.onerror = null;
+        image.onerror = () => {
+          console.error('图片加载失败');
+          NProgress?.done();
+        };
         image.onload = () => {
-          const canvas = document.createElement("canvas");
-          canvas.width = image.width;
-          canvas.height = image.height;
-          const context = canvas.getContext("2d");
-          context.drawImage(image, 0, 0);
-          canvas.toBlob(blob => {
-            navigator.clipboard.write([
-              new ClipboardItem({ 'image/png': blob })
-            ]).finally(() => {
-              NProgress?.done();
-            });
-          }, 'image/png');
+          try {
+            const canvas = document.createElement("canvas");
+            canvas.width = image.width;
+            canvas.height = image.height;
+            const context = canvas.getContext("2d");
+            context.drawImage(image, 0, 0);
+            canvas.toBlob(blob => {
+              if (blob) {
+                navigator.clipboard.write([
+                  new ClipboardItem({ 'image/png': blob })
+                ]).catch(err => {
+                  console.error('复制图片失败:', err);
+                }).finally(() => {
+                  NProgress?.done();
+                });
+              } else {
+                console.error(' canvas.toBlob 失败');
+                NProgress?.done();
+              }
+            }, 'image/png');
+          } catch (err) {
+            console.error('处理图片失败:', err);
+            NProgress?.done();
+          }
         };
       } catch (err) {
-        console.error(`Menu: ${menuItem.id}, event:[${menuItem.eventName}] error: ${err}`)
+        console.error(`Menu: ${menuItem.id}, event:[${menuItem.eventName}] error: ${err}`);
         NProgress?.done();
       }
     },
     selectAllText: () => {
-      globalData.inputContent.select();
+      if (globalData.inputContent) {
+        globalData.inputContent.select();
+      }
     },
     cutText: (text) => {
+      if (!globalData.inputContent) return;
+      
       // 公共调用时第一个参数传递的是 Object
       let value = '';
       if (typeof text !== 'string') {
-        VolantisApp.utilWriteClipText(globalData.selectedText);
+        if (globalData.selectedText) {
+          VolantisApp.utilWriteClipText(globalData.selectedText);
+        }
       } else {
         VolantisApp.utilWriteClipText(text);
         value = text;
@@ -263,7 +342,7 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       const element = globalData.inputContent;
       const { selectionStart: start, selectionEnd: end, scrollTop } = element;
 
-      element.value = `${element.value.substring(0, start)}${value}${element.value.substring(end)}`
+      element.value = `${element.value.substring(0, start)}${value}${element.value.substring(end)}`;
       element.setSelectionRange(start + value.length, start + value.length);
       element.scrollTop = scrollTop;
       element.focus();
@@ -271,17 +350,27 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
     copyPaste: async (menuItem, pointerEvent) => {
       try {
         NProgress?.start();
+        
+        // 检查浏览器是否支持剪贴板 API
+        if (!navigator.permissions || !navigator.clipboard) {
+          throw new Error('当前浏览器不支持剪贴板 API');
+        }
+        
         const result = await navigator.permissions.query({ name: 'clipboard-read' });
         if (result.state === 'granted' || result.state === 'prompt') {
           const clipboardItems = await navigator.clipboard.read();
 
           let text = '';
           let imageFiles = [];
-          for (const item of clipboardItems) {
+          
+          for (let i = 0; i < clipboardItems.length; i++) {
+            const item = clipboardItems[i];
             if (item.types.length === 0) {
-              throw new Error('剪切板中没有可被读取的内容，目前仅支持文本和图像数据，暂不支持操作系统级别的文件复制粘贴操作。')
+              throw new Error('剪切板中没有可被读取的内容，目前仅支持文本和图像数据，暂不支持操作系统级别的文件复制粘贴操作。');
             }
-            for (const type of item.types) {
+            
+            for (let j = 0; j < item.types.length; j++) {
+              const type = item.types[j];
               if (type.startsWith('image/')) {
                 const imageBlob = await item.getType(type);
                 const file = new File([imageBlob], 'clipboard-image.png', { type: type });
@@ -297,7 +386,9 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
           // 粘贴文本内容
           eventHandlers.cutText(text);
 
-          for (const file of imageFiles) {
+          // 处理图片文件
+          for (let i = 0; i < imageFiles.length; i++) {
+            const file = imageFiles[i];
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(file);
             const pasteEvent = new ClipboardEvent('paste', {
@@ -307,13 +398,13 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
             });
 
             // 对剪切板中的图片尝试触发 paste 事件
-            pointerEvent.target.dispatchEvent(pasteEvent);
+            pointerEvent?.target?.dispatchEvent(pasteEvent);
           }
 
           contextMenuManager.isClipboardReadAllowed = true;
         } else {
           contextMenuManager.isClipboardReadAllowed = false;
-          throw new Error('没有读取剪切板的权限！')
+          throw new Error('没有读取剪切板的权限！');
         }
         NProgress?.done();
       } catch (err) {
@@ -415,8 +506,8 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
    * @param {Event} event 点击事件
    */
   const handleEvent = (id, eventName, event) => {
-    const item = menuItems.find(item => item.eventName === eventName && item.id === id)
-      || navigationItems.find(item => item.eventName === eventName && item.id === id)
+    const item = contextMenuManager.menuItems.find(item => item.eventName === eventName && item.id === id)
+      || contextMenuManager.navigationItems.find(item => item.eventName === eventName && item.id === id)
       || { id: id, eventName: eventName };
     if (eventHandlers[eventName]) {
       eventHandlers[eventName](item, globalData.pointerEvent);
@@ -434,7 +525,8 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
     let menuItemsCount = 0;
 
     // 根据条件显示/隐藏菜单项  
-    menuItems.forEach(item => {
+    for (let i = 0; i < contextMenuManager.menuItems.length; i++) {
+      const item = contextMenuManager.menuItems[i];
       if (evaluateCondition(item, pointerEvent)) {
         item.menuContentElement.classList.add('active');
         if (!item.isHrElement) {
@@ -443,21 +535,23 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       } else {
         item.menuContentElement.classList.remove('active');
       }
-    })
+    }
 
     // 处理过长菜单项
     // 当总菜单项累计显示数量大于设定数量时，隐藏所有链接型菜单
-    if (menuItemsCount > this.maxMenuItems) {
-      menuItems.forEach(item => {
+    if (menuItemsCount > contextMenuManager.maxMenuItems) {
+      for (let i = 0; i < contextMenuManager.menuItems.length; i++) {
+        const item = contextMenuManager.menuItems[i];
         if (item.link) {
           item.menuContentElement.classList.remove('active');
         }
-      })
+      }
     }
 
     // 处理“相邻、第一个显示、最后一个显示”的菜单分割项
     let lastSeparator = null;
-    menuItems.forEach(menuItem => {
+    for (let i = 0; i < contextMenuManager.menuItems.length; i++) {
+      const menuItem = contextMenuManager.menuItems[i];
       if (menuItem.isHrElement) {
         menuItem.menuContentElement.classList.add('active');
         if (lastSeparator) {
@@ -467,22 +561,28 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
       } else if (menuItem.menuContentElement.classList.contains('active')) {
         lastSeparator = null;
       }
-    });
+    }
+    
     if (lastSeparator) {
       lastSeparator.classList.remove('active');
     }
-    if (navigationItems.length === 0) {
-      const firstActiveMenuItem = menuItems.find(item => item.menuContentElement.classList.contains('active'))
-      if (firstActiveMenuItem.isHrElement) {
+    
+    // 处理第一个激活的菜单项是分割线的情况
+    if (contextMenuManager.navigationItems.length === 0) {
+      const firstActiveMenuItem = contextMenuManager.menuItems.find(item => 
+        item.menuContentElement.classList.contains('active')
+      );
+      if (firstActiveMenuItem && firstActiveMenuItem.isHrElement) {
         firstActiveMenuItem.menuContentElement.classList.remove('active');
       }
     }
 
     // 处理导航栏显隐
-    navigationItems.forEach(menuNav => {
+    for (let i = 0; i < contextMenuManager.navigationItems.length; i++) {
+      const menuNav = contextMenuManager.navigationItems[i];
       menuNav.menuContentElement.style.display = evaluateCondition(menuNav, pointerEvent)
         ? 'flex' : 'none';
-    })
+    }
   };
 
   /**
@@ -495,29 +595,37 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
 
     showCustomContextMenu(pointerEvent);
 
-    menuContainer.classList.add('active');
+    contextMenuManager.menuContainer.classList.add('active');
     const { clientX: mouseClientX, clientY: mouseClientY } = pointerEvent;
     const screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
     const screenHeight = document.documentElement.clientHeight || document.body.clientHeight;
-    const menuWidth = menuContainer.offsetWidth;
-    const menuHeight = menuContainer.offsetHeight;
+    const menuWidth = contextMenuManager.menuContainer.offsetWidth;
+    const menuHeight = contextMenuManager.menuContainer.offsetHeight;
 
-    let posX = mouseClientX + menuWidth > screenWidth ? mouseClientX - menuWidth + 10 : mouseClientX;
-    let posY = mouseClientY + menuHeight > screenHeight ? mouseClientY - menuHeight + 10 : mouseClientY;
+    // 计算菜单位置，确保菜单不会超出屏幕
+    let posX = mouseClientX + menuWidth > screenWidth 
+      ? mouseClientX - menuWidth + 10 
+      : mouseClientX;
+    
+    let posY = mouseClientY + menuHeight > screenHeight 
+      ? mouseClientY - menuHeight + 10 
+      : mouseClientY;
+    
+    // 处理菜单底部超出屏幕的情况
     if (mouseClientY + menuHeight > screenHeight && posY < menuHeight && mouseClientY < menuHeight) {
       posY += screenHeight - menuHeight - posY - 10;
     }
 
-    menuContainer.style.left = `${posX}px`;
-    menuContainer.style.top = `${posY}px`;
+    contextMenuManager.menuContainer.style.left = `${posX}px`;
+    contextMenuManager.menuContainer.style.top = `${posY}px`;
   };
 
   /**
    * 隐藏自定义右键菜单
    */
   const hideContextMenu = () => {
-    if (menuContainer.classList.contains('active')) {
-      menuContainer.classList.remove('active');
+    if (contextMenuManager.menuContainer && contextMenuManager.menuContainer.classList.contains('active')) {
+      contextMenuManager.menuContainer.classList.remove('active');
     }
   };
 
@@ -527,20 +635,27 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
   document.addEventListener('contextmenu', (pointerEvent) => {
     hideContextMenu();
     globalData.pointerEvent = pointerEvent;
+    
+    // 按下Ctrl键或屏幕宽度小于等于500px时，使用默认右键菜单
     if (pointerEvent.ctrlKey || document.body.offsetWidth <= 500) {
       return true;
     }
 
     try {
-      positionMenu(pointerEvent)
+      positionMenu(pointerEvent);
 
+      // 移除旧的事件监听器
       window.removeEventListener('blur', hideContextMenu);
       document.body.removeEventListener('click', hideContextMenu);
 
+      // 添加新的事件监听器
       window.addEventListener('blur', hideContextMenu);
       document.body.addEventListener('click', hideContextMenu);
 
-      volantis.scroll.push(hideContextMenu);
+      // 添加滚动事件监听器
+      if (volantis?.scroll?.push) {
+        volantis.scroll.push(hideContextMenu);
+      }
     } catch (error) {
       console.error('Error positioning menu:', error);
       return true;
@@ -550,7 +665,7 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
   /**
    * 阻止右键菜单上的右键行为
    */
-  menuContainer.addEventListener('contextmenu', event => {
+  contextMenuManager.menuContainer.addEventListener('contextmenu', event => {
     event.stopPropagation();
     event.preventDefault();
     return false;
@@ -559,10 +674,12 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
   /**
    * 菜单项点击事件（事件委托）
    */
-  menuContainer.addEventListener('click', event => {
+  contextMenuManager.menuContainer.addEventListener('click', event => {
+    // 找到导航栏或菜单项
     const navigation = event.target.closest('.menuNavigation-Content a'); // 导航栏
     const menuContent = event.target.closest('.menuLoad-Content span'); // 菜单项
-    const targetElement = navigation || menuContent;
+    const menuLink = event.target.closest('.menuLoad-Content a'); // 菜单项链接
+    const targetElement = navigation || menuContent || menuLink;
 
     if (targetElement && targetElement.dataset.eventName && targetElement.dataset.id) {
       handleEvent(targetElement.dataset.id, targetElement.dataset.eventName, event);
@@ -574,14 +691,16 @@ contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-
    * Pjax 回调事件
    */
   try {
-    volantis.pjax.send(() => {
-      hideContextMenu();
-      if (!this.readModeStylesheet.disabled) {
-        eventHandlers.readMode()
-      }
-    })
+    if (volantis?.pjax?.send) {
+      volantis.pjax.send(() => {
+        hideContextMenu();
+        if (contextMenuManager.readModeStylesheet && !contextMenuManager.readModeStylesheet.disabled) {
+          eventHandlers.readMode();
+        }
+      });
+    }
   } catch (error) {
-    console.error(`Pjax error: ${error}`)
+    console.error(`Pjax error: ${error}`);
   }
 }
 
