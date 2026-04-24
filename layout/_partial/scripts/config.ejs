@@ -24,12 +24,6 @@
       }
     },
     plugins: {
-      <% if(theme.plugins.aplayer.enable) { %>
-      aplayer: {
-        id: <%- JSON.stringify(theme.plugins.aplayer.id) %>,
-        enable:<%- JSON.stringify(theme.plugins.aplayer.enable) %>
-      }
-      <% } %>
     },
     search: {
       <% if(theme.search.service === 'algolia') { %>

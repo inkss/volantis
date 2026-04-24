@@ -44,22 +44,6 @@
                   <span><%- value.name %></span>
                 </a>
               <li>
-            <% } else if (value.icon && value.icon.indexOf('fa-compact-disc') > -1 && value.url  == undefined && value.rows  == undefined) { %>
-              <% if (type == 'pc') { %>
-                <li>
-                  <a class="menuitem flat-box">
-                    <i id="aplayerHeaderIcon" class='<%= value.icon %> fa-fw'></i>
-                    <span><%- value.name %></span>
-                  </a>
-                  <ul class="list-v">
-                    <li>
-                      <div class="aplayer-container">
-                        <%- partial('../_plugins/aplayer/layout', {post: null, where: 'footer'}) %>
-                      </div>
-                    </li>
-                  </ul>
-                <li>
-              <% } %>
             <% } else if (value.name != undefined && value.url  == undefined && value.rows == undefined) { %>
               <li class='header'>
                 <% if (value.icon) { %><span class="icon"><i class='<%= value.icon %> fa-fw'></i><span><% } %>
