@@ -1,6 +1,0 @@
-<% if (theme.plugins.lazyload && theme.plugins.lazyload.enable) { %>
-  <div class='cover-bg lazyload placeholder' data-bg="<%- theme.cover.background %>"></div>
-<% } else { %>
-  <div class='cover-bg' style='background-image:url(<%- theme.cover.background %>)'></div>
-<% } %>
-<%- partial(theme.cover.layout_scheme) %>

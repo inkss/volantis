@@ -1,13 +1,4 @@
 <%_
-if (page.cover == undefined && theme.cover) {
-  if (is_home() && page.prev == 0) {
-    page.cover = theme.cover.display.home;
-  } else if (is_archive()) {
-    page.cover = theme.cover.display.archive;
-  } else {
-    page.cover = theme.cover.display.others;
-  }
-}
 if (is_home() || is_category() || is_archive() || is_tag() || page.layout == 'list') {
   if (page.sidebar == undefined) {
     if (theme.sidebar.for_page.length == 0) {
