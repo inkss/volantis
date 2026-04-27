@@ -1,0 +1,89 @@
+div.gallery
+  margin: $gap-p 0
+  $sp = 1px
+  &+.gallery
+    margin-top: 0 - $gap-p
+  >.fancybox
+    margin: $sp
+    padding: 0
+    position: relative
+    img
+      width 100%
+      height auto
+      max-width 100%
+      display block
+      animation none
+      object-fit cover
+  >p
+    display none
+  display: flex
+  justify-content: center
+  align-items: center
+  flex-wrap: nowrap
+  padding: 0 !important
+  &[col]
+    align-items: stretch
+  &[col]
+    flex-wrap: wrap
+    justify-content: flex-start
+  &[col='2']>.fancybox
+    width: "calc(50% - 2 * %s)" % $sp
+  &[col='3']>.fancybox
+    width: "calc(33.33% - 2 * %s)" % $sp
+  &[col='4']>.fancybox
+    width: "calc(25% - 2 * %s)" % $sp
+  &[col='5']>.fancybox
+    width: "calc(20% - 2 * %s)" % $sp
+  &[col='6']>.fancybox
+    width: "calc(16.66% - 2 * %s)" % $sp
+  &[col='7']>.fancybox
+    width: "calc(14.2857% - 2 * %s)" % $sp
+  &[col='8']>.fancybox
+    width: "calc(12.5% - 2 * %s)" % $sp
+  >p
+    margin: 0
+  &.left
+    justify-content: flex-start
+  &.center
+    justify-content: center
+  &.right
+    justify-content: flex-end
+  &.stretch
+    align-items: stretch
+    >.fancybox img
+      transform: scale(1.5)
+
+.fancybox-container
+  .fancybox-stage
+    cursor: zoom-out
+
+.fancybox
+  margin-top: $gap-p
+  margin-bottom: $gap-p
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  flex-wrap: nowrap
+  padding: 0 !important
+  overflow: hidden
+  border-radius: 2px
+  @media screen and (max-width: $device-mobile)
+    border-radius: 1px
+  a
+    line-height: 0
+    margin: 0 auto
+    align-items: stretch
+    cursor: zoom-in
+  .bg
+    display: flex
+    width: 100%
+  .gallery
+    overflow: hidden
+  .image-caption
+    font-size: $fontsize-code
+    padding-top: $gap-p * 0.5
+    padding-bottom: $gap-p
+    color: var(--color-meta)
+    &:empty
+      display: none
