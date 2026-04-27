@@ -112,7 +112,7 @@ contextMenuManager.generateMenuHTML = function(config) {
   if (typeof feather !== 'undefined') {
     const icons = wrapper.querySelectorAll('[data-feather]');
     icons.forEach(icon => {
-      feather.replace(icon);
+      feather.replace(icon, { width: 16, height: 16 });
     });
   }
 };
