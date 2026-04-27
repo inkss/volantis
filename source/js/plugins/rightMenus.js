@@ -793,8 +793,15 @@ contextMenuManager.initializeContextMenu = async function () {
 
     if (targetElement && targetElement.dataset.eventName && targetElement.dataset.id) {
       handleEvent(targetElement.dataset.id, targetElement.dataset.eventName, event);
+    } else if ((navigation || menuLink) && targetElement.href && targetElement.target !== '_blank' && targetElement.target !== 'view_window') {
+      // 普通链接通过 pjax 加载（包括 navigation 和 menuLink）
+      event.preventDefault();
+      if (typeof pjax !== 'undefined') {
+        pjax.loadUrl(targetElement.href);
+      } else {
+        window.location.href = targetElement.href;
+      }
     }
-    // else 普通链接型 无需处理
   });
 
   /**
