@@ -12,12 +12,3 @@ hexo.on('generateBefore', () => {
   }
 });
 
-hexo.on('ready', () => {
-  const { version } = require('../../package.json');
-  hexo.log.info(`
-============================================================
-  Volantis ${version}
-  Docs: https://volantis.js.org/
-  Repo: https://github.com/volantis-x/hexo-theme-volantis/
-============================================================`);
-});
