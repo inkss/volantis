@@ -17,9 +17,119 @@ const globalData = {
   inputContent: null   // 输入框
 };
 
+// 生成菜单 HTML
+contextMenuManager.generateMenuHTML = function(config) {
+  // 检查是否已存在，避免重复添加
+  if (document.getElementById('rightmenu-wrapper')) {
+    return;
+  }
+
+  // 创建容器
+  const wrapper = document.createElement('div');
+  wrapper.id = 'rightmenu-wrapper';
+  wrapper.dataset.maxMenuItems = config.options.maxMenuItems || 12;
+
+  const menuContent = document.createElement('ul');
+  menuContent.className = 'rightmenu-list';
+  menuContent.id = 'rightmenu-content';
+
+  let html = '';
+
+  // 处理 feather 图标
+  const processIcon = (iconStr) => {
+    if (!iconStr) return '';
+    const classList = iconStr.split(' ');
+    const featherIndex = classList.indexOf('feather');
+    if (featherIndex !== -1 && featherIndex + 1 < classList.length) {
+      const dataFeatherValue = classList[featherIndex + 1];
+      classList.splice(featherIndex, 2);
+      const newClass = classList.join(' ').trim();
+      return `data-feather="${dataFeatherValue}" class="${newClass}"`;
+    }
+    return `class="${iconStr}"`;
+  };
+
+  // 生成导航栏
+  if (config.options.navigation && config.navigation.length > 0) {
+    html += '<li class="navigation menuNavigation-Content">';
+    config.navigation.forEach(item => {
+      if (item.link === undefined) {
+        html += `<a data-id="${item.id}" class="rightmenu-icon-only" rel="nofollow" data-event-name="${item.eventName}" data-display-condition="${item.displayCondition || ''}">`;
+        html += `<i ${processIcon(item.icon)}></i>`;
+        html += '</a>';
+      } else {
+        const linkTarget = item.linkTarget || '_self';
+        html += `<a data-id="${item.id}" class="rightmenu-icon-only" rel="nofollow" href="${item.link}" target="${linkTarget}" data-display-condition="${item.displayCondition || ''}">`;
+        html += `<i ${processIcon(item.icon)}></i>`;
+        html += '</a>';
+      }
+    });
+    html += '</li>';
+    html += '<li class="menuLoad-Content active"><hr></li>';
+  }
+
+  // 生成菜单列表
+  const autoDividerEnabled = config.menuList.some(item => item === 'hr' || item.id === undefined || item.id === 'hr');
+  let lastDisplayCondition = null;
+
+  config.menuList.forEach((item, index) => {
+    if (autoDividerEnabled) {
+      if (item === 'hr' || item.id === undefined || item.id === 'hr') {
+        html += '<li class="menuLoad-Content"><hr></li>';
+        return;
+      }
+    } else {
+      if (index > 0 && item.displayCondition !== lastDisplayCondition) {
+        html += '<li class="menuLoad-Content"><hr></li>';
+      }
+    }
+    lastDisplayCondition = item.displayCondition;
+
+    if (item.link === undefined) {
+      html += '<li class="menuLoad-Content">';
+      html += `<span class="rightmenu-item" data-id="${item.id}" data-event-name="${item.eventName}" data-display-condition="${item.displayCondition || ''}">`;
+      html += `<i ${processIcon(item.icon)}></i>`;
+      html += item.name;
+      html += '</span>';
+      html += '</li>';
+    } else {
+      const linkTarget = item.linkTarget || '_self';
+      html += '<li class="menuLoad-Content">';
+      html += `<a class="rightmenu-item" data-id="${item.id}" href="${item.link}" target="${linkTarget}" data-display-condition="${item.displayCondition || ''}">`;
+      html += `<i ${processIcon(item.icon)}></i>`;
+      html += item.name;
+      html += '</a>';
+      html += '</li>';
+    }
+  });
+
+  menuContent.innerHTML = html;
+  wrapper.appendChild(menuContent);
+  document.body.appendChild(wrapper);
+  this.menuContainer = wrapper;
+
+  // 只针对右键菜单容器中的图标调用 feather.replace()
+  if (typeof feather !== 'undefined') {
+    const icons = wrapper.querySelectorAll('[data-feather]');
+    icons.forEach(icon => {
+      feather.replace(icon);
+    });
+  }
+};
+
 // 初始化自定义右键菜单的函数
-contextMenuManager.initializeContextMenu = function (menuSelector = '#rightmenu-wrapper') {
-  this.menuContainer = document.querySelector(menuSelector);
+contextMenuManager.initializeContextMenu = async function () {
+  // 加载配置并生成 HTML
+  try {
+    const response = await fetch('/data/rightmenus.json');
+    const config = await response.json();
+    this.generateMenuHTML(config);
+  } catch (error) {
+    console.error('Failed to load rightmenus config:', error);
+    return;
+  }
+
+  this.menuContainer = document.getElementById('rightmenu-wrapper');
   if (!this.menuContainer) return;
 
   this.maxMenuItems = Number(this.menuContainer.dataset.maxMenuItems) || 12;

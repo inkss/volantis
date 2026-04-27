@@ -6,72 +6,110 @@ div#rightmenu-wrapper
   &.active
     display block
 
-ul.list-v.rightmenu
-  display block
-  max-width 240px
-  min-width 170px
-  overflow hidden
-  position relative
-
-  li.menuNavigation-Content
-    a
-      cursor $pointer
-
-  li.menuLoad-Content
-    display none
-    a, span
-      cursor $pointer
-      display flex
-      justify-content flex-start
-      align-items center
-      svg.feather
-        margin-right $gap * 0.5
-    &.active
-      display block
-
-  $cellH = 32px
-
-  a.vlts-menu
-    text-overflow ellipsis
-    overflow hidden
-    line-height $cellH
-    font-weight normal
-
-  >li>span
+  ul.rightmenu-list
     display block
-    color var(--color-list)
-    font-size $fontsize-meta
-    line-height 36px
-    @media screen and (max-width: $device-laptop)
-      line-height 40px
-    padding 0 $gap + $border-line + 2px 0 $gap
-    text-overflow ellipsis
-    margin 0 4px
-    border-radius 4px
-    >i
-      margin-right 8px
-    &:active, &.active
-      list_active()
-    &:hover
-      list_hover()
+    max-width 240px
+    min-width 170px
+    overflow hidden
+    position relative
+    background var(--color-card)
+    border-radius 8px
+    box-shadow 0 2px 12px rgba(0, 0, 0, 0.15)
+    padding 4px 0
+    animation header-effect 0.2s cubic-bezier(0.23, 0, 0, 1.32)
 
-  li.navigation
-    display flex
-    justify-content space-around
-    a.icon-only
-      line-height 0
-      margin 0
-      padding 0
-      border-radius $cellH
+    li.menuNavigation-Content
+      a
+        cursor $pointer
+
+    li.menuLoad-Content
+      display none
+      a, span
+        cursor $pointer
+        display flex
+        justify-content flex-start
+        align-items center
+        padding 0 $gap
+        margin 2px 4px
+        border-radius 4px
+        transition background 0.2s
+        color var(--color-list)
+        svg.feather
+          margin-right $gap * 0.5
+          width 16px
+          height 16px
+        &:hover
+          color var(--color-list-hl)
+          background var(--color-site-bg)
+        &:active
+          color var(--color-list-hl)
+          background var(--color-site-bg)
+      &.active
+        display block
+
+    $cellH = 32px
+
+    a.rightmenu-item
+      text-overflow ellipsis
       overflow hidden
-      width $cellH
-      height $cellH
-    a.nav
-      i
-        margin 0
-        width $cellH
-        line-height $cellH
-    a:has(svg.feather)
+      line-height $cellH
+      font-weight normal
+      font-size .875rem
+
+    >li>span
+      display block
+      color var(--color-list)
+      font-size $fontsize-meta
+      line-height 36px
+      @media screen and (max-width: $device-laptop)
+        line-height 40px
+      padding 0 $gap + $border-line + 2px 0 $gap
+      text-overflow ellipsis
+      margin 0 4px
+      border-radius 4px
+      transition background 0.2s
+      >i
+        margin-right 8px
+      &:active, &.active
+        color var(--color-list-hl)
+        background var(--color-site-bg)
+      &:hover
+        color var(--color-list-hl)
+        background var(--color-site-bg)
+
+    li.navigation
       display flex
-      align-items center
-      justify-content center
+      justify-content space-around
+      padding 4px 0
+      border-bottom 1px solid var(--color-border)
+      margin-bottom 4px
+      a.rightmenu-icon-only
+        line-height 0
+        margin 0
+        padding 0
+        border-radius $cellH
+        overflow hidden
+        width $cellH
+        height $cellH
+        display flex
+        align-items center
+        justify-content center
+        transition background 0.2s
+        svg.feather
+          width 16px
+          height 16px
+        &:hover
+          color var(--color-list-hl)
+          background var(--color-site-bg)
+      a.rightmenu-nav
+        i
+          margin 0
+          width $cellH
+          line-height $cellH
+      a:has(svg.feather)
+        display flex
+        align-items center
+        justify-content center
+        svg.feather
+          width 16px
+          height 16px
