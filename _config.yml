@@ -633,6 +633,12 @@ plugins:
       # - '/artitalk/'   # artitalk 不支持 pjax
       # - '/bbtalk/'     # bbtalk 不支持 pjax
 
+  # NProgress
+  nprogress:
+    enable: false
+    js: volantis-npm/nprogress@0.2.0/nprogress.min.js
+    css: volantis-npm/nprogress@0.2.0/nprogress.min.css
+
   # 暗黑模式 darkmode
   # 开关按钮：在 navbar.menu 中添加：
   # - name: 暗黑模式 # 可自定义

@@ -57,6 +57,16 @@
   <%- partial('../../_plugins/highlight/script') %>
 <% } %>
 
+<!-- pjax -->
+<% if (theme.plugins.pjax.enable){ %>
+  <%- partial('../../_plugins/pjax/index') %>
+<% } %>
+
+<!-- nprogress -->
+<% if (theme.plugins.nprogress && theme.plugins.nprogress.enable){ %>
+  <%- partial('../../_plugins/nprogress/index') %>
+<% } %>
+
 <!-- pjax 标签必须存在于所有页面 否则 pjax error -->
 <pjax>
 <% if (page.plugins) { %>
