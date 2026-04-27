@@ -90,13 +90,27 @@ hexo.extend.helper.register("generate_description", function (config, theme, pag
       description = config.title
     }
   }
-  return `<meta desc name="description" content="${description}">`
+  return `<meta name="description" content="${description}">`
 });
 
 
 hexo.extend.filter.register('after_render:html', function(html, data) {
-  // 移除 open_graph() 函数会生成的 description
-  html = html.replace(/<meta name="description".*>/g, "");
+  // 移除重复的 description 标签，只保留第一个
+  const descMatches = html.match(/<meta name="description"[^>]*>/g);
+  if (descMatches && descMatches.length > 1) {
+    html = html.replace(/<meta name="description"[^>]*>/g, (match, offset) => {
+      return offset === html.indexOf(match) ? match : '';
+    });
+  }
+
+  // 移除非文章页面的 article 属性
+  const isPost = data.page.layout === 'post';
+  if (!isPost) {
+    html = html.replace(/<meta property="article:tag".*\/?>/g, '');
+    html = html.replace(/<meta property="article:author".*\/?>/g, '');
+    html = html.replace(/<meta property="article:published_time".*\/?>/g, '');
+    html = html.replace(/<meta property="article:modified_time".*\/?>/g, '');
+  }
 
   // 如果是文章页面且有自定义头图，则替换 og:image 和 twitter:image
   // 因为文章中的 headimg 是相对地址，所以此处需要强制指定一下（在有其他位置统一完成替换为完整地址）

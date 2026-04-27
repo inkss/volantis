@@ -46,6 +46,14 @@
   <%- generate_title(config, theme, page) %>
   <%- generate_keywords(config, theme, page) %>
   <%- generate_description(config, theme, page) %>
+  <%_ if (config.author) { _%>
+    <meta name="author" content="<%- config.author %>">
+  <%_ } _%>
+  <%_ if (theme.color_scheme && theme.color_scheme.light && theme.color_scheme.light.site_bg) { _%>
+    <meta name="theme-color" content="<%- theme.color_scheme.light.site_bg %>">
+  <%_ } else { _%>
+    <meta name="theme-color" content="#ffffff">
+  <%_ } _%>
   <%- open_graph(theme.open_graph) %>
   <link rel="stylesheet" href="<%- theme.cdn.volantis_style %>" onload="this.media='all';this.onload=null">
   <link id="reading-mode-stylesheet" rel="stylesheet" disabled="true" href="/css/read.css">
