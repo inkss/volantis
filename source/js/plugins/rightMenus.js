@@ -121,7 +121,7 @@ contextMenuManager.generateMenuHTML = function(config) {
 contextMenuManager.initializeContextMenu = async function () {
   // 加载配置并生成 HTML
   try {
-    const response = await fetch('/data/rightmenus.json');
+    const response = await fetch('/rightmenus.json');
     const config = await response.json();
     this.generateMenuHTML(config);
   } catch (error) {

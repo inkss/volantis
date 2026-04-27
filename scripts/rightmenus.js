@@ -5,10 +5,10 @@ let isGenerated = false;
 
 hexo.on('generateBefore', () => {
   if (isGenerated) return;
-  
+
   const theme = hexo.theme.config;
-  
-  if (!theme.plugins.rightmenus || !theme.plugins.rightmenus.enable) {
+
+  if (!theme.plugins || !theme.plugins.rightmenus || !theme.plugins.rightmenus.enable) {
     return;
   }
 
@@ -19,13 +19,7 @@ hexo.on('generateBefore', () => {
   };
 
   const jsonContent = JSON.stringify(rightmenusConfig, null, 2);
-  const targetDir = path.join(hexo.base_dir, 'source/data');
-  const targetPath = path.join(targetDir, 'rightmenus.json');
-
-  // 确保目录存在
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
-  }
+  const targetPath = path.join(hexo.base_dir, 'source', 'rightmenus.json');
 
   // 检查文件是否已存在且内容相同
   let shouldWrite = true;
@@ -40,6 +34,6 @@ hexo.on('generateBefore', () => {
     fs.writeFileSync(targetPath, jsonContent, 'utf8');
     hexo.log.info('Generated rightmenus.json');
   }
-  
+
   isGenerated = true;
 });
