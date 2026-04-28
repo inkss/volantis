@@ -108,12 +108,9 @@ contextMenuManager.generateMenuHTML = function(config) {
   document.body.appendChild(wrapper);
   this.menuContainer = wrapper;
 
-  // 只针对右键菜单容器中的图标调用 feather.replace()
+  // 调用 feather.replace()
   if (typeof feather !== 'undefined') {
-    const icons = wrapper.querySelectorAll('[data-feather]');
-    icons.forEach(icon => {
-      feather.replace(icon, { width: 16, height: 16 });
-    });
+    feather.replace({ width: 16, height: 16 });
   }
 };
 
