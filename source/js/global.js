@@ -404,18 +404,6 @@ volantis.scroll = {
 volantis.scroll.push = volantis.scroll.engine.push.bind(volantis.scroll.engine);
 volantis.scroll.handleScrollEvents(); // 处理滚动事件
 
-/********************** Content Visibility ********************************/
-// 见 source/css/first.styl 如果遇到任何问题 删除 .post-story 即可
-// 一个元素被声明 content-visibility 属性后 如果元素不在 viewport 中 浏览器不会计算其后代元素样式和属性 从而节省 Style & Layout 耗时
-// content-visibility 的副作用: 锚点失效 等等(实验初期 暂不明确), 使用此方法清除样式
-volantis.cleanContentVisibility = () => {
-  const elements = document.querySelectorAll('.post-story');
-  if (elements.length) {
-    console.log('cleanContentVisibility');
-    elements.forEach(e => e.classList.remove('post-story'));
-  }
-};
-
 /******************************************************************************/
 //图像加载出错时的处理
 function errorImgAvatar(img) {

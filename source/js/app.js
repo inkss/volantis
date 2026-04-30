@@ -309,7 +309,7 @@ const VolantisApp = (() => {
     }
 
     // 决定一二级导航栏的切换 【向上滚动切换为一级导航栏；向下滚动切换为二级导航栏】  【移动端 PC】
-    if (pdata.ispage && volantis.dom.wrapper) {
+    if (volantis.GLOBAL_CONFIG.page.ispage && volantis.dom.wrapper) {
       const wrapper = volantis.dom.wrapper;
       if (volantis.scroll.del > 0 && scrollTop > 100) {
         wrapper.addClass('sub'); // 二级导航显示
@@ -321,7 +321,7 @@ const VolantisApp = (() => {
     // 【移动端】//////////////////////////////////////////////////////////////////////
     if (volantis.isMobile) {
       // 【移动端】 页面滚动 隐藏 移动端toc目录按钮
-      if (pdata.ispage && volantis.dom.tocTarget && volantis.dom.toc) {
+      if (volantis.GLOBAL_CONFIG.page.ispage && volantis.dom.tocTarget && volantis.dom.toc) {
         volantis.dom.tocTarget.removeClass('active');
         volantis.dom.toc.removeClass('active');
       }
@@ -348,7 +348,7 @@ const VolantisApp = (() => {
   // 设置导航栏
   fn.setHeader = () => {
     // !!! 此处的Dom对象需要重载 !!!
-    if (!pdata.ispage) return;
+    if (!volantis.GLOBAL_CONFIG.page.ispage) return;
 
     // 填充二级导航文章标题 【移动端 PC】
     volantis.dom.wrapper?.find('.nav-sub .title')?.html(document.title.split(" - ")[0]);
@@ -1075,13 +1075,8 @@ class LazyLoader {
   // 加载图片
   loadImage(lazyImage) {
     if (!lazyImage || !lazyImage.dataset.src) return;
-    
-    if (decodeURIComponent(lazyImage.src) === decodeURIComponent(lazyImage.dataset.src) && lazyImage.complete) {
-      this.removeLazy(lazyImage);
-      return;
-    }
-    
-    // 处理source标签
+
+    // 处理source标签（优先于img，确保Sharp产出的<source data-srcset>生效）
     const parentElement = lazyImage.parentElement;
     if (parentElement) {
       const sources = parentElement.getElementsByTagName('source');
@@ -1092,15 +1087,21 @@ class LazyLoader {
         }
       }
     }
-    
+
+    // 图片已加载完成则跳过
+    if (decodeURIComponent(lazyImage.src) === decodeURIComponent(lazyImage.dataset.src) && lazyImage.complete) {
+      this.removeLazy(lazyImage);
+      return;
+    }
+
     // 添加动画效果
     if (!lazyImage.classList.contains('not-animation')) {
       lazyImage.classList.add('content-in');
     }
-    
+
     // 设置图片源
     lazyImage.src = lazyImage.dataset.src;
-    
+
     // 图片加载完成后移除lazy类
     lazyImage.onload = () => {
       this.removeLazy(lazyImage);

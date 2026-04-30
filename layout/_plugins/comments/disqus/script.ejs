@@ -36,7 +36,7 @@
   }
 
   function loadDisqus() {
-    let path = pdata.commentPath;
+    let path = volantis.GLOBAL_CONFIG.page.commentPath;
     if (path.length == 0) {
       let defaultPath = "<%= theme.comments.disqus.path %>";
       path = defaultPath || decodeURI(window.location.pathname);

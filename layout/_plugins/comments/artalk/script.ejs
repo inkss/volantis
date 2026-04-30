@@ -8,8 +8,8 @@
 
   function pjax_artalk() {
     if(!document.querySelectorAll("#artalk_container")[0])return;
-    let path = pdata.commentPath;
-    let placeholder = pdata.commentPlaceholder || "<%= theme.comments.artalk.placeholder %>" || "";
+    let path = volantis.GLOBAL_CONFIG.page.commentPath;
+    let placeholder = volantis.GLOBAL_CONFIG.page.commentPlaceholder || "<%= theme.comments.artalk.placeholder %>" || "";
     if (path.length == 0) {
       path = '<%= theme.comments.artalk.path %>' || decodeURI(window.location.pathname);
     }

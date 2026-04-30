@@ -169,7 +169,7 @@ article:
     top_meta: [author, category, date, counter] #启用评论数量需在此添加
     # 文章底部信息
     # 从 meta_library 中取
-    bottom_meta: [updated, tags, share]
+    bottom_meta: [updated, tags]
     # ----------------
     # 文章页脚组件
     footer_widget:
@@ -211,10 +211,6 @@ article:
         icon: fa-solid fa-eye
         unit: '次浏览'
       comment: '评论：'
-      # waline 文章评论数量
-      walinecount:
-        icon: fa-solid fa-comment-dots
-        desc: '条评论' # 条评论
       # artalk 文章评论数量
       artalkcount:
         icon: fa-solid fa-comment-dots
@@ -226,18 +222,6 @@ article:
       # 文章标签
       tags:
         icon: fa-solid fa-hashtag
-      # 分享
-      share:
-        - id: qq
-          img:  volantis-static/media/org.volantis/logo/128/qq.png #  https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qq.png
-        - id: qzone
-          img: volantis-static/media/org.volantis/logo/128/qzone.png #  https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/qzone.png
-        - id: weibo
-          img: volantis-static/media/org.volantis/logo/128/weibo.png #  https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/weibo.png
-        - id: # qrcode # 当id为qrcode时需要安装插件  npm i hexo-helper-qrcode
-          img: # volantis-static/media/org.volantis/logo/128/wechat.png #  https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/wechat.png
-        - id: # telegram
-          img: # volantis-static/media/org.volantis/logo/128/telegram.png #  https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/128/telegram.png
 ############################### Article Layout ############################### > end
 
 
@@ -270,49 +254,6 @@ comments:
     # 也可以在此处继续参考上方例子进行配置，不建议重写配置的字段除上方所述外还有：
     # [el, useBackendConf, pageKey, pageTitle, site, darkMode, pvEl, imgUploader]
 
-  # giscus
-  # https://giscus.app
-  # https://github.com/laymonage/giscus
-  giscus:
-    # 以下配置按照 yml 格式增删填写即可
-    # repo: xxx/xxx
-    # repo-id: xxx
-    # category: xxx
-    # category-id: xxx
-    # mapping: "pathname"
-    # reactions-enabled: "1"
-    # emit-metadata: "0"
-    # lang: "zh-CN"
-    # 以上配置按照 yml 格式增删填写即可
-    theme:
-      light: "light" # https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/css/giscus/light.css
-      dark: "dark" # https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/css/giscus/dark.css
-
-  # beaudar
-  # https://beaudar.lipk.org/
-  beaudar:
-    repo: xxx/xxx
-    issue-term: pathname
-    issue-number:
-    branch: main
-    position: top
-    order: desc
-    theme:
-      light: github-light
-      dark: github-dark
-    label: ✨💬✨
-
-  # utterances
-  # https://utteranc.es/
-  utterances:
-    repo: xxx/xxx
-    issue-term: pathname
-    issue-number:
-    theme:
-      light: github-light
-      dark: github-dark
-    label: ✨💬✨
-
   # Disqus
   # https://disqus.com
   disqus:
@@ -320,90 +261,6 @@ comments:
     # optional
     autoload: false
     path: # 全局评论地址
-
-  # DisqusJS
-  # https://github.com/SukkaW/DisqusJS
-  disqusjs:
-    path: # 全局评论地址
-    # 配置项按照yml格式继续填写即可 除了 [siteName url identifier] 选项
-    #shortname:
-    #api:
-    #apikey:
-    #admin:
-    #nesting:
-
-  # Gitalk
-  # https://gitalk.github.io/
-  gitalk:
-    # 配置项按照yml格式继续填写即可 除了 [id distractionFreeMode] 选项
-    clientID:
-    clientSecret:
-    repo:
-    owner:
-    admin: # []
-    path: # 全局评论地址
-
-  # Vssue 暂不支持Pjax
-  # https://vssue.js.org/zh/
-  vssue:
-    owner:
-    repo:
-    clientId:
-    clientSecret:
-
-  # LiveRe 暂不支持Pjax
-  # https://www.livere.com
-  livere:
-    uid:
-
-  # Isso
-  # https://posativ.org/isso/
-  isso:
-    url: https://example.com/(path/)
-    src: https://example.com/(path/)js/embed.min.js
-    css:
-    gravatar:
-
-  # HashOver 暂不支持Pjax
-  # https://www.barkdull.org/software/hashover
-  hashover:
-    src: https://example.com/(path/)comments.php
-
-  # Twikoo
-  # https://twikoo.js.org/
-  twikoo:
-    path: # 全局评论地址
-    # 其他配置项按照yml格式继续填写即可 除了 [el path] 选项
-    envId: xxxxxxxxxxxxxxx # 腾讯云环境id
-    placeholder: #全局评论占位，也可以在管理面板中的配置管理处设置（此处优先级更高）
-    visitor: true # 是否显示文章阅读数
-
-  # Waline
-  # https://waline.js.org/
-  waline:
-    path: # 全局评论地址 目前设置全局评论地址后visitor失效,这是waline的问题
-    placeholder: # 评论占位提示
-    serverURL: # Waline 的服务端地址（必填） 测试用地址: https://waline.vercel.app
-    imageUploader:
-      # 以兰空图床为例，下列填写内容为：
-      # url: https://xxxxxx/api/v1/upload
-      # token: Bearer xxxxxxxxxxxxxx
-      # resp: data.links.url
-      api:   # 图床地址
-      token: # 图床验证
-      resp:  # 图片地址返回值的字段
-    pageview: true # 是否显示文章阅读数
-    comment: true  # 是否显示文章评论数
-    # 其他配置项按照yml格式继续填写即可 除了 [el path imageUploader] 选项
-    # 组件属性地址：https://waline.js.org/reference/component.html
-    # meta: ['nick', 'mail', 'link']
-
-  # Discuss
-  # https://discuss.js.org
-  discuss:
-    serverURLs: # Discuss server address url
-    visitStat: true # 是否显示文章阅读数
-    # https://discuss.js.org/Quick-Start.html#path
 
 
 ############################### Comments ############################### > end
@@ -449,12 +306,6 @@ sidebar:
       list_number: false
       min_depth: 2
       max_depth: 5
-    # ---------------------------------------
-    # music
-    music:
-      class: music
-      display: [desktop, mobile] # [desktop, mobile]
-      pjaxReload: false
     # ---------------------------------------
     # category widget
     category:
@@ -567,8 +418,8 @@ tag_plugins:
 
 ############################### Site Footer ############################### > start
 site_footer:
-  # layout of footer: [aplayer, social, license, info, copyright]
-  layout: [aplayer, social, license, info, copyright]
+  # layout of footer: [social, license, info, copyright]
+  layout: [social, license, info, copyright]
   social:
     - icon: #fa-solid fa-rss
       url:
@@ -626,13 +477,10 @@ plugins:
   # Pjax
   pjax:
     enable: true
-    cover: false          # 封面是否pjax处理 false：每次切换页面封面都重载，适合封面较少的情况 true：封面经过Pjax处理，适合封面较多的情况
     timeout: 5000        # The timeout in milliseconds for the XHR requests. Set to 0 to disable the timeout.
     cacheBust: false     # When set to true, Pjax appends a timestamp  to skip the browser cache.
     exclude:             # 被屏蔽的 url 地址将不启用 pjax 跳转，可以在控制台下使用 window.location.pathname 获取
-      # - '/artitalk/'   # artitalk 不支持 pjax
-      # - '/bbtalk/'     # bbtalk 不支持 pjax
-
+  
   # NProgress
   nprogress:
     enable: false

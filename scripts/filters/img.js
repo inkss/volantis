@@ -23,21 +23,22 @@ hexo.extend.filter.register('after_render:html', function (htmlContent) {
 
   $('img').each(function () {
     const img = $(this);
+
     let src = decodeURIComponent(img.attr('src'));
-    if (src && src.startsWith('../../')) { 
-      src = src.replace('../../', `${serverUrl}/`); 
-      img.attr('src', decodeURIComponent(src)); 
-    } else if (src && src.startsWith('/img/')) { 
-      src = src.replace('/img/', `${serverUrl}/img/`); 
-      img.attr('src', decodeURIComponent(src)); 
+    if (src && src.startsWith('../../')) {
+      src = src.replace('../../', `${serverUrl}/`);
+      img.attr('src', decodeURIComponent(src));
+    } else if (src && src.startsWith('/img/')) {
+      src = src.replace('/img/', `${serverUrl}/img/`);
+      img.attr('src', decodeURIComponent(src));
     }
+
+    const picture = $('<picture class="lazy"></picture>');
+    img.wrap(picture);
 
     img.attr('data-src', src);
     img.attr('src', '/img/default/transparent-placeholder-1x1.svg');
     img.attr('loading', 'lazy');
-
-    const picture = $('<picture class="lazy"></picture>');
-    img.wrap(picture);
   });
 
   return $.html();

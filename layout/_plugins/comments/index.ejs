@@ -3,14 +3,9 @@
     if (page.comments && page.comments == false) {
       checkComment = false;
     }
-    var commentServerFlag = theme.comments.service == 'twikoo' ? 'block' : 'none';
 %>
 <% if (checkComment&&(theme.comments.service && theme.comments.service.length > 0)) { %>
-  
-  <% if(theme.comments.service == 'twikoo-beaudar') { %>
   <article class="post white-box <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
-    <div class="changeComment">
-      <div class="comment-headline">
     <span hidden>
       <meta itemprop="discussionUrl" content="<%- url_for(path) %>#comments">
     </span>
@@ -18,38 +13,19 @@
     <% if (theme.comments && theme.comments.subtitle) { %>
       <p cst><%- theme.comments.subtitle %></p>
     <% } %>
-      </div>
-      <div class="comment-switch not-select" style="display: <%- commentServerFlag %>;">
-        <span class="first-comment">Twikoo</span>
-        <span class="switch-btn move cur-pointer" id="switchBtn"></span>
-        <span class="second-comment">Beaudar</span>
+    <% if(theme.ShowICPInfo && theme.ShowICPInfo.enable){ %>
+    <div class="comment-policy">
+      <div class="content">
+        <p class="comment-policy-title"><%= config.title %> 评论政策</p>
+        <p class="comment-policy-link">请在评论前阅读我们的<a
+            href="https://inkss.cn/page/policy/#%E4%BA%8C%E3%80%81%E8%AF%84%E8%AE%BA%E8%A7%84%E5%88%99" target="_blank"
+            rel="noopener noreferrer" class=" policy-link">评论政策</a>。</p>
+        </p>
       </div>
     </div>
+    <% } %>
     <div id="layoutHelper-comments"></div>
   </article>
-  <% } else { %>
-    <article class="post white-box <%- theme.custom_css.body.effect.join(' ') %>" id="comments">
-      <span hidden>
-        <meta itemprop="discussionUrl" content="<%- url_for(path) %>#comments">
-      </span>
-      <p class="commentTitle"><%- theme.comments && theme.comments.title %></p>
-      <% if (theme.comments && theme.comments.subtitle) { %>
-        <p cst><%- theme.comments.subtitle %></p>
-      <% } %>
-      <% if(theme.ShowICPInfo && theme.ShowICPInfo.enable){ %>
-      <div class="comment-policy">
-        <div class="content">
-          <p class="comment-policy-title"><%= config.title %> 评论政策</p>
-          <p class="comment-policy-link">请在评论前阅读我们的<a
-              href="https://inkss.cn/page/policy/#%E4%BA%8C%E3%80%81%E8%AF%84%E8%AE%BA%E8%A7%84%E5%88%99" target="_blank"
-              rel="noopener noreferrer" class=" policy-link">评论政策</a>。</p>
-          </p>
-        </div>
-      </div>
-      <% } %>
-      <div id="layoutHelper-comments"></div>
-    </article>
-  <% } %>
 <% } else { %>
   <% page.comments = false; %>
 <% } %>
