@@ -1,0 +1,96 @@
+// 主题所有关键帧动画定义
+// 在 _defines/ 中加载，早于 _style/，确保所有模块可引用
+
+// 简单淡入
+@keyframes fade-in
+  0%
+    opacity 0
+  100%
+    opacity 1
+
+// 下拉菜单上滑进入
+@keyframes sub_menus
+  0%
+    opacity 0
+    transform translateY(10px)
+  100%
+    opacity 1
+    transform translateY(0)
+
+// 标签页内容进入
+@keyframes tabshow
+  0%
+    transform translateY(15px)
+  100%
+    transform translateY(0)
+
+// 弹性下滑进入（右键菜单、details 展开、侧边栏导航等）
+@keyframes header-effect
+  0%
+    opacity 0
+    transform translateY(-50px)
+  100%
+    opacity 1
+    transform translateY(0)
+
+// 无限旋转（loading、搜索、.fa-spin 等）
+@keyframes spin
+  from
+    transform rotate(0deg)
+  to
+    transform rotate(360deg)
+
+// 音乐图标步进旋转
+@keyframes rotate-effect
+  0%
+    transform rotate(0)
+  25%
+    transform rotate(90deg)
+  50%
+    transform rotate(180deg)
+  75%
+    transform rotate(270deg)
+  100%
+    transform rotate(360deg)
+
+// 封面页滚动指示器弹跳
+@keyframes scroll-down-effect
+  0%
+    top 0
+    opacity 1
+  50%
+    top -16px
+    opacity .4
+  100%
+    top 0
+    opacity 1
+
+// 内容模糊淡入（带缩放，1s）
+@keyframes content-fadeIn
+  0%
+    opacity 0
+    filter blur(10px)
+    transform scale(0.9)
+  50%
+    opacity 0
+    filter blur(10px)
+    transform scale(0.95)
+  100%
+    opacity 1
+    transform scale(1)
+    filter blur(0px)
+
+// 内容模糊淡入（无缩放，2s 延迟感）
+@keyframes content-fadeIn-2s
+  0%
+    opacity 0
+    filter blur(10px)
+  50%
+    opacity 0
+    filter blur(10px)
+  70%
+    opacity 0
+    filter blur(10px)
+  100%
+    opacity 1
+    filter blur(0px)

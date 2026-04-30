@@ -55,19 +55,25 @@ div.tabs
         background: $color-card
         border: 1px solid $border-color
         border-bottom: 1px solid var(--color-card)
+        transition 0.5s
 
   .tab-content
     border-top: 1px solid $border-color
     margin-top: -1px
     .tab-pane
       padding: $gap
+      animation fade-in 0.3s
       &:not(.active)
         display: none
       &.active
         display: block
+        animation tabshow 0.2s cubic-bezier(0.23, 0, 0, 1.32)
       >
         p,.tabs,ul,ol,.highlight,.note
           &:first-child
             margin-top: 0
           &:last-child
             margin-bottom: 0
+
+.tab-pane > .timeline > .h2
+  padding-top 0

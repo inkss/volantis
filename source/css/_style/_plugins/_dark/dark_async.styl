@@ -28,9 +28,6 @@ async_dark()
   --color-white-png #b2b2b2
   --color-img-error #21252b
 
-  img
-    filter brightness(convert(hexo-config('color_scheme.dark.brightness'))) !important
-
   // header
   .blur
     background rgba($color-dark-site-bg, .9) !important
@@ -74,8 +71,8 @@ async_dark()
   // tag plugin from stellar
   --block-hover: mix($c-block-dark, $c-text-dark, 95)
   --text-p1: $c-text-dark
-  --text-p3: mix($c-text-light, $c-site-bg-light, 60)
-  --card: $c-card-light
+  --text-p3: mix($c-text-dark, $c-site-bg-dark, 60)
+  --card: $c-card-dark
 
 
 

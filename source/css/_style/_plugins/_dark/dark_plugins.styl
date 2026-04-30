@@ -40,9 +40,9 @@ if hexo-config('plugins.code_highlight') == "highlightjs"
   .gutter
     background var(--color-card) !important
   .highlight figcaption
-    background-color #14161a
+    background-color $color-dark-codeblock
   .highlight pre .line, .highlight pre .params
-    color rgba(158, 142, 142, 0.9)
+    color alpha($color-dark-text, 0.9)
 
 // table
 *:not(.highlight) >table tr
@@ -61,15 +61,17 @@ blockquote p
 // tags
 #archive-page .archive .all-tags ul li span
   color var(--color-text)
-  background #6f6f72
+  background $color-dark-block
 
 // btn-copy
 .btn-copy:hover
   background var(--color-site-body)
 
-        color #ccc !important
-      .OwO-items-image .OwO-item:hover
-        background-color #252627 !important
+// OwO 表情
+.OwO-items-image .OwO-item
+  color #ccc !important
+  &:hover
+    background-color $color-dark-block !important
 
 // Custom Files
 for $injects_dark in hexo-config('injects.dark')
@@ -77,4 +79,4 @@ for $injects_dark in hexo-config('injects.dark')
 
 // comment-policy
 .comment-policy
-  background-color #1e2224 !important
+  background-color $color-dark-card !important

@@ -12,7 +12,7 @@ details
     margin: 0 - $gap
     border-radius: $border-codeblock
     color: alpha($color-p, .7)
-    font-size: $fontsize-meta
+    font-size: 1em
     font-weight: bold
     position: relative
     line-height: normal
@@ -22,6 +22,7 @@ details
         border-bottom: none !important
     &:hover
       color: var(--color-p)
+      transition 0.3s
       &:after
         position: absolute
         content: '+'
@@ -90,6 +91,7 @@ details[open]
     padding: $gap
     margin: 0 - $gap
     margin-top: 0
+    animation header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
     p>a:hover
       text-decoration: underline
     >
@@ -98,3 +100,6 @@ details[open]
           margin-top: 0
         &:last-child
           margin-bottom: 0
+    .timelines-common
+      padding 0
+      margin-bottom -1em

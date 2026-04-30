@@ -426,3 +426,57 @@ article .readmore
 
 body:has(#external-link-redirect)
   display none
+
+// 样式修订 H1 H2 标题
+article#post
+  h2
+    font-weight 900
+    line-height inherit
+    background linear-gradient(to bottom, transparent 60%, rgba(189,202,219,.3) 0) no-repeat
+    border-bottom none
+    display: initial
+  h3
+    font-weight 900
+
+// 文章页一级标题：加粗、居中、大小设定
+h1.title
+  text-align center
+  font-size 2em !important
+  font-weight 600
+
+// 文章页段落内容：首行缩进
+#l_main > article.cus-indent
+  p
+    text-indent 2em
+    &.p
+      text-indent 0
+  details,
+  blockquote,
+  section,
+  .prev-next,
+  .new-meta-box,
+  .note,
+  .tag,
+  .tab-pane .checkbox,
+  li
+    p
+      text-indent 0
+  p img
+    display block
+  div.checkbox p
+    text-indent 0
+
+// 文章页自定义背景
+.cus-article-bkg
+  @media screen and (max-width: $device-mobile)
+    display none
+  animation content-fadeIn-2s 2s ease-in-out
+  background-size cover
+  background-position center
+  background-repeat no-repeat
+  position fixed
+  top 0
+  bottom 0
+  right 0
+  left 0
+  z-index -10

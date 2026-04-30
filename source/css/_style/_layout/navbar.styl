@@ -230,6 +230,7 @@ ul.list-v
   margin-top -2px - $border-card * 0.5
   border-radius $border-card * 0.5
   padding $gap * 0.5 0
+  animation sub_menus 0.3s
   hr
     margin $gap * 0.5 0
   > li
@@ -309,17 +310,6 @@ ul.list-v
     color var(--color-list-hl)
   i.music
     animation rotate-effect 1.5s linear infinite
-    @keyframes rotate-effect
-      0%
-        transform rotate(0)
-      25%
-        transform rotate(90deg)
-      50%
-        transform rotate(180deg)
-      75%
-        transform rotate(270deg)
-      100%
-        transform rotate(360deg)
 
 .menu-phone li ul.list-v
   right "calc(100% - 0.5 * %s)" % $gap
@@ -348,6 +338,16 @@ ul.list-v
       ul
         right "calc(100% - 0.5 * %s)" % $gap
 
+// 文章页导航栏修饰：剧中、加粗等
+.fix-header-title
+  margin 0 auto
+  font-size 1.5rem
+  overflow hidden
+  font-weight 800 !important
+  @media screen and (max-width: $device-mobile)
+    margin unset !important
+    font-size 1rem !important
+
 .menu-phone
   display none
   margin-top $gap
@@ -371,6 +371,10 @@ ul.list-v
       left 0
       border-radius 0
       max-width 100%
+  @media screen and (max-width: $device-2k)
+    left: 0 !important
+    border-radius: 0 !important
+    max-width: 100% !important
   @media screen and (max-width: $device-mobile)
     .container
       margin-left 0

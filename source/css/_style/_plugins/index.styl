@@ -10,3 +10,7 @@ if hexo-config('search.enable')
 // 暗黑模式样式放到最后加载
 if hexo-config('plugins.darkmode.enable')
   @import '_dark/dark_async'
+
+// Artalk 评论系统
+if hexo-config('comments.service') == 'artalk'
+  @import '_artalk/*'

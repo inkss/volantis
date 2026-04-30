@@ -202,6 +202,80 @@ svg.feather
   width 16px
   height 16px
 
+.fa-spin
+  display inline-block
+  animation spin 2s linear infinite
+
+// 图标颜色自定义
+// https://flatuicolors.com/palette/defo
+svg.feather
+  &.red
+    color: $color-md-red
+  &.pink
+    color: $color-md-pink
+  &.purple
+    color: $color-md-purple
+  &.indigo
+    color: $color-md-indigo
+  &.light-blue
+    color: $color-md-light-blue
+  &.deep-blue
+    color: $color-md-deep-blue
+  &.teal
+    color: $color-md-teal
+  &.light-green
+    color: $color-md-light-green
+  &.orange
+    color: $color-md-orange
+  &.deep-orange
+    color: $color-md-deep-orange
+  &.brown
+    color: $color-md-brown
+  &.blue-grey
+    color: $color-md-blue-grey
+  &.yellow
+    color: $color-md-yellow
+  &.TURQUOISE
+    color: #1abc9c
+  &.EMERALD
+    color: #2ecc71
+  &.PETERRIVE
+    color: #3498db
+  &.AMETHYST
+    color: #9b59b6
+  &.WETASPHALT
+    color: #34495e
+  &.GREENSEA
+    color: #16a085
+  &.NEPHRITIS
+    color: #27ae60
+  &.BELIZEHOLE
+    color: #2980b9
+  &.WISTERIA
+    color: #8e44ad
+  &.MIDNIGHTBLUE
+    color: #2c3e50
+  &.SUNFLOWER
+    color: #f1c40f
+  &.CARROT
+    color: #e67e22
+  &.ALIZARIN
+    color: #e74c3c
+  &.CLOUDS
+    color: #ecf0f1
+  &.CONCRETE
+    color: #95a5a6
+  &.ORANGE
+    color: #f39c12
+  &.PUMPKIN
+    color: #d35400
+  &.POMEGRANATE
+    color: #c0392b
+  &.SILVER
+    color: #bdc3c7
+  &.ASBESTOS
+    color: #7f8c8d
+
 .article-title,
 .widget header,
 .md .footer .header
@@ -305,3 +379,61 @@ button
     trans()
     &:hover
       box-shadow $boxshadow-card-float
+
+// 自定义阴影
+.cus-shadow
+  box-shadow 0 1px 3px #0000001f, 0 1px 2px #0000003d
+
+// iconfont 自定义图标样式修饰
+.iconfont
+  width 1em
+  height 1em
+  vertical-align -0.15em
+  fill currentColor
+  overflow hidden
+  &.emoji
+    width 1.5em
+    height 1.5em
+    vertical-align -0.3em
+
+// 首屏灰色
+html.grayscale::before
+  content ""
+  position absolute
+  inset 0
+  backdrop-filter grayscale(95%)
+  z-index 5000
+  pointer-events none
+
+// 禁止选中
+.not-select, figcaption, footer, section:not(.footnotes), details summary,
+.new-meta-box, .prev-next, .atk-main-editor, .atk-list-header, .nav-tabs,
+.copyright.license, .comment-policy, .commentTitle, .headimg-div
+  user-select none
+  & p, & span
+    cursor $default
+  &.default-cursor
+    cursor $default !important
+  & a span
+    cursor $pointer !important
+.allow-select
+  user-select all
+
+// 隐藏文本
+.bb_spoiler, .bb_spoiler a, a .bb_spoiler, .bb_spoiler a.new
+  cursor $pointer
+  border-bottom 1px solid var(--color-p)
+  background-color var(--color-card)
+  color var(--color-card)
+  text-shadow none
+  padding 0 2px
+  margin 0 2px
+.bb_spoiler:hover, .bb_spoiler:active, .bb_spoiler:hover .bb_spoiler, .bb_spoiler:active .bb_spoiler
+  color var(--color-p) !important
+.bb_spoiler:hover
+  opacity 1
+  transition-duration 0.3s
+
+// 自定义的淡入淡出
+.content-in
+  animation content-fadeIn 1s ease-in-out

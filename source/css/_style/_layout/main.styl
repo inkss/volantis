@@ -1,5 +1,29 @@
 #safearea
   margin: $gap $gap 0
+  @media screen and (max-width: $device-mobile)
+    margin 0 !important
+    box-shadow none
+    .body-wrapper
+      padding 0
+    #l_main
+      padding-left 0
+      article#comments,
+      article#friends,
+      article#post,
+      article#page,
+      article#arc
+        border-radius 0
+      article#cat,
+      article#tag
+        margin 0
+        border-radius 0
+      .post-wrapper
+        margin 0 0 16px
+        .post
+          border-radius 0
+    #l_side
+      .widget.mobile
+        border-radius 0
 #l_body
   position: relative
   if hexo-config('custom_css.font_smoothing') == true
