@@ -250,7 +250,8 @@ ul.list-v
 
   > li > a
     trans()
-    display block
+    display flex
+    align-items center
     color var(--color-list)
     font-size $fontsize-meta
     line-height 36px
@@ -262,6 +263,11 @@ ul.list-v
     border-radius 4px
     > i
       margin-right 8px
+    .icon
+      width 16px
+      margin-right 6px
+      display flex
+      align-items center
     &:active, &.active
       list_active()
     &:hover
@@ -283,7 +289,7 @@ ul.list-v
           display inline-block
     > ul > li > ul .icon
       width 16px
-      margin-right 2px
+      margin-right 6px
       display flex
       align-items center
       i
