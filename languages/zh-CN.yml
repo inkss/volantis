@@ -9,6 +9,8 @@ post:
   readoriginal: 去源站阅读
   wordcount: '字数：%s 字'
   duration: '时长：%s 分钟'
+  readmode: 阅读模式
+  printmode: 打印页面
   comments: 评论
   comments_load: 点击加载 %s 评论
   comments_check: 正在检查 %s 能否访问...

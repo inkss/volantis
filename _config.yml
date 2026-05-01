@@ -222,6 +222,13 @@ article:
       # 文章标签
       tags:
         icon: fa-solid fa-hashtag
+      # 阅读模式
+      readmode:
+        icon: feather book-open EMERALD
+        exit_icon: feather x EMERALD
+      # 打印模式
+      printmode:
+        icon: feather printer TURQUOISE
 ############################### Article Layout ############################### > end
 
 

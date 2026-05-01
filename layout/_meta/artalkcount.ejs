@@ -15,7 +15,7 @@
       if(commentPath) path = commentPath;
       path = path.replaceAll('/index.html', '/').replaceAll('.html', '')
     %> 
-    <a href="<%- url_for(path) %>#comments"> 
+    <a class="pointer" href="<%- url_for(path) %>#comments"> 
       <i class="<%- theme.article.body.meta_library.artalkcount.icon %> fa-fw"></i> 
       <p> 
         <span><%= theme.article.body.meta_library.comment %></span>

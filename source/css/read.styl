@@ -80,5 +80,34 @@ body.read-mode
     border-radius: 10px
   
   details .content
-    background-color var(--color-read-post) 
+    background-color var(--color-read-post)
 
+  // 退出阅读模式浮动按钮
+  #s-exit-readmode
+    position fixed
+    z-index 1100
+    display flex
+    justify-content center
+    align-items center
+    width 48px
+    height 48px
+    line-height 48px
+    border-radius 100%
+    bottom 6rem
+    right 32px
+    color var(--color-text)
+    background var(--color-read-post)
+    box-shadow 0 2px 8px rgba(0, 0, 0, 0.15)
+    cursor pointer
+    transition transform 0.4s cubic-bezier(.23,1,.32,1), border-radius 0.3s, box-shadow 0.3s
+    svg.feather
+      width 20px
+      height 20px
+    &:hover
+      transform scale(1.15) rotate(90deg)
+      border-radius 25%
+      box-shadow 0 4px 16px rgba(0, 0, 0, 0.25)
+    @media screen and (max-width: 768px)
+      right 16px
+    @media screen and (max-width: $device-tablet)
+      right: $gap

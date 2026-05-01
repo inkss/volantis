@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
       volantis.dom.header?.removeClass('z_search-open'); // 关闭移动端激活的搜索框
       volantis.dom.wrapper?.removeClass('sub'); // 跳转页面时关闭二级导航
       volantis.EventListener?.remove(); // 移除事件监听器 see: layout/_partial/scripts/global.ejs
+      volantis.readmode.exit();
     }, 'app.js');
   });
 });
@@ -79,6 +80,95 @@ const Tools = {
     }
   },
 }
+
+// 阅读模式
+volantis.readmode = (() => {
+  let exitBtn = null;
+
+  function createExitBtn() {
+    if (exitBtn) return;
+    const metaLink = document.querySelector('.new-meta-item.readmode a');
+    const iconStr = metaLink?.dataset.exitIcon || 'feather x-circle';
+    const iconName = iconStr.split(' ')[1] || 'x-circle';
+
+    const btn = document.createElement('a');
+    btn.id = 's-exit-readmode';
+    btn.title = '退出阅读模式';
+    btn.href = 'javascript:void(0)';
+    btn.innerHTML = `<i data-feather="${iconName}"></i>`;
+    btn.style.display = 'none';
+    btn.addEventListener('click', e => { e.preventDefault(); toggle(); });
+    document.body.appendChild(btn);
+    exitBtn = btn;
+    if (typeof feather !== 'undefined') feather.replace({ width: 20, height: 20 });
+  }
+
+  function toggle() {
+    const ss = document.getElementById('reading-mode-stylesheet');
+    if (!ss) return;
+    Fancybox?.close();
+    ss.disabled = !ss.disabled;
+    if (!ss.disabled) {
+      createExitBtn();
+      document.body.classList.add('read-mode');
+      exitBtn.style.display = '';
+    } else {
+      document.body.classList.remove('read-mode');
+      if (exitBtn) exitBtn.style.display = 'none';
+    }
+  }
+
+  function exit() {
+    const ss = document.getElementById('reading-mode-stylesheet');
+    if (ss && !ss.disabled) {
+      ss.disabled = true;
+      document.body.classList.remove('read-mode');
+      if (exitBtn) exitBtn.style.display = 'none';
+    }
+  }
+
+  return { toggle, exit };
+})();
+
+// 打印页面
+volantis.printmode = {
+  print() {
+    const ss = document.getElementById('reading-mode-stylesheet');
+    if (ss && !ss.disabled) volantis.readmode.toggle();
+    Fancybox?.close();
+    alert('建议在打印设置中勾选「背景图形」以获得最佳效果。');
+    NProgress?.start();
+    //document.querySelectorAll('details').forEach(e => e.setAttribute('open', 'true'));
+
+    const imgs = document.querySelectorAll('#post.article picture.lazy img');
+    const load = (img) => {
+      return new Promise(resolve => {
+        if (!img) return resolve(null);
+        const p = img.parentElement;
+        if (p) {
+          const srcs = p.getElementsByTagName('source');
+          for (let i = 0; i < srcs.length; i++) {
+            if (srcs[i].dataset.srcset) srcs[i].srcset = srcs[i].dataset.srcset;
+          }
+        }
+        img.removeAttribute('loading');
+        if (img.dataset.src) img.src = img.dataset.src;
+        if (img.complete) { img.closest('picture')?.classList.remove('lazy'); resolve(img); }
+        else {
+          img.onload = () => { img.closest('picture')?.classList.remove('lazy'); resolve(img); };
+          img.onerror = () => resolve(null);
+        }
+      });
+    };
+    const promises = [];
+    for (let i = 0; i < imgs.length; i++) promises.push(load(imgs[i]));
+    Promise.race([Promise.all(promises), new Promise(r => setTimeout(r, 20000))])
+      .finally(() => {
+        NProgress?.done();
+        setTimeout(() => window.print(), 200);
+      });
+  }
+};
 
 /* Main */
 const VolantisApp = (() => {
@@ -362,14 +452,12 @@ const VolantisApp = (() => {
       volantis.dom.comment.click(e => { // 评论按钮点击后 跳转到评论区域
         e.preventDefault();
         e.stopPropagation();
-        volantis.cleanContentVisibility();
         fn.scrolltoElement(volantis.dom.commentTarget, REM + scrollCorrection);
         e.stopImmediatePropagation();
       });
       volantis.dom.commentCount && volantis.dom.commentCount.click(e => { // 评论数点击后 跳转到评论区域
         e.preventDefault();
         e.stopPropagation();
-        volantis.cleanContentVisibility();
         fn.scrolltoElement(volantis.dom.commentTarget, REM + scrollCorrection);
         e.stopImmediatePropagation();
       });

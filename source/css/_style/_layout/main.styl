@@ -200,19 +200,15 @@
           font-size: $fontsize-code
         .new-meta-item
           color: var(--color-meta)
-          .notlink
+          a.notlink
             cursor: $default
             p
               display: flex;
               align-items: center;
               span
                 margin-right 4px
-                .fa-spin 
+                .fa-spin
                   margin-left: 4px;
-            &:hover
-              color: var(--color-meta)
-              p
-                color: var(--color-meta)
           display: flex
           align-items: center;
           justify-content: center
@@ -248,7 +244,9 @@
               margin: 0
               font-weight: normal
               trans()
-            &[href] p
+            &[href] p,
+            &.pointer p,
+            &.pointer span
               cursor: $pointer
             &:hover
               color: $color-hover

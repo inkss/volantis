@@ -1,6 +1,5 @@
 const contextMenuManager = {
   urlRegx: /^(https?:\/\/)?([A-Za-z0-9.-]+)\.([A-Za-z]{2,})(\/[A-Za-z0-9.-]*)*\/?(\?[A-Za-z0-9&=_-]*)?(#[A-Za-z0-9-_]*)?$/,
-  readModeStylesheet: document.getElementById('reading-mode-stylesheet'),
   rem: parseFloat(getComputedStyle(document.documentElement).fontSize),
   maxMenuItems: 0,
   isClipboardReadAllowed: true,
@@ -120,6 +119,13 @@ contextMenuManager.initializeContextMenu = async function () {
   try {
     const response = await fetch('/rightmenus.json');
     const config = await response.json();
+    // 过滤未加载功能的菜单项
+    if (!volantis.readmode) {
+      config.menuList = config.menuList.filter(item => item.id !== 'readMode');
+    }
+    if (!volantis.printmode) {
+      config.menuList = config.menuList.filter(item => item.id !== 'printMode');
+    }
     this.generateMenuHTML(config);
   } catch (error) {
     console.error('Failed to load rightmenus config:', error);
@@ -282,79 +288,11 @@ contextMenuManager.initializeContextMenu = async function () {
     },
     readMode: () => {
       Fancybox?.close();
-      if (contextMenuManager.readModeStylesheet) {
-        contextMenuManager.readModeStylesheet.disabled = !contextMenuManager.readModeStylesheet.disabled;
-        
-        if (!contextMenuManager.readModeStylesheet.disabled) {
-          document.body.classList.add('read-mode');
-        } else {
-          document.body.classList.remove('read-mode');
-        }
-      }
+      volantis.readmode?.toggle();
     },
     printMode: () => {
-      // 确保阅读模式关闭
-      if (contextMenuManager.readModeStylesheet && !contextMenuManager.readModeStylesheet.disabled) {
-        eventHandlers.readMode();
-      }
-      
       Fancybox?.close();
-      NProgress?.start();
-      
-      // 展开所有details元素
-      document.querySelectorAll('details').forEach(ele => ele.setAttribute('open', 'true'));
-      
-      // 加载懒加载图片
-      const lazyImages = document.querySelectorAll("#post.article picture.lazy img");
-      const loadImage = (img) => {
-        return new Promise((resolve, reject) => {
-          if (!img) {
-            resolve(null);
-            return;
-          }
-          
-          const parentElement = img.parentElement;
-          if (parentElement) {
-            const sources = parentElement.getElementsByTagName('source');
-            for (let i = 0; i < sources.length; i++) {
-              const source = sources[i];
-              if (source.dataset.srcset) {
-                source.srcset = source.dataset.srcset;
-              }
-            }
-          }
-          
-          img.removeAttribute('loading');
-          if (img.dataset.src) {
-            img.src = img.dataset.src;
-          }
-          
-          if (img.complete) {
-            img.closest('picture')?.classList.remove("lazy");
-            resolve(img);
-          } else {
-            img.addEventListener('load', () => {
-              img.closest('picture')?.classList.remove("lazy");
-              resolve(img);
-            });
-            img.addEventListener('error', reject);
-          }
-        });
-      };
-      
-      const imageLoadPromises = [];
-      for (let i = 0; i < lazyImages.length; i++) {
-        imageLoadPromises.push(loadImage(lazyImages[i]));
-      }
-      
-      const timeoutPromise = new Promise(resolve => setTimeout(resolve, 20000));
-      
-      Promise.race([Promise.all(imageLoadPromises), timeoutPromise]).finally(() => {
-        NProgress?.done();
-        setTimeout(() => {
-          window.print();
-        }, 200);
-      });
+      volantis.printmode?.print();
     },
     copyText: () => {
       if (globalData.selectedText) {
@@ -808,9 +746,6 @@ contextMenuManager.initializeContextMenu = async function () {
     if (volantis?.pjax?.send) {
       volantis.pjax.send(() => {
         hideContextMenu();
-        if (contextMenuManager.readModeStylesheet && !contextMenuManager.readModeStylesheet.disabled) {
-          eventHandlers.readMode();
-        }
       });
     }
   } catch (error) {

@@ -9,6 +9,8 @@ post:
   readoriginal: Read Original
   wordcount: '%s words'
   duration: '%s min'
+  readmode: Read Mode
+  printmode: Print
   comments: Comments
   comments_load: Load %s
   comments_check: Checking if %s is accessible...
