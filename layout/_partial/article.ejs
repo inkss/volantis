@@ -118,6 +118,76 @@ const pagePermalink = decodeURI(post.permalink);
           </div>
         <% } %>
 
+        <!-- 2. 版权声明：post布局+启用+未禁用时显示 -->
+        <% if (post.layout === 'post' && footerWidget.copyright?.enable && post.copyright !== false) { %>
+          <% if (footerWidget.copyright.custom) { %>
+            <%
+              // 简化作者信息逻辑：优先文章作者，其次站点默认作者
+              const authorInfo = post.author && site.data?.author?.[post.author]
+                ? site.data.author[post.author]
+                : theme.article.body.meta_library.author;
+              // 统一日期格式化
+              const createDate = date(post.date, theme.article.body.meta_library.date.format);
+              const updateDate = date(post.updated, theme.article.body.meta_library.updated.format);
+              // 版权规则：优先文章配置，其次主题默认
+              const copyrightRule = post.copyright?.type || footerWidget.copyright.customData.default;
+              const copyrightText = footerWidget.copyright.customData.rules[copyrightRule]?.text;
+              const copyrightDesc = footerWidget.copyright.customData.rules[copyrightRule]?.desc;
+            %>
+            <div class="copyright license">
+              <div class="license-title"><%= post.title %></div>
+              <div class="license-link"><a href="<%= pagePermalink %>"><%= pagePermalink %></a></div>
+              <div class="license-meta">
+                <div class="license-meta-item">
+                  <div class="license-meta-title"><%= __('post.copyright.author') %></div>
+                  <div class="license-meta-text"><%= post.copyright?.author || authorInfo.name %></div>
+                </div>
+                <div class="license-meta-item">
+                  <div class="license-meta-title"><%= __('post.copyright.date') %></div>
+                  <div class="license-meta-text"><%= createDate %></div>
+                </div>
+                <!-- 仅当创建/更新日期不同时显示更新时间 -->
+                <% if (createDate !== updateDate) { %>
+                  <div class="license-meta-item">
+                    <div class="license-meta-title"><%= __('post.copyright.updated') %></div>
+                    <div class="license-meta-text"><%= updateDate %></div>
+                  </div>
+                <% } %>
+                <!-- 显示参考来源（若有） -->
+                <% if (post.copyright?.ref?.title) { %>
+                  <div class="license-meta-item">
+                    <div class="license-meta-title"><%= __('post.copyright.references') %></div>
+                    <div class="license-meta-text">
+                      <a
+                        href="<%= post.copyright.ref.url %>"
+                        target="_blank"
+                        rel="external nofollow"
+                      ><%= post.copyright.ref.title %></a>
+                    </div>
+                  </div>
+                <% } %>
+                <div class="license-meta-item">
+                  <div class="license-meta-title"><%= __('post.copyright.license') %></div>
+                  <div class="license-meta-text"><%- copyrightText %></div>
+                </div>
+              </div>
+              <div class="license-statement"><%- copyrightDesc %></div>
+            </div>
+          <% } else { %>
+            <!-- 默认版权声明：支持Markdown解析 -->
+            <div class="copyright">
+              <blockquote>
+                <% (footerWidget.copyright.content || []).forEach(row => { %>
+                  <% if (row === 'permalink') { %>
+                    <p><%= footerWidget.copyright.permalink %><a href="<%= pagePermalink %>"><%= pagePermalink %></a></p>
+                  <% } else { %>
+                    <%- markdown(row) %>
+                  <% } %>
+                <% }) %>
+              </blockquote>
+            </div>
+          <% } %>
+        <% } %>
 
       </div>
     <% } %>
