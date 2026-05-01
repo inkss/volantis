@@ -136,7 +136,9 @@ volantis.printmode = {
     const ss = document.getElementById('reading-mode-stylesheet');
     if (ss && !ss.disabled) volantis.readmode.toggle();
     Fancybox?.close();
-    alert('建议在打印设置中勾选「背景图形」以获得最佳效果。');
+    if (window.innerWidth >= 1024) {
+      alert('建议在打印设置中勾选「背景图形」以获得最佳效果。');
+    }
     NProgress?.start();
     //document.querySelectorAll('details').forEach(e => e.setAttribute('open', 'true'));
 

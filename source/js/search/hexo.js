@@ -331,6 +331,8 @@ class SearchService {
       modalResults.innerHTML = results;
       // 若存在pjax，刷新搜索容器（适配pjax页面切换场景）
       window.pjax && pjax.refresh(searchModal);
+      // 重新初始化懒加载（适配新结果中的图片）
+      window.lazyLoader && window.lazyLoader.reinitObserver();
 
       // 绑定ESC键关闭搜索模态框（单次有效，关闭后移除事件）
       const handleKeydown = (event) => {
@@ -549,8 +551,13 @@ class SearchService {
     // 构建头图HTML（若有头图，仅文章可能有）
     let headimgHtml = '';
     if (item.headimg) {
+      const imgWithoutExt = item.headimg.substring(0, item.headimg.lastIndexOf('.'));
       headimgHtml = `<div class="result-image">
-        <img src="${item.headimg}" alt="${item.title}">
+        <picture class="lazy">
+          <source data-srcset="${imgWithoutExt}.avif" type="image/avif">
+          <source data-srcset="${imgWithoutExt}.webp" type="image/webp">
+          <img loading="lazy" data-src="${item.headimg}" alt="${item.title}">
+        </picture>
       </div>`;
     }
 
