@@ -154,7 +154,7 @@ class RunItem {
     this.list.forEach(item => item.run());
   }
 
-  // 添加任务到队列
+  // 添加任务到队列（name 存在时，同名替换；否则追加）
   push(fn, name, useRequestAnimationFrame = true) {
     if (typeof fn !== 'function') return;
 
@@ -165,6 +165,13 @@ class RunItem {
       };
     }
 
+    if (name) {
+      const idx = this.list.findIndex(item => item.name === name);
+      if (idx !== -1) {
+        this.list[idx] = new TaskItem(taskFn, name);
+        return;
+      }
+    }
     this.list.push(new TaskItem(taskFn, name));
   }
 

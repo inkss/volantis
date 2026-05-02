@@ -114,6 +114,6 @@ const darkModelListeners={
     volantis.dark.method.toggle.start();
   }
 }
-window.matchMedia('(prefers-color-scheme: dark)').addListener(darkModelListeners.dark)
-window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListeners.light)
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', darkModelListeners.dark);
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', darkModelListeners.light);
 </script>

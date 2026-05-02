@@ -8,6 +8,9 @@
 
   function pjax_artalk() {
     if(!document.querySelectorAll("#artalk_container")[0])return;
+    if (volantis.artalk && typeof volantis.artalk.destroy === 'function') {
+      volantis.artalk.destroy();
+    }
     let path = volantis.GLOBAL_CONFIG.page.commentPath;
     let placeholder = volantis.GLOBAL_CONFIG.page.commentPlaceholder || "<%= theme.comments.artalk.placeholder %>" || "";
     if (path.length == 0) {

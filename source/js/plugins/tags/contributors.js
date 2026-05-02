@@ -87,6 +87,4 @@ const ContributorsJS = {
 
 
 ContributorsJS.start();
-document.addEventListener('pjax:complete', function () {
-  ContributorsJS.start();
-});
+volantis.pjax.push(() => ContributorsJS.start(), 'contributors');

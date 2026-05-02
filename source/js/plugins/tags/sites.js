@@ -91,6 +91,4 @@ const SitesJS = {
 
 
 SitesJS.start();
-document.addEventListener('pjax:complete', function () {
-  SitesJS.start();
-});
+volantis.pjax.push(() => SitesJS.start(), 'sites');

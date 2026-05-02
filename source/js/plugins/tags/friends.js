@@ -88,6 +88,4 @@ const FriendsJS = {
 
 
 FriendsJS.start();
-document.addEventListener('pjax:complete', function () {
-  FriendsJS.start();
-});
+volantis.pjax.push(() => FriendsJS.start(), 'friends');

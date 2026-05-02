@@ -748,8 +748,8 @@ if (document.readyState === 'loading') {
   new SearchService();
 }
 
-document.addEventListener("pjax:success", () => new SearchService());
-document.addEventListener("pjax:send", () => {
+volantis.pjax.push(() => new SearchService(), 'hexo-search');
+volantis.pjax.send(() => {
   const searchEl = document.querySelector("#u-search");
   if (searchEl) searchEl.style.display = "none";
-});
+}, 'hexo-search');

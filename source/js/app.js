@@ -364,9 +364,8 @@ const VolantisApp = (() => {
     // 添加滚动监听
     if (targets.length) {
       volantis.scroll.push(() => {
-        // 使用防抖优化滚动性能
         volantis.scroll.debounce(updateNav, 200)();
-      });
+      }, 'sidebar-toc');
     }
   }
 
@@ -661,21 +660,18 @@ const VolantisApp = (() => {
   // 工具类：代码块复制
   fn.utilCopyCode = (Selector) => {
     document.querySelectorAll(Selector).forEach(node => {
+      if (node.previousSibling?.classList?.contains('btn-copy')) return;
       node.insertAdjacentHTML("beforebegin", COPYHTML);
       const _BtnCopy = node.previousSibling;
       _BtnCopy.onclick = e => {
         e.stopPropagation();
-        const _span = _BtnCopy.querySelector('span');
-
         node.focus();
         const range = new Range();
         range.selectNodeContents(node);
         const selection = document.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
-
-        const str = selection.toString();
-        fn.utilWriteClipText(str);
+        fn.utilWriteClipText(selection.toString());
       };
     });
   }
