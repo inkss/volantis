@@ -5,17 +5,13 @@
     c && document.documentElement.setAttribute("color-scheme", c);
   <% } %>
 
-  // 调试模式
-  <% if(theme.debug && theme.debug !== 'false') {%>
-    volantis.debug = "<%- theme.debug %>";
-  <% } %>
 
   // 按需加载的插件
-  <% if (theme.plugins.globalJquery) { %>
+  <% if (theme.plugins.globalJquery?.enable) { %>
     volantis.import = {
       jQuery: () => {
         if (typeof jQuery === 'undefined') {
-          return volantis.js("<%- theme.cdn.jquery %>");
+          return volantis.js("<%- theme.plugins.globalJquery.js %>");
         } else {
           return Promise.resolve();
         }

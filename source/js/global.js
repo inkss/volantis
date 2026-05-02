@@ -255,7 +255,7 @@ volantis.js = (src, cb) => {
     }
     const script = document.createElement('script');
     script.src = src;
-    
+
     const handleLoad = () => {
       if (typeof cb === 'function') cb();
       resolve();
@@ -272,6 +272,10 @@ volantis.js = (src, cb) => {
             cb[p]();
             resolve();
           };
+        } else if (p === 'pjax') {
+          script.setAttribute('data-pjax', '');
+        } else if (cb[p] === true) {
+          script.setAttribute(p, '');
         } else {
           script.setAttribute(p, cb[p]);
         }

@@ -1,12 +1,12 @@
-<% if (theme.plugins.fontawesome) { %>
+<% if (theme.plugins.fontawesome?.enable) { %>
 <!-- 加载FontAwesome -->
-<script>volantis.css("<%- theme.cdn.fontawesome %>");</script>
+<script>volantis.css("<%- theme.plugins.fontawesome.js %>");</script>
 <% } %>
 
 
 <!-- required -->
-<% if (theme.plugins.globalJquery) { %>
-  <%- js(theme.cdn.jquery) %>
+<% if (theme.plugins.globalJquery?.enable) { %>
+  <%- js(theme.plugins.globalJquery.js) %>
 <% } %>
 
 <!-- internal -->

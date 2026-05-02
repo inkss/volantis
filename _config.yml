@@ -9,72 +9,36 @@ info:
   theme_name: Volantis # This is theme's name.
   theme_docs: https://volantis.js.org/ # This is theme's URL.
   theme_repo: https://github.com/volantis-x/hexo-theme-volantis
-# Debug 调试模式
-debug: env # false: 关闭调试模式， env：环境配置检查， pjax：调试pjax，rightMenus: 调试右键, cdn: 调试 CDN System
+
 ############################### 默认占位图 ###############################
 default:
-  avatar: volantis-static/media/placeholder/avatar/round/3442075.svg # https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/avatar/round/3442075.svg
-  link: volantis-static/media/placeholder/link/8f277b4ee0ecd.svg # https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/link/8f277b4ee0ecd.svg
-  cover: volantis-static/media/placeholder/cover/76b86c0226ffd.svg # https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/cover/76b86c0226ffd.svg
-  image: volantis-static/media/placeholder/image/2659360.svg # https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg
+  avatar: https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/avatar/round/3442075.svg
+  link: https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/link/8f277b4ee0ecd.svg
+  cover: https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/cover/76b86c0226ffd.svg
+  image: https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg
 
 
-############################### CDN System ###############################
+############################### CDN ###############################
+# 直接填写资源 URL，用户可在 _config.volantis.yml 中覆盖任意 key
+cdn:
+  # 主题内部资源（本地路径）
+  volantis_style: /css/style.css
+  volantis_app: /js/app.js
+  volantis_rightMenus: /js/plugins/rightMenus.js
+  volantis_search_hexo: /js/search/hexo.js
+  volantis_search_algolia: /js/search/algolia.js
+  volantis_search_meilisearch: /js/search/meilisearch.js
 
-cdn_system:
-  # CDN 优先级 从高到低排序 写入 priority 列表即表示启用(enable)
-  priority: [custom, local, cdnjs, npm, static]
-  # ========================================================================
-  # cdn数据配置文件见 "theme/_cdn.yml", 可以在 source/_data/cdn.yml 覆盖 theme/_cdn.yml
-  # 变量说明：
-  # 以下变量只能在 `prefix` 中使用。
-  # ${site_root}                站点根目录 一般是 "/"
-  # 以下变量只能在 `format` 中使用。
-  # ${prefix}                   CDN 链接前缀
-  # ${name}                     package 名称 见 "theme/_cdn.yml"
-  # ${version}                  package 版本 见 "theme/_cdn.yml"
-  # ${file}                     文件路径 见 "theme/_cdn.yml"
-  # ${min_file}                 文件路径 ${file} 后添加 .min. (jsdelivr、cdnjs 官方自带压缩)
-  # ${timestamp}                Hexo运行时的时间戳(eg：1661246702300), 可用于静态资源版本控制 format: ${prefix}${file}?v=${timestamp}
-  system_config:
-    # 自定义配置 使用 "theme/_cdn.yml" 中的名称作为配置项的键
-    custom:
-      busuanzi: https://cdn.dusays.com/bsz.js  # 杜老师友情赞助
-      #volantis_style: /css/style.css
-      #volantis_app: /js/app.js
-
-    # 主题 /js与/css目录 （一般放在本地，可以在此处配置站点CDN）,"theme/_cdn.yml" 中以 "volantis_" 开头的名称
-    # Tip: 在本配置文件中 匹配以 "volantis-local" 开头的链接路径替换为该格式的前缀开头 prefix
-    local:
-      # CDN 链接前缀
-      prefix: ${site_root}
-      # local CDN 格式
-      format: ${prefix}${file}
-    # npm
-    # https://www.npmjs.com/
-    # Tip: 在本配置文件中 匹配以 "volantis-npm" 开头的链接路径替换为该格式的前缀开头 prefix
-    npm:
-      # CDN 链接前缀
-      prefix: https://unpkg.com
-      # npm CDN 格式
-      format: ${prefix}/${name}@${version}/${file}
-    # volantis static 静态资源文件 npm 包 CDN 地址
-    # https://github.com/volantis-x/volantis-static
-    # Tip: 在本配置文件中 匹配以 "volantis-static" 开头的链接路径替换为该格式的前缀开头 prefix
-    static:
-      # CDN 链接前缀
-      prefix: https://unpkg.com/volantis-static@0.0.1660614606622
-      # volantis-static CDN 格式
-      format: ${prefix}/libs/${name}/${file}
-    # cdnjs
-    # https://cdnjs.com/
-    # Tip: 在本配置文件中 匹配以 "volantis-cdnjs" 开头的链接路径替换为该格式的前缀开头 prefix
-    cdnjs:
-      # CDN 链接前缀
-      prefix: https://cdn.bootcdn.net/ajax/libs
-      # cdnjs CDN 格式
-      format: ${prefix}/${name}/${version}/${min_file}
-  # ========================================================================
+  # 第三方库
+  fancybox_css: https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0.31/dist/fancybox.css
+  fancybox_js: https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0.31/dist/fancybox.umd.js
+  algolia_search_v4: https://cdn.jsdelivr.net/npm/algoliasearch@4.14.2/dist/algoliasearch-lite.umd.js
+  instantsearch_v4: https://cdn.jsdelivr.net/npm/instantsearch.js@4.44.0/dist/instantsearch.production.min.js
+  instant_meilisearch: https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch@0.8.1/dist/instant-meilisearch.umd.min.js
+  markdown: https://cdn.jsdelivr.net/npm/github-markdown-css@5.1.0/github-markdown.min.css
+  marked: https://cdn.jsdelivr.net/npm/marked@4.0.18/marked.min.js
+  hlsjs: https://cdn.jsdelivr.net/npm/hls.js@1.1.3/dist/hls.min.js
+  iconfontInkss: /js/szyink/iconfontInkss.js
 
 
 
@@ -108,7 +72,7 @@ navbar:
   enable: true
   visiable: auto # always, auto
   logo: # choose [img] or [icon + title]
-    img: volantis-static/media/org.volantis/blog/Logo-NavBar@3x.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png
+    img: https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png
     icon:
     title:
   menu:
@@ -149,7 +113,7 @@ article:
   preview:
     scheme: landscape # landscape
     # pin icon for post
-    pin_icon: volantis-static/media/twemoji/assets/svg/1f4cc.svg # https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f4cc.svg
+    pin_icon: https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0/assets/svg/1f4cc.svg
     # auto generate title if not exist
     auto_title: true # false, true
     # auto generate excerpt if not exist
@@ -229,14 +193,14 @@ article:
       donate:
         enable: false
         images:
-          - volantis-static/media/org.volantis/blog/qrcode/github@volantis.png
+          - https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/qrcode/github@volantis.png
 
     # meta library
     meta_library:
       # 默认文章作者（可在 _data/author.yaml 中增加其他作者，并在 front-matter 中设置）
       # https://volantis.js.org/advanced-settings/#多人协同
       author:
-        avatar: volantis-static/media/org.volantis/blog/favicon/apple-touch-icon.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/favicon/apple-touch-icon.png
+        avatar: https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/favicon/apple-touch-icon.png
         name: 请设置文章作者
         url: /
       # 文章创建日期
@@ -290,6 +254,8 @@ comments:
   # https://github.com/ArtalkJS/Artalk
   artalk:
     server: https://yours-artalk-domain    # 修改为自建的后端服务地址
+    css: https://cdn.jsdelivr.net/npm/artalk@2.4.3/dist/Artalk.css
+    js: https://cdn.jsdelivr.net/npm/artalk@2.4.3/dist/Artalk.js
     path:  # 全局评论地址
     placeholder: # 评论占位
     visitor: true # 是否显示文章阅读数
@@ -332,7 +298,7 @@ sidebar:
     blogger:
       class: blogger
       display: [desktop, mobile] # [desktop, mobile]
-      avatar: volantis-static/media/org.volantis/blog/Logo-NavBar@3x.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png
+      avatar: https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/Logo-NavBar@3x.png
       shape: rectangle # circle, rectangle
       url: /about/
       title:
@@ -389,8 +355,8 @@ sidebar:
       display: [desktop, mobile] # [desktop, mobile]
       height: 64px  # Automatic height if not set
       images:
-        - volantis-static/media/org.volantis/blog/qrcode/github@volantis.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/qrcode/github@volantis.png
-        - volantis-static/media/org.volantis/blog/qrcode/github@volantis.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/qrcode/github@volantis.png
+        - https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/qrcode/github@volantis.png
+        - https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/qrcode/github@volantis.png
     # ---------------------------------------
     # webinfo widget
     webinfo:
@@ -465,7 +431,7 @@ tag_plugins:
     color: '' # color for default checkbox
   # {% link title, url, img %}
   link:
-    placeholder:  volantis-static/media/org.volantis/logo/256/safari.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/256/safari.png
+    placeholder:  https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/logo/256/safari.png
 ############################### Tag Plugins ############################### > end
 
 
@@ -498,9 +464,17 @@ site_footer:
 plugins:
   ################ required plugins ################
   # jquery
-  globalJquery: false # 全局引入 jquery
+  globalJquery:
+    enable: false # 全局引入 jquery
+    js: https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js
   # fontawesome
-  fontawesome: true
+  fontawesome:
+    enable: true
+    js: https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css
+  # busuanzi 不蒜子统计
+  busuanzi:
+    enable: false
+    js: https://cdn.jsdelivr.net/npm/busuanzi@2.3.0/bsz.pure.mini.js
   ######## Plugins to optimize the experience:
   # 代码高亮
   code_highlight: highlightjs # highlightjs or prismjs
@@ -530,6 +504,7 @@ plugins:
   # Pjax
   pjax:
     enable: true
+    js: https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js
     timeout: 5000        # The timeout in milliseconds for the XHR requests. Set to 0 to disable the timeout.
     cacheBust: false     # When set to true, Pjax appends a timestamp  to skip the browser cache.
     exclude:             # 被屏蔽的 url 地址将不启用 pjax 跳转，可以在控制台下使用 window.location.pathname 获取
@@ -537,8 +512,8 @@ plugins:
   # NProgress
   nprogress:
     enable: false
-    js: volantis-npm/nprogress@0.2.0/nprogress.min.js
-    css: volantis-npm/nprogress@0.2.0/nprogress.min.css
+    js: https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js
+    css: https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css
 
   # 暗黑模式 darkmode
   # 开关按钮：在 navbar.menu 中添加：
@@ -791,19 +766,19 @@ custom_css:
     logofont:
       fontfamily: '"Varela Round", "PingFang SC", "Microsoft YaHei", Helvetica, Arial'
       name: 'Varela Round'
-      url: volantis-static/media/fonts/VarelaRound/VarelaRound-Regular.ttf # https://cdn.jsdelivr.net/gh/volantis-x/cdn-fonts/VarelaRound/VarelaRound-Regular.ttf
+      url: https://cdn.jsdelivr.net/gh/volantis-x/cdn-fonts/VarelaRound/VarelaRound-Regular.ttf
       weight: normal
       style: normal
     bodyfont:
       fontfamily: 'UbuntuMono, "Varela Round", "PingFang SC", "Microsoft YaHei", Helvetica, Arial'
       name: 'UbuntuMono'
-      url: volantis-static/media/fonts/UbuntuMono/UbuntuMono-Regular.ttf # https://cdn.jsdelivr.net/gh/volantis-x/cdn-fonts/UbuntuMono/UbuntuMono-Regular.ttf
+      url: https://cdn.jsdelivr.net/gh/volantis-x/cdn-fonts/UbuntuMono/UbuntuMono-Regular.ttf
       weight: normal
       style: normal
     codefont:
       fontfamily: 'Menlo, UbuntuMono, Monaco'
       # name: 'Monaco'
-      # url: volantis-static/media/fonts/Monaco/Monaco.ttf # https://cdn.jsdelivr.net/gh/volantis-x/cdn-fonts/Monaco/Monaco.ttf
+      # url: https://cdn.jsdelivr.net/gh/volantis-x/cdn-fonts/Monaco/Monaco.ttf
       # weight: normal
       # style: normal
 ############################### Custom css ############################### > end
@@ -827,11 +802,11 @@ seo:
 # https://ogp.me/
 # https://hexo.io/zh-cn/docs/helpers#open-graph
 open_graph:
-  image: volantis-static/media/org.volantis/blog/favicon/android-chrome-192x192.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/favicon/android-chrome-192x192.png
+  image: https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/favicon/android-chrome-192x192.png
   twitter_card: summary # summary_large_image , summary
   #twitter_id:
   #twitter_site:
-  path: volantis-static/media/org.volantis/blog/favicon/android-chrome-192x192.png # https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/favicon/android-chrome-192x192.png
+  path: https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/favicon/android-chrome-192x192.png
   width: 192
   height: 192
 ############################### Open Graph ############################### > end

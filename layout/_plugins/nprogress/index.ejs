@@ -3,8 +3,8 @@
 %>
 
 <% if (nprogressConfig.enable) { %>
-<link rel="stylesheet" href="<%- nprogressConfig.css %>">
-<script type="text/javascript" src="<%- nprogressConfig.js %>"></script>
+<link rel="stylesheet" href="<%- theme.plugins.nprogress.css %>">
+<script type="text/javascript" src="<%- theme.plugins.nprogress.js %>"></script>
 <script>
   volantis.pjax.push(()=> {
     NProgress?.done();

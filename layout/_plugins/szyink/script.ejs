@@ -1,8 +1,7 @@
 <script>
   <% if (theme.plugins.busuanzi.enable) { %>
-  volantis.js("<%- theme.cdn.busuanzi %>", {
-    'defer': true, 
-    'pjax': true, 
+  volantis.js("<%- theme.plugins.busuanzi.js %>", {
+    'defer': true,
     'data-style': 'comma'
   });
   <% } %>
