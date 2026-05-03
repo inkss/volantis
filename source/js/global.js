@@ -62,11 +62,11 @@ class VolantisDom {
     const found = this._ele.querySelector(selector);
     return found ? new VolantisDom(found) : null;
   }
-  
+
   hasClass(className) {
     return this._ele.classList.contains(className);
   }
-  
+
   addClass(classNames) {
     if (typeof classNames !== 'string') return this;
     classNames.split(' ').forEach(className => {
@@ -74,7 +74,7 @@ class VolantisDom {
     });
     return this;
   }
-  
+
   removeClass(classNames) {
     if (typeof classNames !== 'string') return this;
     classNames.split(' ').forEach(className => {
@@ -82,7 +82,7 @@ class VolantisDom {
     });
     return this;
   }
-  
+
   toggleClass(classNames) {
     if (typeof classNames !== 'string') return this;
     classNames.split(' ').forEach(className => {
@@ -90,7 +90,7 @@ class VolantisDom {
     });
     return this;
   }
-  
+
   on(event, handler, removeOnPjax = true) {
     if (typeof handler !== 'function') return this;
     this._ele.addEventListener(event, handler, false);
@@ -101,15 +101,15 @@ class VolantisDom {
     }
     return this;
   }
-  
+
   click(handler, removeOnPjax) {
     return this.on('click', handler, removeOnPjax);
   }
-  
+
   scroll(handler, removeOnPjax) {
     return this.on('scroll', handler, removeOnPjax);
   }
-  
+
   html(content) {
     if (content === undefined) {
       return this._ele.innerHTML;
@@ -117,12 +117,12 @@ class VolantisDom {
     this._ele.innerHTML = content;
     return this;
   }
-  
+
   hide() {
     this._ele.style.display = 'none';
     return this;
   }
-  
+
   show() {
     this._ele.style.display = 'block';
     return this;
@@ -255,10 +255,10 @@ volantis.js = (src, cb) => {
       if (typeof cb === 'function') cb();
       resolve();
     };
-    
+
     script.onload = handleLoad;
     script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-    
+
     if (cb && typeof cb === 'object' && !Array.isArray(cb)) {
       for (const p in cb) {
         if (!cb.hasOwnProperty(p)) continue;
@@ -277,7 +277,7 @@ volantis.js = (src, cb) => {
         }
       }
     }
-    
+
     (document.head || document.documentElement).appendChild(script);
   });
 };
@@ -306,7 +306,7 @@ volantis.css = (src) => {
 // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
 volantis.requestAnimationFrame = (fn) => {
   if (!window.requestAnimationFrame) {
-    window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function(callback) {
+    window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function (callback) {
       return window.setTimeout(callback, 1000 / 60);
     };
   }
@@ -344,7 +344,7 @@ volantis.scroll = {
   del: 0,
   getScrollTop: () => (document.compatMode !== 'BackCompat' ? document.documentElement.scrollTop : document.body.scrollTop),
   scrollHeight: () => Math.max(
-    document.body.scrollHeight, 
+    document.body.scrollHeight,
     document.documentElement.scrollHeight
   ),
   offsetHeight: () => Math.max(
@@ -353,16 +353,16 @@ volantis.scroll = {
     document.body.clientHeight,
     document.documentElement.clientHeight
   ),
-  progress: function() {
+  progress: function () {
     return this.getScrollTop() / (this.scrollHeight() - this.offsetHeight());
   },
-  handleScrollEvents: function() {
-    this.lastScrollTop = this.getScrollTop(); 
+  handleScrollEvents: function () {
+    this.lastScrollTop = this.getScrollTop();
     const loop = () => {
       const scrollTop = this.getScrollTop();
       if (this.lastScrollTop !== scrollTop) {
         this.del = scrollTop - this.lastScrollTop;
-        this.lastScrollTop = scrollTop; 
+        this.lastScrollTop = scrollTop;
         this.unengine.list.length = 0;
         this.engine.start();
         this.handleScrollStop();
@@ -373,7 +373,7 @@ volantis.scroll = {
     };
     window.requestAnimationFrame(loop);
   },
-  handleScrollStop: function() {
+  handleScrollStop: function () {
     clearTimeout(this.scrollTimer);
     this.scrollTimer = setTimeout(() => {
       if (this.lastScrollTop === window.pageYOffset) {
@@ -425,7 +425,7 @@ function errorImgCover(img) {
 
 /******************************************************************************/
 // 页面选择器 将dom对象缓存起来 - 延迟到 DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   volantis.dom.bodyAnchor = volantis.dom.$(document.getElementById('safearea')); // 页面主体
   volantis.dom.topBtn = volantis.dom.$(document.getElementById('s-top')); // 向上
   volantis.dom.wrapper = volantis.dom.$(document.getElementById('wrapper')); // 整个导航栏

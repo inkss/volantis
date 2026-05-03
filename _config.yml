@@ -17,7 +17,6 @@ default:
   cover: https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/cover/76b86c0226ffd.svg
   image: https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/image/2659360.svg
 
-
 ############################### CDN ###############################
 # 直接填写资源 URL，用户可在 _config.volantis.yml 中覆盖任意 key
 cdn:
@@ -39,11 +38,6 @@ cdn:
   marked: https://cdn.jsdelivr.net/npm/marked@4.0.18/marked.min.js
   hlsjs: https://cdn.jsdelivr.net/npm/hls.js@1.1.3/dist/hls.min.js
   iconfontInkss: /js/szyink/iconfontInkss.js
-
-
-
-
-
 
 ############################### CSP ###############################
 # 内容安全策略( CSP ) meta 标签 http-equiv="Content-Security-Policy"
@@ -97,9 +91,6 @@ navbar:
   search: Search...   # Search bar placeholder
                             
 ############################### Navigation Bar ############################### > end
-
-
-
 
 pages:
   # 友链页面配置
@@ -528,77 +519,81 @@ plugins:
 ############################### Rightmenu ############################### > start
 
 ############################
-# 【自定义右键菜单】
-# 数据组成：
-# id: 唯一标识，用于区分、定位菜单项
-# name: 显示在菜单中的名称
-# icon: 显示图标的字符串，CSS 类
-# link: 表明这是一个链接，记录链接地址
-# linkTarget: 链接目标：'_self'（默认），'_blank'
-# eventName: 事件名称，表示这是一个事件处理形式的菜单项
-#  1.预设事件：
-#     1.1 详见预设菜单的 eventName 值
-#  2.外部事件:
-#     2.1 尝试从 window 调用：window[eventName](menuItem, event, pointevent) menuItem: 菜单项数据; event: 点击事件; pointevent: 右键事件 
-#     2.2 下方菜单配置时，可带参数 eventName: 'OpenSearch(selectedText)'  <=== 其中 selectedText 会被替换为实际选中的文本
-#                      也可带替换标志 eventName: "open('https://cn.bing.com/search?q=##selectedText##')"  <=== 其中 ##selectedText## 会被替换为实际选中的文本
-#                      ~详细逻辑参阅文档~
-# displayCondition: 显示条件，用来控制菜单项的显示行为
-#  1.预设条件：
-#    1.1 输入框 (inInputField)：在输入框下开启右键菜单
-#    1.2 文本选择 (selectedText)：在选择文本时开启右键菜单
-#    1.3 图片链接 (onImage)：在图片上开启右键菜单
-#    1.4 地址链接 (onLink)：在链接上开启右键菜单
-#    1.5 文章页面 (articlePage)：在文章页面开启右键菜单
-#    1.6 评论容器 (commentsPresent)：在存在评论容器的页面上开启右键菜单
-#  2.外部条件：
-#    2.1 尝试从 window 调用：window[displayCondition](menuItem, pointevent) menuItem: 菜单项数据; pointevent: 右键事件 
-#    2.2 外部条件需返回 true/false，任何其它返回值将被忽略
-#  3.留空或不设置 始终显示
-#  4.满足条件的菜单项显示数量大于 maxMenuItems 时，隐藏所有链接型菜单
-############################
-rightmenus:
-  enable: true
-  options:
-    navigation: true # 是否显示导航栏组件
-    maxMenuItems: 12 # 最大菜单显示数量：见 👆
-  navigation: 
-    # 导航栏组件
-    # 横向排列，仅显示图标
-    # 定义顺序代表加载顺序
-    - {id: 'left', name: '转到上一页', icon: 'feather arrow-left PETERRIVE', eventName: 'window.history.back'}
-    - {id: 'right', name: '转到下一页', icon: 'feather arrow-right PETERRIVE', eventName: 'window.history.forward'}
-    - {id: 'redo', name: '刷新当前页面', icon: 'feather refresh-ccw PETERRIVE', eventName: 'window.location.reload'}
-    - {id: 'home', name: '回到首页', icon: 'feather home PETERRIVE', link: '/'}
-    - {id: 'top', name: '回到顶部', icon: 'feather arrow-up PETERRIVE', eventName: 'scrollTop', displayCondition: 'scrolledFromTop'}
-  menuList: 
-    # 菜单项组件
-    # 竖向排列，显示图标和菜单名称
-    # 定义顺序代表加载顺序
-    # 菜单分割：
-    #  1.1 当相邻菜单项的 displayCondition 值不同时，自动添加分割线
-    #  1.2 主动定义分割线时，自动判断关闭，根据 hr 定义位置添加分割线
-    #      定义方式： hr, {}, {id: 'hr'}
-    - {id: 'selectAllText', name: '全选文本', icon: 'feather type PETERRIVE', eventName: 'selectAllText', displayCondition: 'inInputField'}
-    - {id: 'copyPaste', name: '粘贴内容', icon: 'feather clipboard PETERRIVE', eventName: 'copyPaste', displayCondition: 'inInputField'}
-    - {id: 'cutText', name: '剪切文本', icon: 'feather scissors PETERRIVE', eventName: 'cutText', displayCondition: 'inInputField'}
-    - {id: 'copyText', name: '复制文本', icon: 'feather copy PETERRIVE', eventName: 'copyText', displayCondition: 'selectedText'}
-    - {id: 'searchWord', name: '站内搜索', icon: 'feather search PETERRIVE', eventName: 'OpenSearch(selectedText)', displayCondition: 'selectedText'}
-    - {id: 'bingSearch', name: '必应搜索', icon: 'feather bold PETERRIVE', eventName: 'window.open("https://www.bing.com/search?q=##selectedText##")', displayCondition: 'selectedText'}
-    - {id: 'prev', name: '查看上一篇', icon: 'feather arrow-up-circle PETERRIVE', eventName: "jumpArticle", displayCondition: 'articlePage'}
-    - {id: 'next', name: '查看下一篇', icon: 'feather arrow-down-circle PETERRIVE', eventName: "jumpArticle", displayCondition: 'articlePage'}
-    - {id: 'comment', name: '查看评论', icon: 'feather message-circle PETERRIVE', eventName: 'scrollComment', displayCondition: 'articlePage'}
-    - {id: 'openTab', name: '新标签页打开', icon: 'feather external-link PETERRIVE', eventName: 'window.open(linkAddress)', displayCondition: 'onLink'}
-    - {id: 'copyLink', name: '复制链接地址', icon: 'feather link PETERRIVE', eventName: 'copyLink', displayCondition: 'onLink'}
-    - {id: 'copyImg', name: '复制图片文件', icon: 'feather image PETERRIVE', eventName: 'copyImg', displayCondition: 'onImage'}
-    - {id: 'friends', name: '我的朋友们', icon: 'feather users AMETHYST', link: '/page/friends/'}
-    - {id: 'archive', name: '文章归档', icon: 'feather archive CONCRETE', link: '/archives/'}
-    - {id: 'categorie ', name: '文章分类', icon: 'feather folder-plus ALIZARIN', link: '/categories/'}
-    - {id: 'about', name: '关于我', icon: 'feather smile WISTERIA', link: '/page/about/'}
-    - {id: 'info', name: '留言板', icon: 'feather message-circle ALIZARIN', link: '/page/info/'}
-    - {id: 'printMode', name: '打印页面', icon: 'feather printer TURQUOISE', eventName: 'printMode', displayCondition: 'articlePage'}
-    - {id: 'readMode', name: '阅读模式', icon: 'feather book-open EMERALD', eventName: 'readMode', displayCondition: 'articlePage'}
-    - {id: 'darkMode', name: '暗黑模式', icon: 'feather sun WISTERIA', eventName: 'volantis.dark.toggle'}
+  # 【自定义右键菜单】
+  # 数据组成：
+  # id: 唯一标识，用于区分、定位菜单项
+  # name: 显示在菜单中的名称
+  # icon: 显示图标的字符串，CSS 类
+  # link: 表明这是一个链接，记录链接地址
+  # linkTarget: 链接目标：'_self'（默认），'_blank'
+  # eventName: 事件名称，表示这是一个事件处理形式的菜单项
+  #  1.预设事件：
+  #     1.1 详见预设菜单的 eventName 值
+  #  2.外部事件:
+  #     2.1 尝试从 window 调用：window[eventName](menuItem, event, pointevent) menuItem: 菜单项数据; event: 点击事件; pointevent: 右键事件 
+  #     2.2 下方菜单配置时，可带参数 eventName: 'OpenSearch(selectedText)'  <=== 其中 selectedText 会被替换为实际选中的文本
+  #                      也可带替换标志 eventName: "open('https://cn.bing.com/search?q=##selectedText##')"  <=== 其中 ##selectedText## 会被替换为实际选中的文本
+  #                      ~详细逻辑参阅文档~
+  # displayCondition: 显示条件，用来控制菜单项的显示行为
+  #  1.预设条件：
+  #    1.1 输入框 (inInputField)：在输入框下开启右键菜单
+  #    1.2 文本选择 (selectedText)：在选择文本时开启右键菜单
+  #    1.3 图片链接 (onImage)：在图片上开启右键菜单
+  #    1.4 地址链接 (onLink)：在链接上开启右键菜单
+  #    1.5 文章页面 (articlePage)：在文章页面开启右键菜单
+  #    1.6 评论容器 (scrolledFromTop)：是否离开首屏
+  #    1.7 评论容器 (homePage)：是否位于首页
+  #  2.外部条件：
+  #    2.1 尝试从 window 调用：window[displayCondition](menuItem, pointevent) menuItem: 菜单项数据; pointevent: 右键事件 
+  #    2.2 外部条件需返回 true/false，任何其它返回值将被忽略
+  #  3.留空或不设置 始终显示
+  #  4.满足条件的菜单项显示数量大于 maxMenuItems 时，隐藏所有链接型菜单
+  ############################
+  rightmenus:
+    enable: true
+    options:
+      navigation: true # 是否显示导航栏组件
+      maxMenuItems: 12 # 最大菜单显示数量：见 👆
+    navigation: 
+      # 导航栏组件
+      # 横向排列，仅显示图标
+      # 定义顺序代表加载顺序
+      - {id: 'left', name: '转到上一页', icon: 'feather arrow-left PETERRIVE', eventName: 'window.history.back'}
+      - {id: 'right', name: '转到下一页', icon: 'feather arrow-right PETERRIVE', eventName: 'window.history.forward'}
+      - {id: 'redo', name: '刷新当前页面', icon: 'feather refresh-ccw PETERRIVE', eventName: 'window.location.reload'}
+      - {id: 'home', name: '回到首页', icon: 'feather home PETERRIVE', link: '/', displayCondition: 'homePage'}
+      - {id: 'top', name: '回到顶部', icon: 'feather arrow-up PETERRIVE', eventName: 'scrollTop', displayCondition: 'scrolledFromTop'}
+    menuList: 
+      # 菜单项组件
+      # 竖向排列，显示图标和菜单名称
+      # 定义顺序代表加载顺序
+      # 菜单分割：
+      #  1.1 当相邻菜单项的 displayCondition 值不同时，自动添加分割线
+      #  1.2 主动定义分割线时，自动判断关闭，根据 hr 定义位置添加分割线
+      #      定义方式： hr, {}, {id: 'hr'}
+      - {id: 'selectAllText', name: '全选文本', icon: 'feather type PETERRIVE', eventName: 'selectAllText', displayCondition: 'inInputField'}
+      - {id: 'copyPaste', name: '粘贴内容', icon: 'feather clipboard PETERRIVE', eventName: 'copyPaste', displayCondition: 'inInputField'}
+      - {id: 'cutText', name: '剪切文本', icon: 'feather scissors PETERRIVE', eventName: 'cutText', displayCondition: 'inInputField'}
+      - {id: 'copyText', name: '复制文本', icon: 'feather copy PETERRIVE', eventName: 'copyText', displayCondition: 'selectedText'}
+      - {id: 'searchWord', name: '站内搜索', icon: 'feather search PETERRIVE', eventName: 'OpenSearch(selectedText)', displayCondition: 'selectedText'}
+      - {id: 'bingSearch', name: '必应搜索', icon: 'feather bold PETERRIVE', eventName: 'window.open("https://www.bing.com/search?q=##selectedText##")', displayCondition: 'selectedText'}
+      - {}
+      - {id: 'prev', name: '查看上一篇', icon: 'feather arrow-up-circle PETERRIVE', eventName: "jumpArticle", displayCondition: 'articlePage'}
+      - {id: 'next', name: '查看下一篇', icon: 'feather arrow-down-circle PETERRIVE', eventName: "jumpArticle", displayCondition: 'articlePage'}
+      - {id: 'comment', name: '查看评论', icon: 'feather message-circle PETERRIVE', eventName: 'scrollComment', displayCondition: 'articlePage'}
+      - {id: 'openTab', name: '新标签页打开', icon: 'feather external-link PETERRIVE', eventName: 'window.open(linkAddress)', displayCondition: 'onLink'}
+      - {id: 'copyLink', name: '复制链接地址', icon: 'feather link PETERRIVE', eventName: 'copyLink', displayCondition: 'onLink'}
+      - {id: 'copyImg', name: '复制图片文件', icon: 'feather image PETERRIVE', eventName: 'copyImg', displayCondition: 'onImage'}
+      - {id: 'hr'}
+      - {id: 'friends', name: '我的朋友们', icon: 'feather users AMETHYST', link: '/page/friends/'}
+      - {id: 'archive', name: '文章归档', icon: 'feather archive CONCRETE', link: '/archives/'}
+      - {id: 'categorie ', name: '文章分类', icon: 'feather folder-plus ALIZARIN', link: '/categories/'}
+      - {id: 'about', name: '关于我', icon: 'feather smile WISTERIA', link: '/page/about/'}
+      - {id: 'info', name: '留言板', icon: 'feather message-circle ALIZARIN', link: '/page/info/'}
+      - hr
+      - {id: 'printMode', name: '打印页面', icon: 'feather printer TURQUOISE', eventName: 'printMode', displayCondition: 'articlePage'}
+      - {id: 'readMode', name: '阅读模式', icon: 'feather book-open EMERALD', eventName: 'readMode', displayCondition: 'articlePage'}
+      - {id: 'darkMode', name: '暗黑模式', icon: 'feather sun WISTERIA', eventName: 'volantis.dark.toggle'}
 
 
 ############################### Search ############################### > start

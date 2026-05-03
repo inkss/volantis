@@ -17,7 +17,7 @@ const globalData = {
 };
 
 // 生成菜单 HTML
-contextMenuManager.generateMenuHTML = function(config) {
+contextMenuManager.generateMenuHTML = function (config) {
   // 检查是否已存在，避免重复添加
   if (document.getElementById('rightmenu-wrapper')) {
     return;
@@ -175,7 +175,7 @@ contextMenuManager.initializeContextMenu = async function () {
       if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
         globalData.inputContent = target;
         globalData.selectedText = window.getSelection().toString();
-        
+
         switch (menuItem.id) {
           case 'selectAllText':
             return globalData.inputContent.value !== '';
@@ -207,7 +207,7 @@ contextMenuManager.initializeContextMenu = async function () {
         globalData.linkAddress = globalData.selectedText;
         return true;
       }
-      
+
       const target = pointerEvent.target;
       // 检查目标是否是链接
       if (target.tagName === 'A' && target.hasAttribute('href')) {
@@ -229,13 +229,13 @@ contextMenuManager.initializeContextMenu = async function () {
       if (menuItem.id === 'comment') {
         const element = document.querySelector('#comments');
         if (!element) return false;
-        
+
         // 校验元素存在，页面中显示，屏幕上显示
         const isVisible = !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
         const isBelowViewport = window.scrollY < (element.getBoundingClientRect().top - 50 + window.scrollY);
         return isVisible && isBelowViewport;
       }
-      
+
       return !!document.querySelector('#post.article');
     },
     scrolledFromTop: () => {
@@ -262,16 +262,16 @@ contextMenuManager.initializeContextMenu = async function () {
     scrollComment: () => {
       const element = document.querySelector('#comments');
       if (!element) return;
-      
+
       const l_header = document.querySelector('#l_header');
       const headerTotalOffset = l_header ? -contextMenuManager.rem - l_header.offsetHeight : 0;
-      
+
       if (typeof volantis?.scroll?.to === 'function') {
         volantis.scroll.to(element, { addTop: headerTotalOffset });
       } else {
-        window.scrollTo({ 
-          top: element.getBoundingClientRect().top + window.scrollY - headerTotalOffset, 
-          behavior: 'smooth' 
+        window.scrollTo({
+          top: element.getBoundingClientRect().top + window.scrollY - headerTotalOffset,
+          behavior: 'smooth'
         });
       }
     },
@@ -302,14 +302,14 @@ contextMenuManager.initializeContextMenu = async function () {
     copyLink: () => {
       const target = globalData.pointerEvent?.target;
       if (!target) return;
-      
+
       let link = '';
       if (target.tagName === 'IMG') {
         link = target.dataset.src || target.src;
       } else if (target.tagName === 'A') {
         link = target.href;
       }
-      
+
       if (link) {
         VolantisApp.utilWriteClipText(link);
       }
@@ -321,12 +321,12 @@ contextMenuManager.initializeContextMenu = async function () {
         if (!target) {
           throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.img_target_missing);
         }
-        
+
         const link = target.dataset.src || target.src;
         if (!link) {
           throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.img_link_missing);
         }
-        
+
         const image = new Image();
         image.crossOrigin = "Anonymous";
         image.src = `${link}?(lll￢ω￢)~~`;
@@ -372,7 +372,7 @@ contextMenuManager.initializeContextMenu = async function () {
     },
     cutText: (text) => {
       if (!globalData.inputContent) return;
-      
+
       // 公共调用时第一个参数传递的是 Object
       let value = '';
       if (typeof text !== 'string') {
@@ -395,25 +395,25 @@ contextMenuManager.initializeContextMenu = async function () {
     copyPaste: async (menuItem, pointerEvent) => {
       try {
         NProgress?.start();
-        
+
         // 检查浏览器是否支持剪贴板 API
         if (!navigator.permissions || !navigator.clipboard) {
           throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.clipboard_no_support);
         }
-        
+
         const result = await navigator.permissions.query({ name: 'clipboard-read' });
         if (result.state === 'granted' || result.state === 'prompt') {
           const clipboardItems = await navigator.clipboard.read();
 
           let text = '';
           let imageFiles = [];
-          
+
           for (let i = 0; i < clipboardItems.length; i++) {
             const item = clipboardItems[i];
             if (item.types.length === 0) {
               throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.clipboard_empty);
             }
-            
+
             for (let j = 0; j < item.types.length; j++) {
               const type = item.types[j];
               if (type.startsWith('image/')) {
@@ -607,14 +607,14 @@ contextMenuManager.initializeContextMenu = async function () {
         lastSeparator = null;
       }
     }
-    
+
     if (lastSeparator) {
       lastSeparator.classList.remove('active');
     }
-    
+
     // 处理第一个激活的菜单项是分割线的情况
     if (contextMenuManager.navigationItems.length === 0) {
-      const firstActiveMenuItem = contextMenuManager.menuItems.find(item => 
+      const firstActiveMenuItem = contextMenuManager.menuItems.find(item =>
         item.menuContentElement.classList.contains('active')
       );
       if (firstActiveMenuItem && firstActiveMenuItem.isHrElement) {
@@ -648,14 +648,14 @@ contextMenuManager.initializeContextMenu = async function () {
     const menuHeight = contextMenuManager.menuContainer.offsetHeight;
 
     // 计算菜单位置，确保菜单不会超出屏幕
-    let posX = mouseClientX + menuWidth > screenWidth 
-      ? mouseClientX - menuWidth + 10 
+    let posX = mouseClientX + menuWidth > screenWidth
+      ? mouseClientX - menuWidth + 10
       : mouseClientX;
-    
-    let posY = mouseClientY + menuHeight > screenHeight 
-      ? mouseClientY - menuHeight + 10 
+
+    let posY = mouseClientY + menuHeight > screenHeight
+      ? mouseClientY - menuHeight + 10
       : mouseClientY;
-    
+
     // 处理菜单底部超出屏幕的情况
     if (mouseClientY + menuHeight > screenHeight && posY < menuHeight && mouseClientY < menuHeight) {
       posY += screenHeight - menuHeight - posY - 10;
@@ -680,7 +680,7 @@ contextMenuManager.initializeContextMenu = async function () {
   document.addEventListener('contextmenu', (pointerEvent) => {
     hideContextMenu();
     globalData.pointerEvent = pointerEvent;
-    
+
     // 按下Ctrl键或屏幕宽度小于等于500px时，使用默认右键菜单
     if (pointerEvent.ctrlKey || document.body.offsetWidth <= 500) {
       return true;
