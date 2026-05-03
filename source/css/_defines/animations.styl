@@ -94,3 +94,39 @@
   100%
     opacity 1
     filter blur(0px)
+
+// 阅读模式主内容进入
+@keyframes readmode-content-in
+  from
+    opacity 0.7
+    transform scale(0.97)
+  to
+    opacity 1
+    transform scale(1)
+
+// 阅读模式主内容退出
+@keyframes readmode-content-out
+  from
+    opacity 1
+    transform scale(1)
+  to
+    opacity 0.7
+    transform scale(0.97)
+
+// 阅读模式退出按钮进入
+@keyframes readmode-btn-in
+  from
+    opacity 0
+    transform scale(0.5) rotate(-90deg)
+  to
+    opacity 1
+    transform scale(1) rotate(0deg)
+
+// 阅读模式退出按钮退出
+@keyframes readmode-btn-out
+  from
+    opacity 1
+    transform scale(1)
+  to
+    opacity 0
+    transform scale(0.5)

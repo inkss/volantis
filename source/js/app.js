@@ -84,6 +84,7 @@ const Tools = {
 // 阅读模式
 volantis.readmode = (() => {
   let exitBtn = null;
+  let isTransitioning = false;
 
   function createExitBtn() {
     if (exitBtn) return;
@@ -96,7 +97,6 @@ volantis.readmode = (() => {
     btn.title = '退出阅读模式';
     btn.href = 'javascript:void(0)';
     btn.innerHTML = `<i data-feather="${iconName}"></i>`;
-    btn.style.display = 'none';
     btn.addEventListener('click', e => { e.preventDefault(); toggle(); });
     document.body.appendChild(btn);
     exitBtn = btn;
@@ -104,26 +104,41 @@ volantis.readmode = (() => {
   }
 
   function toggle() {
+    if (isTransitioning) return;
     const ss = document.getElementById('reading-mode-stylesheet');
     if (!ss) return;
     Fancybox?.close();
-    ss.disabled = !ss.disabled;
-    if (!ss.disabled) {
+
+    if (ss.disabled) {
+      // 进入阅读模式
+      ss.disabled = false;
       createExitBtn();
       document.body.classList.add('read-mode');
-      exitBtn.style.display = '';
     } else {
-      document.body.classList.remove('read-mode');
-      if (exitBtn) exitBtn.style.display = 'none';
+      // 退出阅读模式（JS 驱动动画，不依赖 read.styl）
+      isTransitioning = true;
+      const main = document.getElementById('l_main');
+      if (main) main.style.animation = 'readmode-content-out 0.5s cubic-bezier(.23,1,.32,1) both';
+      if (exitBtn) exitBtn.style.animation = 'readmode-btn-out 0.4s cubic-bezier(.23,1,.32,1) both';
+      setTimeout(() => {
+        ss.disabled = true;
+        document.body.classList.remove('read-mode');
+        if (main) main.style.animation = '';
+        if (exitBtn) exitBtn.style.animation = '';
+        isTransitioning = false;
+      }, 100);
     }
   }
 
   function exit() {
+    if (isTransitioning) isTransitioning = false;
     const ss = document.getElementById('reading-mode-stylesheet');
     if (ss && !ss.disabled) {
       ss.disabled = true;
       document.body.classList.remove('read-mode');
-      if (exitBtn) exitBtn.style.display = 'none';
+      const main = document.getElementById('l_main');
+      if (main) main.style.animation = '';
+      if (exitBtn) exitBtn.style.animation = '';
     }
   }
 

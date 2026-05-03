@@ -11,12 +11,45 @@ body:before
   left 0
   right 0
   bottom 0
+  pointer-events none
+
+// 退出按钮（默认隐藏在 DOM 中）
+#s-exit-readmode
+  position fixed
+  z-index 1300
+  display flex
+  justify-content center
+  align-items center
+  width 48px
+  height 48px
+  line-height 48px
+  border-radius 100%
+  bottom 6rem
+  right 32px
+  color var(--color-text)
+  background var(--color-read-post)
+  box-shadow 0 2px 8px rgba(0, 0, 0, 0.15)
+  cursor pointer
+  opacity 0
+  visibility hidden
+  pointer-events none
+  svg.feather
+    width 20px
+    height 20px
+  @media screen and (max-width: 768px)
+    right 16px
+  @media screen and (max-width: $device-tablet)
+    right: $gap
+
+// ========== 阅读模式激活 ==========
 
 body.read-mode
+  &:before
+    opacity 0.97
+
   #l_side,
   #l_header,
   #l_cover,
-  #l_side,
   #comments,
   #BKG,
   #owo-big,
@@ -28,7 +61,6 @@ body.read-mode
   .article-meta#bottom
     display none !important
 
-body.read-mode
   #l_main,
   #l_body,
   #safearea,
@@ -45,12 +77,15 @@ body.read-mode
     padding: 0
     margin: 0 auto
     float: initial
+    transition width 0.5s cubic-bezier(.23,1,.32,1), padding 0.5s, margin 0.5s
+    animation readmode-content-in 0.5s cubic-bezier(.23,1,.32,1) both
     @media screen and (max-width: 900px)
       width: auto
 
   #post
     background-color: var(--color-read-post)
     box-shadow: 0 6px 12px 3px #00000033
+    transition background-color 0.5s, box-shadow 0.5s
 
   #l_cover
     min-height: 10px
@@ -78,36 +113,17 @@ body.read-mode
 
   .headimg-a
     border-radius: 10px
-  
+
   details .content
     background-color var(--color-read-post)
 
-  // 退出阅读模式浮动按钮
+  // 退出按钮（阅读模式下可见）
   #s-exit-readmode
-    position fixed
-    z-index 1100
-    display flex
-    justify-content center
-    align-items center
-    width 48px
-    height 48px
-    line-height 48px
-    border-radius 100%
-    bottom 6rem
-    right 32px
-    color var(--color-text)
-    background var(--color-read-post)
-    box-shadow 0 2px 8px rgba(0, 0, 0, 0.15)
-    cursor pointer
-    transition transform 0.4s cubic-bezier(.23,1,.32,1), border-radius 0.3s, box-shadow 0.3s
-    svg.feather
-      width 20px
-      height 20px
+    opacity 1
+    visibility visible
+    pointer-events auto
+    animation readmode-btn-in 0.4s 0.4s cubic-bezier(.23,1,.32,1) both
     &:hover
       transform scale(1.15) rotate(90deg)
       border-radius 25%
       box-shadow 0 4px 16px rgba(0, 0, 0, 0.25)
-    @media screen and (max-width: 768px)
-      right 16px
-    @media screen and (max-width: $device-tablet)
-      right: $gap
