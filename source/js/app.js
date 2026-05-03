@@ -113,6 +113,7 @@ volantis.readmode = (() => {
       // 进入阅读模式
       ss.disabled = false;
       createExitBtn();
+      if (exitBtn) exitBtn.style.display = 'flex';
       document.body.classList.add('read-mode');
     } else {
       // 退出阅读模式（JS 驱动动画，不依赖 read.styl）
@@ -124,7 +125,10 @@ volantis.readmode = (() => {
         ss.disabled = true;
         document.body.classList.remove('read-mode');
         if (main) main.style.animation = '';
-        if (exitBtn) exitBtn.style.animation = '';
+        if (exitBtn) {
+          exitBtn.style.animation = '';
+          exitBtn.style.display = 'none';
+        }
         isTransitioning = false;
       }, 100);
     }
