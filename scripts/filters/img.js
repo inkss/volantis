@@ -2,22 +2,23 @@
 
 'use strict';
 
+// 将 standalone <p><img></p> 包裹为 .img-wrap 容器
 hexo.extend.filter.register('after_post_render', function (data) {
   data.content = data.content.replace(/<p><img src="(.*?)" alt="(.*?)"\/><\/p>/g, '<div class="img-wrap"><div class="img-bg"><img class="img" src="$1" alt="$2"\/><\/div><span class="image-caption">$2<\/span><\/div>');
   return data;
 });
 
-// scripts/picture-wrapper.js
 const cheerio = require('cheerio');
+
+// 本地开发服务器：为图片添加懒加载 <picture> 包裹
 hexo.extend.filter.register('after_render:html', function (htmlContent) {
   if (this.env.cmd !== 'server') return htmlContent;
 
   const serverConfig = hexo.config.server;
-
-  // 获取服务器的主机地址和端口
-  const host = serverConfig.host || 'localhost'; // 默认值为 localhost
-  const port = serverConfig.port || 4000; // 默认值为 4000
+  const host = serverConfig.host || 'localhost';
+  const port = serverConfig.port || 4000;
   const actualHost = host === '0.0.0.0' ? 'localhost' : host;
+  // cnb 环境下图片路径已在 hexo-deployer-tencent 中处理，此处不拼接服务器地址
   const serverUrl = hexo.config.cnb ? "" : `http://${actualHost}:${port}`;
   const $ = cheerio.load(htmlContent);
 

@@ -1,12 +1,11 @@
-/************这个文件存放不需要重载的全局变量和全局函数*********/
-window.volantis = {}; // volantis 全局变量
+// ===== 全局变量和函数 =====
+window.volantis = {};
 
 // 页面DOM操作模块
 volantis.dom = {};
 
-/******************** 事件监听器模块 ********************/
+// ===== 事件监听器模块 =====
 volantis.EventListener = {
-  // 存储pjax切换时需要移除的事件监听器
   list: [],
 
   // 移除所有需要清理的事件监听器
@@ -27,7 +26,7 @@ class VolantisEventListener {
   }
 }
 
-/******************** DOM操作封装 ********************/
+// ===== DOM 操作封装 =====
 class VolantisDom {
   constructor(ele) {
     this._ele = ele || document.createElement('div');
@@ -55,9 +54,7 @@ class VolantisDom {
     });
   }
 
-  // ------------------------------
-  // 自定义方法：保持原有API名称和参数
-  // ------------------------------
+  // 自定义方法
   find(selector) {
     const found = this._ele.querySelector(selector);
     return found ? new VolantisDom(found) : null;
@@ -143,18 +140,17 @@ volantis.dom.$ = (ele) => {
   return null;
 };
 
-/******************** 任务执行管理器 ********************/
+// ===== 任务执行管理器 =====
 class RunItem {
   constructor() {
-    this.list = []; // 存储回调函数
+    this.list = [];
   }
 
-  // 执行所有任务
   start() {
     this.list.forEach(item => item.run());
   }
 
-  // 添加任务到队列（name 存在时，同名替换；否则追加）
+  // name 存在时同名替换，否则追加
   push(fn, name, useRequestAnimationFrame = true) {
     if (typeof fn !== 'function') return;
 
@@ -175,21 +171,18 @@ class RunItem {
     this.list.push(new TaskItem(taskFn, name));
   }
 
-  // 移除指定名称的任务
   remove(name) {
     if (typeof name !== 'string') return;
     this.list = this.list.filter(item => item.name !== name);
   }
 }
 
-// 任务项类
 class TaskItem {
   constructor(fn, name) {
     this.name = name || fn.name;
     this.fn = fn;
   }
 
-  // 执行任务
   run() {
     try {
       this.fn();
@@ -199,11 +192,10 @@ class TaskItem {
   }
 }
 
-/******************** Pjax ********************************/
-// /layout/_plugins/pjax/index.ejs
-// volantis.pjax.send(callBack[,"callBackName"]) 传入pjax:send回调函数
-// volantis.pjax.push(callBack[,"callBackName"]) 传入pjax:complete回调函数
-// volantis.pjax.error(callBack[,"callBackName"]) 传入pjax:error回调函数
+// ===== Pjax =====
+// volantis.pjax.send(cb, name)  pjax:send 回调
+// volantis.pjax.push(cb, name)  pjax:complete 回调
+// volantis.pjax.error(cb, name) pjax:error 回调
 volantis.pjax = {};
 volantis.pjax.method = {
   complete: new RunItem(),
@@ -216,11 +208,10 @@ volantis.pjax = Object.assign(volantis.pjax, {
   send: volantis.pjax.method.send.push.bind(volantis.pjax.method.send)
 });
 
-/********************  Dark Mode  ********************************/
-// /layout/_partial/scripts/darkmode.ejs
-// volantis.dark.mode 当前模式 dark or light
-// volantis.dark.toggle() 暗黑模式触发器
-// volantis.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+// ===== 暗色模式 =====
+// volantis.dark.mode  当前模式 dark/light
+// volantis.dark.toggle()  切换暗色模式
+// volantis.dark.push(cb, name)  注册回调
 volantis.dark = {};
 volantis.dark.method = {
   toggle: new RunItem()
@@ -229,17 +220,9 @@ volantis.dark = Object.assign(volantis.dark, {
   push: volantis.dark.method.toggle.push.bind(volantis.dark.method.toggle)
 });
 
-/********************  isMobile  ********************************/
-// /source/js/app.js
-// volantis.isMobile
-// volantis.isMobileOld
-
-/********************脚本动态加载函数********************************/
-// volantis.js(src, cb)  cb 可以传入onload回调函数 或者 JSON对象 例如: volantis.js("src", ()=>{}) 或 volantis.js("src", {defer:true,onload:()=>{}})
+// ===== 脚本动态加载 =====
+// volantis.js(src, cb)  cb: onload 回调或属性对象 {defer:true, onload:()=>{}}
 // volantis.css(src)
-
-// 返回Promise对象，如下方法同步加载资源，这利于处理文件资源之间的依赖关系
-// 已经加入了setTimeout
 volantis.js = (src, cb) => {
   const escapeSelector = str => str.replace(/[#".'()[\]]/g, '\\$&');
   return new Promise((resolve, reject) => {
@@ -301,9 +284,7 @@ volantis.css = (src) => {
   });
 };
 
-/********************** requestAnimationFrame ********************************/
-// 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
-// 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+// ===== requestAnimationFrame =====
 volantis.requestAnimationFrame = (fn) => {
   if (!window.requestAnimationFrame) {
     window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function (callback) {
@@ -313,7 +294,7 @@ volantis.requestAnimationFrame = (fn) => {
   return window.requestAnimationFrame(fn);
 };
 
-/************************ layoutHelper *****************************************/
+// ===== Layout Helper =====
 volantis.layoutHelper = (helper, html, opt = {}) => {
   const { clean = false, pjax = true } = { ...opt };
   const handleLayout = () => {
@@ -332,7 +313,7 @@ volantis.layoutHelper = (helper, html, opt = {}) => {
   }
 };
 
-/****************************** 滚动事件处理 ****************************************/
+// ===== 滚动事件处理 =====
 volantis.scroll = {
   engine: new RunItem(),
   unengine: new RunItem(),
@@ -398,7 +379,7 @@ volantis.scroll = {
     const { top: customTop, addTop = 0, ...restOpt } = option;
     const baseTop = ele.getBoundingClientRect().top + document.documentElement.scrollTop;
     const opt = {
-      top: customTop ?? baseTop + addTop, // 优先使用自定义top，否则计算
+      top: customTop ?? baseTop + addTop,
       behavior: volantis.GLOBAL_CONFIG.scrollSmooth ? 'smooth' : 'instant',
       observerDic: 100,
       ...restOpt
@@ -412,10 +393,9 @@ volantis.scroll = {
 };
 
 volantis.scroll.push = volantis.scroll.engine.push.bind(volantis.scroll.engine);
-volantis.scroll.handleScrollEvents(); // 处理滚动事件
+volantis.scroll.handleScrollEvents();
 
-/******************************************************************************/
-//图像加载出错时的处理
+// ===== 图片错误降级 =====
 function errorImgAvatar(img) {
   img.src = volantis.GLOBAL_CONFIG.default.avatar;
   img.onerror = null;
@@ -426,20 +406,18 @@ function errorImgCover(img) {
   img.onerror = null;
 }
 
-/******************************************************************************/
-// 页面选择器 将dom对象缓存起来 - 延迟到 DOMContentLoaded
+// ===== DOMContentLoaded：缓存 DOM 引用 =====
 document.addEventListener('DOMContentLoaded', function () {
-  volantis.dom.bodyAnchor = volantis.dom.$(document.getElementById('safearea')); // 页面主体
-  volantis.dom.topBtn = volantis.dom.$(document.getElementById('s-top')); // 向上
-  volantis.dom.wrapper = volantis.dom.$(document.getElementById('wrapper')); // 整个导航栏
-  volantis.dom.switcher = volantis.dom.$(document.querySelector('#l_header .switcher .s-search')); // 搜索按钮   移动端 1个
-  volantis.dom.header = volantis.dom.$(document.getElementById('l_header')); // 移动端导航栏
-  volantis.dom.search = volantis.dom.$(document.querySelector('#l_header .m_search')); //搜索框 桌面端 移动端 1个
-  volantis.dom.mPhoneList = volantis.dom.$(document.querySelectorAll('#l_header .m-phone .list-v')); //  手机端 子菜单 多个
+  volantis.dom.bodyAnchor = volantis.dom.$(document.getElementById('safearea'));
+  volantis.dom.topBtn = volantis.dom.$(document.getElementById('s-top'));
+  volantis.dom.wrapper = volantis.dom.$(document.getElementById('wrapper'));
+  volantis.dom.switcher = volantis.dom.$(document.querySelector('#l_header .switcher .s-search'));
+  volantis.dom.header = volantis.dom.$(document.getElementById('l_header'));
+  volantis.dom.search = volantis.dom.$(document.querySelector('#l_header .m_search'));
+  volantis.dom.mPhoneList = volantis.dom.$(document.querySelectorAll('#l_header .m-phone .list-v'));
 });
 
-// 防止iframe嵌套
+// 防止 iframe 嵌套
 if (top.location !== self.location) {
   top.location = self.location;
 }
-/******************************************************************************/

@@ -55,8 +55,6 @@ hexo.extend.filter.register('theme_inject', injects => {
     filePath[key] = "source/_volantis/" + key + defaultExtname
   });
   filePath = hexo.merge(filePath, hexo.theme.config.custom_files)
-  // console.log(filePath);
-  // console.log(hexo.theme.config.custom_files);
 
 
   points.styles.forEach(key => {
@@ -157,7 +155,6 @@ hexo.on('generateBefore', function () {
     });
     // Views sort.
     hexo.theme.config.injects[type] = Object.values(configs).sort((x, y) => x.order - y.order)
-    // console.log(injects);
   });
 });
 

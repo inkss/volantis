@@ -34,7 +34,7 @@ hexo.extend.tag.register('md', function(args) {
                 headers,
               };
             } else {
-              throw new Error(JSON.stringify(json.error));
+              throw new Error(status + ': ' + data);
             }
           })
           .then((resp) => {
@@ -42,7 +42,7 @@ hexo.extend.tag.register('md', function(args) {
             contentEl.innerHTML = data;
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
             contentEl.innerHTML =
               '<div style="font-size: 24px"><p>There was a problem loading the file!</p><p>加载文件时出现问题！</p></div>';
           });

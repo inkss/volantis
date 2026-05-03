@@ -158,6 +158,7 @@ volantis.printmode = {
     if (ss && !ss.disabled) volantis.readmode.toggle();
     Fancybox?.close();
     NProgress?.start();
+    // 取消注释以支持在打印时展开 details
     //document.querySelectorAll('details').forEach(e => e.setAttribute('open', 'true'));
 
     const imgs = document.querySelectorAll('#post.article picture.lazy img');
@@ -195,7 +196,7 @@ volantis.printmode = {
   }
 };
 
-/* Main */
+// ===== Main =====
 const VolantisApp = (() => {
   const fn = {},
     REM = parseFloat(getComputedStyle(document.documentElement).fontSize),
@@ -273,17 +274,6 @@ const VolantisApp = (() => {
       }
     });
 
-    // 为评论添加点击事件
-    // const linksComments = document.querySelectorAll('a[href$="#comments"]');
-    // linksComments.forEach(link => {
-    //   const comments = document.querySelector('#comments');
-    //   if (comments) {
-    //     link.addEventListener('click', (e) => {
-    //       e.preventDefault();
-    //       volantis.scroll.to(comments, { addTop: 0, behavior: 'smooth', observer: true });
-    //     });
-    //   }
-    // })
   }
 
   fn.restData = () => {
@@ -771,7 +761,7 @@ const VolantisApp = (() => {
 
   // feather 图标
   fn.feather = () => {
-    if (feather) {
+    if (typeof feather !== 'undefined') {
       try {
         feather.replace({ width: 16, height: 16 });
       } catch (error) {
@@ -840,18 +830,7 @@ const VolantisApp = (() => {
 Object.freeze(VolantisApp);
 
 
-// highlightKeyWords 与 搜索功能搭配 https://github.com/next-theme/hexo-theme-next/blob/eb194a7258058302baf59f02d4b80b6655338b01/source/js/third-party/search/local-search.js
-// Question: 锚点稳定性未知
-// ToDo: 查找模式
-// 0. (/////////要知道浏览器自带全页面查找功能 CTRL + F)
-// 1. 右键开启查找模式 / 导航栏菜单开启?? / CTRL + F ???
-// 2. 查找模式面板 (可拖动? or 固定?)
-// 3. keyword mark id 从 0 开始编号 查找下一处 highlightKeyWords.scrollToNextHighlightKeywordMark() 查找上一处 scrollToPrevHighlightKeywordMark() 循环查找(取模%)
-// 4. 可输入修改 查找关键词 keywords(type:list)
-// 5. 区分大小写 caseSensitive (/ 全字匹配?? / 正则匹配??)
-// 6. 在选定区域中查找 querySelector ??
-// 7. 关闭查找模式
-// 8. 搜索跳转 (URL 入口) 自动开启查找模式 调用 scrollToNextHighlightKeywordMark()
+// highlightKeyWords 与搜索功能搭配
 const highlightKeyWords = (() => {
   let markNum = 0;
   let markNextId = -1;
@@ -866,10 +845,10 @@ const highlightKeyWords = (() => {
     scrollToFirstHighlightKeywordMark();
   };
 
-  const scrollToFirstHighlightKeywordMark = () => {
+  const scrollToFirstHighlightKeywordMark = (retries = 0) => {
     const target = scrollToNextHighlightKeywordMark("0");
-    if (!target) {
-      requestAnimationFrame(scrollToFirstHighlightKeywordMark);
+    if (!target && retries < 100) {
+      requestAnimationFrame(() => scrollToFirstHighlightKeywordMark(retries + 1));
     }
   };
 
@@ -1005,7 +984,7 @@ const highlightKeyWords = (() => {
   };
 })();
 
-/* FancyBox */
+// ===== FancyBox =====
 class VolantisFancyBox {
   constructor(checkMain = true) {
     this.option = {
@@ -1141,7 +1120,7 @@ class VolantisFancyBox {
   }
 }
 
-/* 图片懒加载 */
+// ===== 图片懒加载 =====
 class LazyLoader {
   constructor(selector) {
     this.lazyPictureObserver = null;

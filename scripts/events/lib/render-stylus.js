@@ -1,12 +1,10 @@
-// hexo.renderStylus 渲染 Stylus 的工具函数
-// hexo.createUuid   创建 uuid
+// Stylus 渲染工具 + UUID 生成 + 深度合并
 
 const stylus = require("stylus");
 const Promise = require("bluebird");
 
 module.exports = hexo => {
   hexo.renderStylus = async (str) => {
-    /**************************************************************************** */
     // from https://github.com/hexojs/hexo-renderer-stylus/blob/8f63a5e1ad886466ce59532978dfa34b4b3c6dc7/lib/renderer.js#L5
     function getProperty(obj, name) {
       name = name.replace(/\[(\w+)\]/g, ".$1").replace(/^\./, "");
@@ -30,7 +28,6 @@ module.exports = hexo => {
         return getProperty(hexo.theme.config, data.val);
       });
     }
-    /**************************************************************************** */
     return new Promise((resolve) => {
       return stylus(str)
         .use(defineConfig)
