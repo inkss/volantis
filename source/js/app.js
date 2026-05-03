@@ -239,7 +239,11 @@ const VolantisApp = (() => {
       const lastupd = sidebarConfig.webinfo.lastupd;
       const lastUpdateShow = document.getElementById('last-update-show');
       if (!!lastUpdateShow && lastupd.enable && lastupd.friendlyShow) {
-        lastUpdateShow.innerHTML = fn.utilTimeAgo(volantis.GLOBAL_CONFIG.lastupdate);
+        fetch('/lastupdate.json')
+          .then(r => r.json())
+          .then(data => {
+            lastUpdateShow.innerHTML = fn.utilTimeAgo(new Date(data.lastupdate));
+          });
       }
     }
 
@@ -375,7 +379,7 @@ const VolantisApp = (() => {
 
     // 初始激活
     activateNavByIndex(navItems[volantis.activateNavIndex]);
-    
+
     // 添加滚动监听
     if (targets.length) {
       volantis.scroll.push(() => {
@@ -390,7 +394,7 @@ const VolantisApp = (() => {
 
     // 显示/隐藏 Header导航 topBtn 【移动端 PC】
     if (!volantis.dom.bodyAnchor) return;
-    
+
     const showHeaderPoint = volantis.dom.bodyAnchor.offsetTop - scrollCorrection;
     const scrollTop = volantis.scroll.getScrollTop(); // 滚动条距离顶部的距离
 
@@ -817,6 +821,7 @@ const VolantisApp = (() => {
       const navMain = document.querySelector("#l_header .nav-main");
       navMain?.querySelectorAll('.list-v:not(.menu-phone)')?.forEach(e => e.removeAttribute("style"));
       document.querySelector("#l_header .menu-phone.list-v")?.removeAttribute("style");
+      document.querySelector("#l_header")?.classList.add("show");
     },
     utilCopyCode: fn.utilCopyCode,
     utilWriteClipText: fn.utilWriteClipText,
@@ -1007,15 +1012,15 @@ class VolantisFancyBox {
         content: (_ref, slide) => {
           const imgElement = slide.thumbEl;
           if (!imgElement) return '';
-          
+
           const pictureElement = imgElement.closest('picture');
           imgElement.classList.remove("content-in");
-          
+
           // 处理懒加载图片
           if (imgElement.hasAttribute('data-src')) {
             imgElement.setAttribute('src', imgElement.getAttribute('data-src'));
           }
-          
+
           if (pictureElement) {
             pictureElement.classList.remove("lazy");
             const sources = pictureElement.getElementsByTagName('source');
@@ -1050,7 +1055,7 @@ class VolantisFancyBox {
         },
       }
     };
-    
+
     if (checkMain) {
       this.#init();
     }
@@ -1076,7 +1081,7 @@ class VolantisFancyBox {
 
   async bind(selectors) {
     if (!selectors) return;
-    
+
     await this.loadFancybox();
     if (typeof Fancybox !== 'undefined') {
       Fancybox.unbind(selectors);
@@ -1088,7 +1093,7 @@ class VolantisFancyBox {
   async groupBind(selectors, groupName = 'default') {
     await this.loadFancybox();
     this.#elementHandling(selectors, groupName);
-    
+
     const group = new Set();
     const galleries = document.querySelectorAll('.gallery');
     for (let i = 0; i < galleries.length; i++) {
@@ -1097,9 +1102,9 @@ class VolantisFancyBox {
         group.add(ele.getAttribute('data-group') || 'default');
       }
     }
-    
+
     if (groupName) group.add(groupName);
-    
+
     if (typeof Fancybox !== 'undefined') {
       group.forEach(name => {
         Fancybox.unbind(`[data-fancybox="${name}"]`);
@@ -1110,12 +1115,12 @@ class VolantisFancyBox {
 
   #elementHandling(selectors, groupName) {
     if (!selectors) return;
-    
+
     const items = document.querySelectorAll(selectors);
     for (let i = 0; i < items.length; i++) {
       const $item = items[i];
       if ($item.hasAttribute('fancybox')) continue;
-      
+
       $item.setAttribute('fancybox', '');
       const $link = document.createElement('a');
       $link.setAttribute('href', $item.src || $item.dataset?.src);

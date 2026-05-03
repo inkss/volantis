@@ -12,7 +12,7 @@
       volantis.artalk.destroy();
     }
     let path = volantis.GLOBAL_CONFIG.page.commentPath;
-    let placeholder = volantis.GLOBAL_CONFIG.page.commentPlaceholder || "<%= theme.comments.artalk.placeholder %>" || "";
+    
     if (path.length == 0) {
       path = '<%= theme.comments.artalk.path %>' || decodeURI(window.location.pathname);
     }
@@ -24,7 +24,6 @@
       el: '#artalk_container',
       pageKey: path,
       pageTitle: document.title,
-      placeholder: placeholder,
       useBackendConf: true,
       site: '<%= config.title %>',
       darkMode: volantis.dark.mode === "dark",
@@ -52,6 +51,14 @@
     volantis.artalk.on('list-loaded', () => {
       const fancyBoxInstance = new VolantisFancyBox(false);
       fancyBoxInstance.bind('.atk-content img:not([atk-emoticon])');
+    })
+
+    // 通过初始化定义的 placeholder 未生效，此处通过事件监听的方式进行覆盖
+    volantis.artalk.on('mounted', () => {
+      const placeholder = volantis.GLOBAL_CONFIG.page.commentPlaceholder || "<%= theme.comments.artalk.placeholder %>" || "";
+      if (placeholder.length > 0) {
+        document.querySelector('#artalk_container textarea.atk-textarea')?.setAttribute('placeholder', placeholder);
+      }
     })
   }
 
