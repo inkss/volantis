@@ -155,9 +155,6 @@ volantis.printmode = {
     const ss = document.getElementById('reading-mode-stylesheet');
     if (ss && !ss.disabled) volantis.readmode.toggle();
     Fancybox?.close();
-    if (window.innerWidth >= 1024) {
-      alert(volantis.GLOBAL_CONFIG.languages.post.print_tip);
-    }
     NProgress?.start();
     //document.querySelectorAll('details').forEach(e => e.setAttribute('open', 'true'));
 
@@ -186,7 +183,12 @@ volantis.printmode = {
     Promise.race([Promise.all(promises), new Promise(r => setTimeout(r, 20000))])
       .finally(() => {
         NProgress?.done();
-        setTimeout(() => window.print(), 200);
+        setTimeout(() => {
+          if (window.innerWidth >= 1024) {
+            alert(volantis.GLOBAL_CONFIG.languages.post.print_tip);
+          }
+          window.print();
+        }, 500);
       });
   }
 };
