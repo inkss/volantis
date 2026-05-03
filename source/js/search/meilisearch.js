@@ -44,7 +44,7 @@ let SearchService = (() => {
       fn.event();
       fn.setAlgolia();
     } else {
-      document.querySelector('#u-search main.modal-body').innerHTML = 'Algolia setting is invalid!';
+      document.querySelector('#u-search main.modal-body').innerHTML = volantis.GLOBAL_CONFIG.languages.search.config_invalid;
       document.querySelector('#u-search main.modal-body').style.textAlign = 'center';
       document.querySelector('#u-search .modal').style.maxHeight = '128px';
     }
@@ -110,7 +110,7 @@ let SearchService = (() => {
           const content = fn.cutContent(result.text.value)
           return `
             <a href="${link}${keyword}" class="result">
-            <span class="title">${result.title.value || 'no-title'}</span>
+            <span class="title">${result.title.value || volantis.GLOBAL_CONFIG.languages.search.no_title}</span>
             <span class="digest">${content}</span>
             </a>`
         },

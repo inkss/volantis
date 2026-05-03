@@ -35,10 +35,10 @@ const pagePermalink = decodeURI(post.permalink);
     <!-- 451状态提示区：法律依据+不可访问说明 -->
     <div id="post-body" itemprop="articleBody">
       <div class="note quote cus451">
-        <p><strong>Unavailable For Legal Reasons</strong></p>
-        <p><strong>此页面在您的地区不可用</strong></p>
-        <p>该页面在您当前地区无法访问，请更换网络环境或地区设置以继续查看。</p>
-        <p><em>相关资料参见：</em></p>
+        <p><strong><%= __('article.451_title') %></strong></p>
+        <p><strong><%= __('article.451_heading') %></strong></p>
+        <p><%= __('article.451_desc') %></p>
+        <p><em><%= __('article.451_ref') %></em></p>
         <ul>
           <li><a href="http://www.cac.gov.cn/2016-11/07/c_1119867116.htm" target="_blank" rel="external nofollow"><em>《中华人民共和国网络安全法》</em></a></li>
           <li><a href="http://www.cac.gov.cn/2000-09/30/c_126193701.htm" target="_blank" rel="external nofollow"><em>《互联网信息服务管理办法》</em></a></li>

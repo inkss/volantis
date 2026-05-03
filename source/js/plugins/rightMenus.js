@@ -319,12 +319,12 @@ contextMenuManager.initializeContextMenu = async function () {
       try {
         const target = globalData.pointerEvent?.target;
         if (!target) {
-          throw new Error('目标元素不存在');
+          throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.img_target_missing);
         }
         
         const link = target.dataset.src || target.src;
         if (!link) {
-          throw new Error('图片链接不存在');
+          throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.img_link_missing);
         }
         
         const image = new Image();
@@ -398,7 +398,7 @@ contextMenuManager.initializeContextMenu = async function () {
         
         // 检查浏览器是否支持剪贴板 API
         if (!navigator.permissions || !navigator.clipboard) {
-          throw new Error('当前浏览器不支持剪贴板 API');
+          throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.clipboard_no_support);
         }
         
         const result = await navigator.permissions.query({ name: 'clipboard-read' });
@@ -411,7 +411,7 @@ contextMenuManager.initializeContextMenu = async function () {
           for (let i = 0; i < clipboardItems.length; i++) {
             const item = clipboardItems[i];
             if (item.types.length === 0) {
-              throw new Error('剪切板中没有可被读取的内容，目前仅支持文本和图像数据，暂不支持操作系统级别的文件复制粘贴操作。');
+              throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.clipboard_empty);
             }
             
             for (let j = 0; j < item.types.length; j++) {
@@ -449,7 +449,7 @@ contextMenuManager.initializeContextMenu = async function () {
           contextMenuManager.isClipboardReadAllowed = true;
         } else {
           contextMenuManager.isClipboardReadAllowed = false;
-          throw new Error('没有读取剪切板的权限！');
+          throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.clipboard_no_permission);
         }
         NProgress?.done();
       } catch (err) {

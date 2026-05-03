@@ -11,6 +11,8 @@ post:
   duration: '時長：%s分鐘'
   readmode: 閱讀模式
   printmode: 列印頁面
+  exit_readmode: 退出閱讀模式
+  print_tip: '建議在列印設定中勾選「背景圖形」以獲得最佳效果。'
   comments: 評論
   comments_load: 點擊加載 %s 評論
   comments_check: 正在檢查 %s 能否訪問...
@@ -26,6 +28,10 @@ post:
     link: 文章連結
     license_title: 版權聲明
     license_content: "本網誌所有文章除特別聲明外，均採用 %s 許可協議。轉載請註明出處！"
+    date: 發佈於
+    updated: 更新於
+    references: 原文出處
+    license: 許可協議
 
 footer:
   license: '博客內容遵循 [姓名標示-非商業性-相同方式分享 4.0 國際 (CC BY-NC-SA 4.0) 協議](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW)'
@@ -55,4 +61,60 @@ search:
   load_data: 資料庫載入中
   hits_empty: '找不到您查詢的內容：${query}'
   hits_stats: '找到 ${hits} 條結果，用時 ${time} 毫秒'
-  normal: '输入关键词搜索'
+  normal: '輸入關鍵字搜尋'
+  hits_found: '找到 ${totalResults} 個相關結果'
+  history: 搜尋歷史
+  no_history: 暫無搜尋歷史
+  clear_history: 清除歷史
+  filter_all: 全部
+  filter_posts: 文章
+  filter_pages: 頁面
+  filter_tags: 標籤
+  searching: 搜尋中...
+  placeholder_search: '搜尋文章、標籤或分類...'
+  label_posts: 文章
+  label_pages: 頁面
+  label_tags: 標籤
+  no_title: 無標題
+  config_invalid: '搜尋設定無效，請檢查設定。'
+
+article:
+  451_title: 'Unavailable For Legal Reasons'
+  451_heading: 此頁面在您的地區不可用
+  451_desc: 該頁面在您當前地區無法訪問，請更換網路環境或地區設定以繼續查看。
+  451_ref: '相關資料參見：'
+
+comment:
+  policy_title: '%s 評論政策'
+  policy_text: 請在評論前閱讀我們的
+  policy_link: 評論政策
+
+webinfo:
+  icp_title: 備案資訊
+
+nextsite:
+  nav_toggle: 切換導航列
+
+plugins:
+  timeout: 請求超時
+  load_fail: 載入失敗，請稍後重試。
+
+clipboard:
+  copy_fail: 複製文字失敗!
+  no_support: 當前瀏覽器不支援複製功能，請檢查更新或更換其他瀏覽器操作!
+  img_target_missing: 目標元素不存在
+  img_link_missing: 圖片連結不存在
+  clipboard_no_support: 當前瀏覽器不支援剪貼簿 API
+  clipboard_empty: 剪貼簿中沒有可被讀取的內容，目前僅支援文字和圖像資料，暫不支援作業系統層級的檔案複製貼上操作。
+  clipboard_no_permission: 沒有讀取剪貼簿的權限！
+
+runtime:
+  days: 天
+
+time:
+  just_now: 剛剛
+  seconds_ago: '{{n}} 秒前'
+  minutes_ago: '{{n}} 分鐘前'
+  hours_ago: '{{n}} 小時前'
+  days_ago: '{{n}} 天前'
+  date_format: '{{year}}年{{month}}月{{day}}日'

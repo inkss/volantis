@@ -9,7 +9,7 @@ const SitesJS = {
           if (status === 0) {
             status = 2;
             timer = null;
-            reject('请求超时');
+            reject(volantis.GLOBAL_CONFIG.languages.plugins.timeout);
             if (retryTimes == 0) {
               timeout();
             }
@@ -66,7 +66,7 @@ const SitesJS = {
     }, function () {
       try {
         el.querySelector('.loading-wrap svg').remove();
-        el.querySelector('.loading-wrap p').innerText('加载失败，请稍后重试。');
+        el.querySelector('.loading-wrap p').innerText(volantis.GLOBAL_CONFIG.languages.plugins.load_fail);
       } catch (e) { }
     });
   },

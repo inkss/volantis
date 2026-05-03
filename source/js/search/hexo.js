@@ -27,13 +27,22 @@ class SearchService {
       }, 300);
 
       // 多语言文本配置（优先使用全局配置，无则用默认值）
-      this.hitsEmpty = '未找到与「${query}」相关的内容';
-      this.hitsFound = '找到 ${totalResults} 个相关结果';
-      this.normalText = '搜索文章、标签或分类...';
-      this.loadDataText = '正在加载数据...';
-      this.searchingText = '搜索中...';
-      this.searchHistoryText = '搜索历史';
-      this.noSearchHistoryText = '暂无搜索历史';
+      const searchLang = volantis.GLOBAL_CONFIG?.languages?.search || {};
+      this.hitsEmpty = searchLang.hits_empty || '未找到与「${query}」相关的内容';
+      this.hitsFound = searchLang.hits_found || '找到 ${totalResults} 个相关结果';
+      this.normalText = searchLang.placeholder || '搜索文章、标签或分类...';
+      this.loadDataText = searchLang.normal || '正在加载数据...';
+      this.searchingText = searchLang.searching || '搜索中...';
+      this.searchHistoryText = searchLang.history || '搜索历史';
+      this.noSearchHistoryText = searchLang.no_history || '暂无搜索历史';
+      this.clearHistoryText = searchLang.clear_history || '清除历史';
+      this.filterAll = searchLang.filter_all || '全部';
+      this.filterPosts = searchLang.filter_posts || '文章';
+      this.filterPages = searchLang.filter_pages || '页面';
+      this.filterTags = searchLang.filter_tags || '标签';
+      this.labelPosts = searchLang.label_posts || '文章';
+      this.labelPages = searchLang.label_pages || '页面';
+      this.labelTags = searchLang.label_tags || '标签';
 
       // 空查询时的默认显示内容
       this.normal = `<div class="result-hits-empty"><p>${this.normalText}🔍</p></div>`;
@@ -59,17 +68,17 @@ class SearchService {
             </a>
           </header>
           <div class="search-filters">
-            <button class="filter-btn active" data-filter="all">全部</button>
-            <button class="filter-btn" data-filter="posts">文章</button>
-            <button class="filter-btn" data-filter="pages">页面</button>
-            <button class="filter-btn" data-filter="tags">标签</button>
+            <button class="filter-btn active" data-filter="all">${this.filterAll}</button>
+            <button class="filter-btn" data-filter="posts">${this.filterPosts}</button>
+            <button class="filter-btn" data-filter="pages">${this.filterPages}</button>
+            <button class="filter-btn" data-filter="tags">${this.filterTags}</button>
           </div>
           <main class="modal-body">
             <div class="search-stats hidden"></div>
             <ul class="modal-results"></ul>
             <div class="search-history hidden">
               <h3>${this.searchHistoryText}</h3>
-              <button class="clear-history">清除历史</button>
+              <button class="clear-history">${this.clearHistoryText}</button>
               <ul class="history-list"></ul>
             </div>
             <div class="search-loading hidden">
@@ -408,7 +417,7 @@ class SearchService {
 
     // 若有结果，添加结果分组标题（如“文章 (5)”、“页面 (1)”）
     if (results && count > 0) {
-      const label = type === 'post' ? '文章' : '页面'; // 类型中文标签
+      const label = type === 'post' ? this.labelPosts : this.labelPages;
       results = `<li class="result-group"><h3>${label} (${count})</h3></li>` + results;
     }
 
@@ -452,7 +461,7 @@ class SearchService {
 
     // 若有结果，添加标签分组标题（如“标签 (1)”）
     if (results && count > 0) {
-      results = `<li class="result-group"><h3>标签 (${count})</h3></li><ul class="result-tags-list">${results}</ul>`;
+      results = `<li class="result-group"><h3>${this.labelTags} (${count})</h3></li><ul class="result-tags-list">${results}</ul>`;
     }
 
     // 返回结果HTML和数量

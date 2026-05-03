@@ -17,10 +17,6 @@ let articlTitle = (post.title || post.seo_title) ? (post.title || post.seo_title
         <img itemprop="image" class='headimg' alt="<%- articlTitle %>" src='<%- post.headimg %>'/>
       </div>
     </div>
-  <% } else if (theme.structured_data && theme.structured_data.data && theme.structured_data.data.logo) { %>
-    <span hidden>
-      <meta itemprop="image" content="<%- theme.structured_data.data.logo.path %>">
-    </span>
   <% } %>
   <div class="article-meta" id="top">
 

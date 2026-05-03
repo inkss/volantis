@@ -11,6 +11,8 @@ post:
   duration: '%s min'
   readmode: Read Mode
   printmode: Print
+  exit_readmode: Exit Read Mode
+  print_tip: 'Please check "Background graphics" in print settings for the best result.'
   comments: Comments
   comments_load: Load %s
   comments_check: Checking if %s is accessible...
@@ -59,4 +61,60 @@ search:
   load_data: Loading the Database
   hits_empty: "We didn't find any results for the search: ${query}."
   hits_stats: '${hits} results found in ${time} ms'
-  normal: '输入关键词搜索'
+  normal: 'Enter keywords to search'
+  hits_found: '${totalResults} results found'
+  history: Search History
+  no_history: No search history
+  clear_history: Clear History
+  filter_all: All
+  filter_posts: Posts
+  filter_pages: Pages
+  filter_tags: Tags
+  searching: Searching...
+  placeholder_search: 'Search posts, tags or categories...'
+  label_posts: Posts
+  label_pages: Pages
+  label_tags: Tags
+  no_title: Untitled
+  config_invalid: 'Search configuration is invalid, please check your settings.'
+
+article:
+  451_title: 'Unavailable For Legal Reasons'
+  451_heading: This page is not available in your region
+  451_desc: This page cannot be accessed in your current region. Please change your network environment or region settings to continue viewing.
+  451_ref: 'See related references:'
+
+comment:
+  policy_title: '%s Comment Policy'
+  policy_text: 'Please read our '
+  policy_link: comment policy
+
+webinfo:
+  icp_title: Filing Information
+
+nextsite:
+  nav_toggle: Toggle Navigation
+
+plugins:
+  timeout: Request timeout
+  load_fail: 'Loading failed, please try again later.'
+
+clipboard:
+  copy_fail: 'Failed to copy text!'
+  no_support: Your browser does not support copy functionality. Please check for updates or try another browser!
+  img_target_missing: Target element not found
+  img_link_missing: Image link not found
+  clipboard_no_support: Your browser does not support the Clipboard API
+  clipboard_empty: No readable content in the clipboard. Currently only text and image data are supported.
+  clipboard_no_permission: No permission to read the clipboard!
+
+runtime:
+  days: days
+
+time:
+  just_now: just now
+  seconds_ago: '{{n}} seconds ago'
+  minutes_ago: '{{n}} minutes ago'
+  hours_ago: '{{n}} hours ago'
+  days_ago: '{{n}} days ago'
+  date_format: '{{year}}-{{month}}-{{day}}'

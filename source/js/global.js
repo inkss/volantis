@@ -238,12 +238,7 @@ volantis.dark = Object.assign(volantis.dark, {
 // volantis.js(src, cb)  cb 可以传入onload回调函数 或者 JSON对象 例如: volantis.js("src", ()=>{}) 或 volantis.js("src", {defer:true,onload:()=>{}})
 // volantis.css(src)
 
-// 返回Promise对象，如下方法同步加载资源，这利于处理文件资源之间的依赖关系，例如：APlayer 需要在 MetingJS 之前加载
-// (async () => {
-//     await volantis.js("...theme.plugins.aplayer.js.aplayer...")
-//     await volantis.js("...theme.plugins.aplayer.js.meting...")
-// })();
-
+// 返回Promise对象，如下方法同步加载资源，这利于处理文件资源之间的依赖关系
 // 已经加入了setTimeout
 volantis.js = (src, cb) => {
   const escapeSelector = str => str.replace(/[#".'()[\]]/g, '\\$&');

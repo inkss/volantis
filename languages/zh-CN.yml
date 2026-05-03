@@ -11,6 +11,8 @@ post:
   duration: '时长：%s 分钟'
   readmode: 阅读模式
   printmode: 打印页面
+  exit_readmode: 退出阅读模式
+  print_tip: '建议在打印设置中勾选「背景图形」以获得最佳效果。'
   comments: 评论
   comments_load: 点击加载 %s 评论
   comments_check: 正在检查 %s 能否访问...
@@ -60,4 +62,59 @@ search:
   hits_empty: '找不到您查询的内容：${query}'
   hits_stats: '找到 ${hits} 条结果，用时 ${time} 毫秒'
   normal: '输入关键词搜索'
+  hits_found: '找到 ${totalResults} 个相关结果'
+  history: 搜索历史
+  no_history: 暂无搜索历史
+  clear_history: 清除历史
+  filter_all: 全部
+  filter_posts: 文章
+  filter_pages: 页面
+  filter_tags: 标签
+  searching: 搜索中...
+  placeholder_search: '搜索文章、标签或分类...'
+  label_posts: 文章
+  label_pages: 页面
+  label_tags: 标签
+  no_title: 无标题
+  config_invalid: '搜索配置无效，请检查设置。'
 
+article:
+  451_title: 'Unavailable For Legal Reasons'
+  451_heading: 此页面在您的地区不可用
+  451_desc: 该页面在您当前地区无法访问，请更换网络环境或地区设置以继续查看。
+  451_ref: '相关资料参见：'
+
+comment:
+  policy_title: '%s 评论政策'
+  policy_text: 请在评论前阅读我们的
+  policy_link: 评论政策
+
+webinfo:
+  icp_title: 备案信息
+
+nextsite:
+  nav_toggle: 切换导航栏
+
+plugins:
+  timeout: 请求超时
+  load_fail: 加载失败，请稍后重试。
+
+clipboard:
+  copy_fail: 复制文本失败!
+  no_support: 当前浏览器不支持复制功能，请检查更新或更换其他浏览器操作!
+  img_target_missing: 目标元素不存在
+  img_link_missing: 图片链接不存在
+  clipboard_no_support: 当前浏览器不支持剪贴板 API
+  clipboard_empty: 剪切板中没有可被读取的内容，目前仅支持文本和图像数据，暂不支持操作系统级别的文件复制粘贴操作。
+  clipboard_no_permission: 没有读取剪切板的权限！
+
+runtime:
+  days: 天
+
+time:
+  just_now: 刚刚
+  seconds_ago: '{{n}} 秒前'
+  minutes_ago: '{{n}} 分钟前'
+  hours_ago: '{{n}} 小时前'
+  days_ago: '{{n}} 天前'
+  date_format: '{{year}}年{{month}}月{{day}}日'

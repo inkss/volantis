@@ -94,7 +94,7 @@ volantis.readmode = (() => {
 
     const btn = document.createElement('a');
     btn.id = 's-exit-readmode';
-    btn.title = '退出阅读模式';
+    btn.title = volantis.GLOBAL_CONFIG.languages.post.exit_readmode;
     btn.href = 'javascript:void(0)';
     btn.innerHTML = `<i data-feather="${iconName}"></i>`;
     btn.addEventListener('click', e => { e.preventDefault(); toggle(); });
@@ -152,7 +152,7 @@ volantis.printmode = {
     if (ss && !ss.disabled) volantis.readmode.toggle();
     Fancybox?.close();
     if (window.innerWidth >= 1024) {
-      alert('建议在打印设置中勾选「背景图形」以获得最佳效果。');
+      alert(volantis.GLOBAL_CONFIG.languages.post.print_tip);
     }
     NProgress?.start();
     //document.querySelectorAll('details').forEach(e => e.setAttribute('open', 'true'));
@@ -250,7 +250,7 @@ const VolantisApp = (() => {
       const timeOld = new Date().getTime() - BirthDay.getTime();
       const daysOld = Math.floor(timeOld / (24 * 60 * 60 * 1000));
       runtimeCount.innerHTML = `${(daysOld / 365).toFixed(2)} ${sidebarConfig.webinfo.runtime.unit}`;
-      runtimeCount.title = `${runtimeCount.title} 👾 ${daysOld} 天`;
+      runtimeCount.title = `${runtimeCount.title} 👾 ${daysOld} ${volantis.GLOBAL_CONFIG.languages.runtime.days}`;
     }
 
     // NextSite 侧边栏绑定事件
@@ -703,10 +703,10 @@ const VolantisApp = (() => {
       try {
         const result = document.execCommand('copy');
         document.body.removeChild(input);
-        if (!result) throw new Error('复制文本失败!');
+        if (!result) throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.copy_fail);
       } catch (e) {
         document.body.removeChild(input);
-        throw new Error('当前浏览器不支持复制功能，请检查更新或更换其他浏览器操作!');
+        throw new Error(volantis.GLOBAL_CONFIG.languages.clipboard.no_support);
       }
       NProgress?.done();
     }).finally(() => {
@@ -721,9 +721,10 @@ const VolantisApp = (() => {
       if (!(date instanceof Date)) {
         date = new Date(date);
       }
-      
+
       const diffValue = Date.now() - date.getTime();
       const days = Math.floor(diffValue / (24 * 3600 * 1000));
+      const lang = volantis.GLOBAL_CONFIG.languages.time;
 
       if (days === 0) {
         const hours = Math.floor((diffValue % (24 * 3600 * 1000)) / (3600 * 1000));
@@ -731,21 +732,24 @@ const VolantisApp = (() => {
           const minutes = Math.floor((diffValue % (3600 * 1000)) / (60 * 1000));
           if (minutes === 0) {
             const seconds = Math.round((diffValue % (60 * 1000)) / 1000);
-            return `${seconds} 秒前`;
+            return lang.seconds_ago.replace('{{n}}', seconds);
           }
-          return `${minutes} 分钟前`;
+          return lang.minutes_ago.replace('{{n}}', minutes);
         }
-        return `${hours} 小时前`;
+        return lang.hours_ago.replace('{{n}}', hours);
       }
 
-      if (days < 0) return '刚刚';
-      if (days < limit) return `${days} 天前`;
+      if (days < 0) return lang.just_now;
+      if (days < limit) return lang.days_ago.replace('{{n}}', days);
 
       // 格式化日期
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
-      return `${year}年${month}月${day}日`;
+      return lang.date_format
+        .replace('{{year}}', year)
+        .replace('{{month}}', month)
+        .replace('{{day}}', day);
 
     } catch (error) {
       console.error('utilTimeAgo error:', error);
