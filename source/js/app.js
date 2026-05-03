@@ -43,7 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
       fancyBoxInstance.bind('#post-body img:not([fancybox])');
 
       Tools.toggleGrayscaleEffect();
-      highlightKeyWords.startFromURL();
+      requestAnimationFrame(() => {
+        highlightKeyWords.startFromURL();
+      });
     }, 'app.js');
 
     volantis.pjax.send(() => {

@@ -565,7 +565,7 @@ class SearchService {
         <picture class="lazy">
           <source data-srcset="${imgWithoutExt}.avif" type="image/avif">
           <source data-srcset="${imgWithoutExt}.webp" type="image/webp">
-          <img loading="lazy" data-src="${item.headimg}" alt="${item.title}">
+          <img loading="lazy" src="/img/default/transparent-placeholder-1x1.svg" data-src="${item.headimg}" alt="${item.title}">
         </picture>
       </div>`;
     }

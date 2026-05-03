@@ -394,7 +394,6 @@ volantis.scroll = {
   },
   to: (ele, option = {}) => {
     if (!ele) return;
-    volantis.scroll.isScrolling = true;
     volantis.scroll.ele = ele;
     const { top: customTop, addTop = 0, ...restOpt } = option;
     const baseTop = ele.getBoundingClientRect().top + document.documentElement.scrollTop;
@@ -404,7 +403,11 @@ volantis.scroll = {
       observerDic: 100,
       ...restOpt
     };
-    window.scrollTo(opt);
+    const currentTop = document.documentElement.scrollTop || document.body.scrollTop;
+    if (Math.round(opt.top) !== Math.round(currentTop)) {
+      volantis.scroll.isScrolling = true;
+      window.scrollTo(opt);
+    }
   }
 };
 
