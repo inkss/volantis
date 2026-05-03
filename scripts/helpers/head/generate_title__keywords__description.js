@@ -96,12 +96,11 @@ hexo.extend.helper.register("generate_description", function (config, theme, pag
 
 hexo.extend.filter.register('after_render:html', function(html, data) {
   // 移除重复的 description 标签，只保留第一个
-  const descMatches = html.match(/<meta name="description"[^>]*>/g);
-  if (descMatches && descMatches.length > 1) {
-    html = html.replace(/<meta name="description"[^>]*>/g, (match, offset) => {
-      return offset === html.indexOf(match) ? match : '';
-    });
-  }
+  let first = true;
+  html = html.replace(/<meta name="description"[^>]*>/g, (match) => {
+    if (first) { first = false; return match; }
+    return '';
+  });
 
   // 移除非文章页面的 article 属性
   const isPost = data.page.layout === 'post';
