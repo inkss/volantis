@@ -268,6 +268,7 @@ volantis.js = (src, cb) => {
             resolve();
           };
         } else if (p === 'pjax') {
+          script.setAttribute('pjax', '');
           script.setAttribute('data-pjax', '');
         } else if (cb[p] === true) {
           script.setAttribute(p, '');

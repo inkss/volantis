@@ -2,6 +2,7 @@
   <% if (theme.plugins.busuanzi.enable) { %>
   volantis.js("<%- theme.plugins.busuanzi.js %>", {
     'defer': true,
+    'pjax': true,
     'data-style': 'comma'
   });
   <% } %>

@@ -1,12 +1,10 @@
 <%
-var topMetas = theme.article.body.top_meta || [];
-if (post.top_meta == false) {
-  topMetas = [];
-}
-var bottomMetas = theme.article.body.bottom_meta || [];
-if (post.bottom_meta == false) {
-  bottomMetas = [];
-}
+var topMetas = Array.isArray(post.top_meta)
+  ? post.top_meta
+  : (post.top_meta === false ? [] : (theme.article.body.top_meta || []));
+var bottomMetas = Array.isArray(post.bottom_meta)
+  ? post.bottom_meta
+  : (post.bottom_meta === false ? [] : (theme.article.body.bottom_meta || []));
 let articlTitle = (post.title || post.seo_title) ? (post.title || post.seo_title) : date(post.date, theme.article.body.meta_library.date.format);
 %>
 
@@ -20,11 +18,6 @@ let articlTitle = (post.title || post.seo_title) ? (post.title || post.seo_title
   <% } %>
   <div class="article-meta" id="top">
 
-    <% if (post.thumbnail && post.thumbnail.length){ %>
-      <a title='<%- post.title %>' href='<%- url_for(post.link || post.path) %>'>
-        <img itemprop="image" class='thumbnail' src='<%- post.thumbnail %>'>
-      </a>
-    <% } %>
     <% if (post.seo_title == undefined && post.headimg == undefined) { %>
       <h1 class="title allow-select" itemprop="name headline">
         <%- post.title %>
