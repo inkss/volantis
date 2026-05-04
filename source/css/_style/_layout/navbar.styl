@@ -1,3 +1,6 @@
+// 导航栏样式
+
+// 桌面端导航栏
 .l_header
   $iconW = 36px
   $iconMargin = 4px
@@ -120,6 +123,7 @@
   .nav-sub .switcher
     display flex
 
+  // 搜索栏
   .m_search
     display flex
     height $navbar-height
@@ -200,6 +204,7 @@
       .input
         width: "calc(100% - %s)" % (3 * $gap + 2 * $iconW)
 
+// 导航菜单列表
 ul.m-pc, ul.list-v
   li:hover > ul.list-v
     display block
@@ -336,7 +341,7 @@ ul.list-v
       ul
         right "calc(100% - 0.5 * %s)" % $gap
 
-// 文章页导航栏修饰：剧中、加粗等
+// 文章页导航栏修饰：居中、加粗等
 .fix-header-title
   margin 0 auto
   font-size 1.5rem
@@ -346,6 +351,7 @@ ul.list-v
     margin unset !important
     font-size 1rem !important
 
+// 移动端导航栏
 .menu-phone
   display none
   margin-top $gap

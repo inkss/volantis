@@ -1,6 +1,10 @@
+// 阅读模式样式：独立样式表，不共享 Stylus 变量
+
+// 全局字号覆盖
 html
   font-size: 20px !important
 
+// 遮罩层（阅读模式激活后显示）
 body:before
   content: "";
   transition opacity 1s cubic-bezier(.23,1,.32,1) 0ms
@@ -41,7 +45,7 @@ body:before
   @media screen and (max-width: $device-tablet)
     right: $gap
 
-// ========== 阅读模式激活 ==========
+// 阅读模式激活状态
 
 body.read-mode
   &:before

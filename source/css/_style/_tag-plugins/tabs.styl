@@ -1,6 +1,8 @@
+// 标签页切换组件样式（tabs tag plugin）
 $border-color = alpha($color-p, .2)
 $tbr = 4px
 
+// 标签页容器：圆角卡片 + 边框
 div.tabs
   display: block
   position: relative
@@ -14,6 +16,7 @@ div.tabs
     margin-top: $gap-p
     margin-bottom: $gap-p
 
+// 导航标签栏：水平滚动 + 激活态高亮
 div.tabs
   ul.nav-tabs
     display: flex
@@ -57,6 +60,7 @@ div.tabs
         border-bottom: 1px solid var(--color-card)
         transition 0.5s
 
+  // 内容区域：激活面板显示 + 弹跳动画
   .tab-content
     border-top: 1px solid $border-color
     margin-top: -1px
@@ -75,5 +79,6 @@ div.tabs
           &:last-child
             margin-bottom: 0
 
+// 标签页内嵌时间线时去除顶部间距
 .tab-pane > .timeline > .h2
   padding-top 0

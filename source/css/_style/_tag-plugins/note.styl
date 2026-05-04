@@ -1,14 +1,17 @@
-
+// 提示框/注释框样式（note tag plugin）
+// 支持 feather 图标和 iconfont 图标两种模式
 if hexo-config('tag_plugins.note') && hexo-config('tag_plugins.note.feather')
   div.note, div.feather
     p
       margin 0 !important
 
 
+// 提示框公共样式：边框 + 圆角 + 间距
 div.note, div.feather
   margin-bottom: 10px
   &:last-child
     margin-bottom: 0
+  // feather 图标模式：flex 布局，图标左对齐文字
   &:has(svg.feather)
     display: flex;
     align-items: center;
@@ -32,6 +35,7 @@ div.note, div.feather
         color: $color-mac-red
     p
       text-indent: 0 !important;
+  // 颜色辅助函数：bg 混合背景色，border 混合边框色
   $border-codeblock = 4px
   bg($c)
     return mix($c, $color-card, 10)
@@ -67,6 +71,7 @@ div.note, div.feather
   background: var(--color-block)
   border-left: $border-codeblock solid $color-theme
 
+// iconfont 图标模式：通过 ::before 伪元素显示图标
 if hexo-config('tag_plugins.note') && hexo-config('tag_plugins.note.feather') == false
   padding-left: "calc(16px + %s)" % $gap
   &::before
@@ -92,6 +97,7 @@ if hexo-config('tag_plugins.note') && hexo-config('tag_plugins.note.feather') ==
       border-color: border($c)
       &::before
         color: border($c)
+  // 语义化颜色变体：引用/信息/成功/警告/错误
   &.quote
     background: bg($color-md-blue)
     border-color: border($color-md-blue)
@@ -123,6 +129,7 @@ if hexo-config('tag_plugins.note') && hexo-config('tag_plugins.note.feather') ==
     &::before
       color: border($color-mac-red)
       content: "\e247"
+  // 特殊图标变体：辐射/虫子/灯泡/链接/回形针等
   &.radiation::before
     content: "\f7b9"
   &.bug::before
@@ -147,6 +154,7 @@ if hexo-config('tag_plugins.note') && hexo-config('tag_plugins.note.feather') ==
     content: '\f2ea'
   &.play::before
     content: '\f144'
+  // 纯色变体：清除/浅灰/灰色/主题色/红/黄/绿/青/蓝
   &.clear
     background: none
     border-color: none

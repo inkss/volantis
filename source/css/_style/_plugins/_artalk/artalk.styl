@@ -1,6 +1,10 @@
+// Artalk 评论系统样式
+
+// 评论区容器
 #comments
   overflow inherit
 
+// 评论容器基础样式
 #artalk_container
   input,textarea,.atk-send-btn,.atk-item.atk-nick a
     font-size 0.9rem
@@ -12,6 +16,7 @@
   code
     font-family $fontfamily-code
     color var(--color-inlinecode)
+  // 表情选择器
   .atk-editor-plug-emoticons
     max-width 495px
     height 243px
@@ -52,6 +57,7 @@
       &[src*="qq"]
         width 38px
 
+// 表情加载错误处理
 #artalk_container
   .atk-editor-plug-emoticons img[atk-emoticon]
     &[src*="qq"].error:after
@@ -69,7 +75,7 @@
     img.error
       width 4em !important
 
-// 评论隐私
+// 评论隐私政策
 .comment-policy
   background-color #ebeef2
   position relative

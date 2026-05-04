@@ -1,4 +1,5 @@
-// inline btn
+// 按钮标签插件样式（内联按钮 + 按钮组）
+// 内联按钮：span.btn 包裹的链接按钮
 .article span.btn, .md span.btn
   display: inline
   a
@@ -23,6 +24,7 @@
       opacity: 0.5
       &:hover
         cursor: $not-allowed
+  // 默认边框按钮和常规按钮样式
   & a, &.regular a
     color: $color-button
     border: 1px solid @color
@@ -31,8 +33,10 @@
       border-color: $color-hover
     i, svg.feather
       margin-right: 4px
+  // 常规和实心按钮加大内边距
   &.regular a, &.solid a
     padding: 8px 12px
+  // 实心按钮：无边框，使用主题色背景
   &.solid a
     border: none
     background: $color-button
@@ -40,6 +44,7 @@
     &:hover
       color: $color-inner
       background: $color-hover
+  // 大号按钮
   &.large a
     font-size: 1rem
     padding: 12px 36px
@@ -50,6 +55,7 @@
     text-align: center
 
 
+// 按钮组：div.btns 包裹的多按钮容器
 // btns
 .article div.btns,
 .md div.btns
@@ -64,20 +70,25 @@
   b
     font-size: $fontsize-meta
 
+  // 宽松布局：加大水平内边距
   &.wide>a
     padding-left: $gap*2
     padding-right: $gap*2
 
+  // 填充模式：按钮自动撑满可用宽度
   &.fill>a
     flex-grow: 1
     width: auto
 
+  // 均匀分布对齐
   &.around
     justify-content: space-around
 
+  // 居中对齐
   &.center
     justify-content: center
 
+  // 响应式网格布局：2-5 列，移动端自动降列
   &.grid2>a
     width: "calc(100%/2 - %s)" % $gap
     @media screen and (max-width: $device-laptop)
@@ -114,6 +125,7 @@
     @media screen and (max-width: $device-mobile)
       width: "calc(100%/2 - %s)" % $gap
 
+  // 按钮组内单个链接按钮（卡片样式）
   a
     trans()
     text-decoration: none
@@ -132,6 +144,7 @@
     background: var(--color-block)
     border-radius: 4px
 
+    // 按钮图标/图片样式（圆形浮动于卡片上方）
     &>img:first-child,
     &>i:first-child,
     &>svg.feather:first-child,
@@ -168,6 +181,7 @@
       cursor: $default
       color: inherit
 
+    // 悬停效果：背景色变化 + 图标上浮放大
     &[href]:hover
       background: alpha($color-hover, 15%)
       &,b
@@ -180,6 +194,7 @@
         transform: scale(1.1) translateY(-8px)
         box-shadow: $boxshadow-float
 
+  // 圆形图标变体
   &.circle a
     &>img:first-child,
     &>i:first-child,
@@ -187,6 +202,7 @@
     &>picture>img
       border-radius: 32px
 
+  // 圆角图标变体
   &.rounded a
     &>img:first-child,
     &>i:first-child,

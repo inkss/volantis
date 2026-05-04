@@ -1,3 +1,6 @@
+// 侧边栏样式
+
+// 侧边栏布局
 #l_side
   width: $sidebar
   float: right
@@ -110,6 +113,7 @@
 
 
 
+  // 博主信息卡片
   &.blogger
     trans()
     .content
@@ -198,6 +202,7 @@
 
 
 
+  // 文本组件
   &.text
     .content
       &,p
@@ -213,6 +218,7 @@
           color: darken($color-hover, 25%)
 
 
+  // 列表组件
   &.list
     .content
       padding: $gap * 0.5 0
@@ -237,6 +243,7 @@
           font-weight initial
 
 
+  // 宫格组件
   &.grid
     .content
       .grid
@@ -292,7 +299,7 @@
           @media screen and (max-width: $device-mobile-m)
             width: calc(100%/3 - 4px)
 
-  // 侧边栏 宫格布局 hover 颜色
+  // 宫格导航 hover 颜色
   &.grid.navigation a
     color var(--color-list)
     &:hover
@@ -303,6 +310,7 @@
       color #ff5722
 
 
+  // 标签云组件
   &.tagcloud
     .content
       text-align: justify
@@ -319,6 +327,7 @@
 
 
 
+  // 相关文章组件
   &.related_posts
     .content
       font-weight: bold
@@ -336,6 +345,7 @@
 
 
 
+  // 二维码组件
   &.qrcode
     .content
       display: flex
@@ -355,7 +365,7 @@
     padding-right: $gap - 4px
 
 
-// 插件 侧边栏 Tab 标签支持
+// 侧边栏 Tab 标签插件
 .widget
   .tabs
     margin 0
@@ -380,7 +390,7 @@
     ul, p
       margin 0
 
-// 插件 侧边栏 Next 导航
+// Next 主题导航插件
 .nextsite
   font-size 0.875rem
   .site-brand-wrapper
@@ -469,7 +479,7 @@
         .menu-item-icon
           margin-right 8px
 
-// 插件 侧边栏 Next 身份介绍
+// Next 主题博主卡片插件
 .nextblogger
   padding 20px 10px 10px
   .site-author-image
@@ -507,6 +517,7 @@
     font-size 1.05rem
     color var(--text-color)
 
+// 网站信息组件
 .webinfo
   padding 0.2rem 1rem
   .webinfo-item

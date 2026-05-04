@@ -1,3 +1,6 @@
+// Meilisearch 搜索弹窗样式
+
+// 搜索关键字高亮
 .highlightKey
   color: #ff2a2a
   text-indent: 0
@@ -22,6 +25,7 @@
     padding: 0px
 
 #u-search
+  // 遮罩层
   .modal-overlay
     position: fixed;
     top: 0;
@@ -33,6 +37,7 @@
     backdrop-filter: blur(0);
     transition: all .2s ease-out;
     animation: fade-in both .3s;
+  // 模态框主体
   .modal
     position: fixed;
     top: 10%;
@@ -64,6 +69,7 @@
       margin: 0
       height: 100%
       border-radius: 0
+    // 模态框头部
     .modal-header
       position: relative
       width: 100%
@@ -137,6 +143,7 @@
         color: $color-theme
         z-index: 2
 
+    // 模态框内容区
     .modal-body
       position: absolute
       padding: $gap
@@ -149,6 +156,7 @@
       background: var(--color-card)
       border-radius: $border-card
       scrollbar()
+      // 搜索结果列表
       .modal-results
         list-style: none
         .result
@@ -264,6 +272,7 @@
           margin-top: -4px
           font-size: 0.6875rem
           color: var(--color-meta)
+  // 底部信息
   footer
     position: absolute;
     bottom: 0;

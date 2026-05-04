@@ -1,6 +1,6 @@
 // 异步加载的暗黑模式 强制覆盖样式
 
-// ========== 图片和图标亮度 ==========
+// 图片和图标亮度
 fa-solid,
 fa-regular,
 fa-duotone,
@@ -15,7 +15,7 @@ img,
 .lazyload
   filter: brightness(convert(hexo-config('color_scheme.dark.brightness'))) !important
 
-// ========== 布局组件 ==========
+// 布局组件
 .cus-article-bkg
   display none !important
 a, .widget.text .content a
@@ -47,7 +47,7 @@ details
   border 1px solid var(--color-site-bg) !important
   background var(--color-site-bg) !important
 
-// ========== 搜索弹窗 ==========
+// 搜索弹窗
 #u-search .modal,
 #u-search .modal-header,
 #u-search .modal-body
@@ -62,7 +62,7 @@ details
   @media screen and (max-width: $device-mobile)
     background var(--color-site-bg) !important
 
-// ========== 搜索弹窗深色专用变量 ==========
+// 搜索弹窗深色专用变量
 #u-search
   --primary-color unquote('color-mix(in srgb, #4285f4 85%, #fff)')
   --border-color #383838
@@ -72,7 +72,7 @@ details
   --text-secondary #2dc79e
   --bg-hover #1e1e1e
 
-// ========== 侧边栏和组件 ==========
+// 侧边栏和组件
 .widget.blogger .content .social-wrapper a.social:hover
   background var(--color-card)
 .widget >.content ul.entry a .badge, .widget >.content ul.popular-posts a .badge
@@ -93,7 +93,7 @@ kbd
 .cover-wrapper.dock .menu .list-h a:hover, .cover-wrapper.featured .menu .list-h a:hover, .cover-wrapper.focus .menu .list-h a:hover
   color var(--color-text) !important
 
-// ========== 代码高亮 ==========
+// 代码高亮
 if hexo-config('plugins.code_highlight') == "highlightjs"
   .gutter
     background var(--color-card) !important
@@ -102,7 +102,7 @@ if hexo-config('plugins.code_highlight') == "highlightjs"
   .highlight pre .line, .highlight pre .params
     color unquote('color-mix(in srgb, var(--color-text) 90%, transparent)')
 
-// ========== 表格 ==========
+// 表格
 *:not(.highlight) >table tr
   background-color var(--color-card)
 *:not(.highlight) >table th
@@ -116,25 +116,25 @@ if hexo-config('plugins.code_highlight') == "highlightjs"
 blockquote p
   color var(--color-p)
 
-// ========== 标签 ==========
+// 标签
 #archive-page .archive .all-tags ul li span
   color var(--color-text)
   background var(--color-block)
 
-// ========== 按钮 ==========
+// 按钮
 .btn-copy:hover
   background var(--color-site-body)
 
-// ========== OwO 表情 ==========
+// OwO 表情
 .OwO-items-image .OwO-item
   color #ccc !important
   &:hover
     background-color var(--color-block) !important
 
-// ========== 评论 ==========
+// 评论
 .comment-policy
   background-color var(--color-card) !important
 
-// ========== Custom Files ==========
+// 自定义注入文件
 for $injects_dark in hexo-config('injects.dark')
   @import $injects_dark

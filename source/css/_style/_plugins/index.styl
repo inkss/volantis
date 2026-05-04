@@ -1,8 +1,14 @@
+// 插件样式条件编译：根据主题配置决定是否编入
+
+// 代码高亮
 if hexo-config('plugins.code_highlight')
   @import '_highlight'
+
+// 右键菜单
 if hexo-config('plugins.rightmenus.enable')
   @import '_rightmenu/*'
 
+// 搜索服务（hexo / algolia / meilisearch 三选一）
 if hexo-config('search.enable')
   if hexo-config('search.service')=='hexo'
     @import '_search/hexo'
@@ -11,7 +17,7 @@ if hexo-config('search.enable')
   else if hexo-config('search.service')=='meilisearch'
     @import '_search/meilisearch'
 
-// 暗黑模式样式放到最后加载
+// 暗色模式（需最后加载以覆盖亮色变量）
 if hexo-config('plugins.darkmode.enable')
   @import '_dark/dark_async'
 

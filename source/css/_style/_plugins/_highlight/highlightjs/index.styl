@@ -1,10 +1,14 @@
+// 代码块基础样式
+
 @import 'clipboard'
 @import 'language'
 @import 'color'
 
+// 代码块前置定位
 pre
   position relative
 
+// 代码高亮基础样式
 .hljs
   margin 0 - $gap
   padding $gap
@@ -12,6 +16,7 @@ pre
   -moz-osx-font-smoothing auto
   scrollbar()
 
+// 代码块容器
 .highlight
   position relative
   width 100%
@@ -43,6 +48,7 @@ pre
     background darken($color-block, 5%)
     border-top-left-radius "calc(%s - 1px)" % $border-codeblock
     border-top-right-radius "calc(%s - 1px)" % $border-codeblock
+  // 代码表格布局
   >table
     overflow auto
     display block
@@ -60,6 +66,7 @@ pre
         background-color transparent
     pre
       overflow-y hidden
+    // 行号列
     .gutter
       user-select none
       padding 0 12px
@@ -79,6 +86,7 @@ pre
       border none
       .code:before
         display none
+    // 代码内容列
     .code
       padding $gap * 1.25 $gap
       vertical-align top

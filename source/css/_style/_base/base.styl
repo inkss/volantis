@@ -1,3 +1,4 @@
+// 全局基础样式和 CSS 变量定义
 :root
   // CSS 变量定义
   --color-site-body $color-site-bg
@@ -36,12 +37,14 @@
   --text-p3: unquote('color-mix(in srgb, var(--c-text) 60%, var(--c-site-bg))')
   --card: var(--c-card)
 
+// 文本选中样式
 ::-moz-selection
   background: $color-selection
 
 ::selection
   background: $color-selection
 
+// 标题字号
 h1
   font-size: $fontsize-h1
 h2
@@ -58,12 +61,14 @@ h6
 h1, h2, h3, h4, h6
   font-weight: normal
 
+// 基础元素样式
 a:not([href])
   cursor: $default
 
 pre
   tab-size: 4
 
+// 工具类
 .clearfix
   zoom: 1
   &:before, &:after
@@ -77,6 +82,7 @@ pre
   visibility: hidden
   display: none
 
+// 布局基础
 .inner
   position: relative
   width: 80%
@@ -87,6 +93,7 @@ pre
   display: table-cell
   vertical-align: middle
 
+// HTML5 元素
 article, aside, details, figcaption, figure, footer, hgroup, main, menu, nav, section, summary
   display: block
 
@@ -129,6 +136,7 @@ span.dot:before
 span.sep:before
   content: '/'
 
+// 代码字体
 code, kbd, pre, samp
   font-family: monospace, monospace
   font-size: 1em
@@ -138,6 +146,7 @@ optgroup, select, textarea
   font: inherit
   margin: 0
 
+// 表单元素
 select
   text-transform: none
 
@@ -181,6 +190,7 @@ textarea
 optgroup
   font-weight: bold
 
+// 无类名表格
 table:not([class])
   border-collapse: collapse
   overflow: auto
@@ -203,6 +213,7 @@ table:not([class])
 td, th
   padding: 0
 
+// 自定义 Feather 图标
 svg.feather
   vertical-align: middle
   width 16px

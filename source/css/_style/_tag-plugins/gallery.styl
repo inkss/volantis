@@ -1,8 +1,10 @@
+// 图库画廊样式（gallery tag plugin）
 div.gallery
   margin: $gap-p 0
   $sp = 1px
   &+.gallery
     margin-top: 0 - $gap-p
+  // 单个画廊项：flex 布局 + 悬停显示标题
   >.fancybox
     margin: $sp
     padding: 0
@@ -47,6 +49,7 @@ div.gallery
   align-items: center
   flex-wrap: nowrap
   padding: 0 !important
+  // 多列布局：col 属性控制列数（2-8列）
   &[col]
     align-items: stretch
   &[col]
@@ -68,6 +71,7 @@ div.gallery
     width: "calc(12.5% - 2 * %s)" % $sp
   >p
     margin: 0
+  // 对齐方式：左/中/右 + 拉伸
   &.left
     justify-content: flex-start
   &.center
@@ -77,10 +81,12 @@ div.gallery
   &.stretch
     align-items: stretch
 
+// Fancybox 灯罩容器：点击缩放查看
 .fancybox-container
   .fancybox-stage
     cursor: zoom-out
 
+// 独立 fancybox 容器（非 gallery 内联）
 div.fancybox
   margin-top: $gap-p
   margin-bottom: $gap-p

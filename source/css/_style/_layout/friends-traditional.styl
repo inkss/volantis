@@ -1,5 +1,6 @@
-// layout/friends.ejs
+// 友链页面样式（传统布局）
 if hexo-config('pages.friends.layout_scheme') == 'traditional'
+  // 友链分组头部
   .article.l_friends
     .friends-group
       .friend-header
@@ -44,6 +45,7 @@ if hexo-config('pages.friends.layout_scheme') == 'traditional'
 
 
 
+          // 友链头像
           .friend-left
             display: flex
             align-self: center
@@ -59,6 +61,7 @@ if hexo-config('pages.friends.layout_scheme') == 'traditional'
               background: white
 
 
+          // 友链信息
           .friend-right
             margin: $gap * 0.25 $gap * 0.5
             display: flex
