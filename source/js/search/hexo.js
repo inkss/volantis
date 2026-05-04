@@ -128,41 +128,6 @@ class SearchService {
     this.bindEvents(); // 绑定所有交互事件
     this.loadSearchHistory(); // 从localStorage加载搜索历史
     this.updateHistoryDisplay(); // 更新搜索历史的DOM显示
-
-    // 初始化暗黑模式状态并设置监听器
-    this.updateDarkModeClass();
-    this.setupDarkModeListener();
-  }
-
-  /**
-   * 设置系统暗黑模式变化的监听器
-   * 采用监听系统模式变化的方式，当系统模式改变时更新UI
-   */
-  setupDarkModeListener() {
-    // 监听全局darkModeChanged事件
-    window.addEventListener('darkModeChanged', () => {
-      this.updateDarkModeClass();
-    });
-  }
-
-  /**
-   * 根据当前暗黑模式状态更新#u-search的class
-   * 如果是暗黑模式，添加dark类，否则移除
-   */
-  updateDarkModeClass() {
-    const searchElement = document.querySelector('#u-search');
-    if (!searchElement) return;
-
-    const storedMode = localStorage.getItem('color-scheme');
-    const systemIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDarkMode = storedMode ? storedMode === 'dark' : systemIsDark;
-
-    // 根据模式状态添加或移除dark类
-    if (isDarkMode) {
-      searchElement.classList.add('dark');
-    } else {
-      searchElement.classList.remove('dark');
-    }
   }
 
   /**

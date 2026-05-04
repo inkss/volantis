@@ -1,29 +1,18 @@
 // 全局搜索容器
 #u-search
-  --global-color: #ffffff
+  // 接入全局 CSS 变量（深色模式自动切换）
+  --global-color: var(--color-card)
+  --text-normal: var(--color-text)
+  --bg-light: var(--color-block)
+  --input-bg-color: var(--color-card)
+  // 搜索专用颜色（浅色默认，深色覆盖在 dark_plugins.styl）
   --primary-color: #4285f4
   --border-color: #dddddd
   --highlight-bg: #fff3cd
   --highlight-color: #b88600
-  --text-normal: #444444
   --text-secondary: #2abed9
-  --bg-light: #f4f4f4
   --bg-hover: #e8e8e8
   --shadow-color: rgba(0, 0, 0, 0.1)
-  --input-bg-color: #ffffff
-
-  &.dark
-    --global-color: #262626
-    --primary-color: #426ac9
-    --border-color: #383838
-    --highlight-bg: #3d2f08
-    --highlight-color: #f0b922
-    --text-normal: #c8c8c8
-    --text-secondary: #2dc79e
-    --bg-light: #2d2d2d
-    --bg-hover: #1e1e1e
-    --shadow-color: rgba(0, 0, 0, 0.3)
-    --input-bg-color: #121212
 
   display none
   position fixed

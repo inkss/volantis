@@ -28,60 +28,22 @@ async_dark()
   --color-white-png #b2b2b2
   --color-img-error #21252b
 
-  // header
-  .blur
-    background rgba($color-dark-site-bg, .9) !important
-  .white-box.blur
-    background rgba($color-dark-card, .9) !important
-  .nav-main .u-search-input
-    background var(--color-card) !important
-  #l_main .article .prev-next > a
-    background var(--color-card) !important
-    &:hover
-      background var(--color-site-bg) !important
-  .article blockquote,
-  .references, .related_posts
-    background var(--color-card) !important
-  .article-title a
-    color var(--color-h1) !important
-  details > summary
-    color var(--color-p) !important
-    background var(--color-site-bg) !important
-  details
-    border 1px solid var(--color-site-bg) !important
-    background var(--color-site-bg) !important
+  // Stellar tag plugin 基础色
+  --c-site-bg black
+  --c-block #111
+  --c-title #fff
+  --c-text #fff
+  --c-card #333
 
-  // search
-  #u-search .modal,
-  #u-search .modal-header,
-  #u-search .modal-body
-    background var(--color-card) !important
-  #u-search .modal-body .modal-results .result:hover
-    background var(--color-block) !important
-  .u-search-input:hover
-    background var(--color-block) !important
-  .u-search-input:focus
-    background var(--color-site-body) !important
-
-  // phone search
-  .l_header .m_search
-    @media screen and (max-width: $device-mobile)
-      background var(--color-site-bg) !important
-
-  // tag plugin from stellar
-  --block-hover: mix($c-block-dark, $c-text-dark, 95)
-  --text-p1: $c-text-dark
-  --text-p3: mix($c-text-dark, $c-site-bg-dark, 60)
-  --card: $c-card-dark
-
-
+  // Stellar tag plugin 派生色
+  --block-hover unquote('color-mix(in srgb, var(--c-block) 95%, var(--c-text))')
+  --text-p1 var(--c-text)
+  --text-p3 unquote('color-mix(in srgb, var(--c-text) 60%, var(--c-site-bg))')
+  --card var(--c-card)
 
   // Custom Files
   for $injects_darkVar in hexo-config('injects.darkVar')
     @import $injects_darkVar;
-  // eg:
-  // body
-  //   --color-site-body: blue !important
 
 @media (prefers-color-scheme: dark)
   :root
