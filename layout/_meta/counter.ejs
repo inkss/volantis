@@ -14,7 +14,7 @@
   path = path.replaceAll('/index.html', '/').replaceAll('.html', '')
 
   let checkComment = false;
-  if (theme.comments.service=='artalk' && theme.comments.artalk.visitor) {
+  if (theme.comments.service=='artalk' && theme.comments.artalk.visitor && page.comments !== false) {
     checkComment = true;
   }
 %>
@@ -24,7 +24,7 @@
   <a class='notlink' rel='nofollow'>
     <p>
       <i class="<%- theme.article.body.meta_library.counter.icon %> fa-fw" aria-hidden="true"></i>
-      <% if (theme.comments.service=='artalk' && theme.comments.artalk.visitor) { %>
+      <% if (theme.comments.service=='artalk' && theme.comments.artalk.visitor && page.comments !== false) { %>
       <span id="artalk_visitors" data-page-key="<%- decodeURIComponent(url_for(path)) %>">
         <i class="<%= theme.icon.load %> fa-spin fa-fw" aria-hidden="true"></i>
       </span>

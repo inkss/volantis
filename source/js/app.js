@@ -774,7 +774,7 @@ const VolantisApp = (() => {
   fn.dataToShow = () => {
     document.querySelectorAll('.dataToShow').forEach(item => {
       try {
-        const time = fn.utilTimeAgo(new Date(item.getAttribute('datetime')), 60).trim();
+        const time = fn.utilTimeAgo(new Date(item.getAttribute('datetime')), 30).trim();
         item.textContent = time || item.textContent;
       } catch (error) {
         console.error(error);

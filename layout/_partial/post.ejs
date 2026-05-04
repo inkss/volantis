@@ -142,7 +142,7 @@ const classes = {
           <% } %>
           
           <!-- 显示文章更新时间，使用schema.org的dateModified属性 -->
-          <time class="update-time" itemprop="dateModified" 
+          <time class="update-time dataToShow" itemprop="dateModified" 
                 datetime="<%- moment(post.updated).format() %>" 
                 title="<%- date(post.updated, theme.article.body.meta_library.updated.format) %>">
             <%= date(post.updated, config.date_format) %>
