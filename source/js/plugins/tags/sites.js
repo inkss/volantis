@@ -1,4 +1,6 @@
+// 站点卡片标签插件：从 API 获取站点列表并渲染卡片
 const SitesJS = {
+  // API 请求（带重试和超时）
   requestAPI: (url, callback, timeout) => {
     let retryTimes = 5;
 
@@ -43,6 +45,7 @@ const SitesJS = {
     }
     request();
   },
+  // 布局渲染：构建站点卡片 HTML
   layout: (cfg) => {
     const el = cfg.el;
     SitesJS.requestAPI(cfg.api, function (data) {
@@ -70,6 +73,7 @@ const SitesJS = {
       } catch (e) { }
     });
   },
+  // 初始化入口：查找所有容器并逐个渲染
   start: (cfg) => {
     const els = document.getElementsByClassName('sitesjs-wrap');
     for (var i = 0; i < els.length; i++) {

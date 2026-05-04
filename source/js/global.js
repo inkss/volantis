@@ -1,10 +1,25 @@
-// ===== 全局变量和函数 =====
+/**
+ * global.js - Volantis 主题全局脚本
+ * 定义 window.volantis 全局对象和基础工具函数，需在所有其他脚本之前同步加载。
+ *
+ * 模块结构：
+ *   volantis.dom          - DOM 选择与封装
+ *   volantis.EventListener - 事件监听器管理（Pjax 清理）
+ *   volantis.pjax         - Pjax 生命周期回调
+ *   volantis.dark         - 暗色模式切换
+ *   volantis.js/css       - 动态脚本/样式加载（按需加载用）
+ *   volantis.scroll       - 滚动事件引擎
+ *   volantis.layoutHelper - 布局注入辅助
+ *   volantis.requestAnimationFrame - rAF 兼容封装
+ */
+
+// 全局变量和函数
 window.volantis = {};
 
 // 页面DOM操作模块
 volantis.dom = {};
 
-// ===== 事件监听器模块 =====
+// 事件监听器模块
 volantis.EventListener = {
   list: [],
 
@@ -26,7 +41,7 @@ class VolantisEventListener {
   }
 }
 
-// ===== DOM 操作封装 =====
+// DOM 操作封装
 class VolantisDom {
   constructor(ele) {
     this._ele = ele || document.createElement('div');
@@ -126,6 +141,7 @@ class VolantisDom {
   }
 }
 
+// DOM 选择工厂函数
 volantis.dom.$ = (ele) => {
   if (!ele) return null;
   if (ele instanceof VolantisDom) {
@@ -140,7 +156,7 @@ volantis.dom.$ = (ele) => {
   return null;
 };
 
-// ===== 任务执行管理器 =====
+// 任务执行管理器
 class RunItem {
   constructor() {
     this.list = [];
@@ -192,7 +208,7 @@ class TaskItem {
   }
 }
 
-// ===== Pjax =====
+// Pjax
 // volantis.pjax.send(cb, name)  pjax:send 回调
 // volantis.pjax.push(cb, name)  pjax:complete 回调
 // volantis.pjax.error(cb, name) pjax:error 回调
@@ -208,7 +224,7 @@ volantis.pjax = Object.assign(volantis.pjax, {
   send: volantis.pjax.method.send.push.bind(volantis.pjax.method.send)
 });
 
-// ===== 暗色模式 =====
+// 暗色模式
 // volantis.dark.mode  当前模式 dark/light
 // volantis.dark.toggle()  切换暗色模式
 // volantis.dark.push(cb, name)  注册回调
@@ -220,7 +236,7 @@ volantis.dark = Object.assign(volantis.dark, {
   push: volantis.dark.method.toggle.push.bind(volantis.dark.method.toggle)
 });
 
-// ===== 脚本动态加载 =====
+// 脚本动态加载（按需加载用）
 // volantis.js(src, cb)  cb: onload 回调或属性对象 {defer:true, onload:()=>{}}
 // volantis.css(src)
 volantis.js = (src, cb) => {
@@ -284,7 +300,7 @@ volantis.css = (src) => {
   });
 };
 
-// ===== requestAnimationFrame =====
+// requestAnimationFrame 兼容封装
 volantis.requestAnimationFrame = (fn) => {
   if (!window.requestAnimationFrame) {
     window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function (callback) {
@@ -294,7 +310,7 @@ volantis.requestAnimationFrame = (fn) => {
   return window.requestAnimationFrame(fn);
 };
 
-// ===== Layout Helper =====
+// Layout Helper
 volantis.layoutHelper = (helper, html, opt = {}) => {
   const { clean = false, pjax = true } = { ...opt };
   const handleLayout = () => {
@@ -313,7 +329,7 @@ volantis.layoutHelper = (helper, html, opt = {}) => {
   }
 };
 
-// ===== 滚动事件处理 =====
+// 滚动事件处理
 volantis.scroll = {
   engine: new RunItem(),
   unengine: new RunItem(),
@@ -395,7 +411,7 @@ volantis.scroll = {
 volantis.scroll.push = volantis.scroll.engine.push.bind(volantis.scroll.engine);
 volantis.scroll.handleScrollEvents();
 
-// ===== 图片错误降级 =====
+// 图片错误降级
 function errorImgAvatar(img) {
   img.src = volantis.GLOBAL_CONFIG.default.avatar;
   img.onerror = null;
@@ -406,7 +422,7 @@ function errorImgCover(img) {
   img.onerror = null;
 }
 
-// ===== DOMContentLoaded：缓存 DOM 引用 =====
+// DOMContentLoaded：缓存 DOM 引用
 document.addEventListener('DOMContentLoaded', function () {
   volantis.dom.bodyAnchor = volantis.dom.$(document.getElementById('safearea'));
   volantis.dom.topBtn = volantis.dom.$(document.getElementById('s-top'));

@@ -1,4 +1,6 @@
+// 友链标签插件：从 API 获取友链列表并渲染
 const FriendsJS = {
+  // API 请求（带重试和超时）
   requestAPI: (url, callback, timeout) => {
     let retryTimes = 5;
 
@@ -43,6 +45,7 @@ const FriendsJS = {
     }
     request();
   },
+  // 布局渲染：构建用户卡片 HTML
   layout: (cfg) => {
     const el = cfg.el;
     FriendsJS.requestAPI(cfg.api, function (data) {
@@ -67,6 +70,7 @@ const FriendsJS = {
       } catch (e) { }
     });
   },
+  // 初始化入口：查找所有容器并逐个渲染
   start: () => {
     const els = document.getElementsByClassName('friendsjs-wrap');
     for (var i = 0; i < els.length; i++) {

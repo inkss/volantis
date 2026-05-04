@@ -1,3 +1,21 @@
+/**
+ * app.js - Volantis 主题核心应用脚本
+ * 定义 VolantisApp、阅读模式、打印模式、FancyBox、LazyLoader 等核心功能。
+ * 依赖 global.js 中定义的 window.volantis 基础对象。
+ *
+ * 模块结构：
+ *   图片错误降级          - error 事件代理（img 标签降级处理）
+ *   DOMContentLoaded      - 初始化 VolantisApp、FancyBox、LazyLoader，注册 Pjax 回调
+ *   Tools                 - 工具方法（灰度效果切换）
+ *   volantis.readmode      - 阅读模式切换
+ *   volantis.printmode     - 打印模式
+ *   VolantisApp            - 主应用（导航栏、滚动、TOC、代码复制等）
+ *   highlightKeyWords      - 搜索关键字高亮
+ *   VolantisFancyBox       - 图片灯箱
+ *   LazyLoader             - 图片懒加载（IntersectionObserver）
+ */
+
+// 图片错误降级
 document.addEventListener("error", function (e) {
   const elem = e.target;
   if (elem.tagName.toLowerCase() !== 'img') return;
@@ -25,6 +43,7 @@ document.addEventListener("error", function (e) {
   }
 }, true);
 
+// DOMContentLoaded：初始化与 Pjax 注册
 document.addEventListener("DOMContentLoaded", () => {
   volantis.requestAnimationFrame(() => {
     VolantisApp.init();
@@ -58,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// 工具方法
 const Tools = {
   toggleGrayscaleEffect: (isTestMode = false) => {
     const pathName = window.location.pathname;
@@ -151,7 +171,7 @@ volantis.readmode = (() => {
   return { toggle, exit };
 })();
 
-// 打印页面
+// 打印模式
 volantis.printmode = {
   print() {
     const ss = document.getElementById('reading-mode-stylesheet');
@@ -196,7 +216,7 @@ volantis.printmode = {
   }
 };
 
-// ===== Main =====
+// Main：VolantisApp 主应用
 const VolantisApp = (() => {
   const fn = {},
     REM = parseFloat(getComputedStyle(document.documentElement).fontSize),
@@ -830,7 +850,7 @@ const VolantisApp = (() => {
 Object.freeze(VolantisApp);
 
 
-// highlightKeyWords 与搜索功能搭配
+// 搜索关键字高亮
 const highlightKeyWords = (() => {
   let markNum = 0;
   let markNextId = -1;
@@ -984,7 +1004,7 @@ const highlightKeyWords = (() => {
   };
 })();
 
-// ===== FancyBox =====
+// 图片灯箱：FancyBox
 class VolantisFancyBox {
   constructor(checkMain = true) {
     this.option = {
@@ -1120,7 +1140,7 @@ class VolantisFancyBox {
   }
 }
 
-// ===== 图片懒加载 =====
+// 图片懒加载：LazyLoader
 class LazyLoader {
   constructor(selector) {
     this.lazyPictureObserver = null;

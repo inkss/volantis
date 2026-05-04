@@ -1,7 +1,10 @@
+// Algolia 搜索服务：基于 instantsearch.js 的搜索界面
 let SearchService = (() => {
   const fn = {};
   let search, algolia, timerId;
   fn.queryText = null;
+
+  // 搜索弹窗模板
   fn.template = `<div id="u-search">
   <div class="modal">
     <header class="modal-header" class="clearfix">
@@ -31,6 +34,7 @@ let SearchService = (() => {
   </div>
   `;
 
+  // 初始化搜索界面
   fn.init = () => {
     let div = document.createElement("div");
     div.innerHTML += fn.template;
@@ -50,6 +54,7 @@ let SearchService = (() => {
     fn.uSearchModal = document.querySelector("#u-search > .modal");
   }
 
+  // 事件绑定
   fn.event = () => {
     document
       .querySelector("#u-search-btn-close")
@@ -70,6 +75,7 @@ let SearchService = (() => {
     })
   }
 
+  // 配置 Algolia 搜索实例和组件
   fn.setAlgolia = () => {
     search = instantsearch({
       indexName: algolia.indexName,
@@ -167,6 +173,7 @@ let SearchService = (() => {
     })
   }
 
+  // 设置查询关键词
   fn.setQueryText = queryText => {
     fn.queryText = queryText;
     if (!search) {
@@ -179,6 +186,7 @@ let SearchService = (() => {
     })
   }
 
+  // 显示搜索弹窗
   fn.search = () => {
     fn.uSearch.style.display = "block";
     setTimeout(() => {
@@ -191,6 +199,7 @@ let SearchService = (() => {
     }, { once: true })
   }
 
+  // 表单提交处理
   fn.onSubmit = (event) => {
     event.preventDefault();
     let input = event.target.querySelector(".u-search-input");
@@ -198,6 +207,7 @@ let SearchService = (() => {
     fn.search();
   };
 
+  // 截取搜索结果摘要
   fn.cutContent = content => {
     if (content === '') return ''
 
@@ -225,6 +235,7 @@ let SearchService = (() => {
     return matchContent
   }
 
+  // 关闭搜索弹窗
   fn.close = () => {
     fn.uSearchModal.style.transform = "translateY(120%)";
     setTimeout(() => {

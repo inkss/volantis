@@ -1,4 +1,6 @@
+// Contributors 标签插件：从 GitHub API 获取贡献者列表并渲染
 const ContributorsJS = {
+  // API 请求（带重试和超时）
   requestAPI: (url, callback, timeout) => {
     let retryTimes = 5;
 
@@ -43,6 +45,7 @@ const ContributorsJS = {
     }
     request();
   },
+  // 布局渲染：构建用户卡片 HTML
   layout: (cfg) => {
     const el = cfg.el;
     ContributorsJS.requestAPI(cfg.api, function (data) {
@@ -66,6 +69,7 @@ const ContributorsJS = {
       } catch (e) { }
     });
   },
+  // 初始化入口：查找所有容器并逐个渲染
   start: () => {
     const els = document.getElementsByClassName('contributorsjs-wrap');
     for (var i = 0; i < els.length; i++) {

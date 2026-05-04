@@ -1,3 +1,7 @@
+/**
+ * rightMenus.js | 自定义右键菜单
+ * 通过 JSON 配置驱动菜单渲染，支持条件显示和事件委托
+ */
 const contextMenuManager = {
   urlRegx: /^(https?:\/\/)?([A-Za-z0-9.-]+)\.([A-Za-z]{2,})(\/[A-Za-z0-9.-]*)*\/?(\?[A-Za-z0-9&=_-]*)?(#[A-Za-z0-9-_]*)?$/,
   rem: parseFloat(getComputedStyle(document.documentElement).fontSize),
