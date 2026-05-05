@@ -597,12 +597,7 @@ const VolantisApp = (() => {
             });
             // 点击展开子菜单
             Array.from(li.children).forEach(child => {
-              const domChild = volantis.dom.$(child);
-              if (domChild.title === 'menu') {
-                domChild.style.display = "flex"; // https://github.com/volantis-x/hexo-theme-volantis/issues/706
-              } else {
-                domChild.show();
-              }
+              volantis.dom.$(child).show();
             });
           }, false); // false : pjax 不移除监听
         }

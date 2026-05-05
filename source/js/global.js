@@ -131,12 +131,14 @@ class VolantisDom {
   }
 
   hide() {
-    this._ele.style.display = 'none';
+    this._ele.classList.remove('show');
+    this._ele.style.removeProperty('display');
     return this;
   }
 
   show() {
-    this._ele.style.display = 'block';
+    this._ele.classList.add('show');
+    this._ele.style.removeProperty('display');
     return this;
   }
 }
