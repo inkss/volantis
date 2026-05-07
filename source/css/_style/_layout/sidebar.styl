@@ -114,91 +114,92 @@
 
 
   // 博主信息卡片
-  &.blogger
-    trans()
-    .content
-      padding: 0
-      display: flex
-      flex-direction: column
-      align-items: stretch
-      >.avatar
-        align-self: center
-        overflow: hidden
-        position: relative
-        border-top-left-radius: $border-card
-        border-top-right-radius: $border-card
-        line-height: 0
-        &.circle
-          border-radius: 100%
-          width: 128px
-          height: 128px
-          margin-top: $gap * 2
-          margin-bottom: $gap-p
-          img
-            display: block
-            position: absolute
-            top: 50%
-            left: 50%
-            transform: translate(-50%, -50%)
-        @media screen and (max-width: $device-tablet)
-          width: 80px
-          height: 80px
-          border-radius: 100%
-          border: 2px solid white
-          img
-            display: block
-            top: 50%
-            left: 50%
-            transform: translate(-50%, -50%)
-            position: absolute
-      .text
-        :first-child
-          margin-top: $gap
-        margin-bottom 10px
-      h2
-        text-align: center
-        font-weight: bold
-        margin: $gap * 0.5
-        @media screen and (max-width: $device-tablet)
-          margin: $gap * 0.5
-      p
-        text-align: center
-        font-weight: bold
-        margin: $gap * 0.5 $gap * 0.5 0 $gap * 0.5
-        empty-cells: hide
-      .social-wrapper
+  if 'blogger' in hexo-config('sidebar.for_page') or 'blogger' in hexo-config('sidebar.for_post')
+    &.blogger
+      trans()
+      .content
+        padding: 0
         display: flex
-        justify-content: space-between
-        flex-wrap: wrap
-        margin: 4px $gap * 0.25
-        a
-          color: var(--color-meta)
-          padding: 0
-          trans()
-          &:hover
-            color: $color-hover
-          &.social
-            display: flex
-            justify-content: center
-            align-items: center
-            width: 32px
-            height: 32px
-            margin: 4px
-            border-radius: 100px
+        flex-direction: column
+        align-items: stretch
+        >.avatar
+          align-self: center
+          overflow: hidden
+          position: relative
+          border-top-left-radius: $border-card
+          border-top-right-radius: $border-card
+          line-height: 0
+          &.circle
+            border-radius: 100%
+            width: 128px
+            height: 128px
+            margin-top: $gap * 2
+            margin-bottom: $gap-p
+            img
+              display: block
+              position: absolute
+              top: 50%
+              left: 50%
+              transform: translate(-50%, -50%)
+          @media screen and (max-width: $device-tablet)
+            width: 80px
+            height: 80px
+            border-radius: 100%
+            border: 2px solid white
+            img
+              display: block
+              top: 50%
+              left: 50%
+              transform: translate(-50%, -50%)
+              position: absolute
+        .text
+          :first-child
+            margin-top: $gap
+          margin-bottom 10px
+        h2
+          text-align: center
+          font-weight: bold
+          margin: $gap * 0.5
+          @media screen and (max-width: $device-tablet)
+            margin: $gap * 0.5
+        p
+          text-align: center
+          font-weight: bold
+          margin: $gap * 0.5 $gap * 0.5 0 $gap * 0.5
+          empty-cells: hide
+        .social-wrapper
+          display: flex
+          justify-content: space-between
+          flex-wrap: wrap
+          margin: 4px $gap * 0.25
+          a
+            color: var(--color-meta)
+            padding: 0
+            trans()
             &:hover
-              background: bgcolor($color-theme)
-              color: $color-theme
+              color: $color-hover
+            &.social
+              display: flex
+              justify-content: center
+              align-items: center
+              width: 32px
+              height: 32px
+              margin: 4px
+              border-radius: 100px
+              &:hover
+                background: bgcolor($color-theme)
+                color: $color-theme
 
-        @media screen and (max-width: $device-tablet)
-          justify-content: center
-          display: none
+          @media screen and (max-width: $device-tablet)
+            justify-content: center
+            display: none
 
-    @media screen and (max-width: $device-tablet)
-      box-shadow: none
-      background: transparent !important
-      margin-top: 2 * $gap
-      backdrop-filter: none
-      color: var(--color-site-inner)
+      @media screen and (max-width: $device-tablet)
+        box-shadow: none
+        background: transparent !important
+        margin-top: 2 * $gap
+        backdrop-filter: none
+        color: var(--color-site-inner)
 
 
 
@@ -311,51 +312,54 @@
 
 
   // 标签云组件
-  &.tagcloud
-    .content
-      text-align: justify
-      padding: $gap * 0.5 $gap
-      a
-        display: inline-block
-        trans()
-        line-height: 1.2em
-        margin: 4px 0
-        border-bottom: 1px solid transparent
-        &:hover
-          color: $color-hover !important //to cover inline style.
-          border-bottom: 1px solid $color-hover
+  if 'tagcloud' in hexo-config('sidebar.for_page') or 'tagcloud' in hexo-config('sidebar.for_post')
+    &.tagcloud
+      .content
+        text-align: justify
+        padding: $gap * 0.5 $gap
+        a
+          display: inline-block
+          trans()
+          line-height: 1.2em
+          margin: 4px 0
+          border-bottom: 1px solid transparent
+          &:hover
+            color: $color-hover !important //to cover inline style.
+            border-bottom: 1px solid $color-hover
 
 
 
   // 相关文章组件
-  &.related_posts
-    .content
-      font-weight: bold
-      ul
-        margin-top: $gap * 0.5
-        margin-bottom: $gap * 0.5
-      h3
-        font-size: $fontsize-meta
+  if 'related_posts' in hexo-config('sidebar.for_page') or 'related_posts' in hexo-config('sidebar.for_post')
+    &.related_posts
+      .content
         font-weight: bold
-        margin: 0
-        a
-          line-height: inherit
-          padding-top: 4px
-          padding-bottom: 4px
+        ul
+          margin-top: $gap * 0.5
+          margin-bottom: $gap * 0.5
+        h3
+          font-size: $fontsize-meta
+          font-weight: bold
+          margin: 0
+          a
+            line-height: inherit
+            padding-top: 4px
+            padding-bottom: 4px
 
 
 
   // 二维码组件
-  &.qrcode
-    .content
-      display: flex
-      flex-wrap: wrap
-      align-items: center
-      justify-content: space-around
-      padding-left: $gap
-      padding-right: $gap
-      &,img
-        margin-bottom: 4px
+  if 'qrcode' in hexo-config('sidebar.for_page') or 'qrcode' in hexo-config('sidebar.for_post')
+    &.qrcode
+      .content
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        justify-content: space-around
+        padding-left: $gap
+        padding-right: $gap
+        &,img
+          margin-bottom: 4px
 
 
 #l_side>.widget.page
@@ -391,161 +395,166 @@
       margin 0
 
 // Next 主题导航插件
-.nextsite
-  font-size 0.875rem
-  .site-brand-wrapper
-    background rgba(0,0,0,0.8)
-    box-shadow 0 2px 15px 0 rgb(0 0 0 / 60%)
-    transition all 0.2s linear
-    position relative
-    @media screen and (min-width: $device-mobile)
-      &:hover
-        background rgba(0,0,0,0.9)
-        border-radius 0 0 70px 70px
-        box-shadow 0 8px 20px -3px rgb(0 0 0 / 60%)
-    .site-meta
-      text-align center
-      font-size 1em
-      line-height 2
-      transition padding .2s ease-in-out
-      padding 20px 0
-      .brand
-        display inline-block
-      .site-title
-        line-height 1.5
-        color #f9a972
-        font-size 1.8em
-        text-shadow 0 1px 4px #fff
-        margin 0.67em 0
-        display inline-block
-      .site-subtitle
-        font-size .85rem
-        color var(--color-meta)
-    .site-nav-toggle
-      left 20px
-      top 50%
-      transform translateY(-50%)
-      display none
-      position absolute
-      @media screen and (max-width: $device-mobile)
-        display block
-      button
-        margin-top 2px
-        padding 9px 10px
-        background transparent
-        border none
-        .btn-bar
+if 'nextsite' in hexo-config('sidebar.for_page') or 'nextsite' in hexo-config('sidebar.for_post')
+  .nextsite
+    font-size 0.875rem
+    .site-brand-wrapper
+      background rgba(0,0,0,0.8)
+      box-shadow 0 2px 15px 0 rgb(0 0 0 / 60%)
+      transition all 0.2s linear
+      position relative
+      @media screen and (min-width: $device-mobile)
+        &:hover
+          background rgba(0,0,0,0.9)
+          border-radius 0 0 70px 70px
+          box-shadow 0 8px 20px -3px rgb(0 0 0 / 60%)
+      .site-meta
+        text-align center
+        font-size 1em
+        line-height 2
+        transition padding .2s ease-in-out
+        padding 20px 0
+        .brand
+          display inline-block
+        .site-title
+          line-height 1.5
+          color #f9a972
+          font-size 1.8em
+          text-shadow 0 1px 4px #fff
+          margin 0.67em 0
+          display inline-block
+        .site-subtitle
+          font-size .85rem
+          color var(--color-meta)
+      .site-nav-toggle
+        left 20px
+        top 50%
+        transform translateY(-50%)
+        display none
+        position absolute
+        @media screen and (max-width: $device-mobile)
           display block
-          width 22px
-          height 2px
-          background #555
-          border-radius 1px
-          background-color #fff
-        .btn-bar+.btn-bar
-          margin-top 4px
-  .site-nav
-    @media screen and (max-width: $device-mobile)
-      display none
-      animation header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
-    @media screen and (min-width: $device-mobile)
-      display block !important
-    margin 15px 0 10px 5px
-    .next-main
-      .menu-item-active a
-        border-radius 50px 0 0 50px
-        border-color transparent
-        box-shadow 0 4px 20px -4px #00000040
-        &:after
-          content " "
-          position absolute
-          top 50%
-          margin-top -3px
-          right 15px
-          width 6px
-          height 6px
-          border-radius 50%
-          background-color #f9a972
-      .next-main-item:hover a
-        border-radius 50px 0 0 50px
-        border-color transparent
-        box-shadow 0 4px 20px -4px #00000040
-        color #f9a972
-      a
-        display flex
-        align-items center
-        color var(--color-list)
-        padding 5px 10px
-        position relative
-        .menu-item-icon
-          margin-right 8px
+        button
+          margin-top 2px
+          padding 9px 10px
+          background transparent
+          border none
+          .btn-bar
+            display block
+            width 22px
+            height 2px
+            background #555
+            border-radius 1px
+            background-color #fff
+          .btn-bar+.btn-bar
+            margin-top 4px
+    .site-nav
+      @media screen and (max-width: $device-mobile)
+        display none
+        animation header-effect 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+      @media screen and (min-width: $device-mobile)
+        display block !important
+      margin 15px 0 10px 5px
+      .next-main
+        .menu-item-active a
+          border-radius 50px 0 0 50px
+          border-color transparent
+          box-shadow 0 4px 20px -4px #00000040
+          &:after
+            content " "
+            position absolute
+            top 50%
+            margin-top -3px
+            right 15px
+            width 6px
+            height 6px
+            border-radius 50%
+            background-color #f9a972
+        .next-main-item:hover a
+          border-radius 50px 0 0 50px
+          border-color transparent
+          box-shadow 0 4px 20px -4px #00000040
+          color #f9a972
+        a
+          display flex
+          align-items center
+          color var(--color-list)
+          padding 5px 10px
+          position relative
+          .menu-item-icon
+            margin-right 8px
 
 // Next 主题博主卡片插件
-.nextblogger
-  padding 20px 10px 10px
-  .site-author-image
-    display block
-    margin 0 auto
-    padding 2px
-    width 120px
-    height 120px
-    border 1px solid #eee
-    opacity 1
-    border-radius 100%
-  .site-author-box
-    margin-top 1rem
-    text-align center
-    .site-author-name
-      font-weight 600
-      font-size 1rem
-      color var(--color-text)
-      margin 0
-    .site-author-description
-      color var(--color-list)
-      margin-top 2px
-      font-size 0.85rem
-  .links-of-author
-    display flex
-    flex-wrap wrap
-    gap 4px
-    justify-content center
-    a
-      color var(--color-list)
-      &:hover
-        color #f9a972
-  .links-of-author-item
-    margin 0 4px
-    font-size 1.05rem
-    color var(--text-color)
+if 'nextblogger' in hexo-config('sidebar.for_page') or 'nextblogger' in hexo-config('sidebar.for_post')
+  .nextblogger
+    padding 20px 10px 10px
+    .site-author-image
+      display block
+      margin 0 auto
+      padding 2px
+      width 120px
+      height 120px
+      border 1px solid #eee
+      opacity 1
+      border-radius 100%
+    .site-author-box
+      margin-top 1rem
+      text-align center
+      .site-author-name
+        font-weight 600
+        font-size 1rem
+        color var(--color-text)
+        margin 0
+      .site-author-description
+        color var(--color-list)
+        margin-top 2px
+        font-size 0.85rem
+    .links-of-author
+      display flex
+      flex-wrap wrap
+      gap 4px
+      justify-content center
+      a
+        color var(--color-list)
+        &:hover
+          color #f9a972
+    .links-of-author-item
+      margin 0 4px
+      font-size 1.05rem
+      color var(--text-color)
 
 // 网站信息组件
-.webinfo
-  padding 0.2rem 1rem
-  .webinfo-item
-    display block
-    padding 4px 0 0
-    div
-      &:first-child
-        display inline-block
-      &:last-child
-        display inline-block
-        float right
-    a
-      color: var(--color-text) 
-      &:hover
-        color: #ff5722;
+if 'webinfo' in hexo-config('sidebar.for_page') or 'webinfo' in hexo-config('sidebar.for_post')
+  .webinfo
+    padding 0.2rem 1rem
+    .webinfo-item
+      display block
+      padding 4px 0 0
+      div
+        &:first-child
+          display inline-block
+        &:last-child
+          display inline-block
+          float right
+      a
+        color: var(--color-text) 
+        &:hover
+          color: #ff5722;
 
-.widget-last
-  display: block !important
-  .item
-    display: flex
-    justify-content: space-between
-    font-size: 0.8rem
-  .item-title
-    width: 100%  // 设定宽度
-    display: inline-block  // 将 span 当作块级元素
-    white-space: nowrap  // 不换行
-    overflow: hidden  // 超出宽度部分隐藏
-    text-overflow: ellipsis  // 超出部分以点号替代
+// 最近更新组件
+if 'lastupdate' in hexo-config('sidebar.for_page') or 'lastupdate' in hexo-config('sidebar.for_post')
+  .widget-last
+    display: block !important
+    .item
+      display: flex
+      justify-content: space-between
+      font-size: 0.8rem
+    .item-title
+      width: 100%  // 设定宽度
+      display: inline-block  // 将 span 当作块级元素
+      white-space: nowrap  // 不换行
+      overflow: hidden  // 超出宽度部分隐藏
+      text-overflow: ellipsis  // 超出部分以点号替代
 
 .widget-sticky
   position: sticky
