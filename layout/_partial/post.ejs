@@ -13,17 +13,8 @@ const showCategories = post.categories && post.categories.length > 0;
 // 计算是否显示标签：存在标签且数量大于0
 const showTags = post.tags && post.tags.length > 0;
 
-// 计算是否显示"阅读更多"按钮：
-// 1. 主题设置为始终显示 或
-// 2. 主题启用自动摘要 或
-// 3. 文章未禁用readmore且存在摘要/描述/链接
-const showReadmore = theme.article.preview.readmore === 'always' || 
-                    theme.article.preview.auto_excerpt || 
-                    (post.readmore !== false && (post.excerpt || post.description || post.link));
-
-// 确定文章标题：优先使用post.title或post.seo_title，都不存在则用日期作为标题
-const articleTitle = (post.title || post.seo_title) || 
-                    date(post.date, theme.article.body.meta_library.date.format);
+// 确定文章标题：优先使用post.title，不存在则用日期作为标题
+const articleTitle = post.title || date(post.date, theme.article.body.meta_library.date.format);
 
 // 内部函数：获取作者信息
 const getAuthor = () => {
@@ -45,7 +36,7 @@ const author = getAuthor();
 // CSS类名集中管理，便于统一修改样式
 const classes = {
   container: `post post-v3 white-box reveal ${theme.custom_css.body.effect.join(' ')}`,
-  headimg: `headimg-div ${post?.cover ? 'headimg-cover' : ''}`,
+  headimg: `headimg-div ${post?.headimg_overlay ? 'headimg-cover' : ''}`,
   title: 'article-title',
   description: 'md article-desc',
   meta: 'meta-v3'
@@ -74,7 +65,7 @@ const classes = {
     <div class='<%= classes.headimg %>'>
       <a class='headimg-a' href="<%- url_for(post.link || post.path) %>">
         <img itemprop="image" class='headimg' alt="<%- articleTitle %>" src='<%- post.headimg %>'/>
-        <% if (post.headimg && post.cover) { %>
+        <% if (post.headimg && post.headimg_overlay) { %>
           <div class="cover-info" position="bottom">
             <div class="text headline"><%- articleTitle %></div>
             <div class="text caption">
@@ -97,7 +88,7 @@ const classes = {
   <% } %>
 
   <!-- 一般场景 -->
-  <% if (!(post.headimg && post.cover)) { %>
+  <% if (!(post.headimg && post.headimg_overlay)) { %>
     <!-- 文章标题区域，使用schema.org的name和headline属性 -->
     <h2 class="<%= classes.title %>" itemprop="name headline">
       <a href="<%- url_for(post.link || post.path) %>" itemprop="url">
@@ -126,7 +117,7 @@ const classes = {
     </div>
     
     <!-- 元信息区域（作者、日期、分类、标签等），仅在需要显示其中至少一项时才渲染 -->
-    <% if (showCategories || showTags || showReadmore || theme.article.preview.author) { %>
+    <% if (showCategories || showTags || theme.article.preview.author) { %>
       <div class="<%= classes.meta %>" line_style='<%- theme.article.preview.line_style %>'>
         <div>
           <!-- 显示作者信息（如果主题设置启用） -->

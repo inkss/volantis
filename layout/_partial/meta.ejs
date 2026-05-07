@@ -5,11 +5,21 @@ var topMetas = Array.isArray(post.top_meta)
 var bottomMetas = Array.isArray(post.bottom_meta)
   ? post.bottom_meta
   : (post.bottom_meta === false ? [] : (theme.article.body.bottom_meta || []));
-let articlTitle = (post.title || post.seo_title) ? (post.title || post.seo_title) : date(post.date, theme.article.body.meta_library.date.format);
+let articlTitle = post.title || date(post.date, theme.article.body.meta_library.date.format);
+
+// 头图显示逻辑：headimg_display 为 false 时隐藏，否则有 headimg 就显示
+const showHeadimg = post.headimg_display !== false && !!post.headimg;
+
+// 标题显示逻辑：title_display 为 true 时强制显示，为 false 时强制隐藏，未设置时按默认逻辑
+const showTitle = post.title_display === true ||
+                  (post.title_display === undefined && !post.headimg);
+
+// 元信息显示逻辑：title_display 为 false 时隐藏
+const showMeta = post.title_display !== false;
 %>
 
 <% if (position == 'top') { %>
-  <% if (post.headimg && post.seo_title == undefined) { %>
+  <% if (showHeadimg) { %>
     <div class='headimg-div'>
       <div class='headimg-a'>
         <img itemprop="image" class='headimg' alt="<%- articlTitle %>" src='<%- post.headimg %>'/>
@@ -18,7 +28,7 @@ let articlTitle = (post.title || post.seo_title) ? (post.title || post.seo_title
   <% } %>
   <div class="article-meta" id="top">
 
-    <% if (post.seo_title == undefined && post.headimg == undefined) { %>
+    <% if (showTitle) { %>
       <h1 class="title allow-select" itemprop="name headline">
         <%- post.title %>
       </h1>
@@ -27,7 +37,7 @@ let articlTitle = (post.title || post.seo_title) ? (post.title || post.seo_title
         <%- post.title %>
       </h1>
     <% } %>
-    <% if (post.title && post.seo_title == undefined) { %>
+    <% if (post.title && showMeta) { %>
     <div class='new-meta-box'>
       <% (topMetas).forEach(function(meta) { %>
         <% if (meta in theme.article.body.meta_library){ %>
