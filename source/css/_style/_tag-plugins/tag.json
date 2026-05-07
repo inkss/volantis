@@ -19,17 +19,9 @@
   "btn": ["btns.styl"],
   "btns": ["btns.styl"],
   "table": ["table.styl"],
-  "ghcard": ["ghcard.styl"],
-  "sites": ["sites.styl"],
   "menu": ["dropmenu.styl"],
   "inlineimage": ["image.styl"],
   "image": ["image.styl"],
   "gallery": ["gallery.styl"],
-  "audio": ["media.styl"],
-  "video": ["media.styl"],
-  "videos": ["media.styl"],
-  "frame": ["frame.styl"],
-  "contributors": ["friends.styl"],
-  "friends": ["friends.styl"],
-  "swiper": ["swiper.styl"]
+  "frame": ["frame.styl"]
 }

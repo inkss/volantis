@@ -164,7 +164,7 @@ DNS 预解析域名数组
 
 ### `pages`
 
-- `friends.layout_scheme` — `traditional` / `simple` 友链布局
+- `friends.layout_scheme` — `traditional`  友链布局
 
 ### `article`
 

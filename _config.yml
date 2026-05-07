@@ -34,9 +34,6 @@ cdn:
   algolia_search_v4: https://cdn.jsdelivr.net/npm/algoliasearch@4.14.2/dist/algoliasearch-lite.umd.js
   instantsearch_v4: https://cdn.jsdelivr.net/npm/instantsearch.js@4.44.0/dist/instantsearch.production.min.js
   instant_meilisearch: https://cdn.jsdelivr.net/npm/@meilisearch/instant-meilisearch@0.8.1/dist/instant-meilisearch.umd.min.js
-  markdown: https://cdn.jsdelivr.net/npm/github-markdown-css@5.1.0/github-markdown.min.css
-  marked: https://cdn.jsdelivr.net/npm/marked@4.0.18/marked.min.js
-  hlsjs: https://cdn.jsdelivr.net/npm/hls.js@1.1.3/dist/hls.min.js
   iconfontInkss: /js/szyink/iconfontInkss.js
 
 ############################### CSP ###############################
@@ -95,7 +92,7 @@ navbar:
 pages:
   # 友链页面配置
   friends:
-    layout_scheme: traditional # simple: 简单布局, traditional: 传统布局
+    layout_scheme: traditional # simple: ~~简单布局~~(已剥离移除), traditional: 传统布局
 
 ############################### Article Layout ############################### > start
 # 文章布局

@@ -44,17 +44,6 @@
               <% }) %>
               <br><br>
             </div>
-          <% } else { %>
-            <div class='simpleuser-group'>
-              <% (group.items||[]).forEach(function(item){ %>
-                <% if (item.url && item.title) { %>
-                  <a class="simpleuser" target="_blank" rel="external noopener noreferrer" href="<%- url_for(item.url || '/') %>">
-                    <img src="<%- item.avatar || (theme.plugins.lazyload && theme.plugins.lazyload.loadingImg) %>"/>
-                    <span><%- item.title %></span>
-                  </a>
-                <% } %>
-              <% }) %>
-            </div>
           <% } %>
         </div>
       <% }) %>
