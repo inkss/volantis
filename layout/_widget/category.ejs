@@ -15,7 +15,6 @@
         %>
           <li>
             <a class="flat-box<%= category.parent ? ' child' : ''%>"
-              title="<%- url_for(category.path) %>" 
               href="<%- url_for(category.path) %>"
               active-action="action-<%= url_for(category.path).replace(/\/|%|\./g, "") ? url_for(category.path).replace(/\/|%|\./g, "") : "home" %>"
             >

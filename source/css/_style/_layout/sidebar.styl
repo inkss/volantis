@@ -361,6 +361,22 @@
         &,img
           margin-bottom: 4px
 
+  // 最近更新组件
+  if 'lastupdate' in hexo-config('sidebar.for_page') or 'lastupdate' in hexo-config('sidebar.for_post')
+    &.lastupdate
+      .widget-last
+        display: block
+        .item
+          display: flex
+          justify-content: space-between
+          font-size: 0.8rem
+        .item-title
+          width: 100%  // 设定宽度
+          display: inline-block  // 将 span 当作块级元素
+          white-space: nowrap  // 不换行
+          overflow: hidden  // 超出宽度部分隐藏
+          text-overflow: ellipsis  // 超出部分以点号替代
+
 
 #l_side>.widget.page
   >.content
@@ -541,20 +557,8 @@ if 'webinfo' in hexo-config('sidebar.for_page') or 'webinfo' in hexo-config('sid
         &:hover
           color: #ff5722;
 
-// 最近更新组件
-if 'lastupdate' in hexo-config('sidebar.for_page') or 'lastupdate' in hexo-config('sidebar.for_post')
-  .widget-last
-    display: block !important
-    .item
-      display: flex
-      justify-content: space-between
-      font-size: 0.8rem
-    .item-title
-      width: 100%  // 设定宽度
-      display: inline-block  // 将 span 当作块级元素
-      white-space: nowrap  // 不换行
-      overflow: hidden  // 超出宽度部分隐藏
-      text-overflow: ellipsis  // 超出部分以点号替代
+
+      
 
 .widget-sticky
   position: sticky
