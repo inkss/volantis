@@ -20,6 +20,16 @@ const globalData = {
   inputContent: null   // 输入框
 };
 
+// HTML attribute escape
+const escapeHtmlAttr = (str) => {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 // 生成菜单 HTML
 contextMenuManager.generateMenuHTML = function (config) {
   // 检查是否已存在，避免重复添加
@@ -57,7 +67,7 @@ contextMenuManager.generateMenuHTML = function (config) {
     html += '<li class="navigation menuNavigation-Content">';
     config.navigation.forEach(item => {
       if (item.link === undefined) {
-        html += `<a data-id="${item.id}" class="rightmenu-icon-only" rel="nofollow" data-event-name="${item.eventName}" data-display-condition="${item.displayCondition || ''}">`;
+        html += `<a data-id="${item.id}" class="rightmenu-icon-only" rel="nofollow" data-event-name="${escapeHtmlAttr(item.eventName)}" data-display-condition="${item.displayCondition || ''}">`;
         html += `<i ${processIcon(item.icon)}></i>`;
         html += '</a>';
       } else {
@@ -90,7 +100,7 @@ contextMenuManager.generateMenuHTML = function (config) {
 
     if (item.link === undefined) {
       html += '<li class="menuLoad-Content">';
-      html += `<span class="rightmenu-item" data-id="${item.id}" data-event-name="${item.eventName}" data-display-condition="${item.displayCondition || ''}">`;
+      html += `<span class="rightmenu-item" data-id="${item.id}" data-event-name="${escapeHtmlAttr(item.eventName)}" data-display-condition="${item.displayCondition || ''}">`;
       html += `<i ${processIcon(item.icon)}></i>`;
       html += item.name;
       html += '</span>';
