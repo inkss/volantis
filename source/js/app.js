@@ -207,8 +207,9 @@ volantis.printmode = {
       .finally(() => {
         NProgress?.done();
         setTimeout(() => {
-          if (window.innerWidth >= 1024) {
+          if (window.innerWidth >= 1024 && !sessionStorage.getItem('alertShown')) {
             alert(volantis.GLOBAL_CONFIG.languages.post.print_tip);
+            sessionStorage.setItem('alertShown', '1');
           }
           window.print();
         }, 500);
