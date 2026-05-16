@@ -1,5 +1,8 @@
 // 时间线组件样式（timenode + timelines-common 两套实现）
-// 竖线节点式时间线
+// ============================================
+// 竖线节点式时间线（timeline / timenode 标签）
+// ============================================
+
 div.timenode
   position: relative
   &:before, &:after
@@ -15,21 +18,19 @@ div.timenode
   &:after
     top: 26px
     height: "calc(100% - %s)" % 26px
-  &:last-child
-    &:after
-      height: "calc(100% - 26px - %s)" % $gap
-      border-bottom-left-radius: 2px
-      border-bottom-right-radius: 2px
-  // 元信息和内容体的最大宽度限制
-  .meta,.body
+  &:last-child:after
+    height: "calc(100% - 26px - %s)" % $gap
+    border-bottom-left-radius: 2px
+    border-bottom-right-radius: 2px
+  .meta, .body
     max-width: "calc(100% - %s)" % (16px + 8px)
-  // 时间节点元信息：双层圆形标记（外圈 + 内圈）
   .meta
     position: relative
     color: var(--color-meta)
     font-size: $fontsize-meta
     line-height: 32px
     height: 32px
+    // 双层圆形标记（外圈 + 内圈）
     &:before, &:after
       content: ''
       position: absolute
@@ -52,7 +53,6 @@ div.timenode
     p
       font-weight: bold
       margin: 0 0 0 16px + 8px
-  // 内容体：卡片背景 + 圆角 + 内边距
   .body
     margin: 4px 0 $gap 16px + 8px
     padding: $gap
@@ -69,96 +69,93 @@ div.timenode
     .highlight
       border: 1px solid mix($color-block, $color-text, 90)
 
-
-// 悬停效果：节点颜色切换 + 内圈放大
-div.timenode:hover
-  .meta
-    color: var(--color-text)
-    &:before
-      background: alpha($color-hover, .5)
-    &:after
-      background: $color-hover
-      transform: scale(1)
-
-// 自定义时间线组件（与 div.timenode 不同的另一套实现）
-// 另一套自定义时间线实现（与 div.timenode 不同）
-.timelines-common
-  background-color var(--color-card)
-  border-radius 8px
-  margin -10px 0
-
-// 字段区块：边框 + 图例标题
-.elem-field
-  border 1px solid #e6e6e6
-  margin-bottom 10px
-  padding 0
-  legend
-    margin-left 20px
-    padding 0 10px
-    font-size 20px
-    font-weight 300
-
-// 字段标题：上边框分隔线
-.field-title
-  margin 10px 0 20px
-  border-width 1px 0 0
-
-// 时间线容器：清除默认内边距
-.timeline
-  padding 0 !important
-
-// 时间线条目：左侧竖线连接
-.timeline-item
-  position relative
-  list-style none !important
-  padding-bottom 5px
-  &:first-child:before
-    display block
-  &:last-child:before
-    display none
+div.timenode:hover .meta
+  color: var(--color-text)
   &:before
-    content ''
-    position absolute
-    left 6px
-    top 10px
-    z-index 0
-    width 2px
-    height 100%
-    background-color #e6e6e6
+    background: alpha($color-hover, .5)
+  &:after
+    background: $color-hover
+    transform: scale(1)
 
-// 时间轴节点标记（圆形/feather 图标）
-.timeline-axis
-  position absolute
-  z-index 10
-  top 4px
-  width 14px
-  height 14px
-  background-color var(--color-card)
-  color var(--color-meta)
-  &.feather.feather-circle
-    width 10px
-    height 10px
-    left 2px
 
-// 时间轴图标字体
+// ============================================
+// 图标时间线（timelines / timenodes 标签，Feather SVG 图标）
+// ============================================
+
+.timelines-common
+  background-color: var(--color-card)
+  border-radius: 8px
+  margin: -10px 0
+
+  .elem-field
+    border: 1px solid #e6e6e6
+    margin-bottom: 10px
+    padding: 0
+    legend
+      margin-left: 20px
+      padding: 0 10px
+      font-size: 20px
+      font-weight: 300
+
+  .field-title
+    margin: 10px 0 20px
+    border-width: 1px 0 0
+
+  .timeline
+    padding: 0 !important
+
+    .timeline-item
+      position: relative
+      display: flex
+      align-items: center
+      list-style: none !important
+      padding-bottom: 1rem
+      // 左侧竖线（绝对定位，图标背景色遮盖）
+      &:before
+        content: ''
+        position: absolute
+        left: 7px
+        top: 10px
+        z-index: 0
+        width: 2px
+        height: 100%
+        background-color: #e6e6e6
+      &:last-child:before
+        display: none
+
+      // SVG 图标（flex 子项，中心 8px 对齐竖线）
+      // 列宽：普通 16+14=30px，圆形 10+3+17=30px
+      .timeline-axis
+        flex-shrink: 0
+        position: relative
+        z-index: 10
+        margin-right: 14px
+        background-color: var(--color-card)
+        color: var(--color-meta)
+        &.feather.feather-circle
+          width: 10px
+          height: 10px
+          margin-left: 3px
+          margin-right: 17px
+
+      .timeline-content
+        flex: 1
+        min-width: 0
+
+        .timeline-title
+          margin-bottom: 0
+
+        &.timeline-content-text
+          line-height: 20px
+          font-size: 0.8rem
+          color: #666
+          p
+            margin: 0
+
+// 图标字体（独立工具类）
 .timeline-icon
-  font-family timeline-icon!important
-  font-size 16px
-  font-style normal
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-
-// 时间轴标题
-.timeline-title
-  position relative
-  margin-bottom 10px
-
-// 时间轴内容区域
-.timeline-content
-  padding-left 30px
-
-// 时间轴内容文字
-.timeline-content-text
-  line-height 20px
-  font-size 0.8rem
-  color #666
+  font-family: timeline-icon !important
+  font-size: 16px
+  font-style: normal
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
