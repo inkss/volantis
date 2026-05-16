@@ -545,8 +545,8 @@ const VolantisApp = (() => {
     // 处理分页和索引页面
     idname = idname.split(/page\d{0,}$|index.html/)[0];
 
-    // 转义字符如 [, ], ~, #, @
-    idname = idname.replace(/(\[|\]|~|#|@)/g, '\\$1');
+    // 转义 CSS 选择器中的特殊字符
+    idname = CSS.escape(idname);
 
     if (idname && volantis.dom.headerMenu) {
       volantis.dom.headerMenu.forEach(element => {
@@ -570,7 +570,7 @@ const VolantisApp = (() => {
     // 获取idname并处理特殊字符 
     let idname = location.pathname.replace(/\/|%|\./g, '') || 'home'
     idname = idname.split(/page\d{0,}$|index.html/)[0];
-    idname = idname.replace(/(\[|\]|~|#|@)/g, '\\$1');
+    idname = CSS.escape(idname);
 
     // 激活对应的菜单项 
     const nowItem = element.querySelector(`[active-action=action-${idname}]`);

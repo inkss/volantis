@@ -90,9 +90,9 @@ const pagePermalink = decodeURI(post.permalink);
     <!-- 文章底部组件区：仅对「post」「docs」布局生效 -->
     <% if (['post', 'docs'].includes(post.layout)) { %>
       <% const footerWidget = theme.article.body.footer_widget; %>
-      <div class="footer">
         <!-- 1. 参考资料：仅当参考列表非空时显示 -->
         <% if (page.references?.length) { %>
+        <div class="footer">
           <div class="references">
             <section class="header">
               <% if (footerWidget.references.icon) { %>
@@ -116,6 +116,7 @@ const pagePermalink = decodeURI(post.permalink);
               </ul>
             </section>
           </div>
+        </div>
         <% } %>
 
         <!-- 2. 版权声明：post布局+启用+未禁用时显示 -->
@@ -134,6 +135,7 @@ const pagePermalink = decodeURI(post.permalink);
               const copyrightText = footerWidget.copyright.customData.rules[copyrightRule]?.text;
               const copyrightDesc = footerWidget.copyright.customData.rules[copyrightRule]?.desc;
             %>
+          <div class="footer">
             <div class="copyright license">
               <div class="license-title"><%= post.title %></div>
               <div class="license-link"><a href="<%= pagePermalink %>"><%= pagePermalink %></a></div>
@@ -173,8 +175,10 @@ const pagePermalink = decodeURI(post.permalink);
               </div>
               <div class="license-statement"><%- copyrightDesc %></div>
             </div>
+          </div>
           <% } else { %>
-            <!-- 默认版权声明：支持Markdown解析 -->
+          <!-- 默认版权声明：支持Markdown解析 -->
+          <div class="footer">
             <div class="copyright">
               <blockquote>
                 <% (footerWidget.copyright.content || []).forEach(row => { %>
@@ -186,10 +190,10 @@ const pagePermalink = decodeURI(post.permalink);
                 <% }) %>
               </blockquote>
             </div>
+          </div>
           <% } %>
         <% } %>
 
-      </div>
     <% } %>
 
     <!-- 文章底部元信息：复用子模板 -->
