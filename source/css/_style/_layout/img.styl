@@ -49,7 +49,7 @@
 
 // 图片懒加载占位图覆盖样式
 picture.lazy img
-  object-fit: contain !important
+  object-fit: contain
   margin: 0 auto
 
 // ===== 图片加载失败 =====
@@ -93,7 +93,7 @@ img.error
 .headimg-div img.error
   display inline-block !important
   &:before
-    background-color var(--color-card) !important
+    background-color var(--color-card)
 
 // Tag link 标签的图标加载失败
 .tag.link img.error
@@ -101,7 +101,7 @@ img.error
 
 // 文章页作者头像
 img[alt="Author"].error
-  display none !important
+  display none
 
 // 隐藏文章页面 Fancybox 描述文本
 .hideFancybox
